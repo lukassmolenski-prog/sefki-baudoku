@@ -1,0 +1,1874 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>SEF-KI Baudoku</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#050b16">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SEF-KI">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: ein Handy-Cockpit. Oben Marke + GPS-Status, Mitte die Ansicht, unten der Lotse-Balken und die Navigation.
+   Holografisches HUD wie im Smolens·KI-Kontext: Navy-Leere, Cyan-Linien, Amber nur für "jetzt tun". */
+:root{
+  --void:#050b16;          /* Hintergrund */
+  --deep:#0a1830;          /* Paneel-Grund */
+  --glass:rgba(18,52,92,.42);
+  --line:rgba(82,206,236,.26);
+  --line-hi:rgba(82,206,236,.62);
+  --cyan:#3fd8ef;          /* Akzent */
+  --cyan-dim:#5fa9c0;
+  --ink:#e2f6ff;           /* Text */
+  --mute:#89a9bd;
+  --amber:#ffa040;         /* nächste Aktion */
+  --ok:#48e59a;
+  --bad:#ff5a6e;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+  --r:4px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:var(--void);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;
+  -webkit-tap-highlight-color:transparent;overscroll-behavior:none;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--void)}
+body.noscroll{overflow:hidden}
+.bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+   radial-gradient(60% 40% at 50% 18%,rgba(40,120,190,.20),transparent 70%),
+   radial-gradient(50% 50% at 80% 90%,rgba(30,90,150,.16),transparent 70%),
+   linear-gradient(rgba(82,206,236,.035) 1px,transparent 1px) 0 0/28px 28px,
+   linear-gradient(90deg,rgba(82,206,236,.035) 1px,transparent 1px) 0 0/28px 28px,
+   var(--void);}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan-dim)}
+.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.app{position:relative;z-index:1;max-width:560px;margin:0 auto;min-height:100%;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 calc(150px + env(safe-area-inset-bottom,0px));}
+
+/* ---------- Kopf ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:10px;
+  padding-block:10px;margin:0 -4px;background:linear-gradient(var(--void) 70%,transparent)}
+.brand{display:flex;align-items:center;gap:9px;min-width:0;flex:1}
+.brand svg{width:34px;height:34px;flex:none}
+.word{font-family:var(--f-display);font-weight:800;font-size:18px;letter-spacing:-.01em;line-height:1;font-stretch:100%;white-space:nowrap}
+.word b{color:var(--cyan);font-weight:800}
+.module{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.2em;color:var(--mute);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.module em{font-style:normal;color:var(--ink)}
+.pill{display:flex;align-items:center;gap:7px;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(8,24,48,.7);
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mute);flex:none}
+.dot.good{background:var(--ok);box-shadow:0 0 10px var(--ok)}
+.dot.ok{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.dot.weak{background:var(--amber);box-shadow:0 0 10px var(--amber)}
+.dot.bad{background:var(--bad)}
+.dot.search{background:var(--cyan);animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.25}}
+.iconbtn{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:rgba(8,24,48,.7);flex:none}
+.iconbtn svg{width:18px;height:18px}
+
+/* ---------- Paneele ---------- */
+.panel{position:relative;border:1px solid var(--line);background:linear-gradient(180deg,rgba(24,66,112,.34),rgba(8,22,44,.55));
+  border-radius:var(--r);padding:14px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.panel::before,.panel::after{content:"";position:absolute;width:12px;height:12px;border:2px solid var(--cyan);opacity:.85;pointer-events:none}
+.panel::before{top:-2px;left:-2px;border-right:0;border-bottom:0}
+.panel::after{bottom:-2px;right:-2px;border-left:0;border-top:0}
+.stack{display:flex;flex-direction:column;gap:14px}
+.ph{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
+.ph h2{font-family:var(--f-display);font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin:0;color:var(--cyan)}
+
+/* ---------- Lotse ---------- */
+.lotse{padding-top:16px}
+.lhead{display:flex;gap:14px;align-items:flex-start}
+#avatar{width:76px;height:76px;flex:none}
+.say{font-family:var(--f-display);font-size:19px;line-height:1.3;font-weight:600;margin:6px 0 0;text-wrap:pretty;min-height:2.6em}
+.say .hl{color:var(--cyan)}
+.cards{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.sug-lbl{text-align:center;margin-top:16px}
+.card{display:grid;grid-template-columns:30px 1fr;gap:4px 12px;text-align:left;padding:11px 12px;border:1px solid var(--line-hi);
+  background:linear-gradient(180deg,rgba(30,86,140,.45),rgba(12,36,70,.6));border-radius:var(--r);position:relative;transition:transform .12s,border-color .12s}
+.card:hover{border-color:var(--cyan)}
+.card:active{transform:scale(.985)}
+.card .n{grid-row:span 2;width:26px;height:26px;border:1.5px solid currentColor;display:grid;place-items:center;font-family:var(--f-mono);font-weight:600;font-size:13px;color:var(--ink);margin-top:1px}
+.card .t{font-weight:700;font-size:15.5px;padding-right:84px;line-height:1.25}
+.card .x{font-size:13px;color:var(--mute);line-height:1.35}
+.card .tag{position:absolute;top:9px;right:10px;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;color:var(--cyan)}
+.card.hot{border-color:var(--amber);box-shadow:0 0 0 1px rgba(255,160,64,.25),0 0 28px rgba(255,160,64,.14)}
+.card.hot .tag,.card.hot .n{color:var(--amber)}
+
+/* ---------- Baustellen-Status ---------- */
+.site-hero{display:grid;grid-template-columns:118px 1fr;gap:14px;align-items:center}
+.ring{width:118px;height:118px}
+.site-name{font-family:var(--f-display);font-weight:800;font-size:20px;line-height:1.15;font-stretch:92%;text-wrap:balance;margin:2px 0 6px}
+.meta{display:flex;flex-wrap:wrap;gap:4px 12px;font-family:var(--f-mono);font-size:11.5px;color:var(--mute)}
+.meta b{color:var(--ink);font-weight:600}
+.badge{display:inline-block;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;padding:2px 6px;border:1px solid currentColor;border-radius:2px;text-transform:uppercase}
+.badge.in{color:var(--ok)}.badge.maybe{color:var(--amber)}.badge.out{color:var(--mute)}.badge.ex{color:var(--cyan-dim)}
+.check{display:flex;flex-direction:column;margin-top:14px}
+.phase-h{display:flex;align-items:center;gap:8px;margin:10px 0 4px}
+.phase-h::after{content:"";flex:1;height:1px;background:var(--line)}
+.crow{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:8px 4px;border-bottom:1px solid rgba(82,206,236,.08);text-align:left;width:100%}
+.crow:last-child{border-bottom:0}
+.crow .st{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--mute);display:grid;place-items:center}
+.crow.done .st{border-color:var(--ok);background:rgba(72,229,154,.15)}
+.crow.done .st::after{content:"";width:8px;height:4px;border:2px solid var(--ok);border-top:0;border-right:0;transform:rotate(-45deg) translateY(-1px)}
+.crow.next .st{border-color:var(--amber);box-shadow:0 0 10px rgba(255,160,64,.6)}
+.crow.next .st::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--amber)}
+.crow .cl{font-size:14px;line-height:1.3}
+.crow.next .cl{color:var(--amber);font-weight:700}
+.crow .opt{font-family:var(--f-mono);font-size:10px;color:var(--mute);margin-left:6px}
+.crow img{width:40px;height:30px;object-fit:cover;border:1px solid var(--line);border-radius:2px}
+.crow .go{font-family:var(--f-mono);font-size:10.5px;color:var(--amber);letter-spacing:.1em}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{border:1px solid var(--line);border-radius:var(--r);padding:10px;background:rgba(8,24,48,.55)}
+.stat .v{font-family:var(--f-mono);font-size:24px;font-weight:600;line-height:1.1;margin-top:4px}
+.stat .v.warn{color:var(--amber)}.stat .v.good{color:var(--ok)}
+.stat .s{font-size:11.5px;color:var(--mute)}
+
+.slist{display:flex;flex-direction:column}
+.srow{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:10px 2px;border-bottom:1px solid rgba(82,206,236,.1);text-align:left;width:100%}
+.srow:last-child{border-bottom:0}
+.srow .sn{font-weight:700;font-size:15px;min-width:0}
+.srow .sd{font-family:var(--f-mono);font-size:12px;color:var(--mute);text-align:right}
+.srow .bar{grid-column:1/-1;height:3px;background:rgba(82,206,236,.12);border-radius:2px;overflow:hidden;margin-top:6px}
+.srow .bar i{display:block;height:100%;background:var(--cyan)}
+.srow .bar i.full{background:var(--ok)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;border:1px solid var(--line-hi);border-radius:var(--r);
+  font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;background:rgba(20,60,104,.5);color:var(--ink)}
+.btn:hover{border-color:var(--cyan)}
+.btn.pri{background:linear-gradient(180deg,#36c7e2,#1f9fbd);border-color:#6fe6fa;color:#03121f;box-shadow:0 0 24px rgba(63,216,239,.3)}
+.btn.amb{border-color:var(--amber);color:var(--amber);background:rgba(255,160,64,.08)}
+.btn.danger{border-color:var(--bad);color:var(--bad);background:rgba(255,90,110,.08)}
+.btn.wide{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>.btn{flex:1 1 140px}
+
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:7px 11px;border:1px solid var(--line);border-radius:999px;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;white-space:nowrap;background:rgba(8,24,48,.6)}
+.chip.on{border-color:var(--cyan);color:var(--void);background:var(--cyan);font-weight:600}
+.demo{border-style:dashed}
+
+/* ---------- Unterer Bereich ---------- */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:40;padding-bottom:env(safe-area-inset-bottom,0px);
+  background:linear-gradient(transparent,rgba(5,11,22,.92) 26%,var(--void));}
+.dock-in{max-width:560px;margin:0 auto;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));padding-top:18px}
+.next{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 12px;margin-bottom:8px;
+  border:1px solid var(--amber);border-radius:var(--r);background:rgba(40,26,10,.75);box-shadow:0 0 22px rgba(255,160,64,.15)}
+.next .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;color:var(--amber)}
+.next .t{font-weight:700;font-size:14px;line-height:1.25;min-width:0}
+.next svg{width:18px;height:18px;color:var(--amber)}
+.nav{display:grid;grid-template-columns:1fr 1fr 76px 1fr 1fr;align-items:end;height:64px;border-top:1px solid var(--line);background:rgba(6,16,32,.96);border-radius:12px 12px 0 0;padding:0 6px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase}
+.tab svg{width:20px;height:20px}
+.tab.on{color:var(--cyan)}
+.tab.on::after{content:"";width:22px;height:2px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);margin-top:-1px}
+.fab{justify-self:center;align-self:center;width:66px;height:66px;margin-top:-30px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 50% 35%,#5fe6fb,#1a90b0 70%);border:3px solid var(--void);box-shadow:0 0 0 1px var(--cyan),0 0 30px rgba(63,216,239,.45);color:#03121f}
+.fab svg{width:28px;height:28px}
+
+/* ---------- Karte ---------- */
+.mapwrap{position:relative;height:min(62vh,560px);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#040a14;touch-action:none}
+#map{width:100%;height:100%;display:block}
+.mapctl{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}
+.mapctl button{width:38px;height:38px;border:1px solid var(--line-hi);background:rgba(6,16,32,.85);border-radius:var(--r);font-family:var(--f-mono);font-size:18px;display:grid;place-items:center}
+.mapctl button.on{border-color:var(--cyan);color:var(--cyan)}
+.maplegend{position:absolute;left:10px;top:10px;display:flex;gap:10px;font-family:var(--f-mono);font-size:10px;color:var(--mute);background:rgba(6,16,32,.8);padding:5px 8px;border:1px solid var(--line);border-radius:3px}
+.maplegend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:0}
+
+/* ---------- Galerie ---------- */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.seg button{padding:9px 6px;font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.seg button.on{background:var(--cyan);color:var(--void);font-weight:600}
+.day{margin-top:16px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:8px}
+.th{position:relative;aspect-ratio:4/3;max-width:100%;border:1px solid var(--line);border-radius:2px;overflow:hidden;background:var(--deep)}
+.th img{width:100%;height:100%;object-fit:cover;display:block}
+.th .pb{position:absolute;left:4px;top:4px;font-family:var(--f-mono);font-size:10px;font-weight:600;width:18px;height:18px;display:grid;place-items:center;border-radius:2px;color:#03121f}
+.th .sy{position:absolute;right:4px;top:4px;width:9px;height:9px;border-radius:50%;border:1.5px solid #fff;background:var(--amber)}
+.th .sy.ok{background:var(--ok)}
+.th .tl{position:absolute;left:0;right:0;bottom:0;padding:12px 5px 3px;font-size:10.5px;line-height:1.2;background:linear-gradient(transparent,rgba(3,10,20,.88));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.empty{padding:28px 10px;text-align:center;color:var(--mute)}
+
+/* ---------- Sheets ---------- */
+.scrim{position:fixed;inset:0;z-index:70;background:rgba(2,6,14,.66);display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.sheet{width:100%;max-width:560px;max-height:92%;overflow:auto;background:linear-gradient(180deg,#0d2240,#071428);border:1px solid var(--line-hi);border-bottom:0;border-radius:14px 14px 0 0;
+  padding:14px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:.4}}
+.grab{width:42px;height:4px;border-radius:2px;background:var(--line-hi);margin:0 auto 12px}
+.sheet h3{font-family:var(--f-display);font-size:21px;font-weight:800;margin:0 0 4px;font-stretch:95%;text-wrap:balance}
+.sheet .sub{color:var(--mute);font-size:13px;margin:0 0 14px}
+.fld{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.fld input[type=text],.fld input[type=date],.fld select,.fld textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8);font-size:15px}
+.fld textarea{min-height:76px;resize:vertical}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--cyan);outline:none}
+.inrow{display:flex;gap:8px}
+.inrow>*:first-child{flex:1;min-width:0}
+input[type=range]{width:100%;accent-color:var(--cyan)}
+.tpls{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.tpl{padding:10px;border:1px solid var(--line);border-radius:var(--r);text-align:left;background:rgba(8,24,48,.6)}
+.tpl b{display:block;font-size:13.5px}
+.tpl span{font-size:11.5px;color:var(--mute)}
+.tpl.on{border-color:var(--cyan);background:rgba(63,216,239,.12)}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.cat{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 2px;border:1px solid var(--line);border-radius:var(--r);font-size:10.5px;background:rgba(8,24,48,.6)}
+.cat svg{width:22px;height:22px;color:var(--cyan)}
+.cat.on{border-color:var(--cyan);background:rgba(63,216,239,.16)}
+.phs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.phs button{padding:10px 4px;border:1px solid var(--line);border-radius:var(--r);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase}
+.phs button.on[data-p=V]{border-color:#3fd8ef;color:#03121f;background:#3fd8ef}
+.phs button.on[data-p=W]{border-color:#ffa040;color:#1c0f02;background:#ffa040}
+.phs button.on[data-p=N]{border-color:#48e59a;color:#03170c;background:#48e59a}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13.5px;margin:12px 0}
+.kv dt{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan-dim);padding-top:2px}
+.kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.big{width:100%;max-width:100%;border:1px solid var(--line);border-radius:var(--r);display:block}
+.qual{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.q{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;padding:4px 8px;border-radius:2px;border:1px solid currentColor}
+.q.g{color:var(--ok)}.q.w{color:var(--amber)}.q.b{color:var(--bad)}
+.tog{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid rgba(82,206,236,.1)}
+.tog span small{display:block;color:var(--mute);font-size:12px}
+.sw{appearance:none;-webkit-appearance:none;width:46px;height:26px;border-radius:13px;background:rgba(137,169,189,.3);position:relative;flex:none;cursor:pointer;transition:background .15s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--ink);transition:left .15s}
+.sw:checked{background:var(--cyan)}
+.sw:checked::after{left:23px;background:var(--void)}
+.note{font-size:13px;color:var(--mute);line-height:1.5}
+.note b{color:var(--ink)}
+.warnbox{border:1px solid var(--amber);color:var(--amber);background:rgba(255,160,64,.07);padding:10px 12px;border-radius:var(--r);font-size:13px}
+
+/* ---------- Kamera ---------- */
+.cam{position:fixed;inset:0;z-index:80;background:#000;display:flex;flex-direction:column}
+.cam video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cam .vign{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,8,20,.55))}
+.cam .frame{position:absolute;inset:18% 7% 26%;pointer-events:none}
+.cam .frame i{position:absolute;width:26px;height:26px;border:2px solid var(--cyan);filter:drop-shadow(0 0 4px var(--cyan))}
+.cam .frame i:nth-child(1){top:0;left:0;border-right:0;border-bottom:0}
+.cam .frame i:nth-child(2){top:0;right:0;border-left:0;border-bottom:0}
+.cam .frame i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}
+.cam .frame i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
+.level{position:absolute;left:50%;top:50%;width:120px;height:2px;margin-left:-60px;background:rgba(255,255,255,.6);transition:background .2s}
+.level.ok{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.camtop{position:relative;z-index:2;padding:calc(10px + env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) 0 max(14px,env(safe-area-inset-left,0px));display:flex;gap:10px;align-items:flex-start}
+.instr{flex:1;min-width:0;border:1px solid var(--amber);background:rgba(20,12,4,.72);border-radius:var(--r);padding:10px 12px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.instr.free{border-color:var(--line-hi);background:rgba(4,14,30,.72)}
+.instr .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;color:var(--amber)}
+.instr.free .k{color:var(--cyan)}
+.instr .t{font-family:var(--f-display);font-weight:800;font-size:19px;line-height:1.2;margin:3px 0}
+.instr .h{font-size:13px;color:#d6e6ee;line-height:1.35}
+.camstat{position:relative;z-index:2;display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap;padding:0 14px}
+.camstat .pill{font-size:11px}
+.cambot{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:16px max(20px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;background:linear-gradient(transparent,rgba(0,6,16,.8))}
+.shutter{width:78px;height:78px;border-radius:50%;border:3px solid #fff;display:grid;place-items:center;box-shadow:0 0 0 2px var(--cyan),0 0 30px rgba(63,216,239,.5)}
+.shutter i{width:62px;height:62px;border-radius:50%;background:#fff;transition:transform .1s}
+.shutter:active i{transform:scale(.88)}
+.camside{display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.12em;color:#cfe4ee;text-transform:uppercase}
+.camside .iconbtn{width:46px;height:46px}
+.camside.on .iconbtn{border-color:var(--amber);color:var(--amber)}
+.camfb{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:120px 24px 180px;text-align:center;
+  background:radial-gradient(60% 40% at 50% 45%,rgba(40,120,190,.25),transparent 70%),#030812}
+.camfb p{max-width:34ch;color:var(--mute);font-size:14px;margin:0}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:3}
+.flash.go{animation:fl .35s ease-out}
+@keyframes fl{0%{opacity:.85}100%{opacity:0}}
+.review{position:absolute;inset:0;z-index:5;overflow:auto;background:linear-gradient(180deg,#0b1f3a,#050b16);
+  padding:calc(12px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(110px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.review-in{max-width:560px;margin:0 auto}
+.review .actions{position:fixed;left:0;right:0;bottom:0;padding:12px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:linear-gradient(transparent,#050b16 30%);display:flex;justify-content:center}
+.review .actions .row{max-width:560px;width:100%}
+
+/* ---------- Markup ---------- */
+.mk{position:fixed;inset:0;z-index:90;background:#02060d;display:flex;flex-direction:column}
+.mk canvas{flex:1;min-height:0;width:100%;touch-action:none}
+.mkbar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:10px max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));border-top:1px solid var(--line)}
+.mkbar .btn{min-height:40px;padding:8px 12px}
+.mkbar .btn.on{border-color:var(--amber);color:var(--amber)}
+
+/* ---------- Meldungen ---------- */
+.toast{position:fixed;left:50%;bottom:calc(160px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:95;max-width:min(92vw,480px);
+  padding:10px 14px;border:1px solid var(--line-hi);background:rgba(6,18,36,.96);border-radius:var(--r);font-size:14px;box-shadow:0 8px 30px rgba(0,0,0,.5);animation:up .2s}
+.banner{position:fixed;left:0;right:0;top:0;z-index:96;padding:calc(12px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px));
+  background:linear-gradient(180deg,#3a1f06,#241303);border-bottom:2px solid var(--amber);color:#ffe2c2;box-shadow:0 10px 40px rgba(255,160,64,.25)}
+.banner-in{max-width:560px;margin:0 auto}
+.banner b{color:var(--amber);font-family:var(--f-mono);font-size:11px;letter-spacing:.16em}
+.banner p{margin:4px 0 10px;font-size:15px;font-weight:600}
+.view[hidden]{display:none!important}
+.hidden-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+@media (min-width:760px){
+  .app{padding-top:10px}
+  .say{font-size:21px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="bg" aria-hidden="true"></div>
+
+<div class="app" id="app">
+  <header class="top">
+    <div class="brand">
+      <svg id="logo" viewBox="0 0 100 100" aria-hidden="true"></svg>
+      <div style="min-width:0">
+        <div class="word">Smolens<span style="color:var(--cyan)">·</span><b>KI</b></div>
+        <div class="module">SEF-KI · <em>BAUDOKU GPS</em></div>
+      </div>
+    </div>
+    <div class="pill" id="gpsPill" aria-live="polite"><span class="dot search" id="gpsDot"></span><span id="gpsTxt">GPS</span></div>
+    <button class="iconbtn" id="btnSettings" aria-label="Einstellungen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg>
+    </button>
+  </header>
+
+  <!-- COCKPIT -->
+  <main class="view stack" id="v-cockpit">
+    <section class="panel lotse">
+      <div class="lhead">
+        <canvas id="avatar" aria-hidden="true"></canvas>
+        <div style="min-width:0;flex:1">
+          <div class="lbl">SEF-KI · <span id="lotseState">bereit</span></div>
+          <p class="say" id="say" aria-live="polite"></p>
+        </div>
+      </div>
+      <div class="lbl sug-lbl">SEF-KI schlägt vor</div>
+      <div class="cards" id="cards"></div>
+    </section>
+    <section class="panel" id="sitePanel"></section>
+    <section class="stats" id="stats"></section>
+    <section class="panel">
+      <div class="ph"><h2>Baustellen</h2><span class="lbl" id="siteCount"></span></div>
+      <div class="slist" id="siteList"></div>
+      <button class="btn wide" id="btnNewSite" style="margin-top:12px">+ Baustelle hier anlegen</button>
+    </section>
+    <section class="panel demo" id="demoBox" hidden></section>
+  </main>
+
+  <!-- KARTE -->
+  <main class="view stack" id="v-karte" hidden>
+    <div class="mapwrap">
+      <canvas id="map" aria-label="Karte mit Baustellen und Fotos"></canvas>
+      <div class="maplegend"><span><i style="background:#3fd8ef"></i>Vorher</span><span><i style="background:#ffa040"></i>Während</span><span><i style="background:#48e59a"></i>Nachher</span></div>
+      <div class="mapctl">
+        <button id="mzIn" aria-label="Hineinzoomen">+</button>
+        <button id="mzOut" aria-label="Herauszoomen">−</button>
+        <button id="mFollow" aria-label="Auf mich zentrieren" class="on">◎</button>
+      </div>
+    </div>
+    <div class="chips" id="mapSites"></div>
+    <section class="panel" id="mapInfo"></section>
+  </main>
+
+  <!-- GALERIE -->
+  <main class="view" id="v-galerie" hidden>
+    <div class="stack">
+      <div class="seg" id="galSeg"></div>
+      <div class="chips" id="galSites"></div>
+      <div class="row"><button class="btn" id="btnImport">Fotos importieren</button></div>
+    </div>
+    <div id="galList"></div>
+  </main>
+
+  <!-- BERICHT -->
+  <main class="view stack" id="v-bericht" hidden>
+    <section class="panel">
+      <div class="ph"><h2>Bericht &amp; Sicherung</h2></div>
+      <div class="lbl" style="margin-bottom:6px">Zeitraum</div>
+      <div class="chips" id="repRange"></div>
+      <div class="lbl" style="margin:12px 0 6px">Baustelle</div>
+      <div class="chips" id="repSites"></div>
+    </section>
+    <section class="panel" id="repSum"></section>
+  </main>
+</div>
+
+<div class="dock">
+  <div class="dock-in">
+    <button class="next" id="nextBar" hidden></button>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <button class="tab on" data-v="cockpit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3"/></svg>Cockpit</button>
+      <button class="tab" data-v="karte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>Karte</button>
+      <button class="fab" id="fab" aria-label="Foto aufnehmen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg></button>
+      <button class="tab" data-v="galerie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7.5" height="7.5"/><rect x="13.5" y="3" width="7.5" height="7.5"/><rect x="3" y="13.5" width="7.5" height="7.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5"/></svg>Galerie</button>
+      <button class="tab" data-v="bericht"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h7"/></svg>Bericht</button>
+    </nav>
+  </div>
+</div>
+
+<!-- Kamera -->
+<div class="cam" id="cam" hidden>
+  <video id="camVideo" playsinline muted autoplay></video>
+  <div class="vign"></div>
+  <div class="frame"><i></i><i></i><i></i><i></i></div>
+  <div class="level" id="level" hidden></div>
+  <div class="camfb" id="camFallback" hidden>
+    <div class="lbl">Kamera</div>
+    <p id="camFbTxt">Die Live-Kamera ist hier nicht freigegeben. Tipp auf den Knopf – dann öffnet sich die Kamera deines Handys.</p>
+    <button class="btn pri" id="btnCamApp">Kamera öffnen</button>
+    <button class="btn" id="btnDemoShot" hidden>Beispielfoto erzeugen</button>
+  </div>
+  <div class="camtop">
+    <div class="instr" id="instr"></div>
+    <button class="iconbtn" id="camClose" aria-label="Kamera schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="camstat" id="camStat"></div>
+  <div class="cambot">
+    <div class="camside" style="justify-self:start"><button class="iconbtn" id="camImport" aria-label="Aus Galerie importieren"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14"/><path d="M3 16l5-5 4 4 3-3 6 6"/></svg></button>Import</div>
+    <button class="shutter" id="shutter" aria-label="Auslösen"><i></i></button>
+    <div class="camside" id="camSeries" style="justify-self:end"><button class="iconbtn" aria-label="Serienmodus umschalten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="7" width="13" height="13"/><path d="M4 16V4h12"/></svg></button><span>Serie</span></div>
+  </div>
+  <div class="flash" id="flash"></div>
+  <div class="review" id="review" hidden><div class="review-in" id="reviewIn"></div></div>
+</div>
+
+<input type="file" id="fileCap" class="hidden-input" accept="image/*" capture="environment" tabindex="-1" aria-hidden="true">
+<input type="file" id="fileImp" class="hidden-input" accept="image/*" multiple tabindex="-1" aria-hidden="true">
+<input type="file" id="fileRestore" class="hidden-input" accept=".zip,application/zip" tabindex="-1" aria-hidden="true">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" async></script>
+<script>
+'use strict';
+/* =========================================================
+   SEF-KI Baudoku – GPS-Fotodokumentation für Baustellen
+   Smolens·KI · für Sefkan
+   ========================================================= */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const inFrame = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const RAD = Math.PI / 180;
+function dist(a, b) {
+  const dLat = (b.lat - a.lat) * RAD, dLon = (b.lon - a.lon) * RAD;
+  const s = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * RAD) * Math.cos(b.lat * RAD) * Math.sin(dLon / 2) ** 2;
+  return 2 * 6371008.8 * Math.asin(Math.sqrt(s));
+}
+const DIRS = ['N', 'NO', 'O', 'SO', 'S', 'SW', 'W', 'NW'];
+const dirName = h => DIRS[Math.round((((h % 360) + 360) % 360) / 45) % 8];
+const fmtDist = m => m < 1000 ? Math.round(m) + ' m' : (m / 1000).toFixed(m < 10000 ? 1 : 0).replace('.', ',') + ' km';
+const pad = n => String(n).padStart(2, '0');
+const dayKey = ts => { const d = new Date(ts); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+const fmtDay = ts => new Date(ts).toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric' });
+const fmtDate = ts => new Date(ts).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+const fmtTime = ts => new Date(ts).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+const stamp = ts => { const d = new Date(ts); return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '_' + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds()); };
+const slug = s => String(s || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss').replace(/[^\w]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'foto';
+const coord = (lat, lon) => lat == null ? '–' : lat.toFixed(6) + ', ' + lon.toFixed(6);
+const short = s => s.length > 26 ? s.slice(0, 24) + '…' : s;
+
+const PH = { V: { n: 'Vorher', c: '#3fd8ef' }, W: { n: 'Während', c: '#ffa040' }, N: { n: 'Nachher', c: '#48e59a' } };
+const ICON = {
+  uebersicht: '<rect x="3" y="4" width="18" height="16"/><path d="M3 16l5-5 4 4 3-3 6 5"/>',
+  detail: '<circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L21 21"/>',
+  graben: '<path d="M2 7h5l2 11h6l2-11h5"/><path d="M12 9v6M10.5 10.5h3"/>',
+  leitung: '<path d="M2 10h20M2 14h20M6 8v8M18 8v8"/>',
+  oberflaeche: '<path d="M2 17h20M4 17l3-5h10l3 5M9 12l1-3h4l1 3"/>',
+  sicherung: '<path d="M3 8h18v5H3zM7 8l-3 5M13 8l-3 5M19 8l-3 5M6 13v7M18 13v7"/>',
+  mangel: '<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.6"/>',
+  sonstiges: '<circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/>'
+};
+const CATS = [['uebersicht', 'Übersicht'], ['detail', 'Detail'], ['graben', 'Graben'], ['leitung', 'Leitung'], ['oberflaeche', 'Oberfläche'], ['sicherung', 'Absicherung'], ['mangel', 'Mangel'], ['sonstiges', 'Sonstiges']];
+const catName = k => (CATS.find(c => c[0] === k) || CATS[7])[1];
+const icon = (k, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">${ICON[k] || ICON.sonstiges}</svg>`;
+
+/* Vorlagen: [Phase, Pflichtfoto, Hinweis, Kategorie, Pflicht?] */
+const TPL = {
+  glasfaser: { n: 'Glasfaser-Hausanschluss', r: 40, items: [
+    ['V', 'Hausfassade mit Hausnummer', 'Ganzes Haus aufs Bild, die Hausnummer muss lesbar sein.', 'uebersicht'],
+    ['V', 'Einführungsstelle vorher', 'Die Wandstelle, wo das Rohr reinkommt. 1–2 m Abstand.', 'detail'],
+    ['W', 'Kopfloch mit Meterstab', 'Meterstab senkrecht an die Grubenwand. Die Tiefe muss ablesbar sein.', 'graben'],
+    ['W', 'Speedpipe verlegt + Warnband', 'Rohr im Graben sichtbar, Warnband darüber – vor dem Verfüllen.', 'leitung'],
+    ['W', 'Hauseinführung abgedichtet', 'Nah ran: Dichtung und Rohr scharf im Bild.', 'detail'],
+    ['N', 'HÜP / Gf-AP montiert', 'Gerät komplett, Aufkleber oder Seriennummer lesbar.', 'detail'],
+    ['N', 'Oberfläche wiederhergestellt', 'Gleicher Standort und Blickwinkel wie beim Vorher-Foto.', 'oberflaeche']] },
+  tiefbau: { n: 'Tief- & Leitungsbau', r: 150, items: [
+    ['V', 'Gesamtansicht Straße', 'Von der Straße aus – die ganze Baustelle im Bild.', 'uebersicht'],
+    ['V', 'Belag / Oberfläche vorher', 'Zustand vor dem Aufbruch. Vorhandene Schäden mit drauf.', 'oberflaeche'],
+    ['V', 'Absperrung & Beschilderung', 'Die komplette Verkehrssicherung in einem Bild.', 'sicherung'],
+    ['W', 'Graben offen mit Meterstab', 'Meterstab senkrecht an die Grabenwand. Tiefe ablesbar.', 'graben'],
+    ['W', 'Leitung verlegt, vor Verfüllung', 'Rohr, Bettung und Warnband müssen sichtbar sein.', 'leitung'],
+    ['W', 'Kreuzung Fremdleitung', 'Nur wenn vorhanden: Abstand mit Meterstab zeigen.', 'leitung', false],
+    ['N', 'Verfüllung / Verdichtung', 'Lagenweise verdichtet, gern mit Rüttelplatte im Bild.', 'graben'],
+    ['N', 'Oberfläche wiederhergestellt', 'Vom gleichen Standort wie das erste Foto.', 'oberflaeche']] },
+  hochbau: { n: 'Hochbau / Ausbau', r: 60, items: [
+    ['V', 'Bestand Raum / Bauteil', 'Ecke zu Ecke, damit man den Raum wiedererkennt.', 'uebersicht'],
+    ['W', 'Installation offen', 'Vor dem Verschließen! Leitungen und Dosen gut sichtbar.', 'leitung'],
+    ['W', 'Dämmung / Abdichtung', 'Stöße und Anschlüsse nah fotografieren.', 'detail'],
+    ['N', 'Fertigzustand', 'Gleicher Standort wie beim Bestand-Foto.', 'uebersicht'],
+    ['N', 'Restarbeiten / Mängel', 'Nur wenn etwas offen ist.', 'mangel', false]] },
+  schaden: { n: 'Schaden / Mangel', r: 40, items: [
+    ['V', 'Übersicht Schadstelle', 'So weit weg, dass man den Ort eindeutig erkennt.', 'uebersicht'],
+    ['V', 'Detail mit Maßstab', 'Zollstock oder Meterstab direkt daneben legen.', 'mangel'],
+    ['W', 'Ursache / Umfeld', 'Was hat den Schaden verursacht?', 'mangel', false],
+    ['N', 'Nach Behebung', 'Gleicher Blickwinkel wie die Übersicht.', 'uebersicht']] },
+  frei: { n: 'Allgemein', r: 80, items: [
+    ['V', 'Übersicht vorher', 'Gesamtansicht, bevor es losgeht.', 'uebersicht'],
+    ['W', 'Arbeit läuft', 'Der wichtigste Zwischenstand.', 'sonstiges'],
+    ['N', 'Ergebnis', 'Gleicher Standort wie das Vorher-Foto.', 'uebersicht']] }
+};
+const mkItems = tpl => TPL[tpl].items.map((a, i) => ({ id: 'i' + i, phase: a[0], label: a[1], hint: a[2], cat: a[3], must: a[4] !== false }));
+
+/* ---------------- Speicher (IndexedDB, Fallback im Arbeitsspeicher) ---------------- */
+const DB = {
+  db: null, mem: { sites: new Map(), photos: new Map(), kv: new Map() },
+  async open() {
+    try {
+      this.db = await new Promise((res, rej) => {
+        const r = indexedDB.open('sefki-baudoku', 1);
+        r.onupgradeneeded = () => { const d = r.result; ['sites', 'photos', 'kv'].forEach(s => { if (!d.objectStoreNames.contains(s)) d.createObjectStore(s, { keyPath: 'id' }); }); };
+        r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+        setTimeout(() => rej(new Error('timeout')), 5000);
+      });
+    } catch (e) { this.db = null; }
+    return !!this.db;
+  },
+  all(store) {
+    if (!this.db) return Promise.resolve([...this.mem[store].values()]);
+    return new Promise((res, rej) => { const r = this.db.transaction(store).objectStore(store).getAll(); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+  },
+  put(store, obj) {
+    if (!this.db) { this.mem[store].set(obj.id, obj); return Promise.resolve(); }
+    return new Promise((res, rej) => { const t = this.db.transaction(store, 'readwrite'); t.objectStore(store).put(obj); t.oncomplete = () => res(); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error); });
+  },
+  del(store, id) {
+    if (!this.db) { this.mem[store].delete(id); return Promise.resolve(); }
+    return new Promise((res, rej) => { const t = this.db.transaction(store, 'readwrite'); t.objectStore(store).delete(id); t.oncomplete = () => res(); t.onerror = () => rej(t.error); });
+  }
+};
+
+/* ---------------- Zustand ---------------- */
+const S = {
+  sites: [], photos: [],
+  set: { id: 'settings', name: 'Sefkan', voice: false, watermark: true, series: false, demo: false, demoAt: null, pin: null, seeded: false, lastLabels: [] },
+  pos: null, heading: null, realHeading: false, tilt: null, gps: 'idle',
+  view: 'cockpit', lastInside: null, lotseKey: '', cards: [], persisted: null,
+  gal: { mode: 'open', site: 'all' }, rep: { range: 'today', site: 'all' }
+};
+const saveSet = () => DB.put('kv', S.set).catch(() => {});
+
+/* ---------------- kleine UI-Helfer ---------------- */
+let toastT;
+function toast(msg, ms = 3200) {
+  $('.toast')?.remove(); clearTimeout(toastT);
+  const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
+  document.body.appendChild(t); toastT = setTimeout(() => t.remove(), ms);
+}
+function sheet(html, onMount) {
+  closeSheet();
+  const sc = document.createElement('div'); sc.className = 'scrim'; sc.id = 'scrim';
+  sc.innerHTML = `<div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div>`;
+  sc.addEventListener('click', e => { if (e.target === sc) closeSheet(); });
+  document.body.appendChild(sc); document.body.classList.add('noscroll');
+  onMount && onMount(sc.firstElementChild);
+  return sc.firstElementChild;
+}
+function closeSheet() {
+  const sc = $('#scrim'); if (!sc) return;
+  sc.querySelectorAll('img[data-url]').forEach(i => URL.revokeObjectURL(i.src));
+  sc.remove(); if ($('#cam').hidden) document.body.classList.remove('noscroll');
+}
+const buzz = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
+
+/* ---------------- Logo ---------------- */
+function gearPath(cx, cy, ro, ri, n) {
+  let d = ''; const step = Math.PI * 2 / n;
+  for (let i = 0; i < n; i++) {
+    const a = i * step - Math.PI / 2, w = step * 0.22;
+    const pts = [[ri, a - step / 2 + w * 0.2], [ri, a - w * 1.25], [ro, a - w * 0.75], [ro, a + w * 0.75], [ri, a + w * 1.25]];
+    pts.forEach(([r, t], k) => { d += (i === 0 && k === 0 ? 'M' : 'L') + (cx + r * Math.cos(t)).toFixed(2) + ' ' + (cy + r * Math.sin(t)).toFixed(2) + ' '; });
+  }
+  return d + 'Z';
+}
+function logoSVG() {
+  return `<path d="${gearPath(50, 50, 48, 38, 11)}" fill="#e8f6ff"/><circle cx="50" cy="50" r="29" fill="#0a1830"/>
+  <path d="M63 36.5c-3-5-23-6-23 4.5 0 9.5 22 6.5 22 17.5 0 10-19 10-24 4.5" fill="none" stroke="#e8f6ff" stroke-width="7.5" stroke-linecap="round"/>
+  <circle cx="63" cy="36.5" r="3.2" fill="#3fd8ef"/><circle cx="51" cy="50" r="3.2" fill="#3fd8ef"/><circle cx="38" cy="63" r="3.2" fill="#3fd8ef"/>`;
+}
+
+/* ---------------- Avatar: Partikel-Kopf ---------------- */
+let speaking = false;
+function startAvatar() {
+  const cv = $('#avatar'); const g = cv.getContext('2d');
+  const dpr = Math.min(2, devicePixelRatio || 1); const W = 76; cv.width = W * dpr; cv.height = W * dpr;
+  const pts = [];
+  for (let i = 0; i < 30; i++) {
+    const v = -1 + 2 * i / 29; const ry = Math.sqrt(Math.max(0, 1 - v * v));
+    const shape = ry * (v > 0.1 ? 1 - 0.32 * (v - 0.1) : 1); const n = Math.max(6, Math.round(46 * shape));
+    for (let k = 0; k < n; k++) { const u = k / n * Math.PI * 2; pts.push([Math.cos(u) * shape * 0.74, v, Math.sin(u) * shape * 0.84]); }
+  }
+  let t = 0;
+  function frame() {
+    t += 0.016; const a = Math.sin(t * 0.55) * 0.55; const ca = Math.cos(a), sa = Math.sin(a);
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, W);
+    const cx = W / 2, cy = W / 2 + 1, sc = W * 0.40;
+    const glow = g.createRadialGradient(cx, cy, 4, cx, cy, W / 2); glow.addColorStop(0, 'rgba(63,216,239,.18)'); glow.addColorStop(1, 'rgba(63,216,239,0)');
+    g.fillStyle = glow; g.fillRect(0, 0, W, W);
+    for (const [x, y, z] of pts) {
+      const X = x * ca + z * sa, Z = -x * sa + z * ca;
+      g.fillStyle = `rgba(110,226,248,${(0.12 + 0.62 * (Z + 1) / 2).toFixed(3)})`;
+      g.fillRect(cx + X * sc, cy + y * sc * 1.04, 1.25, 1.25);
+    }
+    for (const ex of [-0.3, 0.3]) {
+      const X = ex * ca + 0.76 * sa, Z = -ex * sa + 0.76 * ca;
+      if (Z > 0.25) { g.shadowColor = '#3fd8ef'; g.shadowBlur = 8; g.fillStyle = 'rgba(215,250,255,.95)'; g.beginPath(); g.ellipse(cx + X * sc, cy - 0.14 * sc, 3.4 * Z, 1.5, 0, 0, 7); g.fill(); g.shadowBlur = 0; }
+    }
+    const mo = speaking ? 0.6 + Math.abs(Math.sin(t * 17)) * 3.2 : 0.7;
+    const mX = 0.0 * ca + 0.72 * sa; g.fillStyle = 'rgba(160,240,255,.85)';
+    g.fillRect(cx + mX * sc - 6 * ca, cy + 0.42 * sc - mo / 2, 12 * Math.max(.3, ca), mo);
+    if (!reduced) requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+/* ---------------- Sprache ---------------- */
+let sayTimer = null, typing = false;
+function typeSay(html, plain) {
+  const el = $('#say'); clearInterval(sayTimer);
+  if (reduced) { el.innerHTML = html; return; }
+  let i = 0; speaking = true; typing = true; el.textContent = '';
+  sayTimer = setInterval(() => {
+    i += 2; el.textContent = plain.slice(0, i);
+    if (i >= plain.length) { clearInterval(sayTimer); typing = false; el.innerHTML = html; if (!window.speechSynthesis?.speaking) speaking = false; }
+  }, 22);
+}
+function speak(text) {
+  if (!S.set.voice || !('speechSynthesis' in window)) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text); u.lang = 'de-DE'; u.rate = 1.04;
+    const v = speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('de')); if (v) u.voice = v;
+    u.onstart = () => speaking = true; u.onend = () => speaking = false;
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
+
+/* ---------------- GPS & Kompass ---------------- */
+let gpsWatch = null, demoTimer = null;
+function startGPS() {
+  if (S.set.demo) { startDemo(); return; }
+  stopDemo();
+  if (!('geolocation' in navigator)) { gpsFail('unsupported'); return; }
+  S.gps = 'search'; tick();
+  if (inFrame) setTimeout(() => { if (!S.pos && !S.set.demo) gpsFail('denied'); }, 6000);
+  try {
+    gpsWatch = navigator.geolocation.watchPosition(onPos, e => gpsFail(e.code === 1 ? 'denied' : e.code === 3 ? 'search' : 'error'),
+      { enableHighAccuracy: true, maximumAge: 3000, timeout: 25000 });
+  } catch (e) { gpsFail('denied'); }
+}
+function stopGPS() { if (gpsWatch != null) { try { navigator.geolocation.clearWatch(gpsWatch); } catch (e) {} gpsWatch = null; } }
+function onPos(p) {
+  const c = p.coords;
+  S.pos = { lat: c.latitude, lon: c.longitude, acc: Math.max(1, Math.round(c.accuracy)), ts: Date.now(), src: 'gps' };
+  if (!S.realHeading && c.heading != null && !isNaN(c.heading) && c.speed > 1) S.heading = Math.round(c.heading);
+  S.gps = S.pos.acc <= 15 ? 'good' : S.pos.acc <= 35 ? 'ok' : 'weak';
+  adoptOrphans(); tick();
+}
+function gpsFail(kind) {
+  if (kind === 'search') { if (!S.pos) { S.gps = 'search'; tick(); } return; }
+  S.gps = kind;
+  if ((kind === 'denied' || kind === 'unsupported') && inFrame && !S.set.demo) {
+    S.set.demo = true; S.autoDemo = true; saveSet();
+    toast('In dieser Vorschau ist GPS gesperrt. Ich simuliere deinen Standort.', 4500);
+    startDemo(); return;
+  }
+  tick();
+}
+function demoTarget() {
+  const s0 = S.sites.find(x => x.id === S.set.demoAt) || S.sites.find(x => !x.archived);
+  if (S.set.demoAt === 'away') { const b = S.sites[0] || { lat: 49.7942, lon: 9.9512 }; return { lat: b.lat + 0.0105, lon: b.lon - 0.0071 }; }
+  return s0 ? { lat: s0.lat, lon: s0.lon } : { lat: 49.7942, lon: 9.9512 };
+}
+function startDemo() {
+  stopGPS(); clearInterval(demoTimer);
+  const step = () => {
+    const t = demoTarget(), j = () => (Math.random() - 0.5) * 0.00007;
+    S.pos = { lat: t.lat + j(), lon: t.lon + j(), acc: 3 + Math.round(Math.random() * 6), ts: Date.now(), src: 'demo' };
+    if (!S.realHeading) S.heading = Math.round(((S.heading ?? 210) + (Math.random() - 0.5) * 16 + 360) % 360);
+    S.gps = 'demo'; adoptOrphans(); tick();
+  };
+  step(); demoTimer = setInterval(step, 2500);
+}
+function stopDemo() { clearInterval(demoTimer); demoTimer = null; }
+function setDemo(on) { S.set.demo = on; saveSet(); if (on) startDemo(); else { stopDemo(); S.pos = null; startGPS(); } refresh(true); }
+function initHeading() {
+  const h = e => {
+    let hd = null;
+    if (typeof e.webkitCompassHeading === 'number') hd = e.webkitCompassHeading;
+    else if (e.absolute && e.alpha != null) hd = (360 - e.alpha) % 360;
+    if (hd != null && !isNaN(hd)) { S.heading = Math.round(hd); S.realHeading = true; }
+    if (e.beta != null && e.gamma != null) S.tilt = { beta: e.beta, gamma: e.gamma };
+  };
+  window.addEventListener('deviceorientationabsolute', h, true);
+  window.addEventListener('deviceorientation', h, true);
+}
+async function askOrientation() {
+  try { if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') await DeviceOrientationEvent.requestPermission(); } catch (e) {}
+}
+/* Fotos ohne GPS bekommen die erste Position der nächsten 10 Minuten */
+function adoptOrphans() {
+  if (!S.pos || S.pos.acc > 40) return;
+  for (const p of S.photos) {
+    if (p.lat == null && Date.now() - p.ts < 600000) {
+      p.lat = S.pos.lat; p.lon = S.pos.lon; p.acc = S.pos.acc; p.late = true;
+      if (!p.siteId) { const st = siteStatus(); if (st.state === 'in') p.siteId = st.site.id; }
+      DB.put('photos', p).catch(() => {}); geocode(p);
+    }
+  }
+}
+
+/* ---------------- Baustellen-Logik ---------------- */
+const activeSites = () => S.sites.filter(s => !s.archived);
+function siteStatus(pos = S.pos) {
+  if (!pos) return { state: 'nopos' };
+  const act = activeSites(); if (!act.length) return { state: 'none' };
+  const pin = S.set.pin && S.set.pin.until > Date.now() ? act.find(x => x.id === S.set.pin.siteId) : null;
+  if (pin) { const d = dist(pos, pin); if (d <= pin.radius + 300) return { state: 'in', site: pin, d, pinned: true }; }
+  let best = null;
+  for (const s of act) { const d = dist(pos, s); if (!best || d - s.radius < best.d - best.s.radius) best = { s, d }; }
+  const { s, d } = best; const acc = Math.min(pos.acc || 0, 60);
+  if (d <= s.radius) return { state: 'in', site: s, d };
+  if (d <= s.radius + acc) return { state: 'maybe', site: s, d };
+  return { state: 'out', site: s, d };
+}
+function progress(site) {
+  const its = site.items.map(it => ({ ...it, photos: S.photos.filter(p => p.siteId === site.id && p.itemId === it.id).sort((a, b) => b.ts - a.ts) }));
+  const must = its.filter(i => i.must), missing = must.filter(i => !i.photos.length);
+  return { its, must: must.length, done: must.length - missing.length, missing, next: missing[0] || null };
+}
+function pinSite(id) { S.set.pin = { siteId: id, until: Date.now() + 3 * 3600e3 }; saveSet(); toast('Alles klar – ich ordne die nächsten 3 Stunden hierher zu.'); refresh(true); }
+
+/* ---------------- Lotse: was ist jetzt zu tun? ---------------- */
+function greet() { const h = new Date().getHours(); return h < 11 ? 'Guten Morgen' : h < 18 ? 'Hallo' : 'Guten Abend'; }
+function lotse() {
+  const st = siteStatus(), nm = S.set.name || 'du', cards = [];
+  const open = S.photos.filter(p => !p.exported).length;
+  let say = '', hl = [], key = st.state + '|' + (st.site?.id || '') + '|' + (S.pos ? 'p' : S.gps);
+  if (st.state === 'nopos') {
+    if (S.gps === 'denied' || S.gps === 'unsupported' || S.gps === 'error') {
+      say = `${nm}, ich brauche deinen Standort. Ohne GPS kann ich Fotos keiner Baustelle zuordnen.`;
+      cards.push({ t: 'Standort freigeben', x: 'Im Browser auf das Schloss-Symbol tippen → Standort → Zulassen. Danach neu laden.', tag: 'NÖTIG', a: () => location.reload(), hot: true });
+      cards.push({ t: 'Demo ausprobieren', x: 'Ich simuliere eine Position auf einer Beispiel-Baustelle.', tag: 'TEST', a: () => setDemo(true) });
+    } else {
+      say = `${greet()}, ${nm}. Ich suche dein GPS-Signal. Stell dich kurz ins Freie, dann geht es schneller.`;
+      cards.push({ t: 'Trotzdem fotografieren', x: 'Das Foto bekommt die Position, sobald GPS da ist.', tag: 'FOTO', a: () => openCamera(), hot: true });
+    }
+  } else if (st.state === 'in') {
+    const s = st.site, pr = progress(s); hl = [s.name];
+    key += '|' + (pr.next?.id || 'done');
+    const weak = S.pos.acc > 35 ? ` GPS ist gerade ungenau (±${S.pos.acc} m) – die Zuordnung stimmt trotzdem.` : '';
+    if (pr.next) {
+      const it = pr.next; hl.push(it.label);
+      say = `${greet()}, ${nm}. Du bist auf ${s.name}. Als Nächstes: ${PH[it.phase].n} – ${it.label}.${weak}`;
+      cards.push({ t: it.label, x: it.hint, tag: `PFLICHT ${pr.done + 1}/${pr.must}`, a: () => openCamera(s.id, it.id), hot: true });
+      cards.push({ t: 'Zusatzfoto', x: 'Etwas Auffälliges gesehen? Ich hänge es an diese Baustelle.', tag: 'FREI', a: () => openCamera(s.id, null) });
+      cards.push({ t: 'Checkliste ansehen', x: `Noch ${pr.missing.length} Pflichtfoto${pr.missing.length > 1 ? 's' : ''}. Reihenfolge: Vorher → Während → Nachher.`, tag: 'ÜBERSICHT', a: () => openSite(s.id) });
+    } else {
+      say = `${s.name} ist komplett: alle ${pr.must} Pflichtfotos sind drin. Erstell jetzt den Bericht, dann ist alles gesichert.`;
+      cards.push({ t: 'Bericht & Sicherung', x: 'PDF für den Auftraggeber und ein ZIP mit allen Fotos.', tag: 'ABSCHLUSS', a: () => { S.rep.site = s.id; S.rep.range = 'all'; go('bericht'); }, hot: true });
+      cards.push({ t: 'Zusatzfoto', x: 'Wird dieser Baustelle zugeordnet.', tag: 'FREI', a: () => openCamera(s.id, null) });
+      cards.push({ t: 'Baustelle abschließen', x: 'Sie verschwindet aus der Zuordnung. Fotos bleiben erhalten.', tag: 'ARCHIV', a: () => openSite(s.id) });
+    }
+  } else if (st.state === 'maybe') {
+    hl = [st.site.name];
+    say = `Bist du auf ${st.site.name}? Das GPS ist mit ±${S.pos.acc} m zu ungenau, um sicher zu sein.`;
+    cards.push({ t: `Ja, ich bin auf ${short(st.site.name)}`, x: 'Ich merke mir das für die nächsten 3 Stunden.', tag: 'BESTÄTIGEN', a: () => pinSite(st.site.id), hot: true });
+    cards.push({ t: 'Nein, ich bin woanders', x: 'Dann legen wir hier eine neue Baustelle an.', tag: 'NEU', a: () => newSite() });
+  } else {
+    if (st.site) { hl = [st.site.name]; say = `Du bist auf keiner bekannten Baustelle. Die nächste ist ${st.site.name}, ${fmtDist(st.d)} entfernt.`; }
+    else say = `${greet()}, ${nm}. Leg deine erste Baustelle an – ich nehme dafür einfach deinen Standort.`;
+    cards.push({ t: 'Baustelle hier anlegen', x: 'Name und Vorlage wählen. Die Pflichtfotos gebe ich dir dann vor.', tag: 'NEU', a: () => newSite(), hot: true });
+    if (st.site) cards.push({ t: `Route zu ${short(st.site.name)}`, x: 'Öffnet die Navigation in Google Maps.', tag: 'NAVI', a: () => openRoute(st.site) });
+    cards.push({ t: 'Foto ohne Baustelle', x: 'Wird gespeichert. Du ordnest es später zu.', tag: 'FREI', a: () => openCamera(null, null) });
+  }
+  const h = new Date().getHours();
+  if (open > 0 && (h >= 15 || open >= 25)) {
+    key += '|fa';
+    cards.splice(1, 0, { t: 'Feierabend-Check', x: `${open} Foto${open > 1 ? 's sind' : ' ist'} noch nicht gesichert. Ein ZIP, und alles ist sicher.`, tag: 'SICHERN', a: () => { S.rep.range = 'open'; S.rep.site = 'all'; go('bericht'); } });
+  }
+  let html = esc(say); hl.forEach(w => { html = html.replace(esc(w), `<span class="hl">${esc(w)}</span>`); });
+  return { say, html, cards: cards.slice(0, 3), key };
+}
+
+/* ---------------- Rendering ---------------- */
+function tick() {
+  updatePill();
+  const L = lotse();
+  const sig = L.cards.map(c => c.t + '|' + c.x + '|' + c.tag).join('#');
+  S.cards = L.cards;
+  if (L.key !== S.lotseKey) {
+    S.lotseKey = L.key; typeSay(L.html, L.say); speak(L.say);
+    if (S.view === 'cockpit') renderCockpit();
+  } else if (!typing) $('#say').innerHTML = L.html;
+  if (sig !== S.cardSig) { S.cardSig = sig; renderCards(); }
+  renderNext();
+  if (S.view === 'cockpit') renderLive();
+  checkLeave();
+  if (!$('#cam').hidden) renderCamHud();
+}
+function updatePill() {
+  const d = $('#gpsDot'), t = $('#gpsTxt');
+  const m = { good: 'good', ok: 'ok', weak: 'weak', search: 'search', demo: 'ok', denied: 'bad', unsupported: 'bad', error: 'bad', idle: 'search' };
+  d.className = 'dot ' + (m[S.gps] || 'search');
+  t.textContent = S.gps === 'demo' ? `DEMO ±${S.pos?.acc ?? '–'} m` : S.pos && !['denied', 'unsupported'].includes(S.gps) ? `GPS ±${S.pos.acc} m` : S.gps === 'denied' ? 'GPS GESPERRT' : 'GPS SUCHT';
+  $('#lotseState').textContent = S.gps === 'search' ? 'sucht GPS' : S.gps === 'denied' ? 'braucht Standort' : 'bereit';
+}
+function renderCards() {
+  $('#cards').innerHTML = S.cards.map((c, i) => `<button class="card${c.hot ? ' hot' : ''}" data-i="${i}"><span class="n">${i + 1}</span><span class="t">${esc(c.t)}</span><span class="x">${esc(c.x)}</span><span class="tag">${esc(c.tag)}</span></button>`).join('');
+}
+function renderNext() {
+  const b = $('#nextBar'), c = S.cards[0];
+  if (!c || S.view === 'cockpit') { b.hidden = true; return; }
+  b.hidden = false;
+  b.innerHTML = `<span class="k">JETZT</span><span class="t">${esc(c.t)}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+}
+function ringSVG(site) {
+  const pr = progress(site), its = pr.its.filter(i => i.must), n = its.length || 1;
+  const R = 46, C = 59, gap = 0.06; let segs = '';
+  its.forEach((it, i) => {
+    const a0 = -Math.PI / 2 + i / n * Math.PI * 2 + gap / 2, a1 = -Math.PI / 2 + (i + 1) / n * Math.PI * 2 - gap / 2;
+    const p = a => (C + R * Math.cos(a)).toFixed(2) + ' ' + (C + R * Math.sin(a)).toFixed(2);
+    const done = it.photos.length, nxt = pr.next && pr.next.id === it.id;
+    const col = done ? PH[it.phase].c : nxt ? '#ffa040' : 'rgba(137,169,189,.28)';
+    segs += `<path d="M${p(a0)} A${R} ${R} 0 ${a1 - a0 > Math.PI ? 1 : 0} 1 ${p(a1)}" stroke="${col}" stroke-width="${nxt ? 7 : 6}" fill="none" ${done ? `style="filter:drop-shadow(0 0 4px ${col})"` : ''}/>`;
+  });
+  let ticks = ''; for (let i = 0; i < 48; i++) { const a = i / 48 * Math.PI * 2; const r1 = 54, r2 = i % 4 ? 56 : 58; ticks += `<line x1="${(C + r1 * Math.cos(a)).toFixed(1)}" y1="${(C + r1 * Math.sin(a)).toFixed(1)}" x2="${(C + r2 * Math.cos(a)).toFixed(1)}" y2="${(C + r2 * Math.sin(a)).toFixed(1)}" stroke="rgba(82,206,236,.35)" stroke-width="1"/>`; }
+  return `<svg class="ring" viewBox="0 0 118 118" aria-label="${pr.done} von ${pr.must} Pflichtfotos">${ticks}<circle cx="59" cy="59" r="36" fill="rgba(8,24,48,.8)" stroke="rgba(82,206,236,.2)"/>${segs}
+    <text x="59" y="60" text-anchor="middle" fill="#e2f6ff" font-family="JetBrains Mono,monospace" font-size="21" font-weight="600">${pr.done}/${pr.must}</text>
+    <text x="59" y="75" text-anchor="middle" fill="#5fa9c0" font-family="JetBrains Mono,monospace" font-size="6.6" letter-spacing="1.4">PFLICHTFOTOS</text></svg>`;
+}
+function checklistHTML(site) {
+  const pr = progress(site); let html = '<div class="check">';
+  for (const ph of ['V', 'W', 'N']) {
+    const its = pr.its.filter(i => i.phase === ph); if (!its.length) continue;
+    html += `<div class="phase-h lbl" style="color:${PH[ph].c}">${PH[ph].n}</div>`;
+    for (const it of its) {
+      const done = it.photos.length > 0, nxt = pr.next && pr.next.id === it.id;
+      html += `<button class="crow${done ? ' done' : ''}${nxt ? ' next' : ''}" data-site="${site.id}" data-item="${it.id}"${done ? ` data-photo="${it.photos[0].id}"` : ''}>
+        <span class="st"></span><span class="cl">${esc(it.label)}${it.must ? '' : '<span class="opt">optional</span>'}</span>
+        ${done ? `<img src="${it.photos[0].thumb}" alt="">` : nxt ? '<span class="go">JETZT</span>' : ''}</button>`;
+    }
+  }
+  return html + '</div>';
+}
+function renderCockpit() {
+  const st = siteStatus(), sp = $('#sitePanel');
+  if (st.site && (st.state === 'in' || st.state === 'maybe')) {
+    const s = st.site;
+    sp.innerHTML = `<div class="ph"><h2>Aktuelle Baustelle</h2><span class="badge ${st.state}">${st.state === 'in' ? (st.pinned ? 'bestätigt' : 'vor Ort') : 'unsicher'}</span></div>
+      <div class="site-hero">${ringSVG(s)}<div style="min-width:0">
+        ${s.example ? '<span class="badge ex">Beispiel</span>' : ''}
+        <div class="site-name">${esc(s.name)}</div>
+        <div class="meta"><span>${esc(TPL[s.tpl]?.n || '')}</span>${s.order ? `<span>Nr. <b>${esc(s.order)}</b></span>` : ''}</div>
+        <div class="meta" style="margin-top:6px" id="liveMeta"></div></div></div>
+      ${checklistHTML(s)}`;
+  } else if (st.state === 'nopos') {
+    sp.innerHTML = `<div class="ph"><h2>Aktuelle Baustelle</h2><span class="badge out">kein GPS</span></div><p class="note">Sobald ich deine Position habe, erkenne ich die Baustelle automatisch und zeige dir die Pflichtfotos.</p>`;
+  } else {
+    sp.innerHTML = `<div class="ph"><h2>Aktuelle Baustelle</h2><span class="badge out">keine</span></div>
+      <p class="note">Du stehst auf keiner angelegten Baustelle.${st.site ? ` Nächste: <b>${esc(st.site.name)}</b> (<span id="liveNear">${fmtDist(st.d)}</span>).` : ''}</p>
+      <div class="meta" id="liveMeta" style="margin-top:8px"></div>`;
+  }
+  // Statistik
+  const today = dayKey(Date.now()), tp = S.photos.filter(p => dayKey(p.ts) === today).length, open = S.photos.filter(p => !p.exported).length;
+  const miss = activeSites().reduce((a, s) => a + progress(s).missing.length, 0);
+  $('#stats').innerHTML = `<div class="stat"><div class="lbl">Heute</div><div class="v">${tp}</div><div class="s">Fotos</div></div>
+    <div class="stat"><div class="lbl">Ungesichert</div><div class="v ${open ? 'warn' : 'good'}">${open}</div><div class="s">${open ? 'noch exportieren' : 'alles gesichert'}</div></div>
+    <div class="stat"><div class="lbl">Fehlend</div><div class="v ${miss ? 'warn' : 'good'}">${miss}</div><div class="s">Pflichtfotos</div></div>`;
+  renderSiteList(); renderDemoBox(); renderLive();
+}
+function renderSiteList() {
+  const act = activeSites(), arch = S.sites.length - act.length;
+  $('#siteCount').textContent = act.length + ' aktiv' + (arch ? ` · ${arch} archiviert` : '');
+  const rows = act.map(s => ({ s, d: S.pos ? dist(S.pos, s) : null, pr: progress(s) })).sort((a, b) => (a.d ?? 1e12) - (b.d ?? 1e12));
+  $('#siteList').innerHTML = rows.length ? rows.map(({ s, d, pr }) => `<button class="srow" data-open-site="${s.id}">
+      <span class="sn">${esc(s.name)} ${s.example ? '<span class="badge ex">Beispiel</span>' : ''}</span>
+      <span class="sd">${d != null ? fmtDist(d) : '–'}</span>
+      <span class="meta" style="grid-column:1/-1"><span>${esc(TPL[s.tpl]?.n || '')}</span><span><b>${pr.done}/${pr.must}</b> Pflichtfotos</span></span>
+      <span class="bar"><i class="${pr.done === pr.must ? 'full' : ''}" style="width:${pr.must ? pr.done / pr.must * 100 : 100}%"></i></span></button>`).join('')
+    : '<p class="empty">Noch keine Baustelle. Stell dich auf die Baustelle und tipp unten auf „Baustelle hier anlegen“.</p>';
+}
+function renderDemoBox() {
+  const b = $('#demoBox'); if (!S.set.demo) { b.hidden = true; return; }
+  b.hidden = false; const cur = S.set.demoAt || activeSites()[0]?.id;
+  b.innerHTML = `<div class="ph"><h2>Demo-Position</h2><span class="lbl">simuliert</span></div>
+    <p class="note" style="margin:0 0 10px">${inFrame ? 'In dieser Vorschau gibt es kein echtes GPS. ' : ''}Tipp eine Position an – ich verhalte mich so, als stündest du dort.</p>
+    <div class="chips">${activeSites().map(s => `<button class="chip${cur === s.id ? ' on' : ''}" data-demo="${s.id}">${esc(short(s.name))}</button>`).join('')}<button class="chip${cur === 'away' ? ' on' : ''}" data-demo="away">Unterwegs</button></div>`;
+}
+function renderLive() {
+  const m = $('#liveMeta'); if (!m || !S.pos) return;
+  const st = siteStatus();
+  m.innerHTML = `<span>GPS <b>±${S.pos.acc} m</b></span>${st.site ? `<span>Mitte <b>${fmtDist(st.d)}</b></span>` : ''}${S.heading != null ? `<span>Blick <b>${S.heading}° ${dirName(S.heading)}</b></span>` : ''}`;
+  const ln = $('#liveNear'); if (ln && st.site) ln.textContent = fmtDist(st.d);
+}
+function refresh(force) {
+  if (force) S.lotseKey = '';
+  tick();
+  if (S.view === 'cockpit') renderCockpit();
+  if (S.view === 'galerie') renderGallery();
+  if (S.view === 'bericht') renderReport();
+  if (S.view === 'karte') renderMapSide();
+}
+function go(v) {
+  S.view = v;
+  $$('.view').forEach(x => x.hidden = x.id !== 'v-' + v);
+  $$('.tab').forEach(t => t.classList.toggle('on', t.dataset.v === v));
+  window.scrollTo(0, 0);
+  if (v === 'karte') mapStart(); else mapStop();
+  refresh(); renderNext();
+  try { history.replaceState(null, '', '#' + v); } catch (e) {}
+}
+
+/* ---------------- Verlassen-Warnung ---------------- */
+function checkLeave() {
+  if (!S.pos) return;
+  const st = siteStatus();
+  if (st.state === 'in') { S.lastInside = { id: st.site.id, n: 0 }; return; }
+  if (!S.lastInside || st.state !== 'out' && st.state !== 'none') return;
+  const s = S.sites.find(x => x.id === S.lastInside.id); if (!s) { S.lastInside = null; return; }
+  if (dist(S.pos, s) > s.radius + Math.max(25, S.pos.acc)) S.lastInside.n++;
+  if (S.lastInside.n >= 2) {
+    const pr = progress(s); S.lastInside = null;
+    if (pr.missing.length && !$('.banner')) {
+      const list = pr.missing.slice(0, 3).map(i => i.label).join(', ');
+      const b = document.createElement('div'); b.className = 'banner'; b.setAttribute('role', 'alert');
+      b.innerHTML = `<div class="banner-in"><b>DU VERLÄSST ${esc(s.name.toUpperCase())}</b><p>Es fehl${pr.missing.length > 1 ? 'en' : 't'} noch ${pr.missing.length} Pflichtfoto${pr.missing.length > 1 ? 's' : ''}: ${esc(list)}${pr.missing.length > 3 ? ' …' : ''}</p>
+        <div class="row"><button class="btn amb" data-b="back">Zurück, nachholen</button><button class="btn" data-b="ok">Später</button></div></div>`;
+      b.addEventListener('click', e => { const k = e.target.closest('[data-b]')?.dataset.b; if (!k) return; b.remove(); if (k === 'back') openSite(s.id); });
+      document.body.appendChild(b); buzz([200, 100, 200, 100, 300]);
+      speak(`Achtung. Du verlässt ${s.name}. Es fehlen noch ${pr.missing.length} Pflichtfotos.`);
+    }
+  }
+}
+
+/* ---------------- Kamera ---------------- */
+let camStream = null, camCtx = { siteId: undefined, itemId: undefined }, wakeLock = null, pending = null, camRaf = 0;
+function camTarget() {
+  let site = null, item = null;
+  if (camCtx.siteId === undefined) { const st = siteStatus(); site = st.state === 'in' ? st.site : null; }
+  else site = camCtx.siteId ? S.sites.find(s => s.id === camCtx.siteId) || null : null;
+  if (site) {
+    const pr = progress(site);
+    if (camCtx.itemId === undefined) item = pr.next;
+    else item = camCtx.itemId ? pr.its.find(i => i.id === camCtx.itemId) || null : null;
+    return { site, item, pr };
+  }
+  return { site: null, item: null, pr: null };
+}
+async function openCamera(siteId, itemId) {
+  askOrientation();
+  camCtx = { siteId, itemId };
+  const ov = $('#cam'); ov.hidden = false; document.body.classList.add('noscroll');
+  $('#review').hidden = true; $('#camFallback').hidden = true;
+  $('#camSeries').classList.toggle('on', !!S.set.series);
+  renderCamHud();
+  try { wakeLock = await navigator.wakeLock?.request('screen'); } catch (e) {}
+  let ok = false;
+  if (navigator.mediaDevices?.getUserMedia && !inFrame) {
+    try {
+      camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 2560 }, height: { ideal: 1440 } }, audio: false });
+      const v = $('#camVideo'); v.srcObject = camStream; await v.play().catch(() => {}); ok = true;
+    } catch (e) { ok = false; }
+  }
+  if (!ok) {
+    $('#camFallback').hidden = false;
+    $('#camFbTxt').textContent = inFrame ? 'In dieser Vorschau ist die Live-Kamera gesperrt. Tipp auf „Kamera öffnen“ – am Handy startet dann die normale Kamera.' : 'Die Live-Kamera ist nicht freigegeben. Tipp auf den Knopf – dann öffnet sich die Kamera deines Handys.';
+    $('#btnDemoShot').hidden = !S.set.demo;
+  }
+  cancelAnimationFrame(camRaf);
+  const loop = () => { renderLevel(); camRaf = requestAnimationFrame(loop); }; loop();
+}
+function closeCamera() {
+  camStream?.getTracks().forEach(t => t.stop()); camStream = null; $('#camVideo').srcObject = null;
+  cancelAnimationFrame(camRaf); $('#cam').hidden = true; pending = null;
+  document.body.classList.remove('noscroll');
+  try { wakeLock?.release(); } catch (e) {} wakeLock = null;
+  refresh(true);
+}
+function renderCamHud() {
+  const { site, item, pr } = camTarget(), ins = $('#instr');
+  if (site && item) {
+    ins.className = 'instr';
+    ins.innerHTML = `<div class="k">PFLICHTFOTO ${pr.its.filter(i => i.must).findIndex(i => i.id === item.id) + 1 || '+'}/${pr.must} · ${PH[item.phase].n.toUpperCase()}</div><div class="t">${esc(item.label)}</div><div class="h">${esc(item.hint)}</div>`;
+  } else if (site) {
+    ins.className = 'instr free';
+    ins.innerHTML = `<div class="k">${pr.next ? 'ZUSATZFOTO' : 'ALLE PFLICHTFOTOS ERLEDIGT'}</div><div class="t">${esc(site.name)}</div><div class="h">Wird dieser Baustelle zugeordnet.</div>`;
+  } else {
+    ins.className = 'instr free';
+    ins.innerHTML = `<div class="k">OHNE BAUSTELLE</div><div class="t">Freies Foto</div><div class="h">${S.pos ? 'Du stehst auf keiner angelegten Baustelle. Ich speichere die Position mit.' : 'Noch kein GPS – das Foto bekommt die Position, sobald sie da ist.'}</div>`;
+  }
+  const acc = S.pos?.acc, cls = !S.pos ? 'search' : acc <= 15 ? 'good' : acc <= 35 ? 'ok' : 'weak';
+  $('#camStat').innerHTML = `<span class="pill"><span class="dot ${cls}"></span>${S.pos ? `±${acc} m` : 'GPS sucht'}</span>` +
+    (S.heading != null ? `<span class="pill">BLICK ${S.heading}° ${dirName(S.heading)}</span>` : '') +
+    (S.set.series ? '<span class="pill" style="color:var(--amber)">SERIE</span>' : '');
+}
+function renderLevel() {
+  const l = $('#level');
+  if (!S.tilt || !camStream) { l.hidden = true; return; }
+  l.hidden = false; const g = Math.max(-30, Math.min(30, S.tilt.gamma));
+  l.style.transform = `rotate(${-g}deg)`; l.classList.toggle('ok', Math.abs(g) < 2.5);
+}
+function snapMeta() { return { ts: Date.now(), lat: S.pos?.lat ?? null, lon: S.pos?.lon ?? null, acc: S.pos?.acc ?? null, heading: S.heading, src: S.pos?.src || null }; }
+async function shoot() {
+  if (!camStream) { $('#fileCap').click(); return; }
+  const v = $('#camVideo'); if (!v.videoWidth) return;
+  const meta = snapMeta();
+  const c = document.createElement('canvas'); c.width = v.videoWidth; c.height = v.videoHeight;
+  c.getContext('2d').drawImage(v, 0, 0);
+  $('#flash').classList.remove('go'); void $('#flash').offsetWidth; $('#flash').classList.add('go'); buzz(30);
+  handleCapture(c, meta);
+}
+function fitCanvas(src, max = 2560) {
+  const w = src.width || src.videoWidth, h = src.height || src.videoHeight, k = Math.min(1, max / Math.max(w, h));
+  const c = document.createElement('canvas'); c.width = Math.round(w * k); c.height = Math.round(h * k);
+  c.getContext('2d').drawImage(src, 0, 0, c.width, c.height); return c;
+}
+async function handleCapture(src, meta) {
+  const c = fitCanvas(src), q = analyze(c), tg = camTarget();
+  const f = {
+    siteId: tg.site?.id || '', itemId: tg.item?.id || '', phase: tg.item?.phase || S.set.lastPhase || 'W',
+    cat: tg.item?.cat || S.set.lastCat || 'uebersicht', labels: (S.set.series && S.set.lastLabelsStr) || '', desc: ''
+  };
+  if (S.set.series && q.ok && meta.lat != null) {
+    await savePhoto(c, meta, f, q); camCtx.itemId = undefined; renderCamHud();
+    toast(`✓ Gespeichert${tg.item ? ': ' + tg.item.label : ''}`, 1800); return;
+  }
+  pending = { c, meta, q }; showReview(f);
+}
+function qualHTML(q, meta) {
+  const chips = [];
+  chips.push(q.flags.includes('unscharf') ? '<span class="q w">EVTL. UNSCHARF</span>' : '<span class="q g">SCHARF</span>');
+  chips.push(q.flags.includes('dunkel') ? '<span class="q w">ZU DUNKEL</span>' : q.flags.includes('überbelichtet') ? '<span class="q w">ÜBERBELICHTET</span>' : '<span class="q g">LICHT OK</span>');
+  chips.push(meta.lat == null ? '<span class="q b">KEIN GPS</span>' : meta.acc > 35 ? `<span class="q w">GPS ±${meta.acc} m</span>` : `<span class="q g">GPS ±${meta.acc} m</span>`);
+  if (meta.heading != null) chips.push(`<span class="q g">BLICK ${meta.heading}° ${dirName(meta.heading)}</span>`);
+  return chips.join('');
+}
+function itemOptions(siteId, sel) {
+  const s = S.sites.find(x => x.id === siteId); if (!s) return '<option value="">Zusatzfoto</option>';
+  const pr = progress(s);
+  return '<option value="">Zusatzfoto (kein Pflichtfoto)</option>' + pr.its.map(i => `<option value="${i.id}"${i.id === sel ? ' selected' : ''}>${i.photos.length ? '✓ ' : ''}${PH[i.phase].n}: ${esc(i.label)}</option>`).join('');
+}
+function showReview(f) {
+  const { c, meta, q } = pending; const rv = $('#review'); rv.hidden = false;
+  const prev = fitCanvas(c, 1100).toDataURL('image/jpeg', 0.8);
+  const warn = q.flags.length ? `<div class="warnbox" style="margin-top:10px">${q.flags.includes('unscharf') ? 'Das Bild wirkt verwackelt. ' : ''}${q.flags.includes('dunkel') ? 'Das Bild ist sehr dunkel. ' : ''}${q.flags.includes('überbelichtet') ? 'Das Bild ist überbelichtet. ' : ''}Lieber nochmal aufnehmen?</div>` : '';
+  $('#reviewIn').innerHTML = `
+    <div class="ph"><h2>Foto prüfen</h2><span class="lbl">${fmtTime(meta.ts)}</span></div>
+    <img class="big" src="${prev}" alt="Aufgenommenes Foto">
+    <div class="qual">${qualHTML(q, meta)}</div>${warn}
+    <div class="fld" style="margin-top:14px"><label class="lbl" for="rvSite">Baustelle</label>
+      <select id="rvSite"><option value="">Ohne Baustelle</option>${activeSites().map(s => `<option value="${s.id}"${s.id === f.siteId ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</select></div>
+    <div class="fld"><label class="lbl" for="rvItem">Pflichtfoto</label><select id="rvItem">${itemOptions(f.siteId, f.itemId)}</select></div>
+    <div class="fld"><span class="lbl">Phase</span><div class="phs" id="rvPh">${['V', 'W', 'N'].map(p => `<button type="button" data-p="${p}" class="${f.phase === p ? 'on' : ''}">${PH[p].n}</button>`).join('')}</div></div>
+    <div class="fld"><span class="lbl">Kategorie</span><div class="cats" id="rvCat">${CATS.map(([k, n]) => `<button type="button" class="cat${f.cat === k ? ' on' : ''}" data-c="${k}">${icon(k)}${n}</button>`).join('')}</div></div>
+    <div class="fld"><label class="lbl" for="rvLabels">Stichworte (mit Komma)</label><input type="text" id="rvLabels" value="${esc(f.labels)}" placeholder="z. B. Nacharbeit, Telekom, Achse 3">
+      ${S.set.lastLabels?.length ? `<div class="chips" id="rvLabChips">${S.set.lastLabels.slice(0, 8).map(l => `<button type="button" class="chip" data-l="${esc(l)}">${esc(l)}</button>`).join('')}</div>` : ''}</div>
+    <div class="fld"><label class="lbl" for="rvDesc">Beschreibung</label><div class="inrow"><textarea id="rvDesc" placeholder="Was sieht man? (optional)"></textarea>
+      ${hasDictation() ? '<button type="button" class="iconbtn" id="rvMic" aria-label="Diktieren" style="align-self:flex-start;width:44px;height:44px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>' : ''}</div></div>
+    <div class="actions"><div class="row"><button class="btn" id="rvRetake">Nochmal</button><button class="btn pri" id="rvSave">Speichern</button></div></div>`;
+  rv.scrollTop = 0;
+  const st = { phase: f.phase, cat: f.cat };
+  $('#rvSite').onchange = e => { $('#rvItem').innerHTML = itemOptions(e.target.value, ''); };
+  $('#rvItem').onchange = e => {
+    const s = S.sites.find(x => x.id === $('#rvSite').value), it = s?.items.find(i => i.id === e.target.value);
+    if (it) { st.phase = it.phase; st.cat = it.cat; $$('#rvPh button').forEach(b => b.classList.toggle('on', b.dataset.p === it.phase)); $$('#rvCat .cat').forEach(b => b.classList.toggle('on', b.dataset.c === it.cat)); }
+  };
+  $('#rvPh').onclick = e => { const b = e.target.closest('button'); if (!b) return; st.phase = b.dataset.p; $$('#rvPh button').forEach(x => x.classList.toggle('on', x === b)); };
+  $('#rvCat').onclick = e => { const b = e.target.closest('.cat'); if (!b) return; st.cat = b.dataset.c; $$('#rvCat .cat').forEach(x => x.classList.toggle('on', x === b)); };
+  $('#rvLabChips')?.addEventListener('click', e => { const b = e.target.closest('[data-l]'); if (!b) return; const inp = $('#rvLabels'); const cur = inp.value.split(',').map(x => x.trim()).filter(Boolean); if (!cur.includes(b.dataset.l)) cur.push(b.dataset.l); inp.value = cur.join(', '); });
+  $('#rvMic')?.addEventListener('click', () => dictate($('#rvDesc'), $('#rvMic')));
+  $('#rvRetake').onclick = () => { pending = null; rv.hidden = true; };
+  $('#rvSave').onclick = async () => {
+    const btn = $('#rvSave'); btn.disabled = true; btn.textContent = 'Speichere …';
+    const ff = { siteId: $('#rvSite').value, itemId: $('#rvItem').value, phase: st.phase, cat: st.cat, labels: $('#rvLabels').value, desc: $('#rvDesc').value.trim() };
+    try {
+      await savePhoto(pending.c, pending.meta, ff, pending.q);
+      pending = null; rv.hidden = true; camCtx = { siteId: ff.siteId || undefined, itemId: undefined };
+      const { item, site } = camTarget(); renderCamHud();
+      toast(item ? `Gespeichert. Nächstes Pflichtfoto: ${item.label}` : site ? `Gespeichert. ${site.name} ist komplett!` : 'Gespeichert.', 3600);
+      speak(item ? `Gespeichert. Als Nächstes: ${item.label}.` : 'Gespeichert.');
+    } catch (e) { btn.disabled = false; btn.textContent = 'Speichern'; toast('Speichern fehlgeschlagen: ' + (e.message || e)); }
+  };
+}
+function analyze(c) {
+  const w = 320, h = Math.max(2, Math.round(c.height * w / c.width));
+  const t = document.createElement('canvas'); t.width = w; t.height = h;
+  const g = t.getContext('2d', { willReadFrequently: true }); g.drawImage(c, 0, 0, w, h);
+  const d = g.getImageData(0, 0, w, h).data, gray = new Float32Array(w * h); let sum = 0;
+  for (let i = 0, j = 0; i < d.length; i += 4, j++) { const v = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2]; gray[j] = v; sum += v; }
+  const mean = sum / (w * h); let s = 0, s2 = 0, n = 0;
+  for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) { const k = y * w + x; const L = gray[k - w] + gray[k + w] + gray[k - 1] + gray[k + 1] - 4 * gray[k]; s += L; s2 += L * L; n++; }
+  const v = s2 / n - (s / n) ** 2, flags = [];
+  if (v < 35) flags.push('unscharf'); if (mean < 45) flags.push('dunkel'); if (mean > 222) flags.push('überbelichtet');
+  return { sharp: Math.round(v), bright: Math.round(mean), flags, ok: !flags.length };
+}
+function fitText(g, txt, max) { if (g.measureText(txt).width <= max) return txt; let t = txt; while (t.length > 3 && g.measureText(t + '…').width > max) t = t.slice(0, -1); return t + '…'; }
+function drawWatermark(c, p) {
+  const g = c.getContext('2d'), W = c.width, H = c.height, s = Math.max(W, H) / 1600, bh = Math.round(84 * s), padX = 20 * s;
+  const site = S.sites.find(x => x.id === p.siteId), item = site?.items.find(i => i.id === p.itemId);
+  g.fillStyle = 'rgba(4,12,26,.74)'; g.fillRect(0, H - bh, W, bh);
+  g.fillStyle = '#3fd8ef'; g.fillRect(0, H - bh, W, Math.max(2, 2.5 * s));
+  const badgeW = 150 * s;
+  g.textBaseline = 'top';
+  g.font = `700 ${23 * s}px "JetBrains Mono", Consolas, monospace`; g.fillStyle = '#e6f8ff';
+  g.fillText(fitText(g, `${site ? site.name : 'Ohne Baustelle'} · ${item ? item.label : catName(p.cat)}`, W - badgeW - padX * 2), padX, H - bh + 14 * s);
+  g.font = `400 ${17 * s}px "JetBrains Mono", Consolas, monospace`; g.fillStyle = '#a6d6e6';
+  const l2 = `${fmtDate(p.ts)} ${new Date(p.ts).toLocaleTimeString('de-DE')} · ${p.lat != null ? coord(p.lat, p.lon) + ' ±' + p.acc + ' m' : 'ohne GPS'}${p.heading != null ? ' · Blick ' + p.heading + '° ' + dirName(p.heading) : ''}`;
+  g.fillText(fitText(g, l2, W - badgeW - padX * 2), padX, H - bh + 48 * s);
+  const bx = W - badgeW - padX + 10 * s, by = H - bh + 16 * s;
+  g.fillStyle = PH[p.phase].c; g.fillRect(bx, by, 34 * s, 34 * s);
+  g.fillStyle = '#04101e'; g.font = `700 ${21 * s}px "JetBrains Mono", Consolas, monospace`; g.textAlign = 'center'; g.fillText(p.phase, bx + 17 * s, by + 6 * s);
+  g.textAlign = 'left'; g.fillStyle = '#3fd8ef'; g.font = `700 ${15 * s}px "JetBrains Mono", Consolas, monospace`; g.fillText('SEF-KI', bx + 44 * s, by + 2 * s);
+  g.fillStyle = '#a6d6e6'; g.font = `400 ${12 * s}px "JetBrains Mono", Consolas, monospace`; g.fillText(PH[p.phase].n.toUpperCase(), bx + 44 * s, by + 21 * s);
+}
+const toBlob = (c, q = 0.88) => new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(new Error('Bild konnte nicht erzeugt werden')), 'image/jpeg', q));
+const thumbOf = c => fitCanvas(c, 400).toDataURL('image/jpeg', 0.72);
+async function savePhoto(c, meta, f, q) {
+  const labels = String(f.labels || '').split(',').map(x => x.trim()).filter(Boolean);
+  const p = { id: uid(), ts: meta.ts, lat: meta.lat, lon: meta.lon, acc: meta.acc, heading: meta.heading, src: meta.src,
+    siteId: f.siteId || null, itemId: f.itemId || null, phase: f.phase, cat: f.cat, labels, desc: f.desc || '', address: '',
+    q: { sharp: q.sharp, bright: q.bright, flags: q.flags }, exported: false, w: c.width, h: c.height, imported: !!meta.imported };
+  if (S.set.watermark) drawWatermark(c, p);
+  p.blob = await toBlob(c); p.thumb = thumbOf(c);
+  await DB.put('photos', p); S.photos.push(p);
+  S.set.lastPhase = p.phase; S.set.lastCat = p.cat; S.set.lastLabelsStr = labels.join(', ');
+  S.set.lastLabels = [...new Set([...labels, ...(S.set.lastLabels || [])])].slice(0, 12); saveSet();
+  buzz([20, 40, 20]); geocode(p); refresh(true);
+  return p;
+}
+/* Adresse nachschlagen (nur wenn Internet da ist) */
+const geoCache = new Map();
+async function geocode(p) {
+  if (p.lat == null || p.address) return;
+  const k = p.lat.toFixed(4) + ',' + p.lon.toFixed(4);
+  try {
+    let a = geoCache.get(k);
+    if (!a) {
+      const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&accept-language=de&lat=${p.lat}&lon=${p.lon}`, { headers: { Accept: 'application/json' } });
+      if (!r.ok) return; const j = await r.json(), ad = j.address || {};
+      a = [[ad.road, ad.house_number].filter(Boolean).join(' '), [ad.postcode, ad.city || ad.town || ad.village || ad.municipality].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+      if (!a) return; geoCache.set(k, a);
+    }
+    p.address = a; await DB.put('photos', p);
+  } catch (e) { /* offline oder gesperrt – Koordinaten reichen */ }
+}
+/* Diktieren */
+const hasDictation = () => !inFrame && !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+function dictate(target, btn) {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR) return;
+  try {
+    const r = new SR(); r.lang = 'de-DE'; r.interimResults = false; r.maxAlternatives = 1;
+    btn.style.borderColor = 'var(--amber)'; btn.style.color = 'var(--amber)';
+    r.onresult = e => { const t = e.results[0][0].transcript; target.value = (target.value ? target.value + ' ' : '') + t.charAt(0).toUpperCase() + t.slice(1); };
+    r.onend = () => { btn.style.borderColor = ''; btn.style.color = ''; };
+    r.onerror = () => { btn.style.borderColor = ''; btn.style.color = ''; toast('Diktieren hat nicht geklappt. Mikrofon erlaubt?'); };
+    r.start();
+  } catch (e) { toast('Diktieren ist hier nicht verfügbar.'); }
+}
+
+/* ---------------- Import mit EXIF-GPS ---------------- */
+function readExif(buf) {
+  const v = new DataView(buf); if (v.getUint16(0) !== 0xFFD8) return null;
+  let o = 2;
+  while (o < v.byteLength - 4) {
+    const mk = v.getUint16(o), len = v.getUint16(o + 2);
+    if (mk === 0xFFE1 && v.getUint32(o + 4) === 0x45786966) return parseTiff(v, o + 10);
+    if ((mk & 0xFF00) !== 0xFF00) break; o += 2 + len;
+  }
+  return null;
+}
+function parseTiff(v, t) {
+  const le = v.getUint16(t) === 0x4949, u16 = p => v.getUint16(p, le), u32 = p => v.getUint32(p, le);
+  const rat = p => u32(p) / (u32(p + 4) || 1);
+  const ifd = off => { const out = {}; const n = u16(t + off); for (let i = 0; i < n; i++) { const e = t + off + 2 + i * 12; out[u16(e)] = { type: u16(e + 2), cnt: u32(e + 4), vo: e + 8 }; } return out; };
+  const res = {}; const i0 = ifd(u32(t + 4));
+  const str = en => { const p = en.cnt > 4 ? t + u32(en.vo) : en.vo; let s = ''; for (let i = 0; i < en.cnt - 1; i++) s += String.fromCharCode(v.getUint8(p + i)); return s; };
+  if (i0[0x8769]) { const ex = ifd(u32(i0[0x8769].vo)); if (ex[0x9003]) { const m = str(ex[0x9003]).match(/(\d+):(\d+):(\d+) (\d+):(\d+):(\d+)/); if (m) res.ts = new Date(+m[1], m[2] - 1, +m[3], +m[4], +m[5], +m[6]).getTime(); } }
+  if (i0[0x8825]) {
+    const g = ifd(u32(i0[0x8825].vo));
+    const dms = en => { const p = t + u32(en.vo); return rat(p) + rat(p + 8) / 60 + rat(p + 16) / 3600; };
+    if (g[2] && g[4]) {
+      res.lat = dms(g[2]) * (String.fromCharCode(v.getUint8(g[1].vo)) === 'S' ? -1 : 1);
+      res.lon = dms(g[4]) * (String.fromCharCode(v.getUint8(g[3].vo)) === 'W' ? -1 : 1);
+    }
+    if (g[0x11]) res.heading = Math.round(rat(t + u32(g[0x11].vo)));
+  }
+  return res;
+}
+async function loadImage(file) {
+  try { return await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+  catch (e) { return await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = URL.createObjectURL(file); }); }
+}
+async function importFiles(files, fromCam) {
+  let n = 0, gpsN = 0;
+  for (const file of files) {
+    try {
+      const buf = await file.arrayBuffer(); const ex = readExif(buf) || {};
+      const img = await loadImage(file);
+      let meta;
+      if (ex.lat != null && !(ex.lat === 0 && ex.lon === 0)) { meta = { ts: ex.ts || file.lastModified || Date.now(), lat: ex.lat, lon: ex.lon, acc: 10, heading: ex.heading ?? null, src: 'exif', imported: true }; gpsN++; }
+      else if (fromCam) meta = snapMeta();
+      else meta = { ts: ex.ts || file.lastModified || Date.now(), lat: null, lon: null, acc: null, heading: null, src: null, imported: true };
+      if (fromCam && files.length === 1) { handleCapture(img, meta); return; }
+      const c = fitCanvas(img), q = analyze(c);
+      const st = meta.lat != null ? siteStatus({ lat: meta.lat, lon: meta.lon, acc: meta.acc }) : { state: 'none' };
+      const site = st.state === 'in' ? st.site : null;
+      await savePhoto(c, meta, { siteId: site?.id || '', itemId: '', phase: 'W', cat: 'uebersicht', labels: 'Import', desc: '' }, q); n++;
+    } catch (e) { console.warn(e); }
+  }
+  if (n) toast(`${n} Foto${n > 1 ? 's' : ''} importiert, ${gpsN} mit GPS aus dem Bild${gpsN ? ' – automatisch zugeordnet' : ''}.`, 4200);
+  else if (!fromCam) toast('Keine Fotos importiert.');
+}
+
+/* ---------------- Beispiel-Bilder ---------------- */
+function demoCanvas(label, phase, seed) {
+  let r = seed * 9301 + 49297; const rnd = () => (r = (r * 9301 + 49297) % 233280) / 233280;
+  const c = document.createElement('canvas'); c.width = 1600; c.height = 1200; const g = c.getContext('2d');
+  const sky = g.createLinearGradient(0, 0, 0, 560); sky.addColorStop(0, '#6f8ea8'); sky.addColorStop(1, '#c9d5de'); g.fillStyle = sky; g.fillRect(0, 0, 1600, 600);
+  for (let i = 0; i < 7; i++) { g.fillStyle = `rgba(${90 + rnd() * 40},${95 + rnd() * 30},${105 + rnd() * 30},1)`; const x = rnd() * 1500, w = 160 + rnd() * 260, h = 160 + rnd() * 260; g.fillRect(x, 560 - h, w, h); for (let k = 0; k < 8; k++) { g.fillStyle = 'rgba(40,52,66,.55)'; g.fillRect(x + 18 + (k % 4) * (w / 4.4), 560 - h + 24 + Math.floor(k / 4) * 70, w / 7, 42); } }
+  const gr = g.createLinearGradient(0, 560, 0, 1200); gr.addColorStop(0, '#5f5a55'); gr.addColorStop(1, '#3d3833'); g.fillStyle = gr; g.fillRect(0, 560, 1600, 640);
+  if (phase !== 'N') { g.fillStyle = '#2b241d'; g.beginPath(); g.moveTo(520, 1200); g.lineTo(700, 640); g.lineTo(900, 640); g.lineTo(1120, 1200); g.fill(); g.fillStyle = '#5a4634'; g.fillRect(560, 1040, 520, 14); }
+  if (phase === 'W') { g.strokeStyle = '#e8c22c'; g.lineWidth = 16; g.beginPath(); g.moveTo(760, 700); g.lineTo(740, 1100); g.stroke(); g.strokeStyle = '#ff7a2a'; g.lineWidth = 26; g.beginPath(); g.moveTo(600, 1150); g.quadraticCurveTo(820, 880, 1040, 1150); g.stroke(); }
+  for (let i = 0; i < 9000; i++) { const v = rnd() * 60 | 0; g.fillStyle = `rgba(${v},${v},${v},.18)`; g.fillRect(rnd() * 1600, 560 + rnd() * 640, 3, 3); }
+  g.fillStyle = 'rgba(255,255,255,.18)'; g.font = '700 64px Archivo, Arial, sans-serif'; g.textAlign = 'center'; g.fillText('BEISPIELFOTO', 800, 180);
+  g.font = '600 38px Archivo, Arial, sans-serif'; g.fillText(label, 800, 240); g.textAlign = 'left';
+  return c;
+}
+async function seedExamples() {
+  const base = { lat: 49.7942, lon: 9.9512 }, now = Date.now(), day = 864e5;
+  const mk = (id, name, tpl, dLat, dLon, order, created) => ({ id, name, tpl, lat: base.lat + dLat, lon: base.lon + dLon, radius: TPL[tpl].r, order, created, items: mkItems(tpl), example: true });
+  const sites = [mk('ex1', 'Hausanschluss Lindenweg 12', 'glasfaser', 0, 0, 'GF-24-0817', now - 2 * day),
+    mk('ex2', 'Kanal Bahnhofstraße', 'tiefbau', 0.0068, -0.0162, 'TB-24-112', now - 6 * day),
+    mk('ex3', 'Mangel Tiefgarage Hubland', 'schaden', -0.0124, 0.0189, 'M-0931', now - day)];
+  for (const s of sites) { await DB.put('sites', s); S.sites.push(s); }
+  const d0 = new Date(); d0.setHours(0, 0, 0, 0); const at = (dd, h, m) => Math.min(now - 6e5, d0.getTime() - dd * day + (h * 60 + m) * 6e4);
+  const shots = [['ex1', 'i0', at(2, 8, 12), true], ['ex1', 'i1', at(2, 8, 15), true], ['ex1', 'i2', at(0, 9, 40), false],
+    ['ex2', 'i0', at(6, 7, 31), true], ['ex2', 'i1', at(6, 7, 34), true], ['ex2', 'i2', at(6, 7, 38), true], ['ex2', 'i3', at(5, 10, 5), true], ['ex2', 'i4', at(4, 13, 20), false]];
+  let i = 0; const wm = S.set.watermark; S.set.watermark = true;
+  for (const [sid, iid, ts, exp] of shots) {
+    const s = sites.find(x => x.id === sid), it = s.items.find(x => x.id === iid);
+    const c = demoCanvas(it.label, it.phase, ++i);
+    const meta = { ts, lat: s.lat + (Math.random() - .5) * 0.0002, lon: s.lon + (Math.random() - .5) * 0.0003, acc: 4 + (i % 5), heading: (i * 47) % 360, src: 'demo' };
+    const p = await savePhotoQuiet(c, meta, { siteId: sid, itemId: iid, phase: it.phase, cat: it.cat, labels: 'Beispiel', desc: '' });
+    p.exported = exp; p.example = true; await DB.put('photos', p);
+  }
+  S.set.watermark = wm; S.set.seeded = true; saveSet();
+}
+async function savePhotoQuiet(c, meta, f) {
+  const p = { id: uid(), ts: meta.ts, lat: meta.lat, lon: meta.lon, acc: meta.acc, heading: meta.heading, src: meta.src, siteId: f.siteId, itemId: f.itemId, phase: f.phase, cat: f.cat, labels: ['Beispiel'], desc: f.desc, address: '', q: analyze(c), exported: false, w: c.width, h: c.height };
+  drawWatermark(c, p); p.blob = await toBlob(c, 0.8); p.thumb = thumbOf(c);
+  await DB.put('photos', p); S.photos.push(p); return p;
+}
+async function removeExamples() {
+  for (const p of S.photos.filter(p => p.example)) await DB.del('photos', p.id);
+  for (const s of S.sites.filter(s => s.example)) await DB.del('sites', s.id);
+  S.photos = S.photos.filter(p => !p.example); S.sites = S.sites.filter(s => !s.example);
+  if (S.set.demoAt && !S.sites.find(s => s.id === S.set.demoAt)) S.set.demoAt = 'away';
+  saveSet(); toast('Beispieldaten entfernt.'); refresh(true);
+}
+
+/* ---------------- Baustellen-Dialoge ---------------- */
+function newSite() {
+  if (!S.pos) { toast('Ich brauche erst deine Position. Warte kurz auf GPS.'); return; }
+  let tpl = 'glasfaser';
+  const el = sheet(`<h3>Baustelle hier anlegen</h3><p class="sub">Mittelpunkt ist deine aktuelle Position (±${S.pos.acc} m). Fotos in diesem Umkreis ordne ich automatisch zu.</p>
+    <div class="fld"><label class="lbl" for="nsName">Name</label><input type="text" id="nsName" placeholder="z. B. Hausanschluss Musterweg 5" autocomplete="off"></div>
+    <div class="fld"><label class="lbl" for="nsOrder">Auftrags-Nr. (optional)</label><input type="text" id="nsOrder" autocomplete="off"></div>
+    <div class="fld"><span class="lbl">Art der Arbeit – bestimmt die Pflichtfotos</span><div class="tpls" id="nsTpl">${Object.entries(TPL).map(([k, t]) => `<button type="button" class="tpl${k === tpl ? ' on' : ''}" data-t="${k}"><b>${t.n}</b><span>${t.items.filter(i => i[4] !== false).length} Pflichtfotos</span></button>`).join('')}</div></div>
+    <div class="fld"><label class="lbl" for="nsRad">Umkreis: <span id="nsRadV" class="num">${TPL[tpl].r} m</span></label><input type="range" id="nsRad" min="15" max="500" step="5" value="${TPL[tpl].r}"></div>
+    <div class="row"><button class="btn" data-x="cancel">Abbrechen</button><button class="btn pri" id="nsSave">Anlegen</button></div>`);
+  const nm = $('#nsName', el);
+  (async () => { const tmp = { lat: S.pos.lat, lon: S.pos.lon }; await geocode(tmp); if (tmp.address && !nm.value) nm.value = tmp.address.split(',')[0]; })();
+  $('#nsTpl', el).onclick = e => { const b = e.target.closest('[data-t]'); if (!b) return; tpl = b.dataset.t; $$('.tpl', el).forEach(x => x.classList.toggle('on', x === b)); $('#nsRad', el).value = TPL[tpl].r; $('#nsRadV', el).textContent = TPL[tpl].r + ' m'; };
+  $('#nsRad', el).oninput = e => $('#nsRadV', el).textContent = e.target.value + ' m';
+  el.querySelector('[data-x=cancel]').onclick = closeSheet;
+  $('#nsSave', el).onclick = async () => {
+    const name = nm.value.trim() || `Baustelle ${fmtDate(Date.now())}`;
+    const s = { id: uid(), name, tpl, lat: S.pos.lat, lon: S.pos.lon, radius: +$('#nsRad', el).value, order: $('#nsOrder', el).value.trim(), created: Date.now(), items: mkItems(tpl) };
+    await DB.put('sites', s); S.sites.push(s); if (S.set.demo) S.set.demoAt = s.id;
+    S.set.pin = { siteId: s.id, until: Date.now() + 3 * 3600e3 }; saveSet();
+    closeSheet(); toast(`„${name}“ angelegt. Ich führe dich durch die Pflichtfotos.`); refresh(true);
+  };
+}
+function openSite(id) {
+  const s = S.sites.find(x => x.id === id); if (!s) return;
+  const pr = progress(s), d = S.pos ? dist(S.pos, s) : null;
+  const el = sheet(`${s.example ? '<span class="badge ex">Beispiel</span>' : ''}<h3>${esc(s.name)}</h3>
+    <p class="sub">${esc(TPL[s.tpl]?.n || '')}${s.order ? ' · Nr. ' + esc(s.order) : ''} · Umkreis ${s.radius} m${d != null ? ' · ' + fmtDist(d) + ' entfernt' : ''}</p>
+    <div style="display:flex;gap:14px;align-items:center">${ringSVG(s)}<div class="note"><b>${pr.done} von ${pr.must}</b> Pflichtfotos erledigt.${pr.next ? `<br>Als Nächstes: <b style="color:var(--amber)">${esc(pr.next.label)}</b>` : '<br>Alles komplett.'}<br>${S.photos.filter(p => p.siteId === s.id).length} Fotos insgesamt.</div></div>
+    ${checklistHTML(s)}
+    <div class="row" style="margin-top:16px"><button class="btn" data-x="route">Route</button><button class="btn" data-x="report">Bericht</button></div>
+    <div class="row" style="margin-top:8px"><button class="btn" data-x="center">Mitte = meine Position</button><button class="btn" data-x="radius">Umkreis ändern</button></div>
+    <div class="row" style="margin-top:8px"><button class="btn" data-x="arch">${s.archived ? 'Wieder aktivieren' : 'Abschließen (archivieren)'}</button><button class="btn danger" data-x="del">Löschen</button></div>`);
+  el.addEventListener('click', async e => {
+    const row = e.target.closest('.crow');
+    if (row) { closeSheet(); if (row.dataset.photo) openPhoto(row.dataset.photo); else openCamera(row.dataset.site, row.dataset.item); return; }
+    const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
+    if (x === 'route') openRoute(s);
+    if (x === 'report') { closeSheet(); S.rep.site = s.id; S.rep.range = 'all'; go('bericht'); }
+    if (x === 'center') { if (!S.pos) return toast('Noch keine Position.'); s.lat = S.pos.lat; s.lon = S.pos.lon; await DB.put('sites', s); toast('Mittelpunkt aktualisiert.'); closeSheet(); refresh(true); }
+    if (x === 'radius') {
+      const b = e.target.closest('[data-x]'); b.outerHTML = `<div class="fld" style="flex:1 1 100%;margin:0"><label class="lbl">Umkreis: <span class="num" id="rdV">${s.radius} m</span></label><input type="range" id="rdIn" min="15" max="500" step="5" value="${s.radius}"></div>`;
+      $('#rdIn', el).oninput = ev => { $('#rdV', el).textContent = ev.target.value + ' m'; };
+      $('#rdIn', el).onchange = async ev => { s.radius = +ev.target.value; await DB.put('sites', s); refresh(true); };
+    }
+    if (x === 'arch') { s.archived = !s.archived; await DB.put('sites', s); closeSheet(); toast(s.archived ? 'Baustelle abgeschlossen. Die Fotos bleiben in Galerie und Bericht.' : 'Baustelle ist wieder aktiv.'); refresh(true); }
+    if (x === 'del') {
+      const b = e.target.closest('[data-x]'); const n = S.photos.filter(p => p.siteId === s.id).length;
+      if (b.dataset.sure) { await DB.del('sites', s.id); S.sites = S.sites.filter(z => z.id !== s.id); for (const p of S.photos.filter(p => p.siteId === s.id)) { p.siteId = null; p.itemId = null; await DB.put('photos', p); } closeSheet(); toast('Baustelle gelöscht. Ihre Fotos sind jetzt „ohne Baustelle“.'); refresh(true); }
+      else { b.dataset.sure = '1'; b.textContent = n ? `Sicher? (${n} Fotos bleiben)` : 'Wirklich löschen?'; }
+    }
+  });
+}
+function openRoute(s) {
+  const url = `https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}`;
+  const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
+}
+
+/* ---------------- Foto-Detail ---------------- */
+function openPhoto(id) {
+  const p = S.photos.find(x => x.id === id); if (!p) return;
+  const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId);
+  const url = URL.createObjectURL(p.blob);
+  const el = sheet(`<img class="big" src="${url}" data-url="1" alt="Foto">
+    <div class="qual">${qualHTML({ flags: p.q?.flags || [] }, p)}${p.exported ? '<span class="q g">GESICHERT</span>' : '<span class="q w">NOCH NICHT GESICHERT</span>'}</div>
+    <h3>${esc(it ? it.label : catName(p.cat))}</h3>
+    <dl class="kv"><dt>Baustelle</dt><dd>${s ? esc(s.name) : 'Ohne Baustelle'}</dd>
+      <dt>Phase</dt><dd style="color:${PH[p.phase].c}">${PH[p.phase].n}</dd>
+      <dt>Kategorie</dt><dd>${catName(p.cat)}</dd>
+      <dt>Zeit</dt><dd class="num">${fmtDay(p.ts)}, ${fmtTime(p.ts)}</dd>
+      <dt>Position</dt><dd class="num">${p.lat != null ? coord(p.lat, p.lon) + ' ±' + p.acc + ' m' : 'ohne GPS'}${p.src === 'exif' ? ' (aus Bild)' : p.src === 'demo' ? ' (Demo)' : ''}</dd>
+      <dt>Blick</dt><dd class="num">${p.heading != null ? p.heading + '° ' + dirName(p.heading) : '–'}</dd>
+      <dt>Adresse</dt><dd>${esc(p.address || '–')}</dd>
+      <dt>Stichworte</dt><dd>${esc((p.labels || []).join(', ') || '–')}</dd></dl>
+    <div class="fld"><label class="lbl" for="pdDesc">Beschreibung</label><textarea id="pdDesc">${esc(p.desc)}</textarea></div>
+    <div class="row"><button class="btn" data-x="edit">Markieren / Unkenntlich</button><button class="btn" data-x="share">Teilen</button></div>
+    <div class="row" style="margin-top:8px"><button class="btn" data-x="map"${p.lat == null ? ' disabled' : ''}>Auf Karte</button><button class="btn danger" data-x="del">Löschen</button></div>`);
+  $('#pdDesc', el).onchange = async e => { p.desc = e.target.value.trim(); p.exported = false; await DB.put('photos', p); toast('Beschreibung gespeichert.'); };
+  el.addEventListener('click', async e => {
+    const b = e.target.closest('[data-x]'); if (!b) return; const x = b.dataset.x;
+    if (x === 'edit') { closeSheet(); openMarkup(p); }
+    if (x === 'share') saveFile(`${stamp(p.ts)}_${slug(it ? it.label : catName(p.cat))}.jpg`, p.blob, true);
+    if (x === 'map') { closeSheet(); M.lat = p.lat; M.lon = p.lon; M.follow = false; M.z = 2.2; M.sel = p.id; go('karte'); }
+    if (x === 'del') { if (b.dataset.sure) { await DB.del('photos', p.id); S.photos = S.photos.filter(z => z.id !== p.id); closeSheet(); toast('Foto gelöscht.'); refresh(true); } else { b.dataset.sure = '1'; b.textContent = 'Wirklich löschen?'; } }
+  });
+}
+
+/* ---------------- Markieren / Unkenntlich machen ---------------- */
+async function openMarkup(p) {
+  const img = await loadImage(p.blob); const base = fitCanvas(img, 4000);
+  const work = document.createElement('canvas'); work.width = base.width; work.height = base.height; work.getContext('2d').drawImage(base, 0, 0);
+  const hist = []; let tool = 'pen', drawing = null;
+  const ov = document.createElement('div'); ov.className = 'mk';
+  ov.innerHTML = `<canvas></canvas><div class="mkbar"><button class="btn on" data-t="pen">Stift</button><button class="btn" data-t="blur">Unkenntlich</button><button class="btn" data-t="undo">Zurück</button><button class="btn" data-t="cancel">Abbrechen</button><button class="btn pri" data-t="save">Fertig</button></div>`;
+  document.body.appendChild(ov);
+  const cv = ov.querySelector('canvas'), g = cv.getContext('2d');
+  let k = 1, ox = 0, oy = 0;
+  function layout() {
+    const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr;
+    k = Math.min(W / work.width, H / work.height); ox = (W - work.width * k) / 2; oy = (H - work.height * k) / 2;
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); draw();
+  }
+  function draw(rect) {
+    g.fillStyle = '#02060d'; g.fillRect(0, 0, cv.width, cv.height); g.drawImage(work, ox, oy, work.width * k, work.height * k);
+    if (rect) { g.strokeStyle = '#ffa040'; g.setLineDash([6, 4]); g.lineWidth = 2; g.strokeRect(rect.x * k + ox, rect.y * k + oy, rect.w * k, rect.h * k); g.setLineDash([]); }
+  }
+  const toImg = e => { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left - ox) / k, y: (e.clientY - r.top - oy) / k }; };
+  const snap = () => { const c = document.createElement('canvas'); c.width = work.width; c.height = work.height; c.getContext('2d').drawImage(work, 0, 0); hist.push(c); if (hist.length > 15) hist.shift(); };
+  cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); snap(); const pt = toImg(e); drawing = { s: pt, last: pt }; });
+  cv.addEventListener('pointermove', e => {
+    if (!drawing) return; const pt = toImg(e), wg = work.getContext('2d');
+    if (tool === 'pen') { wg.strokeStyle = '#ff7a1a'; wg.lineWidth = Math.max(6, work.width / 260); wg.lineCap = 'round'; wg.lineJoin = 'round'; wg.beginPath(); wg.moveTo(drawing.last.x, drawing.last.y); wg.lineTo(pt.x, pt.y); wg.stroke(); drawing.last = pt; draw(); }
+    else { const r = { x: Math.min(drawing.s.x, pt.x), y: Math.min(drawing.s.y, pt.y), w: Math.abs(pt.x - drawing.s.x), h: Math.abs(pt.y - drawing.s.y) }; drawing.r = r; draw(r); }
+  });
+  const end = () => {
+    if (!drawing) return;
+    if (tool === 'blur' && drawing.r && drawing.r.w > 4 && drawing.r.h > 4) {
+      const r = drawing.r, wg = work.getContext('2d'), bs = Math.max(12, Math.round(Math.max(r.w, r.h) / 14));
+      const t = document.createElement('canvas'); t.width = Math.max(1, Math.round(r.w / bs)); t.height = Math.max(1, Math.round(r.h / bs));
+      t.getContext('2d').drawImage(work, r.x, r.y, r.w, r.h, 0, 0, t.width, t.height);
+      wg.imageSmoothingEnabled = false; wg.drawImage(t, 0, 0, t.width, t.height, r.x, r.y, r.w, r.h); wg.imageSmoothingEnabled = true;
+    }
+    drawing = null; draw();
+  };
+  cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+  ov.querySelector('.mkbar').addEventListener('click', async e => {
+    const b = e.target.closest('[data-t]'); if (!b) return; const t = b.dataset.t;
+    if (t === 'pen' || t === 'blur') { tool = t; $$('.mkbar [data-t=pen],.mkbar [data-t=blur]', ov).forEach(x => x.classList.toggle('on', x === b)); }
+    if (t === 'undo') { const h = hist.pop(); if (h) { work.getContext('2d').drawImage(h, 0, 0); draw(); } }
+    if (t === 'cancel') { ov.remove(); }
+    if (t === 'save') { b.disabled = true; p.blob = await toBlob(work, 0.9); p.thumb = thumbOf(work); p.edited = true; p.exported = false; await DB.put('photos', p); ov.remove(); toast('Änderungen gespeichert.'); refresh(true); }
+  });
+  addEventListener('resize', layout, { once: true }); requestAnimationFrame(layout);
+}
+
+/* ---------------- Karte ---------------- */
+const M = { lat: null, lon: null, z: 1.2, follow: true, sel: null, raf: 0, ptrs: new Map(), pinch: null, moved: 0, siteSel: null };
+function mapStart() {
+  const cv = $('#map');
+  if (M.lat == null) { const c = S.pos || activeSites()[0] || { lat: 49.7942, lon: 9.9512 }; M.lat = c.lat; M.lon = c.lon; }
+  renderMapSide();
+  cancelAnimationFrame(M.raf);
+  const loop = () => { drawMap(cv); M.raf = requestAnimationFrame(loop); }; loop();
+}
+function mapStop() { cancelAnimationFrame(M.raf); }
+function mproj(lat, lon, W, H) { return [W / 2 + (lon - M.lon) * 111320 * Math.cos(M.lat * RAD) * M.z, H / 2 - (lat - M.lat) * 110540 * M.z]; }
+function drawMap(cv) {
+  const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight; if (!W) return;
+  if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  if (M.follow && S.pos) { M.lat += (S.pos.lat - M.lat) * 0.15; M.lon += (S.pos.lon - M.lon) * 0.15; }
+  g.fillStyle = '#040a14'; g.fillRect(0, 0, W, H);
+  const steps = [5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]; const step = steps.find(s => s * M.z >= 70) || 10000; const px = step * M.z;
+  const mx = M.lon * 111320 * Math.cos(M.lat * RAD), my = M.lat * 110540;
+  const offX = ((-mx * M.z) % px + px) % px, offY = ((my * M.z) % px + px) % px;
+  g.strokeStyle = 'rgba(63,216,239,.07)'; g.lineWidth = 1; g.beginPath();
+  for (let x = (W / 2 + offX) % px; x < W; x += px) { g.moveTo(x, 0); g.lineTo(x, H); }
+  for (let y = (H / 2 + offY) % px; y < H; y += px) { g.moveTo(0, y); g.lineTo(W, y); }
+  g.stroke();
+  const t = performance.now() / 1000;
+  // Baustellen
+  for (const s of S.sites) {
+    const [x, y] = mproj(s.lat, s.lon, W, H), r = Math.max(6, s.radius * M.z), pr = progress(s);
+    const col = s.archived ? 'rgba(137,169,189,.5)' : pr.missing.length ? '#ffa040' : '#48e59a';
+    g.fillStyle = s.archived ? 'rgba(137,169,189,.04)' : pr.missing.length ? 'rgba(255,160,64,.07)' : 'rgba(72,229,154,.07)';
+    g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
+    g.setLineDash([6, 5]); g.lineDashOffset = -t * 8; g.strokeStyle = col; g.lineWidth = M.siteSel === s.id ? 2.2 : 1.3; g.stroke(); g.setLineDash([]);
+    g.font = '600 11px "JetBrains Mono", monospace'; g.fillStyle = col; g.textAlign = 'center';
+    g.fillText(short(s.name).toUpperCase(), x, y - r - 16); g.fillStyle = 'rgba(226,246,255,.8)'; g.fillText(`${pr.done}/${pr.must}`, x, y - r - 4); g.textAlign = 'left';
+  }
+  // Fotos mit Blickrichtung
+  M.pts = [];
+  for (const p of S.photos) {
+    if (p.lat == null) continue; const [x, y] = mproj(p.lat, p.lon, W, H); if (x < -40 || y < -40 || x > W + 40 || y > H + 40) continue;
+    const c = PH[p.phase].c; M.pts.push({ x, y, id: p.id });
+    if (p.heading != null) {
+      const a = (p.heading - 90) * RAD, L = 30, sp = 22 * RAD;
+      const gr = g.createRadialGradient(x, y, 0, x, y, L); gr.addColorStop(0, c + '88'); gr.addColorStop(1, c + '00');
+      g.fillStyle = gr; g.beginPath(); g.moveTo(x, y); g.arc(x, y, L, a - sp, a + sp); g.closePath(); g.fill();
+    }
+    g.fillStyle = c; g.beginPath(); g.arc(x, y, M.sel === p.id ? 6 : 3.6, 0, 7); g.fill();
+    if (M.sel === p.id) { g.strokeStyle = '#fff'; g.lineWidth = 1.5; g.stroke(); }
+  }
+  // eigene Position
+  if (S.pos) {
+    const [x, y] = mproj(S.pos.lat, S.pos.lon, W, H);
+    g.fillStyle = 'rgba(63,216,239,.1)'; g.beginPath(); g.arc(x, y, Math.max(8, S.pos.acc * M.z), 0, 7); g.fill();
+    g.strokeStyle = 'rgba(63,216,239,.35)'; g.lineWidth = 1; g.stroke();
+    for (let i = 1; i <= 3; i++) { g.strokeStyle = `rgba(63,216,239,${0.18 / i})`; g.beginPath(); g.arc(x, y, i * px, 0, 7); g.stroke(); }
+    if (S.heading != null) { const a = (S.heading - 90) * RAD; g.fillStyle = 'rgba(63,216,239,.35)'; g.beginPath(); g.moveTo(x, y); g.arc(x, y, 44, a - 0.35, a + 0.35); g.closePath(); g.fill(); }
+    const pul = (t % 1.6) / 1.6; g.strokeStyle = `rgba(63,216,239,${1 - pul})`; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 7 + pul * 18, 0, 7); g.stroke();
+    g.fillStyle = '#fff'; g.beginPath(); g.arc(x, y, 6, 0, 7); g.fill(); g.fillStyle = '#3fd8ef'; g.beginPath(); g.arc(x, y, 3.6, 0, 7); g.fill();
+  }
+  // Maßstab + Nordpfeil
+  g.strokeStyle = '#e2f6ff'; g.lineWidth = 2; g.beginPath(); g.moveTo(14, H - 18); g.lineTo(14 + px, H - 18); g.moveTo(14, H - 23); g.lineTo(14, H - 13); g.moveTo(14 + px, H - 23); g.lineTo(14 + px, H - 13); g.stroke();
+  g.fillStyle = '#e2f6ff'; g.font = '600 11px "JetBrains Mono", monospace'; g.fillText(fmtDist(step), 18, H - 26);
+  g.fillStyle = '#3fd8ef'; g.textAlign = 'center'; g.fillText('N', W - 30, H - 42); g.beginPath(); g.moveTo(W - 30, H - 36); g.lineTo(W - 36, H - 18); g.lineTo(W - 30, H - 22); g.lineTo(W - 24, H - 18); g.closePath(); g.fill(); g.textAlign = 'left';
+}
+function renderMapSide() {
+  $('#mapSites').innerHTML = (S.pos ? '<button class="chip" data-mp="me">Ich</button>' : '') + activeSites().map(s => `<button class="chip${M.siteSel === s.id ? ' on' : ''}" data-mp="${s.id}">${esc(short(s.name))}</button>`).join('');
+  const s = S.sites.find(x => x.id === M.siteSel), info = $('#mapInfo');
+  if (s) {
+    const pr = progress(s);
+    info.innerHTML = `<div class="ph"><h2>${esc(s.name)}</h2><span class="lbl">${pr.done}/${pr.must}</span></div><p class="note" style="margin:0 0 12px">${S.pos ? fmtDist(dist(S.pos, s)) + ' entfernt · ' : ''}${S.photos.filter(p => p.siteId === s.id).length} Fotos${pr.next ? ` · als Nächstes: <b>${esc(pr.next.label)}</b>` : ' · komplett'}</p>
+      <div class="row"><button class="btn" data-ms="route">Route</button><button class="btn" data-ms="open">Checkliste</button></div>`;
+  } else info.innerHTML = `<p class="note" style="margin:0">Tipp auf einen Punkt, um das Foto zu öffnen, oder auf einen Kreis für die Baustelle. Jeder Kegel zeigt, in welche Richtung fotografiert wurde.</p>`;
+}
+function mapInput() {
+  const cv = $('#map');
+  const zoom = (f, cx, cy) => {
+    const W = cv.clientWidth, H = cv.clientHeight, before = M.z; M.z = Math.max(0.02, Math.min(12, M.z * f));
+    if (cx != null) { const dx = cx - W / 2, dy = cy - H / 2, k = 1 / before - 1 / M.z; M.lon += dx * k / (111320 * Math.cos(M.lat * RAD)); M.lat -= dy * k / 110540; }
+  };
+  cv.addEventListener('wheel', e => { e.preventDefault(); const r = cv.getBoundingClientRect(); zoom(e.deltaY < 0 ? 1.18 : 1 / 1.18, e.clientX - r.left, e.clientY - r.top); }, { passive: false });
+  cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); M.ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); M.moved = 0; if (M.ptrs.size === 2) { const [a, b] = [...M.ptrs.values()]; M.pinch = Math.hypot(a.x - b.x, a.y - b.y); } });
+  cv.addEventListener('pointermove', e => {
+    const p = M.ptrs.get(e.pointerId); if (!p) return; const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
+    if (M.ptrs.size === 2) { const [a, b] = [...M.ptrs.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y); if (M.pinch) zoom(d / M.pinch); M.pinch = d; M.moved += 10; return; }
+    M.moved += Math.abs(dx) + Math.abs(dy); if (M.moved > 6) { M.follow = false; $('#mFollow').classList.remove('on'); }
+    M.lon -= dx / (111320 * Math.cos(M.lat * RAD) * M.z); M.lat += dy / (110540 * M.z);
+  });
+  const up = e => {
+    const wasTap = M.ptrs.size === 1 && M.moved < 6; M.ptrs.delete(e.pointerId); if (M.ptrs.size < 2) M.pinch = null;
+    if (!wasTap) return; const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    const hit = (M.pts || []).map(p => ({ ...p, d: Math.hypot(p.x - x, p.y - y) })).filter(p => p.d < 18).sort((a, b) => a.d - b.d)[0];
+    if (hit) { M.sel = hit.id; openPhoto(hit.id); return; }
+    const W = cv.clientWidth, H = cv.clientHeight;
+    const s = S.sites.find(s => { const [sx, sy] = mproj(s.lat, s.lon, W, H); return Math.hypot(sx - x, sy - y) <= Math.max(14, s.radius * M.z); });
+    M.siteSel = s ? s.id : null; renderMapSide();
+  };
+  cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', e => { M.ptrs.delete(e.pointerId); M.pinch = null; });
+  $('#mzIn').onclick = () => zoom(1.5); $('#mzOut').onclick = () => zoom(1 / 1.5);
+  $('#mFollow').onclick = () => { M.follow = true; $('#mFollow').classList.add('on'); if (S.pos) { M.lat = S.pos.lat; M.lon = S.pos.lon; } };
+  $('#mapSites').onclick = e => {
+    const b = e.target.closest('[data-mp]'); if (!b) return;
+    if (b.dataset.mp === 'me') { $('#mFollow').click(); M.siteSel = null; }
+    else { const s = S.sites.find(x => x.id === b.dataset.mp); M.follow = false; $('#mFollow').classList.remove('on'); M.lat = s.lat; M.lon = s.lon; M.z = Math.min(6, 120 / s.radius); M.siteSel = s.id; }
+    renderMapSide();
+  };
+  $('#mapInfo').onclick = e => { const x = e.target.closest('[data-ms]')?.dataset.ms, s = S.sites.find(z => z.id === M.siteSel); if (!x || !s) return; if (x === 'route') openRoute(s); else openSite(s.id); };
+}
+
+/* ---------------- Galerie ---------------- */
+function renderGallery() {
+  const open = S.photos.filter(p => !p.exported).length;
+  $('#galSeg').innerHTML = `<button data-g="open" class="${S.gal.mode === 'open' ? 'on' : ''}">Ungesichert (${open})</button><button data-g="all" class="${S.gal.mode === 'all' ? 'on' : ''}">Alle (${S.photos.length})</button>`;
+  $('#galSites').innerHTML = `<button class="chip${S.gal.site === 'all' ? ' on' : ''}" data-gs="all">Alle Baustellen</button>` + S.sites.map(s => `<button class="chip${S.gal.site === s.id ? ' on' : ''}" data-gs="${s.id}">${esc(short(s.name))}</button>`).join('') + `<button class="chip${S.gal.site === 'none' ? ' on' : ''}" data-gs="none">Ohne Baustelle</button>`;
+  let list = S.photos.slice().sort((a, b) => b.ts - a.ts);
+  if (S.gal.mode === 'open') list = list.filter(p => !p.exported);
+  if (S.gal.site === 'none') list = list.filter(p => !p.siteId); else if (S.gal.site !== 'all') list = list.filter(p => p.siteId === S.gal.site);
+  if (!list.length) { $('#galList').innerHTML = `<p class="empty">${S.gal.mode === 'open' ? 'Alles gesichert – keine offenen Fotos.' : 'Noch keine Fotos. Tipp unten auf die Kamera.'}</p>`; return; }
+  const days = new Map(); list.forEach(p => { const k = dayKey(p.ts); if (!days.has(k)) days.set(k, []); days.get(k).push(p); });
+  $('#galList').innerHTML = [...days.values()].map(ps => `<section class="day"><div class="ph" style="margin:0"><span class="lbl">${fmtDay(ps[0].ts)}</span><span class="lbl">${ps.length} Foto${ps.length > 1 ? 's' : ''}</span></div>
+    <div class="grid">${ps.map(p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId);
+      return `<button class="th" data-photo="${p.id}" aria-label="${esc(it ? it.label : catName(p.cat))}"><img src="${p.thumb}" alt="" loading="lazy"><span class="pb" style="background:${PH[p.phase].c}">${p.phase}</span><span class="sy${p.exported ? ' ok' : ''}"></span><span class="tl">${esc(it ? it.label : catName(p.cat))}</span></button>`; }).join('')}</div></section>`).join('');
+}
+
+/* ---------------- Bericht & Export ---------------- */
+function repList() {
+  let l = S.photos.slice().sort((a, b) => a.ts - b.ts); const now = Date.now();
+  if (S.rep.range === 'today') l = l.filter(p => dayKey(p.ts) === dayKey(now));
+  if (S.rep.range === 'week') l = l.filter(p => now - p.ts < 7 * 864e5);
+  if (S.rep.range === 'open') l = l.filter(p => !p.exported);
+  if (S.rep.site === 'none') l = l.filter(p => !p.siteId); else if (S.rep.site !== 'all') l = l.filter(p => p.siteId === S.rep.site);
+  return l;
+}
+function renderReport() {
+  const R = [['today', 'Heute'], ['week', '7 Tage'], ['open', 'Ungesichert'], ['all', 'Alles']];
+  $('#repRange').innerHTML = R.map(([k, n]) => `<button class="chip${S.rep.range === k ? ' on' : ''}" data-rr="${k}">${n}</button>`).join('');
+  $('#repSites').innerHTML = `<button class="chip${S.rep.site === 'all' ? ' on' : ''}" data-rs="all">Alle</button>` + S.sites.map(s => `<button class="chip${S.rep.site === s.id ? ' on' : ''}" data-rs="${s.id}">${esc(short(s.name))}</button>`).join('');
+  const l = repList(), open = l.filter(p => !p.exported).length;
+  const sites = S.rep.site === 'all' ? [...new Set(l.map(p => p.siteId).filter(Boolean))].map(id => S.sites.find(s => s.id === id)).filter(Boolean) : S.sites.filter(s => s.id === S.rep.site);
+  const miss = sites.map(s => ({ s, pr: progress(s) })).filter(x => x.pr.missing.length);
+  $('#repSum').innerHTML = `<div class="stats" style="margin-bottom:14px">
+      <div class="stat"><div class="lbl">Fotos</div><div class="v">${l.length}</div><div class="s">im Bericht</div></div>
+      <div class="stat"><div class="lbl">Ungesichert</div><div class="v ${open ? 'warn' : 'good'}">${open}</div><div class="s">davon</div></div>
+      <div class="stat"><div class="lbl">Baustellen</div><div class="v">${sites.length}</div><div class="s">betroffen</div></div></div>
+    ${miss.length ? `<div class="warnbox" style="margin-bottom:14px"><b>Pflichtfotos fehlen:</b><br>${miss.map(x => `${esc(x.s.name)}: ${x.pr.missing.map(i => esc(i.label)).join(', ')}`).join('<br>')}</div>` : sites.length ? '<p class="note" style="margin:0 0 14px;color:var(--ok)">Alle Pflichtfotos der gewählten Baustellen sind vorhanden.</p>' : ''}
+    <div class="stack" style="gap:8px">
+      <button class="btn pri wide" data-ex="pdf"${l.length ? '' : ' disabled'}>PDF-Bericht erstellen</button>
+      <button class="btn wide" data-ex="zip"${l.length ? '' : ' disabled'}>ZIP-Paket: Fotos + Karte (KML, GeoJSON) + Liste</button>
+    </div>
+    <p class="note" style="margin:12px 0 0">Nach dem Export markiere ich die Fotos als gesichert. Das ZIP kannst du direkt per Mail, WhatsApp oder in die Cloud teilen.</p>`;
+}
+function needLib(name, test) {
+  return new Promise((res, rej) => { const t0 = Date.now(); (function w() { if (test()) return res(); if (Date.now() - t0 > 15000) return rej(new Error(`${name} lädt nicht – einmal Internet nötig`)); setTimeout(w, 150); })(); });
+}
+let dlCap;
+async function saveFile(name, blob, preferShare) {
+  if (window.claude?.use) {
+    dlCap ??= window.claude.use('downloads').catch(() => null);
+    const dl = await dlCap;
+    if (dl) { try { await dl.save({ filename: name, data: blob }); return true; } catch (e) { if (e?.code === 'declined') return false; if (e?.code === 'rate_limited') { toast('Einen Moment – es ist schon ein Speicher-Dialog offen.'); return false; } } }
+  }
+  const file = new File([blob], name, { type: blob.type || 'application/octet-stream' });
+  const mobile = matchMedia('(pointer:coarse)').matches;
+  if ((preferShare || mobile) && navigator.canShare?.({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: name }); return true; } catch (e) { if (e.name === 'AbortError') return false; }
+  }
+  try {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 5000); return true;
+  } catch (e) { toast('Datei konnte nicht gespeichert werden.'); return false; }
+}
+async function pdfImg(blob) { const img = await loadImage(blob); const c = fitCanvas(img, 1600); return { d: c.toDataURL('image/jpeg', 0.84), w: c.width, h: c.height }; }
+/* PDF-Bericht: je Baustelle eine Übersichtsseite (Kennzahlen, Pflichtfoto-Nachweis, Lageplan), dann 2 Fotos pro Seite */
+async function buildPDF(l, title) {
+  const { jsPDF } = window.jspdf; const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const W = 210, H = 297, m = 14, cw = W - 2 * m;
+  const PC = { V: [24, 150, 180], W: [226, 124, 26], N: [30, 160, 98] };
+  const NAVY = [8, 24, 48], CYAN = [63, 216, 239], INK = [16, 26, 40], GREY = [96, 110, 126], LINE = [214, 223, 231];
+  const created = `${fmtDate(Date.now())}, ${fmtTime(Date.now())} Uhr`;
+  const span = ps => { const a = fmtDate(ps[0].ts), b = fmtDate(ps[ps.length - 1].ts); return a === b ? a : `${a} – ${b}`; };
+  const groups = [];
+  [...new Set(l.map(p => p.siteId || ''))].forEach(id => groups.push({ s: S.sites.find(x => x.id === id) || null, ps: l.filter(p => (p.siteId || '') === id) }));
+  const num = new Map(); let k = 0; groups.forEach(g => g.ps.forEach(p => num.set(p.id, ++k)));
+  const pageTitle = []; let first = true;
+  const newPage = t => {
+    if (!first) doc.addPage(); first = false; pageTitle[doc.getNumberOfPages()] = t;
+    doc.setFillColor(...NAVY); doc.rect(0, 0, W, 19, 'F'); doc.setFillColor(...CYAN); doc.rect(0, 19, W, 0.7, 'F');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(240, 248, 255); doc.text('Smolens', m, 12);
+    const w1 = doc.getTextWidth('Smolens'); doc.setTextColor(...CYAN); doc.text('·KI', m + w1, 12);
+    const w2 = w1 + doc.getTextWidth('·KI');
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(150, 186, 206); doc.text('SEF-KI BAUDOKU  ·  FOTOBERICHT', m + w2 + 5, 11.6);
+    doc.setTextColor(225, 238, 246); doc.setFontSize(8.5); doc.text(span(l), W - m, 11.6, { align: 'right' });
+  };
+  const chip = (x, y, txt, rgb, w) => { doc.setFillColor(...rgb); doc.roundedRect(x, y - 3.4, w, 4.6, 0.8, 0.8, 'F'); doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.6); doc.text(txt, x + w / 2, y, { align: 'center' }); };
+  const label = (x, y, txt) => { doc.setFont('helvetica', 'bold'); doc.setFontSize(7.2); doc.setTextColor(24, 140, 170); doc.text(txt.toUpperCase(), x, y, { charSpace: 0.35 }); };
+
+  for (const g of groups) {
+    const s = g.s, pr = s ? progress(s) : null, addr = g.ps.find(p => p.address)?.address;
+    newPage(s ? s.name : 'Ohne Baustelle'); let y = 31;
+    label(m, y, s ? 'Baustelle' : 'Fotos ohne Baustelle'); y += 8;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(21); doc.setTextColor(...INK);
+    const tl = doc.splitTextToSize(s ? s.name : 'Ohne Baustelle', cw); doc.text(tl, m, y); y += 8.5 * tl.length - 2;
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); doc.setTextColor(...GREY);
+    const sub = [s && TPL[s.tpl]?.n, s?.order && 'Auftrag ' + s.order, addr].filter(Boolean).join('   ·   ');
+    if (sub) { doc.text(doc.splitTextToSize(sub, cw), m, y); y += 6; }
+    y += 3;
+    // Kennzahlen
+    const facts = [['Fotos', String(g.ps.length), INK], ['Zeitraum', span(g.ps), INK], ['Bearbeiter', S.set.name || '–', INK]];
+    if (pr) facts.splice(1, 0, ['Pflichtfotos', `${pr.done} von ${pr.must}`, pr.missing.length ? [210, 100, 20] : [30, 150, 90]]);
+    const fw = (cw - 3 * (facts.length - 1)) / facts.length;
+    facts.forEach(([a, b, col], i) => {
+      const x = m + i * (fw + 3); doc.setFillColor(242, 246, 249); doc.roundedRect(x, y, fw, 17, 1.2, 1.2, 'F');
+      doc.setFillColor(...(i === 1 && pr ? col : CYAN)); doc.rect(x, y, 1.1, 17, 'F');
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(...GREY); doc.text(a.toUpperCase(), x + 4, y + 5.5, { charSpace: 0.3 });
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(b.length > 18 ? 8.6 : b.length > 12 ? 10.5 : 13); doc.setTextColor(...col); doc.text(b, x + 4, y + 13);
+    });
+    y += 26;
+    if (pr) {
+      // Pflichtfoto-Nachweis
+      label(m, y, 'Pflichtfoto-Nachweis'); y += 4;
+      const cx = [m + 2, m + 22, m + 120, m + 146];
+      doc.setFillColor(...NAVY); doc.rect(m, y, cw, 6.5, 'F'); doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(225, 240, 248);
+      ['PHASE', 'PFLICHTFOTO', 'STATUS', 'FOTO-NR. / AUFNAHME'].forEach((h, i) => doc.text(h, cx[i], y + 4.4)); y += 6.5;
+      pr.its.forEach((it, i) => {
+        const rh = 7.2; if (i % 2) { doc.setFillColor(246, 249, 251); doc.rect(m, y, cw, rh, 'F'); }
+        chip(cx[0], y + 4.9, PH[it.phase].n.toUpperCase(), PC[it.phase], 17);
+        doc.setFont('helvetica', it.must ? 'bold' : 'normal'); doc.setFontSize(9); doc.setTextColor(...INK);
+        doc.text(doc.splitTextToSize(it.label + (it.must ? '' : ' (optional)'), 94)[0], cx[1], y + 4.9);
+        const own = it.photos.filter(p => num.has(p.id));
+        if (it.photos.length) chip(cx[2], y + 4.9, 'VORHANDEN', [30, 150, 90], 22);
+        else if (it.must) chip(cx[2], y + 4.9, 'FEHLT', [205, 70, 40], 22);
+        else chip(cx[2], y + 4.9, 'ENTFÄLLT', [150, 160, 170], 22);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.3); doc.setTextColor(...GREY);
+        const ref = own.length ? own.map(p => 'Nr. ' + num.get(p.id)).join(', ') + '  ·  ' + fmtDate(own[0].ts).slice(0, 6) + ' ' + fmtTime(own[0].ts) : it.photos.length ? 'früher erfasst' : '–';
+        doc.text(ref, cx[3], y + 4.9);
+        doc.setDrawColor(...LINE); doc.setLineWidth(0.15); doc.line(m, y + rh, m + cw, y + rh); y += rh;
+      });
+      y += 9;
+      // Lageplan
+      const geo = g.ps.filter(p => p.lat != null), mh = Math.min(92, 280 - y - 8);
+      if (mh > 45) {
+        label(m, y, 'Lageplan der Aufnahmen'); y += 4;
+        doc.setFillColor(244, 248, 251); doc.rect(m, y, cw, mh, 'F'); doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.rect(m, y, cw, mh, 'S');
+        const ox = m + cw / 2, oy = y + mh / 2, cosL = Math.cos(s.lat * RAD);
+        const xy = p => [(p.lon - s.lon) * 111320 * cosL, (p.lat - s.lat) * 110540];
+        let ext = s.radius * 1.15; geo.forEach(p => { const [a, b] = xy(p); ext = Math.max(ext, Math.hypot(a, b) * 1.25); });
+        const sc = (mh / 2 - 6) / ext;
+        const grid = [5, 10, 20, 50, 100, 200, 500, 1000].find(v => v * sc >= 12) || 1000;
+        doc.setDrawColor(226, 233, 239); doc.setLineWidth(0.1);
+        for (let gx = ox % (grid * sc); gx < m + cw; gx += grid * sc) if (gx > m) doc.line(gx, y, gx, y + mh);
+        for (let gy = oy - Math.floor((oy - y) / (grid * sc)) * grid * sc; gy < y + mh; gy += grid * sc) if (gy > y) doc.line(m, gy, m + cw, gy);
+        doc.setDrawColor(24, 150, 180); doc.setLineWidth(0.35); doc.setLineDashPattern([1.6, 1.2], 0); doc.circle(ox, oy, s.radius * sc, 'S'); doc.setLineDashPattern([], 0);
+        doc.setFillColor(24, 150, 180); doc.circle(ox, oy, 0.8, 'F');
+        geo.forEach(p => {
+          const [a, b] = xy(p), px = ox + a * sc, py = oy - b * sc, c = PC[p.phase], lc = c.map(v => Math.round(v + (255 - v) * 0.62));
+          if (p.heading != null) { const r = 11, h1 = (p.heading - 20) * RAD, h2 = (p.heading + 20) * RAD; doc.setFillColor(...lc); doc.triangle(px, py, px + r * Math.sin(h1), py - r * Math.cos(h1), px + r * Math.sin(h2), py - r * Math.cos(h2), 'F'); }
+        });
+        geo.forEach(p => {
+          const [a, b] = xy(p), px = ox + a * sc, py = oy - b * sc;
+          doc.setFillColor(...PC[p.phase]); doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.4); doc.circle(px, py, 2.3, 'FD');
+          doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.2); doc.text(String(num.get(p.id)), px, py + 0.9, { align: 'center' });
+        });
+        // Nordpfeil + Maßstab
+        const nx = m + cw - 9, ny = y + 8; doc.setFillColor(...NAVY); doc.triangle(nx, ny - 4, nx - 2.6, ny + 3, nx + 2.6, ny + 3, 'F'); doc.setFontSize(7); doc.setTextColor(...NAVY); doc.text('N', nx, ny - 5.5, { align: 'center' });
+        doc.setDrawColor(...NAVY); doc.setLineWidth(0.4); doc.line(m + 5, y + mh - 5, m + 5 + grid * sc, y + mh - 5); doc.line(m + 5, y + mh - 6.5, m + 5, y + mh - 3.5); doc.line(m + 5 + grid * sc, y + mh - 6.5, m + 5 + grid * sc, y + mh - 3.5);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.text(fmtDist(grid), m + 5, y + mh - 7.5);
+        y += mh + 4.5;
+        doc.setFontSize(7.4); doc.setTextColor(...GREY);
+        doc.text(`Gestrichelter Kreis = Baustellenbereich (r = ${s.radius} m)  ·  Kegel = Blickrichtung  ·  Farbe: Vorher / Während / Nachher`, m, y);
+      }
+    }
+    // Fotoseiten: 2 Fotos pro Seite in festen Feldern
+    for (let i = 0; i < g.ps.length; i++) {
+      const p = g.ps[i], slot = i % 2; if (!slot) newPage(s ? s.name : 'Ohne Baustelle');
+      const y0 = 27 + slot * 129, it = s?.items.find(x => x.id === p.itemId), img = await pdfImg(p.blob);
+      const bh = 96, kk = Math.min(cw / img.w, bh / img.h), iw = img.w * kk, ih = img.h * kk;
+      doc.setFillColor(236, 241, 245); doc.rect(m, y0, cw, bh, 'F');
+      doc.addImage(img.d, 'JPEG', m + (cw - iw) / 2, y0 + (bh - ih) / 2, iw, ih);
+      let y = y0 + bh + 7;
+      doc.setFillColor(...PC[p.phase]); doc.roundedRect(m, y - 4.6, 8, 6.2, 0.8, 0.8, 'F');
+      doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.text(String(num.get(p.id)), m + 4, y, { align: 'center' });
+      doc.setTextColor(...INK); doc.setFontSize(11.5); doc.text(doc.splitTextToSize(`${PH[p.phase].n} – ${it ? it.label : catName(p.cat)}`, cw - 48)[0], m + 11, y);
+      chip(m + cw - 26, y - 0.6, it?.must ? 'PFLICHTFOTO' : 'ZUSATZFOTO', it?.must ? NAVY : [150, 160, 170], 26);
+      y += 6; doc.setFont('helvetica', 'normal'); doc.setFontSize(8.4); doc.setTextColor(...GREY);
+      doc.text(`${fmtDay(p.ts)}, ${fmtTime(p.ts)} Uhr   ·   ${p.lat != null ? coord(p.lat, p.lon) + '  ±' + p.acc + ' m' : 'ohne GPS'}${p.heading != null ? '   ·   Blick ' + p.heading + '° ' + dirName(p.heading) : ''}`, m + 11, y);
+      const extra = [p.address, catName(p.cat), (p.labels || []).length ? 'Stichworte: ' + p.labels.join(', ') : ''].filter(Boolean).join('   ·   ');
+      if (extra) { y += 4.4; doc.text(doc.splitTextToSize(extra, cw - 11)[0], m + 11, y); }
+      if (p.desc) { y += 5; doc.setTextColor(...INK); doc.setFontSize(9); doc.text(doc.splitTextToSize(p.desc, cw - 11).slice(0, 2), m + 11, y); }
+    }
+  }
+  const pages = doc.getNumberOfPages();
+  for (let i = 1; i <= pages; i++) {
+    doc.setPage(i); doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.line(m, 285, W - m, 285);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.4); doc.setTextColor(130, 142, 156);
+    doc.text(`SEF-KI Baudoku  ·  ${pageTitle[i] || title}  ·  erstellt ${created}`, m, 290);
+    doc.text(`Seite ${i} von ${pages}`, W - m, 290, { align: 'right' });
+  }
+  return doc;
+}
+async function exportPDF(btn) {
+  const l = repList(); if (!l.length) return;
+  btn.disabled = true; const lbl = btn.textContent; btn.textContent = 'Erstelle PDF …';
+  try {
+    await needLib('PDF-Baustein', () => window.jspdf?.jsPDF);
+    const site = S.sites.find(s => s.id === S.rep.site);
+    const doc = await buildPDF(l, site ? site.name : 'Baustellen');
+    const name = `Fotobericht_${slug(site ? site.name : 'Baustellen')}_${stamp(Date.now()).slice(0, 8)}.pdf`;
+    if (await saveFile(name, doc.output('blob'))) { await markExported(l); toast(`PDF mit ${l.length} Fotos erstellt.`); }
+  } catch (e) { toast('PDF fehlgeschlagen: ' + (e.message || e), 5000); }
+  btn.disabled = false; btn.textContent = lbl;
+}
+function geoFeatures(l) {
+  return { type: 'FeatureCollection', features: l.filter(p => p.lat != null).map(p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId);
+    return { type: 'Feature', geometry: { type: 'Point', coordinates: [+p.lon.toFixed(7), +p.lat.toFixed(7)] }, properties: { datei: fileName(p), zeit: new Date(p.ts).toISOString(), baustelle: s?.name || null, pflichtfoto: it?.label || null, phase: PH[p.phase].n, kategorie: catName(p.cat), genauigkeit_m: p.acc, blickrichtung_grad: p.heading, adresse: p.address || null, stichworte: p.labels, beschreibung: p.desc || null } }; }) };
+}
+function fileName(p) { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId); return `${stamp(p.ts)}_${p.phase}_${slug(it ? it.label : catName(p.cat))}_${p.id.slice(-4)}.jpg`; }
+function kml(l) {
+  const x = s => esc(s);
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>SEF-KI Fotos</name>\n` +
+    S.sites.filter(s => l.some(p => p.siteId === s.id)).map(s => `<Placemark><name>${x(s.name)}</name><description>Umkreis ${s.radius} m</description><Point><coordinates>${s.lon},${s.lat},0</coordinates></Point></Placemark>`).join('\n') + '\n' +
+    l.filter(p => p.lat != null).map(p => `<Placemark><name>${x(fileName(p))}</name><TimeStamp><when>${new Date(p.ts).toISOString()}</when></TimeStamp><description>${x(PH[p.phase].n + ' · ' + catName(p.cat) + (p.heading != null ? ' · Blick ' + p.heading + '°' : '') + (p.desc ? ' · ' + p.desc : ''))}</description><Point><coordinates>${p.lon},${p.lat},0</coordinates></Point></Placemark>`).join('\n') + '\n</Document></kml>';
+}
+function csv(l) {
+  const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const head = ['Datei', 'Datum', 'Uhrzeit', 'Baustelle', 'Auftrag', 'Pflichtfoto', 'Phase', 'Kategorie', 'Breite', 'Länge', 'Genauigkeit_m', 'Blick_Grad', 'Adresse', 'Stichworte', 'Beschreibung'];
+  return '﻿' + head.join(';') + '\n' + l.map(p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId);
+    return [fileName(p), fmtDate(p.ts), fmtTime(p.ts), s?.name, s?.order, it?.label, PH[p.phase].n, catName(p.cat), p.lat?.toFixed(7).replace('.', ','), p.lon?.toFixed(7).replace('.', ','), p.acc, p.heading, p.address, (p.labels || []).join(', '), p.desc].map(q).join(';'); }).join('\n');
+}
+async function exportZIP(btn) {
+  const l = repList(); if (!l.length) return;
+  btn.disabled = true; const lbl = btn.textContent; btn.textContent = 'Packe ZIP …';
+  try {
+    await needLib('ZIP-Baustein', () => window.JSZip);
+    const zip = new window.JSZip(); const site = S.sites.find(s => s.id === S.rep.site);
+    const base = `${stamp(Date.now()).slice(0, 8)}_${slug(site ? site.name : 'Baustellen')}`; const f = zip.folder(base);
+    for (const p of l) { const s = S.sites.find(x => x.id === p.siteId); (site ? f : f.folder(slug(s ? s.name : 'ohne-baustelle'))).file(fileName(p), p.blob); }
+    f.file('fotos.geojson', JSON.stringify(geoFeatures(l), null, 1)); f.file('fotos.kml', kml(l)); f.file('fotoliste.csv', csv(l));
+    const blob = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
+    if (await saveFile(base + '.zip', blob)) { await markExported(l); toast(`ZIP mit ${l.length} Fotos gesichert.`); }
+  } catch (e) { toast('ZIP fehlgeschlagen: ' + (e.message || e), 5000); }
+  btn.disabled = false; btn.textContent = lbl;
+}
+async function markExported(l) { for (const p of l) { if (!p.exported) { p.exported = true; p.exportedAt = Date.now(); await DB.put('photos', p); } } refresh(true); }
+async function backup(btn) {
+  btn.disabled = true;
+  try {
+    await needLib('ZIP-Baustein', () => window.JSZip);
+    const zip = new window.JSZip();
+    zip.file('daten.json', JSON.stringify({ app: 'sefki-baudoku', v: 1, at: Date.now(), settings: S.set, sites: S.sites, photos: S.photos.map(({ blob, ...r }) => r) }));
+    const ph = zip.folder('fotos'); S.photos.forEach(p => ph.file(p.id + '.jpg', p.blob));
+    const blob = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
+    if (await saveFile(`SEF-KI_Backup_${stamp(Date.now())}.zip`, blob)) toast('Komplett-Backup erstellt.');
+  } catch (e) { toast('Backup fehlgeschlagen: ' + (e.message || e)); }
+  btn.disabled = false;
+}
+async function restore(file) {
+  try {
+    await needLib('ZIP-Baustein', () => window.JSZip);
+    const zip = await window.JSZip.loadAsync(file); const j = JSON.parse(await zip.file('daten.json').async('string'));
+    if (j.app !== 'sefki-baudoku') throw new Error('Das ist kein SEF-KI-Backup');
+    let ns = 0, np = 0;
+    for (const s of j.sites) if (!S.sites.find(x => x.id === s.id)) { await DB.put('sites', s); S.sites.push(s); ns++; }
+    for (const r of j.photos) { if (S.photos.find(x => x.id === r.id)) continue; const f = zip.file('fotos/' + r.id + '.jpg'); if (!f) continue; const p = { ...r, blob: await f.async('blob') }; await DB.put('photos', p); S.photos.push(p); np++; }
+    toast(`Wiederhergestellt: ${ns} Baustellen, ${np} Fotos.`); refresh(true);
+  } catch (e) { toast('Wiederherstellen fehlgeschlagen: ' + (e.message || e), 5000); }
+}
+
+/* ---------------- Einstellungen ---------------- */
+let installEvt = null;
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; });
+async function openSettings() {
+  let est = null; try { est = await navigator.storage?.estimate(); } catch (e) {}
+  const mb = S.photos.reduce((a, p) => a + (p.blob?.size || 0), 0) / 1048576;
+  const hasEx = S.sites.some(s => s.example) || S.photos.some(p => p.example);
+  const el = sheet(`<h3>Einstellungen</h3><p class="sub">SEF-KI Baudoku · Smolens·KI</p>
+    <div class="fld"><label class="lbl" for="stName">Dein Name (für Begrüßung und Bericht)</label><input type="text" id="stName" value="${esc(S.set.name)}"></div>
+    <label class="tog"><span>Sprachausgabe<small>SEF-KI sagt dir die nächsten Schritte an – praktisch mit Handschuhen.</small></span><input type="checkbox" class="sw" id="stVoice"${S.set.voice ? ' checked' : ''}></label>
+    <label class="tog"><span>Stempel im Foto<small>Baustelle, Zeit, Koordinaten und Blickrichtung fest ins Bild.</small></span><input type="checkbox" class="sw" id="stWm"${S.set.watermark ? ' checked' : ''}></label>
+    <label class="tog"><span>Serienmodus<small>Speichert sofort ohne Nachfrage, wenn Schärfe, Licht und GPS passen.</small></span><input type="checkbox" class="sw" id="stSeries"${S.set.series ? ' checked' : ''}></label>
+    <label class="tog"><span>Demo-Position<small>Simuliert GPS auf den Baustellen – zum Ausprobieren.</small></span><input type="checkbox" class="sw" id="stDemo"${S.set.demo ? ' checked' : ''}></label>
+    <div class="ph" style="margin-top:18px"><h2>Speicher</h2></div>
+    <p class="note" style="margin:0 0 10px">${S.photos.length} Fotos · ${mb.toFixed(1).replace('.', ',')} MB auf diesem Gerät${est?.quota ? ` · frei ca. ${((est.quota - est.usage) / 1073741824).toFixed(1).replace('.', ',')} GB` : ''}.<br>
+      ${!DB.db ? '<b style="color:var(--bad)">Achtung: Der Gerätespeicher ist nicht verfügbar. Fotos gehen beim Schließen verloren – sofort exportieren.</b>' : S.persisted ? 'Dauerhafter Speicher ist <b style="color:var(--ok)">aktiv</b> – der Browser löscht die Fotos nicht von selbst.' : 'Dauerhafter Speicher ist <b style="color:var(--amber)">nicht bestätigt</b>. Installier die App auf dem Startbildschirm, dann ist er sicherer.'}</p>
+    <div class="row"><button class="btn" id="stBackup">Komplett-Backup</button><button class="btn" id="stRestore">Backup einspielen</button></div>
+    ${hasEx ? '<div class="row" style="margin-top:8px"><button class="btn danger" id="stEx">Beispieldaten entfernen</button></div>' : ''}
+    <div class="ph" style="margin-top:18px"><h2>Als App installieren</h2></div>
+    ${installEvt ? '<button class="btn pri wide" id="stInstall">Jetzt installieren</button>' : ''}
+    <p class="note"><b>Android (Chrome):</b> Menü ⋮ → „App installieren“ bzw. „Zum Startbildschirm“.<br><b>iPhone (Safari):</b> Teilen-Symbol → „Zum Home-Bildschirm“.<br>Danach läuft SEF-KI wie eine normale App, auch ohne Netz.</p>
+    <button class="btn wide" style="margin-top:14px" data-x="close">Fertig</button>`);
+  $('#stName', el).onchange = e => { S.set.name = e.target.value.trim() || 'Sefkan'; saveSet(); refresh(true); };
+  $('#stVoice', el).onchange = e => { S.set.voice = e.target.checked; saveSet(); if (S.set.voice) speak('Sprachausgabe ist an.'); else window.speechSynthesis?.cancel(); };
+  $('#stWm', el).onchange = e => { S.set.watermark = e.target.checked; saveSet(); };
+  $('#stSeries', el).onchange = e => { S.set.series = e.target.checked; saveSet(); };
+  $('#stDemo', el).onchange = e => setDemo(e.target.checked);
+  $('#stBackup', el).onclick = e => backup(e.target);
+  $('#stRestore', el).onclick = () => $('#fileRestore').click();
+  $('#stEx', el)?.addEventListener('click', e => { if (e.target.dataset.sure) { closeSheet(); removeExamples(); } else { e.target.dataset.sure = '1'; e.target.textContent = 'Sicher? Beispiele löschen'; } });
+  $('#stInstall', el)?.addEventListener('click', async () => { installEvt.prompt(); installEvt = null; closeSheet(); });
+  el.querySelector('[data-x=close]').onclick = closeSheet;
+}
+
+/* ---------------- Ereignisse ---------------- */
+function bind() {
+  $('#logo').innerHTML = logoSVG();
+  $$('.tab').forEach(t => t.onclick = () => go(t.dataset.v));
+  $('#fab').onclick = () => openCamera();
+  $('#btnSettings').onclick = openSettings;
+  $('#btnNewSite').onclick = newSite;
+  $('#cards').onclick = e => { const b = e.target.closest('.card'); if (b) S.cards[+b.dataset.i]?.a(); };
+  $('#nextBar').onclick = () => S.cards[0]?.a();
+  $('#v-cockpit').addEventListener('click', e => {
+    const row = e.target.closest('.crow'); if (row) { if (row.dataset.photo) openPhoto(row.dataset.photo); else openCamera(row.dataset.site, row.dataset.item); return; }
+    const os = e.target.closest('[data-open-site]'); if (os) { openSite(os.dataset.openSite); return; }
+    const dm = e.target.closest('[data-demo]'); if (dm) { S.set.demoAt = dm.dataset.demo; S.set.pin = null; saveSet(); startDemo(); renderDemoBox(); }
+  });
+  $('#camClose').onclick = closeCamera;
+  $('#shutter').onclick = shoot;
+  $('#btnCamApp').onclick = () => $('#fileCap').click();
+  $('#btnDemoShot').onclick = () => { const { item } = camTarget(); handleCapture(demoCanvas(item ? item.label : 'Freies Foto', item?.phase || 'W', Math.random() * 1000 | 0), snapMeta()); };
+  $('#camImport').onclick = () => $('#fileImp').click();
+  $('#camSeries').onclick = () => { S.set.series = !S.set.series; saveSet(); $('#camSeries').classList.toggle('on', S.set.series); renderCamHud(); toast(S.set.series ? 'Serienmodus an: Ich speichere sofort, wenn alles passt.' : 'Serienmodus aus: Du prüfst jedes Foto.'); };
+  $('#fileCap').onchange = e => { const f = [...e.target.files]; e.target.value = ''; if (f.length) importFiles(f, true); };
+  $('#fileImp').onchange = e => { const f = [...e.target.files]; e.target.value = ''; if (f.length) importFiles(f, false); };
+  $('#fileRestore').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) { closeSheet(); restore(f); } };
+  $('#btnImport').onclick = () => $('#fileImp').click();
+  $('#galSeg').onclick = e => { const b = e.target.closest('[data-g]'); if (b) { S.gal.mode = b.dataset.g; renderGallery(); } };
+  $('#galSites').onclick = e => { const b = e.target.closest('[data-gs]'); if (b) { S.gal.site = b.dataset.gs; renderGallery(); } };
+  $('#galList').onclick = e => { const b = e.target.closest('[data-photo]'); if (b) openPhoto(b.dataset.photo); };
+  $('#repRange').onclick = e => { const b = e.target.closest('[data-rr]'); if (b) { S.rep.range = b.dataset.rr; renderReport(); } };
+  $('#repSites').onclick = e => { const b = e.target.closest('[data-rs]'); if (b) { S.rep.site = b.dataset.rs; renderReport(); } };
+  $('#repSum').onclick = e => { const b = e.target.closest('[data-ex]'); if (!b) return; b.dataset.ex === 'pdf' ? exportPDF(b) : exportZIP(b); };
+  addEventListener('keydown', e => {
+    if (e.target.matches('input,textarea,select') || $('#scrim') || !$('#cam').hidden) { if (e.key === 'Escape') { closeSheet(); if (!$('#cam').hidden && $('#review').hidden) closeCamera(); } return; }
+    if (/^[1-3]$/.test(e.key)) S.cards[+e.key - 1]?.a();
+  });
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && !$('#cam').hidden && !wakeLock) navigator.wakeLock?.request('screen').then(w => wakeLock = w).catch(() => {}); });
+  mapInput();
+}
+
+/* ---------------- Start ---------------- */
+(async function init() {
+  bind(); startAvatar();
+  const ok = await DB.open();
+  try {
+    const kv = await DB.all('kv'); const st = kv.find(x => x.id === 'settings'); if (st) Object.assign(S.set, st);
+    S.sites = await DB.all('sites'); S.photos = await DB.all('photos');
+  } catch (e) {}
+  if (!ok) toast('Gerätespeicher nicht verfügbar – Fotos bitte sofort exportieren.', 6000);
+  if (!S.set.seeded) {
+    try { await Promise.race([document.fonts?.ready, new Promise(r => setTimeout(r, 2500))]); } catch (e) {}
+    try { await seedExamples(); } catch (e) { console.warn(e); }
+  }
+  try { S.persisted = await navigator.storage?.persisted?.(); if (!S.persisted && navigator.storage?.persist) S.persisted = await navigator.storage.persist(); } catch (e) {}
+  initHeading();
+  const h = location.hash.slice(1); go(['cockpit', 'karte', 'galerie', 'bericht'].includes(h) ? h : 'cockpit');
+  startGPS();
+  if (S.set.demo) toast('Demo-Position aktiv – in den Einstellungen abschaltbar.', 3000);
+  if ('serviceWorker' in navigator && !inFrame && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+</script>
+</body></html>
