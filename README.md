@@ -10,6 +10,13 @@ GPS-Fotodokumentation für Baustellen – Smolens·KI.
 - Stempel im Foto: Baustelle, Zeit, Koordinaten, Blickrichtung
 - Karte mit Blickrichtungen, Galerie, PDF-Bericht, ZIP-Export (Fotos + KML/GeoJSON + CSV)
 - Läuft offline und lässt sich als App installieren
+- **Geisterbild**: Vorher-Foto halbtransparent im Sucher, Lotse zum gleichen Standpunkt und zur gleichen Blickrichtung
+- **KI-Bildprüfung** (Claude): Pflichtinhalte, Tiefe vom Meterstab ablesen, Gesichter und Kennzeichen finden
+- **Datenschutz-Automatik**: Personen und Kennzeichen werden vor dem Speichern unkenntlich gemacht
+- **Beweissicher**: SHA-256-Fingerabdruck, fortlaufende Prüfkette, Zeitstempel über OpenTimestamps, Echtheitsprüfung
+- **Trassen-Aufnahme**: Leitungsverlauf ablaufen, Punkte markieren, RTK-Empfänger (Bluetooth/NMEA oder Mock-Standort), Export als Shapefile, DXF, GeoJSON, KML, CSV in ETRS89/UTM
+- **Freihändig**: Sprachbefehle „Foto“, „Speichern“, „Nochmal“, „Nächstes“, „Punkt“, „Notiz …“
+- **KI-Tagesbericht**: Bautagebuch aus Fotos, Notizen und Trassen – mit Wetter, als PDF
 
 ## Aufs Handy
 1. Link oben auf dem Handy öffnen, Standort und Kamera erlauben

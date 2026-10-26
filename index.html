@@ -217,7 +217,7 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .sheet h3{font-family:var(--f-display);font-size:21px;font-weight:800;margin:0 0 4px;font-stretch:95%;text-wrap:balance}
 .sheet .sub{color:var(--mute);font-size:13px;margin:0 0 14px}
 .fld{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
-.fld input[type=text],.fld input[type=date],.fld select,.fld textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8);font-size:15px}
+.fld input[type=text],.fld input[type=password],.fld input[type=date],.fld select,.fld textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8);font-size:15px}
 .fld textarea{min-height:76px;resize:vertical}
 .fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--cyan);outline:none}
 .inrow{display:flex;gap:8px}
@@ -311,6 +311,35 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
 .banner b{color:var(--amber);font-family:var(--f-mono);font-size:11px;letter-spacing:.16em}
 .banner p{margin:4px 0 10px;font-size:15px;font-weight:600}
 .view[hidden]{display:none!important}
+/* ---------- Neue Module ---------- */
+.ghost{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;mix-blend-mode:screen;filter:saturate(.4) contrast(1.15)}
+.detcv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.ghostbar{position:relative;z-index:2;margin:10px auto 0;max-width:min(92vw,520px);display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;padding:8px 12px;border:1px solid var(--line-hi);border-radius:var(--r);background:rgba(4,14,30,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.ghostbar .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;color:var(--cyan)}
+.ghostbar .g{font-size:13px;line-height:1.35;grid-column:1/-1}
+.ghostbar .g b.ok{color:var(--ok)}.ghostbar .g b.w{color:var(--amber)}
+.ghostbar input{grid-column:1/-1}
+.micbtn.on{border-color:var(--amber);color:var(--amber);box-shadow:0 0 14px rgba(255,160,64,.45);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{box-shadow:0 0 2px rgba(255,160,64,.2)}}
+.aibox{border:1px solid var(--line-hi);border-radius:var(--r);padding:10px 12px;margin:10px 0;background:rgba(8,30,56,.6)}
+.aibox .h{display:flex;justify-content:space-between;align-items:center;gap:8px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;color:var(--cyan);margin-bottom:6px}
+.aibox ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:13.5px}
+.aibox li::before{content:"✓ ";color:var(--ok);font-weight:700}
+.aibox li.no::before{content:"✗ ";color:var(--bad)}
+.aibox .tip{margin-top:8px;color:var(--amber);font-size:13.5px;font-weight:600}
+.aibox .busy{display:flex;gap:8px;align-items:center;color:var(--mute);font-size:13px}
+.spin{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--cyan);border-radius:50%;animation:sp 0.8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.seal{font-family:var(--f-mono);font-size:11px;color:var(--mute);overflow-wrap:anywhere}
+.seal b{color:var(--ok)}
+.recbox{border:1px solid var(--amber);background:rgba(40,24,6,.6);border-radius:var(--r);padding:12px}
+.recbox .big{font-family:var(--f-mono);font-size:26px;font-weight:600;color:var(--amber);line-height:1.1}
+.trow{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:10px 2px;border-bottom:1px solid rgba(82,206,236,.1)}
+.trow:last-child{border-bottom:0}
+.daily{width:100%;min-height:220px;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8);font-size:14px;line-height:1.5;resize:vertical}
+.notes{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.note-i{font-size:13.5px;padding:8px 10px;border-left:2px solid var(--cyan);background:rgba(8,24,48,.6)}
+.note-i small{display:block;font-family:var(--f-mono);font-size:10px;color:var(--mute);letter-spacing:.08em}
 .copy{margin:6px 0 0;text-align:center;font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;color:var(--mute);opacity:.8}
 .hidden-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 @media (min-width:760px){
@@ -332,6 +361,7 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
       </div>
     </div>
     <div class="pill" id="gpsPill" aria-live="polite"><span class="dot search" id="gpsDot"></span><span id="gpsTxt">GPS</span></div>
+    <button class="iconbtn micbtn" id="btnMic" aria-label="Freihändig: Sprachbefehle an/aus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
     <button class="iconbtn" id="btnSettings" aria-label="Einstellungen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg>
     </button>
@@ -373,6 +403,7 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
       </div>
     </div>
     <div class="chips" id="mapSites"></div>
+    <section class="panel" id="trassPanel"></section>
     <section class="panel" id="mapInfo"></section>
   </main>
 
@@ -381,7 +412,7 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
     <div class="stack">
       <div class="seg" id="galSeg"></div>
       <div class="chips" id="galSites"></div>
-      <div class="row"><button class="btn" id="btnImport">Fotos importieren</button></div>
+      <div class="row"><button class="btn" id="btnImport">Fotos importieren</button><button class="btn" id="btnVerify">Echtheit prüfen</button></div>
     </div>
     <div id="galList"></div>
   </main>
@@ -396,6 +427,8 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
       <div class="chips" id="repSites"></div>
     </section>
     <section class="panel" id="repSum"></section>
+    <section class="panel" id="dailyPanel"></section>
+    <section class="panel" id="notesPanel"></section>
   </main>
 </div>
 
@@ -415,6 +448,8 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
 <!-- Kamera -->
 <div class="cam" id="cam" hidden>
   <video id="camVideo" playsinline muted autoplay></video>
+  <img id="ghost" class="ghost" alt="" hidden>
+  <canvas id="detCv" class="detcv"></canvas>
   <div class="vign"></div>
   <div class="frame"><i></i><i></i><i></i><i></i></div>
   <div class="level" id="level" hidden></div>
@@ -426,9 +461,14 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
   </div>
   <div class="camtop">
     <div class="instr" id="instr"></div>
-    <button class="iconbtn" id="camClose" aria-label="Kamera schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="iconbtn" id="camClose" aria-label="Kamera schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <button class="iconbtn micbtn" id="camMic" aria-label="Freihändig: Sprachbefehle an/aus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+      <button class="iconbtn" id="camSkip" aria-label="Nächstes Pflichtfoto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 6l7 6-7 6zM13 6l7 6-7 6z"/></svg></button>
+    </div>
   </div>
   <div class="camstat" id="camStat"></div>
+  <div class="ghostbar" id="ghostBar" hidden></div>
   <div class="cambot">
     <div class="camside" style="justify-self:start"><button class="iconbtn" id="camImport" aria-label="Aus Galerie importieren"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14"/><path d="M3 16l5-5 4 4 3-3 6 6"/></svg></button>Import</div>
     <button class="shutter" id="shutter" aria-label="Auslösen"><i></i></button>
@@ -441,6 +481,7 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
 <input type="file" id="fileCap" class="hidden-input" accept="image/*" capture="environment" tabindex="-1" aria-hidden="true">
 <input type="file" id="fileImp" class="hidden-input" accept="image/*" multiple tabindex="-1" aria-hidden="true">
 <input type="file" id="fileRestore" class="hidden-input" accept=".zip,application/zip" tabindex="-1" aria-hidden="true">
+<input type="file" id="fileVerify" class="hidden-input" multiple tabindex="-1" aria-hidden="true">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" async></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" async></script>
@@ -492,51 +533,53 @@ const CATS = [['uebersicht', 'Übersicht'], ['detail', 'Detail'], ['graben', 'Gr
 const catName = k => (CATS.find(c => c[0] === k) || CATS[7])[1];
 const icon = (k, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">${ICON[k] || ICON.sonstiges}</svg>`;
 
-/* Vorlagen: [Phase, Pflichtfoto, Hinweis, Kategorie, Pflicht?] */
+/* Vorlagen: [Phase, Pflichtfoto, Hinweis, Kategorie, Pflicht?, {need: Pflichtinhalte für die KI-Prüfung, depth: Tiefe ablesen, ref: Index des Vorher-Fotos fürs Geisterbild}] */
 const TPL = {
   glasfaser: { n: 'Glasfaser-Hausanschluss', r: 40, items: [
-    ['V', 'Hausfassade mit Hausnummer', 'Ganzes Haus aufs Bild, die Hausnummer muss lesbar sein.', 'uebersicht'],
-    ['V', 'Einführungsstelle vorher', 'Die Wandstelle, wo das Rohr reinkommt. 1–2 m Abstand.', 'detail'],
-    ['W', 'Kopfloch mit Meterstab', 'Meterstab senkrecht an die Grubenwand. Die Tiefe muss ablesbar sein.', 'graben'],
-    ['W', 'Speedpipe verlegt + Warnband', 'Rohr im Graben sichtbar, Warnband darüber – vor dem Verfüllen.', 'leitung'],
-    ['W', 'Hauseinführung abgedichtet', 'Nah ran: Dichtung und Rohr scharf im Bild.', 'detail'],
-    ['N', 'HÜP / Gf-AP montiert', 'Gerät komplett, Aufkleber oder Seriennummer lesbar.', 'detail'],
-    ['N', 'Oberfläche wiederhergestellt', 'Gleicher Standort und Blickwinkel wie beim Vorher-Foto.', 'oberflaeche']] },
+    ['V', 'Hausfassade mit Hausnummer', 'Ganzes Haus aufs Bild, die Hausnummer muss lesbar sein.', 'uebersicht', true, { need: ['Hausfassade vollständig im Bild', 'Hausnummer lesbar'] }],
+    ['V', 'Einführungsstelle vorher', 'Die Wandstelle, wo das Rohr reinkommt. 1–2 m Abstand.', 'detail', true, { need: ['Wandbereich der späteren Hauseinführung'] }],
+    ['W', 'Kopfloch mit Meterstab', 'Meterstab senkrecht an die Grubenwand. Die Tiefe muss ablesbar sein.', 'graben', true, { need: ['Meterstab oder Zollstock senkrecht in der Grube', 'Grubensohle sichtbar', 'Tiefe ablesbar'], depth: true }],
+    ['W', 'Speedpipe verlegt + Warnband', 'Rohr im Graben sichtbar, Warnband darüber – vor dem Verfüllen.', 'leitung', true, { need: ['Rohr / Speedpipe im Graben', 'Warnband'] }],
+    ['W', 'Hauseinführung abgedichtet', 'Nah ran: Dichtung und Rohr scharf im Bild.', 'detail', true, { need: ['Rohrdurchführung in der Wand', 'Abdichtung'], ref: 1 }],
+    ['N', 'HÜP / Gf-AP montiert', 'Gerät komplett, Aufkleber oder Seriennummer lesbar.', 'detail', true, { need: ['Gerät vollständig sichtbar', 'Aufkleber oder Typenschild lesbar'] }],
+    ['N', 'Oberfläche wiederhergestellt', 'Gleicher Standort und Blickwinkel wie beim Vorher-Foto.', 'oberflaeche', true, { need: ['Wiederhergestellte Oberfläche ohne offene Grube'], ref: 0 }]] },
   tiefbau: { n: 'Tief- & Leitungsbau', r: 150, items: [
-    ['V', 'Gesamtansicht Straße', 'Von der Straße aus – die ganze Baustelle im Bild.', 'uebersicht'],
-    ['V', 'Belag / Oberfläche vorher', 'Zustand vor dem Aufbruch. Vorhandene Schäden mit drauf.', 'oberflaeche'],
-    ['V', 'Absperrung & Beschilderung', 'Die komplette Verkehrssicherung in einem Bild.', 'sicherung'],
-    ['W', 'Graben offen mit Meterstab', 'Meterstab senkrecht an die Grabenwand. Tiefe ablesbar.', 'graben'],
-    ['W', 'Leitung verlegt, vor Verfüllung', 'Rohr, Bettung und Warnband müssen sichtbar sein.', 'leitung'],
-    ['W', 'Kreuzung Fremdleitung', 'Nur wenn vorhanden: Abstand mit Meterstab zeigen.', 'leitung', false],
-    ['N', 'Verfüllung / Verdichtung', 'Lagenweise verdichtet, gern mit Rüttelplatte im Bild.', 'graben'],
-    ['N', 'Oberfläche wiederhergestellt', 'Vom gleichen Standort wie das erste Foto.', 'oberflaeche']] },
+    ['V', 'Gesamtansicht Straße', 'Von der Straße aus – die ganze Baustelle im Bild.', 'uebersicht', true, { need: ['Straßenzug bzw. Baustelle im Überblick'] }],
+    ['V', 'Belag / Oberfläche vorher', 'Zustand vor dem Aufbruch. Vorhandene Schäden mit drauf.', 'oberflaeche', true, { need: ['Oberfläche / Belag vor dem Aufbruch'] }],
+    ['V', 'Absperrung & Beschilderung', 'Die komplette Verkehrssicherung in einem Bild.', 'sicherung', true, { need: ['Absperrung', 'Verkehrszeichen'] }],
+    ['W', 'Graben offen mit Meterstab', 'Meterstab senkrecht an die Grabenwand. Tiefe ablesbar.', 'graben', true, { need: ['Meterstab senkrecht im Graben', 'Grabensohle sichtbar', 'Tiefe ablesbar'], depth: true }],
+    ['W', 'Leitung verlegt, vor Verfüllung', 'Rohr, Bettung und Warnband müssen sichtbar sein.', 'leitung', true, { need: ['Rohr / Leitung', 'Sandbettung', 'Warnband'] }],
+    ['W', 'Kreuzung Fremdleitung', 'Nur wenn vorhanden: Abstand mit Meterstab zeigen.', 'leitung', false, { need: ['Fremdleitung', 'Meterstab für den Abstand'] }],
+    ['N', 'Verfüllung / Verdichtung', 'Lagenweise verdichtet, gern mit Rüttelplatte im Bild.', 'graben', true, { need: ['Verfüllter Graben'] }],
+    ['N', 'Oberfläche wiederhergestellt', 'Vom gleichen Standort wie das erste Foto.', 'oberflaeche', true, { need: ['Wiederhergestellte Oberfläche'], ref: 1 }]] },
   hochbau: { n: 'Hochbau / Ausbau', r: 60, items: [
-    ['V', 'Bestand Raum / Bauteil', 'Ecke zu Ecke, damit man den Raum wiedererkennt.', 'uebersicht'],
-    ['W', 'Installation offen', 'Vor dem Verschließen! Leitungen und Dosen gut sichtbar.', 'leitung'],
-    ['W', 'Dämmung / Abdichtung', 'Stöße und Anschlüsse nah fotografieren.', 'detail'],
-    ['N', 'Fertigzustand', 'Gleicher Standort wie beim Bestand-Foto.', 'uebersicht'],
-    ['N', 'Restarbeiten / Mängel', 'Nur wenn etwas offen ist.', 'mangel', false]] },
+    ['V', 'Bestand Raum / Bauteil', 'Ecke zu Ecke, damit man den Raum wiedererkennt.', 'uebersicht', true, { need: ['Raum bzw. Bauteil erkennbar'] }],
+    ['W', 'Installation offen', 'Vor dem Verschließen! Leitungen und Dosen gut sichtbar.', 'leitung', true, { need: ['Offene Leitungen oder Installation'] }],
+    ['W', 'Dämmung / Abdichtung', 'Stöße und Anschlüsse nah fotografieren.', 'detail', true, { need: ['Dämmung oder Abdichtung im Detail'] }],
+    ['N', 'Fertigzustand', 'Gleicher Standort wie beim Bestand-Foto.', 'uebersicht', true, { need: ['Fertiger Raum bzw. Bauteil'], ref: 0 }],
+    ['N', 'Restarbeiten / Mängel', 'Nur wenn etwas offen ist.', 'mangel', false, { need: ['Mangel oder Restarbeit erkennbar'] }]] },
   schaden: { n: 'Schaden / Mangel', r: 40, items: [
-    ['V', 'Übersicht Schadstelle', 'So weit weg, dass man den Ort eindeutig erkennt.', 'uebersicht'],
-    ['V', 'Detail mit Maßstab', 'Zollstock oder Meterstab direkt daneben legen.', 'mangel'],
-    ['W', 'Ursache / Umfeld', 'Was hat den Schaden verursacht?', 'mangel', false],
-    ['N', 'Nach Behebung', 'Gleicher Blickwinkel wie die Übersicht.', 'uebersicht']] },
+    ['V', 'Übersicht Schadstelle', 'So weit weg, dass man den Ort eindeutig erkennt.', 'uebersicht', true, { need: ['Ort der Schadstelle erkennbar'] }],
+    ['V', 'Detail mit Maßstab', 'Zollstock oder Meterstab direkt daneben legen.', 'mangel', true, { need: ['Schaden im Detail', 'Maßstab daneben'] }],
+    ['W', 'Ursache / Umfeld', 'Was hat den Schaden verursacht?', 'mangel', false, { need: ['Mögliche Ursache'] }],
+    ['N', 'Nach Behebung', 'Gleicher Blickwinkel wie die Übersicht.', 'uebersicht', true, { need: ['Behobene Schadstelle'], ref: 0 }]] },
   frei: { n: 'Allgemein', r: 80, items: [
-    ['V', 'Übersicht vorher', 'Gesamtansicht, bevor es losgeht.', 'uebersicht'],
-    ['W', 'Arbeit läuft', 'Der wichtigste Zwischenstand.', 'sonstiges'],
-    ['N', 'Ergebnis', 'Gleicher Standort wie das Vorher-Foto.', 'uebersicht']] }
+    ['V', 'Übersicht vorher', 'Gesamtansicht, bevor es losgeht.', 'uebersicht', true, { need: ['Gesamtansicht'] }],
+    ['W', 'Arbeit läuft', 'Der wichtigste Zwischenstand.', 'sonstiges', true, { need: ['Laufende Arbeit'] }],
+    ['N', 'Ergebnis', 'Gleicher Standort wie das Vorher-Foto.', 'uebersicht', true, { need: ['Ergebnis der Arbeit'], ref: 0 }]] }
 };
 const mkItems = tpl => TPL[tpl].items.map((a, i) => ({ id: 'i' + i, phase: a[0], label: a[1], hint: a[2], cat: a[3], must: a[4] !== false }));
+/* Zusatzinfos (Pflichtinhalte, Tiefe, Geisterbild-Bezug) immer aus der Vorlage – so profitieren auch ältere Baustellen */
+const itemMeta = (site, it) => (site && it && TPL[site.tpl]?.items[+String(it.id).slice(1)]?.[5]) || {};
 
 /* ---------------- Speicher (IndexedDB, Fallback im Arbeitsspeicher) ---------------- */
 const DB = {
-  db: null, mem: { sites: new Map(), photos: new Map(), kv: new Map() },
+  db: null, mem: { sites: new Map(), photos: new Map(), kv: new Map(), notes: new Map(), trassen: new Map(), ledger: new Map() },
   async open() {
     try {
       this.db = await new Promise((res, rej) => {
-        const r = indexedDB.open('sefki-baudoku', 1);
-        r.onupgradeneeded = () => { const d = r.result; ['sites', 'photos', 'kv'].forEach(s => { if (!d.objectStoreNames.contains(s)) d.createObjectStore(s, { keyPath: 'id' }); }); };
+        const r = indexedDB.open('sefki-baudoku', 2);
+        r.onupgradeneeded = () => { const d = r.result; ['sites', 'photos', 'kv', 'notes', 'trassen', 'ledger'].forEach(s => { if (!d.objectStoreNames.contains(s)) d.createObjectStore(s, { keyPath: 'id' }); }); };
         r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
         setTimeout(() => rej(new Error('timeout')), 5000);
       });
@@ -559,8 +602,9 @@ const DB = {
 
 /* ---------------- Zustand ---------------- */
 const S = {
-  sites: [], photos: [],
-  set: { id: 'settings', name: 'Sefkan', voice: false, watermark: true, series: false, demo: false, demoAt: null, pin: null, seeded: false, lastLabels: [] },
+  sites: [], photos: [], notes: [], trassen: [], ledger: [], daily: {}, rec: null,
+  set: { id: 'settings', name: 'Sefkan', voice: false, watermark: true, series: false, demo: false, demoAt: null, pin: null, seeded: false, lastLabels: [],
+    aiKey: '', aiModel: 'claude-sonnet-5-5', aiCheck: true, privacy: true, ghost: true, ghostOpacity: 0.42, ots: true, chainHead: '', trassMaxAcc: 10 },
   pos: null, heading: null, realHeading: false, tilt: null, gps: 'idle',
   view: 'cockpit', lastInside: null, lotseKey: '', cards: [], persisted: null,
   gal: { mode: 'open', site: 'all' }, rep: { range: 'today', site: 'all' }
@@ -652,13 +696,15 @@ function typeSay(html, plain) {
     if (i >= plain.length) { clearInterval(sayTimer); typing = false; el.innerHTML = html; if (!window.speechSynthesis?.speaking) speaking = false; }
   }, 22);
 }
-function speak(text) {
-  if (!S.set.voice || !('speechSynthesis' in window)) return;
+function speak(text, force) {
+  const handsFree = typeof Voice !== 'undefined' && Voice.on;
+  if (!(S.set.voice || (force && handsFree) || handsFree) || !('speechSynthesis' in window)) return;
   try {
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text); u.lang = 'de-DE'; u.rate = 1.04;
     const v = speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('de')); if (v) u.voice = v;
-    u.onstart = () => speaking = true; u.onend = () => speaking = false;
+    if (handsFree) Voice.mute = Date.now() + 600 + text.length * 70;
+    u.onstart = () => speaking = true; u.onend = () => { speaking = false; if (handsFree) Voice.mute = Date.now() + 500; };
     speechSynthesis.speak(u);
   } catch (e) {}
 }
@@ -666,6 +712,7 @@ function speak(text) {
 /* ---------------- GPS & Kompass ---------------- */
 let gpsWatch = null, demoTimer = null;
 function startGPS() {
+  if (S.gnss) return;
   if (S.set.demo) { startDemo(); return; }
   stopDemo();
   if (!('geolocation' in navigator)) { gpsFail('unsupported'); return; }
@@ -679,10 +726,12 @@ function startGPS() {
 function stopGPS() { if (gpsWatch != null) { try { navigator.geolocation.clearWatch(gpsWatch); } catch (e) {} gpsWatch = null; } }
 function onPos(p) {
   const c = p.coords;
-  S.pos = { lat: c.latitude, lon: c.longitude, acc: Math.max(1, Math.round(c.accuracy)), ts: Date.now(), src: 'gps' };
   if (!S.realHeading && c.heading != null && !isNaN(c.heading) && c.speed > 1) S.heading = Math.round(c.heading);
+  if (S.gnss) return; // externer Empfänger hat Vorrang
+  const acc = c.accuracy < 1 ? Math.round(c.accuracy * 100) / 100 : Math.round(c.accuracy);
+  S.pos = { lat: c.latitude, lon: c.longitude, acc: Math.max(0.01, acc), alt: c.altitude ?? null, ts: Date.now(), src: 'gps', fix: c.accuracy < 0.1 ? 'RTK FIX' : c.accuracy < 0.5 ? 'RTK FLOAT' : undefined };
   S.gps = S.pos.acc <= 15 ? 'good' : S.pos.acc <= 35 ? 'ok' : 'weak';
-  adoptOrphans(); tick();
+  recPoint(S.pos); adoptOrphans(); tick();
 }
 function gpsFail(kind) {
   if (kind === 'search') { if (!S.pos) { S.gps = 'search'; tick(); } return; }
@@ -702,6 +751,15 @@ function demoTarget() {
 function startDemo() {
   stopGPS(); clearInterval(demoTimer);
   const step = () => {
+    const tr = curTrasse();
+    if (tr && tr.status === 'rec') { // Demo: Leitungsverlauf ablaufen
+      const w = S.demoWalk ??= { lat: S.pos?.lat ?? demoTarget().lat, lon: S.pos?.lon ?? demoTarget().lon, b: 70 + Math.random() * 40 };
+      w.b += (Math.random() - 0.5) * 14; if (Math.random() < 0.06) w.b += (Math.random() < 0.5 ? -1 : 1) * 70;
+      const d = 2.2; w.lat += d * Math.cos(w.b * RAD) / 110540; w.lon += d * Math.sin(w.b * RAD) / (111320 * Math.cos(w.lat * RAD));
+      S.pos = { lat: w.lat, lon: w.lon, acc: 0.02, alt: 182.4, ts: Date.now(), src: 'demo', fix: 'RTK FIX' };
+      if (!S.realHeading) S.heading = Math.round(w.b % 360);
+      S.gps = 'demo'; recPoint(S.pos); tick(); return;
+    }
     const t = demoTarget(), j = () => (Math.random() - 0.5) * 0.00007;
     S.pos = { lat: t.lat + j(), lon: t.lon + j(), acc: 3 + Math.round(Math.random() * 6), ts: Date.now(), src: 'demo' };
     if (!S.realHeading) S.heading = Math.round(((S.heading ?? 210) + (Math.random() - 0.5) * 16 + 360) % 360);
@@ -801,8 +859,16 @@ function lotse() {
     if (st.site) cards.push({ t: `Route zu ${short(st.site.name)}`, x: 'Öffnet die Navigation in Google Maps.', tag: 'NAVI', a: () => openRoute(st.site) });
     cards.push({ t: 'Foto ohne Baustelle', x: 'Wird gespeichert. Du ordnest es später zu.', tag: 'FREI', a: () => openCamera(null, null) });
   }
+  const tr = curTrasse();
+  if (tr) {
+    key = 'rec|' + tr.id + '|' + tr.status; hl = [tr.name]; cards.length = 0;
+    say = tr.status === 'rec' ? `Trasse ${tr.name} läuft: ${fmtLen(tLen(tr))}, ${tr.points.length} Punkte. Markier Muffen, Abzweige und Richtungswechsel.` : `Trasse ${tr.name} ist pausiert.`;
+    cards.push({ t: 'Punkt markieren', x: 'Muffe, Abzweig, Hausanschluss, Richtungswechsel – mit Tiefe und Foto.', tag: 'TRASSE', a: () => markPoint(), hot: true });
+    cards.push({ t: tr.status === 'rec' ? 'Pause' : 'Weiter aufnehmen', x: 'Unterbricht die Linie, z. B. für eine Straßenquerung.', tag: 'PAUSE', a: pauseTrasse });
+    cards.push({ t: 'Trasse beenden', x: 'Speichert die Linie. Danach GIS-Export für den Netzbetreiber.', tag: 'FERTIG', a: finishTrasse });
+  }
   const h = new Date().getHours();
-  if (open > 0 && (h >= 15 || open >= 25)) {
+  if (!tr && open > 0 && (h >= 15 || open >= 25)) {
     key += '|fa';
     cards.splice(1, 0, { t: 'Feierabend-Check', x: `${open} Foto${open > 1 ? 's sind' : ' ist'} noch nicht gesichert. Ein ZIP, und alles ist sicher.`, tag: 'SICHERN', a: () => { S.rep.range = 'open'; S.rep.site = 'all'; go('bericht'); } });
   }
@@ -830,17 +896,19 @@ function updatePill() {
   const d = $('#gpsDot'), t = $('#gpsTxt');
   const m = { good: 'good', ok: 'ok', weak: 'weak', search: 'search', demo: 'ok', denied: 'bad', unsupported: 'bad', error: 'bad', idle: 'search' };
   d.className = 'dot ' + (m[S.gps] || 'search');
-  t.textContent = S.gps === 'demo' ? `DEMO ±${S.pos?.acc ?? '–'} m` : S.pos && !['denied', 'unsupported'].includes(S.gps) ? `GPS ±${S.pos.acc} m` : S.gps === 'denied' ? 'GPS GESPERRT' : 'GPS SUCHT';
+  const fx = S.pos?.fix && /RTK/.test(S.pos.fix) ? S.pos.fix.replace('RTK ', 'RTK·') + ' ' : '';
+  t.textContent = S.gnss ? `${S.gnss.fix === 'kein Fix' || !S.pos ? 'GNSS ' + (S.gnss.fix || '') : fx + '±' + fmtAcc(S.pos.acc)}`
+    : S.gps === 'demo' ? `DEMO ${fx}±${fmtAcc(S.pos?.acc)}` : S.pos && !['denied', 'unsupported'].includes(S.gps) ? `GPS ${fx}±${fmtAcc(S.pos.acc)}` : S.gps === 'denied' ? 'GPS GESPERRT' : 'GPS SUCHT';
   $('#lotseState').textContent = S.gps === 'search' ? 'sucht GPS' : S.gps === 'denied' ? 'braucht Standort' : 'bereit';
 }
 function renderCards() {
   $('#cards').innerHTML = S.cards.map((c, i) => `<button class="card${c.hot ? ' hot' : ''}" data-i="${i}"><span class="n">${i + 1}</span><span class="t">${esc(c.t)}</span><span class="x">${esc(c.x)}</span><span class="tag">${esc(c.tag)}</span></button>`).join('');
 }
 function renderNext() {
-  const b = $('#nextBar'), c = S.cards[0];
+  const b = $('#nextBar'), c = S.cards[0], tr = curTrasse();
   if (!c || S.view === 'cockpit') { b.hidden = true; return; }
   b.hidden = false;
-  b.innerHTML = `<span class="k">JETZT</span><span class="t">${esc(c.t)}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+  b.innerHTML = `<span class="k">${tr ? 'TRASSE ' + fmtLen(tLen(tr)) : 'JETZT'}</span><span class="t">${esc(c.t)}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 }
 function ringSVG(site) {
   const pr = progress(site), its = pr.its.filter(i => i.must), n = its.length || 1;
@@ -975,9 +1043,10 @@ function camTarget() {
   }
   return { site: null, item: null, pr: null };
 }
-async function openCamera(siteId, itemId) {
+async function openCamera(siteId, itemId, mark) {
   askOrientation();
-  camCtx = { siteId, itemId };
+  camCtx = { siteId, itemId, mark: mark || null };
+  if (S.set.privacy) Det.load();
   const ov = $('#cam'); ov.hidden = false; document.body.classList.add('noscroll');
   $('#review').hidden = true; $('#camFallback').hidden = true;
   $('#camSeries').classList.toggle('on', !!S.set.series);
@@ -996,10 +1065,21 @@ async function openCamera(siteId, itemId) {
     $('#btnDemoShot').hidden = !S.set.demo;
   }
   cancelAnimationFrame(camRaf);
-  const loop = () => { renderLevel(); camRaf = requestAnimationFrame(loop); }; loop();
+  let lastLive = 0;
+  const loop = (ts) => { renderLevel(); if (ts - lastLive > 650) { lastLive = ts; liveTick(); } camRaf = requestAnimationFrame(loop); }; requestAnimationFrame(loop);
+  updateGhost(); Voice.ui();
+}
+let liveQ = null;
+async function liveTick() {
+  if ($('#cam').hidden || !camStream || !$('#review').hidden) return;
+  const v = $('#camVideo'); if (!v.videoWidth) return;
+  liveQ = analyze(fitCanvas(v, 320));
+  if (S.set.privacy && Det.model && !Det.busy) { Det.busy = true; Det.live = await Det.detect(v); Det.busy = false; drawDet(); }
+  renderCamHud();
 }
 function closeCamera() {
   camStream?.getTracks().forEach(t => t.stop()); camStream = null; $('#camVideo').srcObject = null;
+  Det.live = []; liveQ = null; const dc = $('#detCv'); dc.getContext('2d').clearRect(0, 0, dc.width, dc.height); $('#ghost').hidden = true;
   cancelAnimationFrame(camRaf); $('#cam').hidden = true; pending = null;
   document.body.classList.remove('noscroll');
   try { wakeLock?.release(); } catch (e) {} wakeLock = null;
@@ -1010,6 +1090,10 @@ function renderCamHud() {
   if (site && item) {
     ins.className = 'instr';
     ins.innerHTML = `<div class="k">PFLICHTFOTO ${pr.its.filter(i => i.must).findIndex(i => i.id === item.id) + 1 || '+'}/${pr.must} · ${PH[item.phase].n.toUpperCase()}</div><div class="t">${esc(item.label)}</div><div class="h">${esc(item.hint)}</div>`;
+  } else if (camCtx.mark) {
+    const m = curTrasse()?.marks.find(x => x.id === camCtx.mark);
+    ins.className = 'instr';
+    ins.innerHTML = `<div class="k">TRASSENPUNKT ${m?.n || ''} · ${esc((m?.type || '').toUpperCase())}</div><div class="t">Foto vom Trassenpunkt</div><div class="h">Meterstab senkrecht in den Graben – ich lese die Tiefe ab und hänge das Foto an den Punkt.</div>`;
   } else if (site) {
     ins.className = 'instr free';
     ins.innerHTML = `<div class="k">${pr.next ? 'ZUSATZFOTO' : 'ALLE PFLICHTFOTOS ERLEDIGT'}</div><div class="t">${esc(site.name)}</div><div class="h">Wird dieser Baustelle zugeordnet.</div>`;
@@ -1018,9 +1102,16 @@ function renderCamHud() {
     ins.innerHTML = `<div class="k">OHNE BAUSTELLE</div><div class="t">Freies Foto</div><div class="h">${S.pos ? 'Du stehst auf keiner angelegten Baustelle. Ich speichere die Position mit.' : 'Noch kein GPS – das Foto bekommt die Position, sobald sie da ist.'}</div>`;
   }
   const acc = S.pos?.acc, cls = !S.pos ? 'search' : acc <= 15 ? 'good' : acc <= 35 ? 'ok' : 'weak';
-  $('#camStat').innerHTML = `<span class="pill"><span class="dot ${cls}"></span>${S.pos ? `±${acc} m` : 'GPS sucht'}</span>` +
+  const np = Det.live.filter(d => d.class === 'person').length, nv = Det.live.length - np;
+  $('#camStat').innerHTML = `<span class="pill"><span class="dot ${cls}"></span>${S.pos ? `${S.pos.fix && /RTK/.test(S.pos.fix) ? S.pos.fix + ' ' : ''}±${fmtAcc(acc)}` : 'GPS sucht'}</span>` +
     (S.heading != null ? `<span class="pill">BLICK ${S.heading}° ${dirName(S.heading)}</span>` : '') +
-    (S.set.series ? '<span class="pill" style="color:var(--amber)">SERIE</span>' : '');
+    (liveQ ? `<span class="pill" style="color:${liveQ.flags.includes('unscharf') ? 'var(--amber)' : 'var(--ok)'}">${liveQ.flags.includes('unscharf') ? 'UNSCHARF – RUHIG HALTEN' : 'SCHARF'}</span>` : '') +
+    (liveQ && (liveQ.flags.includes('dunkel') || liveQ.flags.includes('überbelichtet')) ? `<span class="pill" style="color:var(--amber)">${liveQ.flags.includes('dunkel') ? 'ZU DUNKEL' : 'ZU HELL'}</span>` : '') +
+    (np || nv ? `<span class="pill" style="color:var(--amber)">${[np ? np + ' PERSON' + (np > 1 ? 'EN' : '') : '', nv ? nv + ' FAHRZEUG' + (nv > 1 ? 'E' : '') : ''].filter(Boolean).join(' · ')} → UNKENNTLICH</span>` : '') +
+    (camCtx.mark ? `<span class="pill" style="color:var(--amber)">TRASSENPUNKT ${curTrasse()?.marks.find(m => m.id === camCtx.mark)?.n || ''}</span>` : '') +
+    (S.set.series ? '<span class="pill" style="color:var(--amber)">SERIE</span>' : '') +
+    (Voice.on ? '<span class="pill" style="color:var(--amber)">HÖRT ZU</span>' : '');
+  if (!$('#cam').hidden) updateGhost();
 }
 function renderLevel() {
   const l = $('#level');
@@ -1028,7 +1119,7 @@ function renderLevel() {
   l.hidden = false; const g = Math.max(-30, Math.min(30, S.tilt.gamma));
   l.style.transform = `rotate(${-g}deg)`; l.classList.toggle('ok', Math.abs(g) < 2.5);
 }
-function snapMeta() { return { ts: Date.now(), lat: S.pos?.lat ?? null, lon: S.pos?.lon ?? null, acc: S.pos?.acc ?? null, heading: S.heading, src: S.pos?.src || null }; }
+function snapMeta() { return { ts: Date.now(), lat: S.pos?.lat ?? null, lon: S.pos?.lon ?? null, acc: S.pos?.acc ?? null, alt: S.pos?.alt ?? null, fix: S.pos?.fix || null, heading: S.heading, src: S.pos?.src || null }; }
 async function shoot() {
   if (!camStream) { $('#fileCap').click(); return; }
   const v = $('#camVideo'); if (!v.videoWidth) return;
@@ -1049,17 +1140,70 @@ async function handleCapture(src, meta) {
     siteId: tg.site?.id || '', itemId: tg.item?.id || '', phase: tg.item?.phase || S.set.lastPhase || 'W',
     cat: tg.item?.cat || S.set.lastCat || 'uebersicht', labels: (S.set.series && S.set.lastLabelsStr) || '', desc: ''
   };
+  if (camCtx.mark) { f.itemId = ''; f.cat = 'graben'; f.phase = 'W'; }
+  const dets = S.set.privacy ? await Det.detect(c) : [];
   if (S.set.series && q.ok && meta.lat != null) {
-    await savePhoto(c, meta, f, q); camCtx.itemId = undefined; renderCamHud();
-    toast(`✓ Gespeichert${tg.item ? ': ' + tg.item.label : ''}`, 1800); return;
+    const raw = fitCanvas(c, 1280), rects = S.set.privacy ? privacyRects(dets, null, c.width, c.height) : [];
+    const p = await savePhoto(c, meta, f, q, { rects }); camCtx.itemId = undefined; renderCamHud();
+    toast(`✓ Gespeichert${tg.item ? ': ' + tg.item.label : ''}`, 1800);
+    if (S.set.aiCheck && await AI.mode()) aiCheck(raw, tg.site, tg.item).then(r => applyAILater(p, r)).catch(() => {});
+    return;
   }
-  pending = { c, meta, q }; showReview(f);
+  pending = { c, meta, q, dets, ai: null, aiState: 'idle', blurOn: S.set.privacy, rects: S.set.privacy ? privacyRects(dets, null, c.width, c.height) : [], tg };
+  showReview(f); runReviewAI();
+}
+/* KI-Ergebnis nachträglich an ein schon gespeichertes Foto hängen (Serienmodus) – das Bild selbst bleibt unverändert versiegelt */
+async function applyAILater(p, r) {
+  if (!r) return; p.aiOk = r.passt; p.aiDesc = r.beschreibung || ''; p.aiCheck = r.pruefung || [];
+  if (r.tiefe_cm && !p.depthCm) { p.depthCm = Math.round(r.tiefe_cm); p.depthSrc = 'KI'; }
+  if (!p.desc && r.beschreibung) p.desc = r.beschreibung;
+  await DB.put('photos', p).catch(() => {});
+  if (r.passt === false && r.hinweis) toast('SEF-KI: ' + r.hinweis, 5000);
+}
+async function runReviewAI() {
+  const pd = pending; if (!pd) return;
+  if (!S.set.aiCheck) { pd.aiState = 'disabled'; renderAIBox(); return; }
+  if (!(await AI.mode())) { pd.aiState = 'off'; renderAIBox(); return; }
+  pd.aiState = 'busy'; renderAIBox();
+  const site = S.sites.find(s => s.id === $('#rvSite')?.value) || null, item = site?.items.find(i => i.id === $('#rvItem')?.value) || null;
+  try {
+    const r = await aiCheck(pd.c, site, item); if (pending !== pd) return;
+    pd.ai = r; pd.aiState = 'done';
+    if (S.set.privacy) pd.rects = privacyRects(pd.dets, r, pd.c.width, pd.c.height);
+    const d = $('#rvDesc'); if (d && !d.value.trim() && r.beschreibung) d.value = r.beschreibung;
+    const lb = $('#rvLabels'); if (lb && Array.isArray(r.stichworte)) { const cur = lb.value.split(',').map(x => x.trim()).filter(Boolean); r.stichworte.slice(0, 4).forEach(s => { if (s && !cur.includes(s)) cur.push(s); }); lb.value = cur.join(', '); }
+    if (r.tiefe_cm) { $('#rvDepthF').hidden = false; const dp = $('#rvDepth'); if (!dp.value) dp.value = Math.round(r.tiefe_cm); }
+    speak(r.passt === false ? 'Achtung. ' + (r.hinweis || 'Es fehlt etwas auf dem Foto.') : r.tiefe_cm ? `Passt. Tiefe ${Math.round(r.tiefe_cm)} Zentimeter.` : 'Passt.');
+  } catch (e) { if (pending !== pd) return; pd.aiState = 'err'; pd.aiErr = aiErr(e); }
+  renderAIBox(); renderPreview();
+}
+function renderAIBox() {
+  const pd = pending, el = $('#rvAI'); if (!pd || !el) return;
+  if (pd.aiState === 'disabled') { el.innerHTML = ''; return; }
+  if (pd.aiState === 'off') { el.innerHTML = `<div class="aibox"><div class="h"><span>SEF-KI BILDPRÜFUNG</span><span>AUS</span></div><p class="note" style="margin:0">${inFrame ? 'In dieser Vorschau nicht verfügbar.' : 'Noch nicht eingerichtet: Einstellungen → „SEF-KI Intelligenz“. Dann prüfe ich jedes Foto auf die Pflichtinhalte, lese Tiefen ab und finde Gesichter und Kennzeichen.'}</p></div>`; return; }
+  if (pd.aiState === 'busy' || pd.aiState === 'idle') { el.innerHTML = `<div class="aibox"><div class="h"><span>SEF-KI BILDPRÜFUNG</span></div><div class="busy"><span class="spin"></span>Ich prüfe das Foto … du kannst trotzdem schon speichern.</div></div>`; return; }
+  if (pd.aiState === 'err') { el.innerHTML = `<div class="aibox"><div class="h"><span>SEF-KI BILDPRÜFUNG</span><button class="chip" id="rvAIre">Nochmal prüfen</button></div><p class="note" style="margin:0">${esc(pd.aiErr)}</p></div>`; $('#rvAIre').onclick = runReviewAI; return; }
+  const r = pd.ai, ok = r.passt !== false;
+  el.innerHTML = `<div class="aibox" style="border-color:${ok ? 'var(--ok)' : 'var(--amber)'}"><div class="h"><span style="color:${ok ? 'var(--ok)' : 'var(--amber)'}">${ok ? '✓ PASST' : '✗ FEHLT ETWAS'}</span><button class="chip" id="rvAIre">Erneut prüfen</button></div>
+    ${(r.pruefung || []).length ? `<ul>${r.pruefung.map(x => `<li class="${x.ok ? '' : 'no'}">${esc(x.punkt)}${x.kommentar ? ` <span class="note">– ${esc(x.kommentar)}</span>` : ''}</li>`).join('')}</ul>` : ''}
+    ${r.tiefe_cm ? `<p class="note" style="margin:8px 0 0">Tiefe abgelesen: <b style="color:var(--ink)">${Math.round(r.tiefe_cm)} cm</b>${r.tiefe_sicher === false ? ' (unsicher – bitte prüfen)' : ''}</p>` : ''}
+    ${r.hinweis ? `<div class="tip">${esc(r.hinweis)}</div>` : ''}</div>`;
+  $('#rvAIre').onclick = runReviewAI;
+}
+function renderPreview() {
+  const pd = pending, img = $('#rvImg'); if (!pd || !img) return;
+  const pv = fitCanvas(pd.c, 1100), k = pv.width / pd.c.width;
+  if (pd.blurOn) pd.rects.forEach(r => pixelate(pv, { x: r.x * k, y: r.y * k, w: r.w * k, h: r.h * k }));
+  img.src = pv.toDataURL('image/jpeg', 0.8);
+  const pc = $('#rvPriv');
+  if (pc) pc.innerHTML = pd.rects.length ? `<span class="q ${pd.blurOn ? 'g' : 'w'}">${pd.rects.length} BEREICH${pd.rects.length > 1 ? 'E' : ''} ${pd.blurOn ? 'UNKENNTLICH' : 'SICHTBAR'}</span><button type="button" class="chip" id="rvPrivT">${pd.blurOn ? 'Unkenntlichmachung aus' : 'Wieder unkenntlich machen'}</button>` : '';
+  $('#rvPrivT')?.addEventListener('click', () => { pd.blurOn = !pd.blurOn; renderPreview(); });
 }
 function qualHTML(q, meta) {
   const chips = [];
   chips.push(q.flags.includes('unscharf') ? '<span class="q w">EVTL. UNSCHARF</span>' : '<span class="q g">SCHARF</span>');
   chips.push(q.flags.includes('dunkel') ? '<span class="q w">ZU DUNKEL</span>' : q.flags.includes('überbelichtet') ? '<span class="q w">ÜBERBELICHTET</span>' : '<span class="q g">LICHT OK</span>');
-  chips.push(meta.lat == null ? '<span class="q b">KEIN GPS</span>' : meta.acc > 35 ? `<span class="q w">GPS ±${meta.acc} m</span>` : `<span class="q g">GPS ±${meta.acc} m</span>`);
+  chips.push(meta.lat == null ? '<span class="q b">KEIN GPS</span>' : meta.acc > 35 ? `<span class="q w">GPS ±${fmtAcc(meta.acc)}</span>` : `<span class="q g">GPS ±${fmtAcc(meta.acc)}</span>`);
   if (meta.heading != null) chips.push(`<span class="q g">BLICK ${meta.heading}° ${dirName(meta.heading)}</span>`);
   return chips.join('');
 }
@@ -1069,13 +1213,15 @@ function itemOptions(siteId, sel) {
   return '<option value="">Zusatzfoto (kein Pflichtfoto)</option>' + pr.its.map(i => `<option value="${i.id}"${i.id === sel ? ' selected' : ''}>${i.photos.length ? '✓ ' : ''}${PH[i.phase].n}: ${esc(i.label)}</option>`).join('');
 }
 function showReview(f) {
-  const { c, meta, q } = pending; const rv = $('#review'); rv.hidden = false;
-  const prev = fitCanvas(c, 1100).toDataURL('image/jpeg', 0.8);
+  const { c, meta, q } = pending; const rv = $('#review'); rv.hidden = false; $('#ghost').hidden = true; $('#ghostBar').hidden = true;
   const warn = q.flags.length ? `<div class="warnbox" style="margin-top:10px">${q.flags.includes('unscharf') ? 'Das Bild wirkt verwackelt. ' : ''}${q.flags.includes('dunkel') ? 'Das Bild ist sehr dunkel. ' : ''}${q.flags.includes('überbelichtet') ? 'Das Bild ist überbelichtet. ' : ''}Lieber nochmal aufnehmen?</div>` : '';
+  const tgItem = pending.tg?.item, needDepth = !!(itemMeta(pending.tg?.site, tgItem).depth || camCtx.mark);
   $('#reviewIn').innerHTML = `
     <div class="ph"><h2>Foto prüfen</h2><span class="lbl">${fmtTime(meta.ts)}</span></div>
-    <img class="big" src="${prev}" alt="Aufgenommenes Foto">
-    <div class="qual">${qualHTML(q, meta)}</div>${warn}
+    <img class="big" id="rvImg" alt="Aufgenommenes Foto">
+    <div class="qual">${qualHTML(q, meta)}</div><div class="qual" id="rvPriv"></div>${warn}
+    <div id="rvAI"></div>
+    <div class="fld" id="rvDepthF"${needDepth ? '' : ' hidden'}><label class="lbl" for="rvDepth">Tiefe (cm)</label><input type="text" inputmode="decimal" id="rvDepth" placeholder="wird von der KI abgelesen – oder selbst eintragen"></div>
     <div class="fld" style="margin-top:14px"><label class="lbl" for="rvSite">Baustelle</label>
       <select id="rvSite"><option value="">Ohne Baustelle</option>${activeSites().map(s => `<option value="${s.id}"${s.id === f.siteId ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</select></div>
     <div class="fld"><label class="lbl" for="rvItem">Pflichtfoto</label><select id="rvItem">${itemOptions(f.siteId, f.itemId)}</select></div>
@@ -1086,7 +1232,7 @@ function showReview(f) {
     <div class="fld"><label class="lbl" for="rvDesc">Beschreibung</label><div class="inrow"><textarea id="rvDesc" placeholder="Was sieht man? (optional)"></textarea>
       ${hasDictation() ? '<button type="button" class="iconbtn" id="rvMic" aria-label="Diktieren" style="align-self:flex-start;width:44px;height:44px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>' : ''}</div></div>
     <div class="actions"><div class="row"><button class="btn" id="rvRetake">Nochmal</button><button class="btn pri" id="rvSave">Speichern</button></div></div>`;
-  rv.scrollTop = 0;
+  rv.scrollTop = 0; renderPreview(); renderAIBox();
   const st = { phase: f.phase, cat: f.cat };
   $('#rvSite').onchange = e => { $('#rvItem').innerHTML = itemOptions(e.target.value, ''); };
   $('#rvItem').onchange = e => {
@@ -1097,13 +1243,18 @@ function showReview(f) {
   $('#rvCat').onclick = e => { const b = e.target.closest('.cat'); if (!b) return; st.cat = b.dataset.c; $$('#rvCat .cat').forEach(x => x.classList.toggle('on', x === b)); };
   $('#rvLabChips')?.addEventListener('click', e => { const b = e.target.closest('[data-l]'); if (!b) return; const inp = $('#rvLabels'); const cur = inp.value.split(',').map(x => x.trim()).filter(Boolean); if (!cur.includes(b.dataset.l)) cur.push(b.dataset.l); inp.value = cur.join(', '); });
   $('#rvMic')?.addEventListener('click', () => dictate($('#rvDesc'), $('#rvMic')));
-  $('#rvRetake').onclick = () => { pending = null; rv.hidden = true; };
+  $('#rvRetake').onclick = () => { pending = null; rv.hidden = true; updateGhost(); };
   $('#rvSave').onclick = async () => {
-    const btn = $('#rvSave'); btn.disabled = true; btn.textContent = 'Speichere …';
+    const btn = $('#rvSave'); if (btn.disabled) return; btn.disabled = true; btn.textContent = 'Speichere …';
     const ff = { siteId: $('#rvSite').value, itemId: $('#rvItem').value, phase: st.phase, cat: st.cat, labels: $('#rvLabels').value, desc: $('#rvDesc').value.trim() };
+    const pd = pending, depth = parseFloat(String($('#rvDepth').value).replace(',', '.')), wasMark = camCtx.mark;
     try {
-      await savePhoto(pending.c, pending.meta, ff, pending.q);
-      pending = null; rv.hidden = true; camCtx = { siteId: ff.siteId || undefined, itemId: undefined };
+      if (wasMark) {
+        await savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: 'KI/manuell' });
+        pending = null; rv.hidden = true; closeCamera(); toast('Foto am Trassenpunkt gespeichert.'); speak('Foto am Trassenpunkt gespeichert.'); return;
+      }
+      await savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: pd.ai?.tiefe_cm && Math.round(pd.ai.tiefe_cm) === Math.round(depth) ? 'KI' : 'manuell' });
+      pending = null; rv.hidden = true; camCtx = { siteId: ff.siteId || undefined, itemId: undefined, mark: null };
       const { item, site } = camTarget(); renderCamHud();
       toast(item ? `Gespeichert. Nächstes Pflichtfoto: ${item.label}` : site ? `Gespeichert. ${site.name} ist komplett!` : 'Gespeichert.', 3600);
       speak(item ? `Gespeichert. Als Nächstes: ${item.label}.` : 'Gespeichert.');
@@ -1131,9 +1282,9 @@ function drawWatermark(c, p) {
   const badgeW = 150 * s;
   g.textBaseline = 'top';
   g.font = `700 ${23 * s}px "JetBrains Mono", Consolas, monospace`; g.fillStyle = '#e6f8ff';
-  g.fillText(fitText(g, `${site ? site.name : 'Ohne Baustelle'} · ${item ? item.label : catName(p.cat)}`, W - badgeW - padX * 2), padX, H - bh + 14 * s);
+  g.fillText(fitText(g, `${site ? site.name : 'Ohne Baustelle'} · ${item ? item.label : catName(p.cat)}${p.depthCm ? ' · Tiefe ' + p.depthCm + ' cm' : ''}`, W - badgeW - padX * 2), padX, H - bh + 14 * s);
   g.font = `400 ${17 * s}px "JetBrains Mono", Consolas, monospace`; g.fillStyle = '#a6d6e6';
-  const l2 = `${fmtDate(p.ts)} ${new Date(p.ts).toLocaleTimeString('de-DE')} · ${p.lat != null ? coord(p.lat, p.lon) + ' ±' + p.acc + ' m' : 'ohne GPS'}${p.heading != null ? ' · Blick ' + p.heading + '° ' + dirName(p.heading) : ''}`;
+  const l2 = `${fmtDate(p.ts)} ${new Date(p.ts).toLocaleTimeString('de-DE')} · ${p.lat != null ? coord(p.lat, p.lon) + ' ±' + fmtAcc(p.acc) + (p.fix && /RTK/.test(p.fix) ? ' ' + p.fix : '') : 'ohne GPS'}${p.heading != null ? ' · Blick ' + p.heading + '° ' + dirName(p.heading) : ''}`;
   g.fillText(fitText(g, l2, W - badgeW - padX * 2), padX, H - bh + 48 * s);
   const bx = W - badgeW - padX + 10 * s, by = H - bh + 16 * s;
   g.fillStyle = PH[p.phase].c; g.fillRect(bx, by, 34 * s, 34 * s);
@@ -1143,17 +1294,24 @@ function drawWatermark(c, p) {
 }
 const toBlob = (c, q = 0.88) => new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(new Error('Bild konnte nicht erzeugt werden')), 'image/jpeg', q));
 const thumbOf = c => fitCanvas(c, 400).toDataURL('image/jpeg', 0.72);
-async function savePhoto(c, meta, f, q) {
-  const labels = String(f.labels || '').split(',').map(x => x.trim()).filter(Boolean);
-  const p = { id: uid(), ts: meta.ts, lat: meta.lat, lon: meta.lon, acc: meta.acc, heading: meta.heading, src: meta.src,
+async function savePhoto(c, meta, f, q, x = {}) {
+  const labels = String(f.labels || '').split(',').map(v => v.trim()).filter(Boolean);
+  const p = { id: uid(), ts: meta.ts, lat: meta.lat, lon: meta.lon, acc: meta.acc, alt: meta.alt ?? null, fix: meta.fix || null, heading: meta.heading, src: meta.src,
     siteId: f.siteId || null, itemId: f.itemId || null, phase: f.phase, cat: f.cat, labels, desc: f.desc || '', address: '',
-    q: { sharp: q.sharp, bright: q.bright, flags: q.flags }, exported: false, w: c.width, h: c.height, imported: !!meta.imported };
-  if (S.set.watermark) drawWatermark(c, p);
-  p.blob = await toBlob(c); p.thumb = thumbOf(c);
+    q: { sharp: q.sharp, bright: q.bright, flags: q.flags }, exported: false, w: c.width, h: c.height, imported: !!meta.imported,
+    depthCm: x.depthCm ?? null, depthSrc: x.depthCm != null ? x.depthSrc || 'manuell' : null,
+    aiOk: x.ai ? x.ai.passt !== false : null, aiDesc: x.ai?.beschreibung || '', aiCheck: x.ai?.pruefung || null,
+    privacy: (x.rects || []).map(r => r.kind) };
+  (x.rects || []).forEach(r => pixelate(c, r));                    // 1. Datenschutz
+  if (S.set.watermark) drawWatermark(c, p);                          // 2. Stempel
+  p.blob = await toBlob(c); p.thumb = thumbOf(c);                    // 3. Datei
+  await sealSafe(p, 'foto');                                         // 4. Fingerabdruck + Kette
   await DB.put('photos', p); S.photos.push(p);
+  if (camCtx.mark) { const t = curTrasse() || S.trassen.find(tr => tr.marks.some(m => m.id === camCtx.mark)); const m = t?.marks.find(mm => mm.id === camCtx.mark);
+    if (m) { m.photoId = p.id; if (!m.depthCm && p.depthCm) m.depthCm = p.depthCm; saveTrasse(t); } }
   S.set.lastPhase = p.phase; S.set.lastCat = p.cat; S.set.lastLabelsStr = labels.join(', ');
   S.set.lastLabels = [...new Set([...labels, ...(S.set.lastLabels || [])])].slice(0, 12); saveSet();
-  buzz([20, 40, 20]); geocode(p); refresh(true);
+  buzz([20, 40, 20]); geocode(p); otsStamp(p); refresh(true);
   return p;
 }
 /* Adresse nachschlagen (nur wenn Internet da ist) */
@@ -1277,6 +1435,7 @@ async function seedExamples() {
 async function savePhotoQuiet(c, meta, f) {
   const p = { id: uid(), ts: meta.ts, lat: meta.lat, lon: meta.lon, acc: meta.acc, heading: meta.heading, src: meta.src, siteId: f.siteId, itemId: f.itemId, phase: f.phase, cat: f.cat, labels: ['Beispiel'], desc: f.desc, address: '', q: analyze(c), exported: false, w: c.width, h: c.height };
   drawWatermark(c, p); p.blob = await toBlob(c, 0.8); p.thumb = thumbOf(c);
+  await sealSafe(p, 'foto'); if (p.ots) p.ots = null;
   await DB.put('photos', p); S.photos.push(p); return p;
 }
 async function removeExamples() {
@@ -1357,10 +1516,14 @@ function openPhoto(id) {
       <dt>Phase</dt><dd style="color:${PH[p.phase].c}">${PH[p.phase].n}</dd>
       <dt>Kategorie</dt><dd>${catName(p.cat)}</dd>
       <dt>Zeit</dt><dd class="num">${fmtDay(p.ts)}, ${fmtTime(p.ts)}</dd>
-      <dt>Position</dt><dd class="num">${p.lat != null ? coord(p.lat, p.lon) + ' ±' + p.acc + ' m' : 'ohne GPS'}${p.src === 'exif' ? ' (aus Bild)' : p.src === 'demo' ? ' (Demo)' : ''}</dd>
+      <dt>Position</dt><dd class="num">${p.lat != null ? coord(p.lat, p.lon) + ' ±' + fmtAcc(p.acc) + (p.fix ? ' · ' + p.fix : '') : 'ohne GPS'}${p.src === 'exif' ? ' (aus Bild)' : p.src === 'demo' ? ' (Demo)' : p.src === 'gnss' ? ' (GNSS-Empfänger)' : ''}</dd>
       <dt>Blick</dt><dd class="num">${p.heading != null ? p.heading + '° ' + dirName(p.heading) : '–'}</dd>
       <dt>Adresse</dt><dd>${esc(p.address || '–')}</dd>
-      <dt>Stichworte</dt><dd>${esc((p.labels || []).join(', ') || '–')}</dd></dl>
+      <dt>Stichworte</dt><dd>${esc((p.labels || []).join(', ') || '–')}</dd>
+      ${p.depthCm ? `<dt>Tiefe</dt><dd class="num">${p.depthCm} cm <span class="note">(${esc(p.depthSrc || 'manuell')})</span></dd>` : ''}
+      ${p.aiOk != null ? `<dt>KI-Prüfung</dt><dd style="color:${p.aiOk ? 'var(--ok)' : 'var(--amber)'}">${p.aiOk ? 'Pflichtinhalte erkannt' : 'Unvollständig'}${p.aiDesc ? `<br><span class="note">${esc(p.aiDesc)}</span>` : ''}</dd>` : ''}
+      ${p.privacy?.length ? `<dt>Datenschutz</dt><dd>${p.privacy.length} Bereich${p.privacy.length > 1 ? 'e' : ''} unkenntlich gemacht</dd>` : ''}
+      <dt>Siegel</dt><dd><div class="seal">${p.hash ? `<b>#${p.seq} · SHA-256</b> ${p.hash}<br>${otsTxt(p)}${p.origHash ? '<br>Bearbeitet – Original versiegelt: ' + p.origHash.slice(0, 16) + '…' : ''}` : 'nicht versiegelt (älteres Foto)'}</div></dd></dl>
     <div class="fld"><label class="lbl" for="pdDesc">Beschreibung</label><textarea id="pdDesc">${esc(p.desc)}</textarea></div>
     <div class="row"><button class="btn" data-x="edit">Markieren / Unkenntlich</button><button class="btn" data-x="share">Teilen</button></div>
     <div class="row" style="margin-top:8px"><button class="btn" data-x="map"${p.lat == null ? ' disabled' : ''}>Auf Karte</button><button class="btn danger" data-x="del">Löschen</button></div>`);
@@ -1417,7 +1580,13 @@ async function openMarkup(p) {
     if (t === 'pen' || t === 'blur') { tool = t; $$('.mkbar [data-t=pen],.mkbar [data-t=blur]', ov).forEach(x => x.classList.toggle('on', x === b)); }
     if (t === 'undo') { const h = hist.pop(); if (h) { work.getContext('2d').drawImage(h, 0, 0); draw(); } }
     if (t === 'cancel') { ov.remove(); }
-    if (t === 'save') { b.disabled = true; p.blob = await toBlob(work, 0.9); p.thumb = thumbOf(work); p.edited = true; p.exported = false; await DB.put('photos', p); ov.remove(); toast('Änderungen gespeichert.'); refresh(true); }
+    if (t === 'save') {
+      b.disabled = true;
+      if (!p.origBlob) { p.origBlob = p.blob; p.origHash = p.hash; }   // Original bleibt als Beweis erhalten
+      p.blob = await toBlob(work, 0.9); p.thumb = thumbOf(work); p.edited = true; p.exported = false;
+      await sealSafe(p, 'bearbeitung'); await DB.put('photos', p); otsStamp(p);
+      ov.remove(); toast('Änderungen gespeichert. Das Original bleibt versiegelt erhalten.'); refresh(true);
+    }
   });
   addEventListener('resize', layout, { once: true }); requestAnimationFrame(layout);
 }
@@ -1439,7 +1608,7 @@ function drawMap(cv) {
   const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
   if (M.follow && S.pos) { M.lat += (S.pos.lat - M.lat) * 0.15; M.lon += (S.pos.lon - M.lon) * 0.15; }
   g.fillStyle = '#040a14'; g.fillRect(0, 0, W, H);
-  const steps = [5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]; const step = steps.find(s => s * M.z >= 70) || 10000; const px = step * M.z;
+  const steps = [0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]; const step = steps.find(s => s * M.z >= 70) || 10000; const px = step * M.z;
   const mx = M.lon * 111320 * Math.cos(M.lat * RAD), my = M.lat * 110540;
   const offX = ((-mx * M.z) % px + px) % px, offY = ((my * M.z) % px + px) % px;
   g.strokeStyle = 'rgba(63,216,239,.07)'; g.lineWidth = 1; g.beginPath();
@@ -1456,6 +1625,14 @@ function drawMap(cv) {
     g.setLineDash([6, 5]); g.lineDashOffset = -t * 8; g.strokeStyle = col; g.lineWidth = M.siteSel === s.id ? 2.2 : 1.3; g.stroke(); g.setLineDash([]);
     g.font = '600 11px "JetBrains Mono", monospace'; g.fillStyle = col; g.textAlign = 'center';
     g.fillText(short(s.name).toUpperCase(), x, y - r - 16); g.fillStyle = 'rgba(226,246,255,.8)'; g.fillText(`${pr.done}/${pr.must}`, x, y - r - 4); g.textAlign = 'left';
+  }
+  // Trassen
+  for (const tr of S.trassen) {
+    if (!tr.points.length) continue; const rec = tr.id === S.rec;
+    g.strokeStyle = rec ? '#ffa040' : '#d6f6ff'; g.lineWidth = rec ? 3.2 : 2.6; g.lineJoin = 'round'; g.shadowColor = g.strokeStyle; g.shadowBlur = 8;
+    g.beginPath(); tr.points.forEach((p, i) => { const [x, y] = mproj(p.lat, p.lon, W, H); i ? g.lineTo(x, y) : g.moveTo(x, y); }); g.stroke(); g.shadowBlur = 0;
+    g.font = '600 10px "JetBrains Mono", monospace';
+    tr.marks.forEach(m => { const [x, y] = mproj(m.lat, m.lon, W, H); g.fillStyle = '#ffa040'; g.fillRect(x - 4, y - 4, 8, 8); g.strokeStyle = '#040a14'; g.lineWidth = 1; g.strokeRect(x - 4, y - 4, 8, 8); g.fillStyle = '#e2f6ff'; g.fillText(`${m.n} ${m.type}${m.depthCm ? ' ' + m.depthCm + 'cm' : ''}`, x + 7, y - 6); });
   }
   // Fotos mit Blickrichtung
   M.pts = [];
@@ -1482,10 +1659,11 @@ function drawMap(cv) {
   }
   // Maßstab + Nordpfeil
   g.strokeStyle = '#e2f6ff'; g.lineWidth = 2; g.beginPath(); g.moveTo(14, H - 18); g.lineTo(14 + px, H - 18); g.moveTo(14, H - 23); g.lineTo(14, H - 13); g.moveTo(14 + px, H - 23); g.lineTo(14 + px, H - 13); g.stroke();
-  g.fillStyle = '#e2f6ff'; g.font = '600 11px "JetBrains Mono", monospace'; g.fillText(fmtDist(step), 18, H - 26);
+  g.fillStyle = '#e2f6ff'; g.font = '600 11px "JetBrains Mono", monospace'; g.fillText(step < 1 ? '0,5 m' : fmtDist(step), 18, H - 26);
   g.fillStyle = '#3fd8ef'; g.textAlign = 'center'; g.fillText('N', W - 30, H - 42); g.beginPath(); g.moveTo(W - 30, H - 36); g.lineTo(W - 36, H - 18); g.lineTo(W - 30, H - 22); g.lineTo(W - 24, H - 18); g.closePath(); g.fill(); g.textAlign = 'left';
 }
 function renderMapSide() {
+  renderTrassPanel();
   $('#mapSites').innerHTML = (S.pos ? '<button class="chip" data-mp="me">Ich</button>' : '') + activeSites().map(s => `<button class="chip${M.siteSel === s.id ? ' on' : ''}" data-mp="${s.id}">${esc(short(s.name))}</button>`).join('');
   const s = S.sites.find(x => x.id === M.siteSel), info = $('#mapInfo');
   if (s) {
@@ -1497,7 +1675,7 @@ function renderMapSide() {
 function mapInput() {
   const cv = $('#map');
   const zoom = (f, cx, cy) => {
-    const W = cv.clientWidth, H = cv.clientHeight, before = M.z; M.z = Math.max(0.02, Math.min(12, M.z * f));
+    const W = cv.clientWidth, H = cv.clientHeight, before = M.z; M.z = Math.max(0.02, Math.min(60, M.z * f));
     if (cx != null) { const dx = cx - W / 2, dy = cy - H / 2, k = 1 / before - 1 / M.z; M.lon += dx * k / (111320 * Math.cos(M.lat * RAD)); M.lat -= dy * k / 110540; }
   };
   cv.addEventListener('wheel', e => { e.preventDefault(); const r = cv.getBoundingClientRect(); zoom(e.deltaY < 0 ? 1.18 : 1 / 1.18, e.clientX - r.left, e.clientY - r.top); }, { passive: false });
@@ -1569,7 +1747,8 @@ function renderReport() {
       <button class="btn pri wide" data-ex="pdf"${l.length ? '' : ' disabled'}>PDF-Bericht erstellen</button>
       <button class="btn wide" data-ex="zip"${l.length ? '' : ' disabled'}>ZIP-Paket: Fotos + Karte (KML, GeoJSON) + Liste</button>
     </div>
-    <p class="note" style="margin:12px 0 0">Nach dem Export markiere ich die Fotos als gesichert. Das ZIP kannst du direkt per Mail, WhatsApp oder in die Cloud teilen.</p>`;
+    <p class="note" style="margin:12px 0 0">Nach dem Export markiere ich die Fotos als gesichert. Das ZIP enthält zusätzlich die Prüfsummen und Zeitstempel als Echtheitsnachweis – direkt per Mail, WhatsApp oder in die Cloud teilen.</p>`;
+  if (document.activeElement?.id !== 'dayText') renderDaily(); renderNotes();
 }
 function needLib(name, test) {
   return new Promise((res, rej) => { const t0 = Date.now(); (function w() { if (test()) return res(); if (Date.now() - t0 > 15000) return rej(new Error(`${name} lädt nicht – einmal Internet nötig`)); setTimeout(w, 150); })(); });
@@ -1593,13 +1772,14 @@ async function saveFile(name, blob, preferShare) {
 }
 async function pdfImg(blob) { const img = await loadImage(blob); const c = fitCanvas(img, 1600); return { d: c.toDataURL('image/jpeg', 0.84), w: c.width, h: c.height }; }
 /* PDF-Bericht: je Baustelle eine Übersichtsseite (Kennzahlen, Pflichtfoto-Nachweis, Lageplan), dann 2 Fotos pro Seite */
-async function buildPDF(l, title) {
+async function buildPDF(l, title, daily) {
   const { jsPDF } = window.jspdf; const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const W = 210, H = 297, m = 14, cw = W - 2 * m;
   const PC = { V: [24, 150, 180], W: [226, 124, 26], N: [30, 160, 98] };
   const NAVY = [8, 24, 48], CYAN = [63, 216, 239], INK = [16, 26, 40], GREY = [96, 110, 126], LINE = [214, 223, 231];
   const created = `${fmtDate(Date.now())}, ${fmtTime(Date.now())} Uhr`;
-  const span = ps => { const a = fmtDate(ps[0].ts), b = fmtDate(ps[ps.length - 1].ts); return a === b ? a : `${a} – ${b}`; };
+  const span = ps => { if (!ps.length) return fmtDate(Date.now()); const a = fmtDate(ps[0].ts), b = fmtDate(ps[ps.length - 1].ts); return a === b ? a : `${a} – ${b}`; };
+  const pdfSafe = s => String(s ?? '').replace(/[→←]/g, '-').replace(/[✓✔]/g, 'OK').replace(/[✗✘]/g, 'X').replace(/[^\x00-\xff€„“‚‘’–—…•]/g, '');
   const groups = [];
   [...new Set(l.map(p => p.siteId || ''))].forEach(id => groups.push({ s: S.sites.find(x => x.id === id) || null, ps: l.filter(p => (p.siteId || '') === id) }));
   const num = new Map(); let k = 0; groups.forEach(g => g.ps.forEach(p => num.set(p.id, ++k)));
@@ -1616,6 +1796,23 @@ async function buildPDF(l, title) {
   const chip = (x, y, txt, rgb, w) => { doc.setFillColor(...rgb); doc.roundedRect(x, y - 3.4, w, 4.6, 0.8, 0.8, 'F'); doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.6); doc.text(txt, x + w / 2, y, { align: 'center' }); };
   const label = (x, y, txt) => { doc.setFont('helvetica', 'bold'); doc.setFontSize(7.2); doc.setTextColor(24, 140, 170); doc.text(txt.toUpperCase(), x, y, { charSpace: 0.35 }); };
 
+  if (daily && daily.trim()) {
+    newPage('Tagesbericht'); let y = 31;
+    label(m, y, 'Tagesbericht · Bautagebuch'); y += 9;
+    for (const raw of pdfSafe(daily).split('\n')) {
+      const ln = raw.trimEnd(); if (!ln.trim()) { y += 2.5; continue; }
+      const tt = ln.trim(), isHead = tt === tt.toUpperCase() && /[A-ZÄÖÜ]{3}/.test(tt) && tt.length < 90, bullet = /^\s*[-•]\s+/.test(ln);
+      doc.setFont('helvetica', isHead ? 'bold' : 'normal'); doc.setFontSize(isHead ? 11 : 9.6); doc.setTextColor(...(isHead ? NAVY : INK));
+      const wrapped = doc.splitTextToSize(bullet ? ln.replace(/^\s*[-•]\s+/, '') : tt, cw - (bullet ? 6 : 0));
+      if (isHead) y += 2;
+      wrapped.forEach((w, i) => {
+        if (y > 278) { newPage('Tagesbericht'); y = 31; doc.setFont('helvetica', isHead ? 'bold' : 'normal'); doc.setFontSize(isHead ? 11 : 9.6); doc.setTextColor(...(isHead ? NAVY : INK)); }
+        if (bullet && i === 0) { doc.setFillColor(...CYAN); doc.circle(m + 1.6, y - 1.2, 0.8, 'F'); }
+        doc.text(w, m + (bullet ? 6 : 0), y); y += isHead ? 5.6 : 4.6;
+      });
+      if (isHead) { doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.line(m, y - 3.6, m + cw, y - 3.6); y += 1.2; }
+    }
+  }
   for (const g of groups) {
     const s = g.s, pr = s ? progress(s) : null, addr = g.ps.find(p => p.address)?.address;
     newPage(s ? s.name : 'Ohne Baustelle'); let y = 31;
@@ -1659,13 +1856,14 @@ async function buildPDF(l, title) {
       });
       y += 9;
       // Lageplan
-      const geo = g.ps.filter(p => p.lat != null), mh = Math.min(92, 280 - y - 8);
+      const geo = g.ps.filter(p => p.lat != null), mh = Math.min(86, 262 - y);
       if (mh > 45) {
         label(m, y, 'Lageplan der Aufnahmen'); y += 4;
         doc.setFillColor(244, 248, 251); doc.rect(m, y, cw, mh, 'F'); doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.rect(m, y, cw, mh, 'S');
         const ox = m + cw / 2, oy = y + mh / 2, cosL = Math.cos(s.lat * RAD);
         const xy = p => [(p.lon - s.lon) * 111320 * cosL, (p.lat - s.lat) * 110540];
-        let ext = s.radius * 1.15; geo.forEach(p => { const [a, b] = xy(p); ext = Math.max(ext, Math.hypot(a, b) * 1.25); });
+        const trs = S.trassen.filter(t => t.siteId === s.id && t.points.length > 1);
+        let ext = s.radius * 1.15; [...geo, ...trs.flatMap(t => t.points)].forEach(p => { const [a, b] = xy(p); ext = Math.max(ext, Math.hypot(a, b) * 1.15); });
         const sc = (mh / 2 - 6) / ext;
         const grid = [5, 10, 20, 50, 100, 200, 500, 1000].find(v => v * sc >= 12) || 1000;
         doc.setDrawColor(226, 233, 239); doc.setLineWidth(0.1);
@@ -1673,6 +1871,11 @@ async function buildPDF(l, title) {
         for (let gy = oy - Math.floor((oy - y) / (grid * sc)) * grid * sc; gy < y + mh; gy += grid * sc) if (gy > y) doc.line(m, gy, m + cw, gy);
         doc.setDrawColor(24, 150, 180); doc.setLineWidth(0.35); doc.setLineDashPattern([1.6, 1.2], 0); doc.circle(ox, oy, s.radius * sc, 'S'); doc.setLineDashPattern([], 0);
         doc.setFillColor(24, 150, 180); doc.circle(ox, oy, 0.8, 'F');
+        trs.forEach(t => {
+          doc.setDrawColor(214, 110, 20); doc.setLineWidth(0.7);
+          for (let i = 1; i < t.points.length; i++) { const [a1, b1] = xy(t.points[i - 1]), [a2, b2] = xy(t.points[i]); doc.line(ox + a1 * sc, oy - b1 * sc, ox + a2 * sc, oy - b2 * sc); }
+          t.marks.forEach(mk => { const [a, b] = xy(mk); doc.setFillColor(214, 110, 20); doc.rect(ox + a * sc - 1.1, oy - b * sc - 1.1, 2.2, 2.2, 'F'); doc.setFont('helvetica', 'normal'); doc.setFontSize(5.8); doc.setTextColor(120, 60, 10); doc.text(pdfSafe(`${mk.n} ${mk.type}${mk.depthCm ? ' ' + mk.depthCm + ' cm' : ''}`), ox + a * sc + 1.8, oy - b * sc - 1); });
+        });
         geo.forEach(p => {
           const [a, b] = xy(p), px = ox + a * sc, py = oy - b * sc, c = PC[p.phase], lc = c.map(v => Math.round(v + (255 - v) * 0.62));
           if (p.heading != null) { const r = 11, h1 = (p.heading - 20) * RAD, h2 = (p.heading + 20) * RAD; doc.setFillColor(...lc); doc.triangle(px, py, px + r * Math.sin(h1), py - r * Math.cos(h1), px + r * Math.sin(h2), py - r * Math.cos(h2), 'F'); }
@@ -1688,26 +1891,32 @@ async function buildPDF(l, title) {
         doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.text(fmtDist(grid), m + 5, y + mh - 7.5);
         y += mh + 4.5;
         doc.setFontSize(7.4); doc.setTextColor(...GREY);
-        doc.text(`Gestrichelter Kreis = Baustellenbereich (r = ${s.radius} m)  ·  Kegel = Blickrichtung  ·  Farbe: Vorher / Während / Nachher`, m, y);
+        doc.text(`Gestrichelter Kreis = Baustellenbereich (r = ${s.radius} m)  ·  Kegel = Blickrichtung  ·  Farbe: Vorher / Während / Nachher${trs.length ? '  ·  Linie = Trasse' : ''}`, m, y);
+        if (trs.length) { y += 4.2; doc.text(pdfSafe(trs.map(t => `${t.name}: ${tLen(t).toFixed(1).replace('.', ',')} m, ${t.marks.length} Markierungen, ${accSummary(t)}`).join('   ·   ')), m, y); }
       }
+    }
+    if (g.ps.some(p => p.hash)) {
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7.4); doc.setTextColor(...GREY);
+      doc.text(doc.splitTextToSize('Beweissicherung: Jedes Foto wurde beim Speichern mit einem SHA-256-Fingerabdruck versiegelt und in einer fortlaufenden Prüfkette verknüpft. Die Originaldateien lassen sich mit dem ZIP-Export prüfen (pruefsummen.sha256, Zeitstempel-Dateien .ots für opentimestamps.org). Die Bilder in diesem PDF sind verkleinert.', cw), m, 276);
     }
     // Fotoseiten: 2 Fotos pro Seite in festen Feldern
     for (let i = 0; i < g.ps.length; i++) {
       const p = g.ps[i], slot = i % 2; if (!slot) newPage(s ? s.name : 'Ohne Baustelle');
       const y0 = 27 + slot * 129, it = s?.items.find(x => x.id === p.itemId), img = await pdfImg(p.blob);
-      const bh = 96, kk = Math.min(cw / img.w, bh / img.h), iw = img.w * kk, ih = img.h * kk;
+      const bh = 91, kk = Math.min(cw / img.w, bh / img.h), iw = img.w * kk, ih = img.h * kk;
       doc.setFillColor(236, 241, 245); doc.rect(m, y0, cw, bh, 'F');
       doc.addImage(img.d, 'JPEG', m + (cw - iw) / 2, y0 + (bh - ih) / 2, iw, ih);
       let y = y0 + bh + 7;
       doc.setFillColor(...PC[p.phase]); doc.roundedRect(m, y - 4.6, 8, 6.2, 0.8, 0.8, 'F');
       doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.text(String(num.get(p.id)), m + 4, y, { align: 'center' });
-      doc.setTextColor(...INK); doc.setFontSize(11.5); doc.text(doc.splitTextToSize(`${PH[p.phase].n} – ${it ? it.label : catName(p.cat)}`, cw - 48)[0], m + 11, y);
+      doc.setTextColor(...INK); doc.setFontSize(11.5); doc.text(doc.splitTextToSize(pdfSafe(`${PH[p.phase].n} – ${it ? it.label : catName(p.cat)}${p.depthCm ? '  ·  Tiefe ' + p.depthCm + ' cm' : ''}`), cw - 48)[0], m + 11, y);
       chip(m + cw - 26, y - 0.6, it?.must ? 'PFLICHTFOTO' : 'ZUSATZFOTO', it?.must ? NAVY : [150, 160, 170], 26);
       y += 6; doc.setFont('helvetica', 'normal'); doc.setFontSize(8.4); doc.setTextColor(...GREY);
-      doc.text(`${fmtDay(p.ts)}, ${fmtTime(p.ts)} Uhr   ·   ${p.lat != null ? coord(p.lat, p.lon) + '  ±' + p.acc + ' m' : 'ohne GPS'}${p.heading != null ? '   ·   Blick ' + p.heading + '° ' + dirName(p.heading) : ''}`, m + 11, y);
-      const extra = [p.address, catName(p.cat), (p.labels || []).length ? 'Stichworte: ' + p.labels.join(', ') : ''].filter(Boolean).join('   ·   ');
+      doc.text(`${fmtDay(p.ts)}, ${fmtTime(p.ts)} Uhr   ·   ${p.lat != null ? coord(p.lat, p.lon) + '  ±' + fmtAcc(p.acc) + (p.fix && /RTK/.test(p.fix) ? ' ' + p.fix : '') : 'ohne GPS'}${p.heading != null ? '   ·   Blick ' + p.heading + '° ' + dirName(p.heading) : ''}`, m + 11, y);
+      const extra = pdfSafe([p.address, catName(p.cat), (p.labels || []).length ? 'Stichworte: ' + p.labels.join(', ') : '', p.aiOk != null ? (p.aiOk ? 'KI-Prüfung: Pflichtinhalte erkannt' : 'KI-Prüfung: unvollständig') : '', p.privacy?.length ? p.privacy.length + ' Bereich(e) unkenntlich' : ''].filter(Boolean).join('   ·   '));
       if (extra) { y += 4.4; doc.text(doc.splitTextToSize(extra, cw - 11)[0], m + 11, y); }
-      if (p.desc) { y += 5; doc.setTextColor(...INK); doc.setFontSize(9); doc.text(doc.splitTextToSize(p.desc, cw - 11).slice(0, 2), m + 11, y); }
+      if (p.desc) { y += 5; doc.setTextColor(...INK); doc.setFontSize(9); doc.text(doc.splitTextToSize(pdfSafe(p.desc), cw - 11).slice(0, 2), m + 11, y); y += doc.splitTextToSize(pdfSafe(p.desc), cw - 11).length > 1 ? 3.7 : 0; }
+      if (p.hash) { y += 4.6; doc.setFont('courier', 'normal'); doc.setFontSize(6.6); doc.setTextColor(130, 142, 156); doc.text(`Siegel #${p.seq}  SHA-256 ${p.hash}${p.origHash ? '  (bearbeitet)' : ''}`, m + 11, y); }
     }
   }
   const pages = doc.getNumberOfPages();
@@ -1719,13 +1928,13 @@ async function buildPDF(l, title) {
   }
   return doc;
 }
-async function exportPDF(btn) {
-  const l = repList(); if (!l.length) return;
+async function exportPDF(btn, list, daily) {
+  const l = (list || repList()).slice().sort((a, b) => a.ts - b.ts); if (!l.length && !daily) return;
   btn.disabled = true; const lbl = btn.textContent; btn.textContent = 'Erstelle PDF …';
   try {
     await needLib('PDF-Baustein', () => window.jspdf?.jsPDF);
     const site = S.sites.find(s => s.id === S.rep.site);
-    const doc = await buildPDF(l, site ? site.name : 'Baustellen');
+    const doc = await buildPDF(l, site ? site.name : 'Baustellen', daily);
     const name = `Fotobericht_${slug(site ? site.name : 'Baustellen')}_${stamp(Date.now()).slice(0, 8)}.pdf`;
     if (await saveFile(name, doc.output('blob'))) { await markExported(l); toast(`PDF mit ${l.length} Fotos erstellt.`); }
   } catch (e) { toast('PDF fehlgeschlagen: ' + (e.message || e), 5000); }
@@ -1755,8 +1964,19 @@ async function exportZIP(btn) {
     await needLib('ZIP-Baustein', () => window.JSZip);
     const zip = new window.JSZip(); const site = S.sites.find(s => s.id === S.rep.site);
     const base = `${stamp(Date.now()).slice(0, 8)}_${slug(site ? site.name : 'Baustellen')}`; const f = zip.folder(base);
-    for (const p of l) { const s = S.sites.find(x => x.id === p.siteId); (site ? f : f.folder(slug(s ? s.name : 'ohne-baustelle'))).file(fileName(p), p.blob); }
+    const sums = [];
+    for (const p of l) {
+      const s = S.sites.find(x => x.id === p.siteId), sub = site ? '' : slug(s ? s.name : 'ohne-baustelle') + '/', fn = fileName(p);
+      f.file(sub + fn, p.blob); if (p.hash) sums.push(`${p.hash}  ${sub}${fn}`);
+      if (p.ots?.st === 'ok') f.file(sub + fn + '.ots', otsFile(p));
+      if (p.origBlob) { const on = fn.replace(/\.jpg$/, '_ORIGINAL.jpg'); f.file(sub + on, p.origBlob); if (p.origHash) sums.push(`${p.origHash}  ${sub}${on}`); }
+    }
     f.file('fotos.geojson', JSON.stringify(geoFeatures(l), null, 1)); f.file('fotos.kml', kml(l)); f.file('fotoliste.csv', csv(l));
+    if (sums.length) {
+      f.file('pruefsummen.sha256', sums.join('\n') + '\n');
+      f.file('nachweis-kette.json', JSON.stringify({ app: 'SEF-KI Baudoku', erstellt: new Date().toISOString(), regel: 'kette_n = SHA256(kette_n-1 | hash | foto-id | zeit_ms | breite | laenge | art), Start = 64 Nullen', eintraege: S.ledger }, null, 1));
+      f.file('ECHTHEIT-PRUEFEN.txt', `So prüfst du, dass die Fotos unverändert sind\r\n\r\n1) Fingerabdruck: Jede Zeile in pruefsummen.sha256 enthält den SHA-256-Wert einer Bilddatei.\r\n   Windows:  certutil -hashfile DATEI.jpg SHA256\r\n   Mac/Linux: shasum -a 256 DATEI.jpg   (oder: sha256sum -c pruefsummen.sha256)\r\n   Stimmt der Wert, ist die Datei bitgenau so, wie sie auf der Baustelle gespeichert wurde.\r\n\r\n2) Zeitstempel: Liegt neben einem Foto eine .ots-Datei, beide auf https://opentimestamps.org ziehen.\r\n   Nach einigen Stunden ist der Fingerabdruck in der Bitcoin-Blockchain verankert. Damit ist belegt,\r\n   dass das Foto spätestens zu diesem Zeitpunkt existierte – unabhängig von der Uhr des Handys.\r\n\r\n3) Prüfkette: nachweis-kette.json verknüpft alle Fotos in Aufnahmereihenfolge. Wird ein Foto\r\n   nachträglich entfernt oder ausgetauscht, passt die Kette nicht mehr.\r\n\r\nNachträglich bearbeitete Fotos (z. B. Markierungen) liegen zusätzlich als _ORIGINAL.jpg bei.\r\n\r\nSEF-KI Baudoku · (c) ${new Date().getFullYear()} Lukas Smolenski · Smolens-KI\r\n`);
+    }
     const blob = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
     if (await saveFile(base + '.zip', blob)) { await markExported(l); toast(`ZIP mit ${l.length} Fotos gesichert.`); }
   } catch (e) { toast('ZIP fehlgeschlagen: ' + (e.message || e), 5000); }
@@ -1768,8 +1988,9 @@ async function backup(btn) {
   try {
     await needLib('ZIP-Baustein', () => window.JSZip);
     const zip = new window.JSZip();
-    zip.file('daten.json', JSON.stringify({ app: 'sefki-baudoku', v: 1, at: Date.now(), settings: S.set, sites: S.sites, photos: S.photos.map(({ blob, ...r }) => r) }));
-    const ph = zip.folder('fotos'); S.photos.forEach(p => ph.file(p.id + '.jpg', p.blob));
+    const { aiKey, ...setNoKey } = S.set; // der KI-Schlüssel kommt nie ins Backup
+    zip.file('daten.json', JSON.stringify({ app: 'sefki-baudoku', v: 2, at: Date.now(), settings: setNoKey, sites: S.sites, photos: S.photos.map(({ blob, origBlob, ...r }) => r), notes: S.notes, trassen: S.trassen, ledger: S.ledger, daily: S.daily }));
+    const ph = zip.folder('fotos'); S.photos.forEach(p => { ph.file(p.id + '.jpg', p.blob); if (p.origBlob) ph.file(p.id + '_orig.jpg', p.origBlob); });
     const blob = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
     if (await saveFile(`SEF-KI_Backup_${stamp(Date.now())}.zip`, blob)) toast('Komplett-Backup erstellt.');
   } catch (e) { toast('Backup fehlgeschlagen: ' + (e.message || e)); }
@@ -1782,9 +2003,576 @@ async function restore(file) {
     if (j.app !== 'sefki-baudoku') throw new Error('Das ist kein SEF-KI-Backup');
     let ns = 0, np = 0;
     for (const s of j.sites) if (!S.sites.find(x => x.id === s.id)) { await DB.put('sites', s); S.sites.push(s); ns++; }
-    for (const r of j.photos) { if (S.photos.find(x => x.id === r.id)) continue; const f = zip.file('fotos/' + r.id + '.jpg'); if (!f) continue; const p = { ...r, blob: await f.async('blob') }; await DB.put('photos', p); S.photos.push(p); np++; }
+    for (const [store, arr] of [['notes', j.notes], ['trassen', j.trassen], ['ledger', j.ledger]]) for (const r of arr || []) if (!S[store].find(x => x.id === r.id)) { await DB.put(store, r); S[store].push(r); }
+    if (j.daily) { Object.assign(S.daily, j.daily); saveDaily(); }
+    if (j.ledger?.length && (!S.set.chainHead || S.ledger.length === j.ledger.length)) { S.set.chainHead = S.ledger[S.ledger.length - 1].chain; saveSet(); }
+    for (const r of j.photos) { if (S.photos.find(x => x.id === r.id)) continue; const f = zip.file('fotos/' + r.id + '.jpg'); if (!f) continue; const p = { ...r, blob: new Blob([await f.async('arraybuffer')], { type: 'image/jpeg' }) }; const fo = zip.file('fotos/' + r.id + '_orig.jpg'); if (fo) p.origBlob = new Blob([await fo.async('arraybuffer')], { type: 'image/jpeg' }); await DB.put('photos', p); S.photos.push(p); np++; }
     toast(`Wiederhergestellt: ${ns} Baustellen, ${np} Fotos.`); refresh(true);
   } catch (e) { toast('Wiederherstellen fehlgeschlagen: ' + (e.message || e), 5000); }
+}
+
+/* =====================================================================
+   SEF-KI INTELLIGENZ – Bildprüfung, Tiefe ablesen, Tagesbericht
+   Weg 1: in der Claude-Vorschau über das Claude-Konto des Nutzers (sample)
+   Weg 2: in der installierten App über einen eigenen API-Schlüssel
+   ===================================================================== */
+const fmtAcc = a => a == null ? '–' : a < 1 ? a.toFixed(2).replace('.', ',') + ' m' : Math.round(a) + ' m';
+function bearing(a, b) { const y = Math.sin((b.lon - a.lon) * RAD) * Math.cos(b.lat * RAD), x = Math.cos(a.lat * RAD) * Math.sin(b.lat * RAD) - Math.sin(a.lat * RAD) * Math.cos(b.lat * RAD) * Math.cos((b.lon - a.lon) * RAD); return (Math.atan2(y, x) / RAD + 360) % 360; }
+const blobToB64 = b => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(b); });
+function parseJSONLoose(t) {
+  try { return JSON.parse(t); } catch (e) {}
+  const f = t.match(/```(?:json)?\s*([\s\S]*?)```/); if (f) { try { return JSON.parse(f[1]); } catch (e) {} }
+  const a = t.indexOf('{'), b = t.lastIndexOf('}'); if (a >= 0 && b > a) return JSON.parse(t.slice(a, b + 1));
+  throw { code: 'invalid_json', message: 'Die KI-Antwort war nicht lesbar.' };
+}
+const AI = {
+  sp: null,
+  sample() { if (!window.claude?.use) return Promise.resolve(null); this.sp ??= window.claude.use('sample').catch(() => null); return this.sp; },
+  async mode() { if (S.set.aiKey && !inFrame) return 'api'; return (await this.sample()) ? 'sample' : null; },
+  async api(prompt, images, tier, maxTokens) {
+    const content = [];
+    for (const b of images) content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: await blobToB64(b) } });
+    content.push({ type: 'text', text: prompt });
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-api-key': S.set.aiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: tier === 'quick' ? 'claude-haiku-5-5' : (S.set.aiModel || 'claude-sonnet-5-5'), max_tokens: maxTokens, messages: [{ role: 'user', content }] })
+    });
+    if (!r.ok) { let m = ''; try { m = (await r.json()).error?.message || ''; } catch (e) {} throw { code: r.status === 401 ? 'bad_key' : r.status === 429 ? 'rate_limited' : 'http', message: `KI-Dienst meldet ${r.status}${m ? ': ' + m : ''}` }; }
+    const j = await r.json(); return (j.content || []).filter(c => c.type === 'text').map(c => c.text).join('');
+  },
+  async json(prompt, images = [], tier = 'default') {
+    const m = await this.mode(); if (!m) throw { code: 'no_ai' };
+    if (m === 'api') return parseJSONLoose(await this.api(prompt, images, tier, 1500));
+    const s = await this.sample(); return await s.json(prompt, images.length ? { images, modelTier: tier } : { modelTier: tier });
+  },
+  async text(prompt, tier = 'default', onText) {
+    const m = await this.mode(); if (!m) throw { code: 'no_ai' };
+    if (m === 'api') { const t = await this.api(prompt, [], tier, 2200); onText?.(t); return t; }
+    const s = await this.sample(); const r = await s(prompt, { modelTier: tier, cache: false, onText: onText ? ({ text }) => onText(text) : undefined }); return r.text;
+  }
+};
+const aiErr = e => ({ no_ai: 'KI ist nicht eingerichtet (Einstellungen → SEF-KI Intelligenz).', not_granted: 'Die KI-Nutzung wurde nicht erlaubt.', bad_key: 'Der KI-Schlüssel ist ungültig.', rate_limited: 'Gerade zu viele KI-Anfragen – bitte gleich nochmal.', images_unavailable: 'Bilder können hier nicht an die KI gesendet werden.', invalid_json: 'Die KI-Antwort war nicht lesbar – bitte nochmal prüfen.' })[e?.code] || e?.message || 'KI nicht erreichbar (Internet?).';
+async function aiCheck(c, site, item) {
+  const small = await toBlob(fitCanvas(c, 1280), 0.82), meta = itemMeta(site, item), need = meta.need || [];
+  const prompt = `Du bist SEF-KI, Prüfer für Baustellen-Fotodokumentation. Prüfe das Foto streng, aber fair.
+Baustelle: ${site ? site.name + ' (' + (TPL[site.tpl]?.n || '') + ')' : 'unbekannt'}
+${item ? `Gefordertes Pflichtfoto: "${item.label}" (Phase ${PH[item.phase].n}). Hinweis an den Fotografen: ${item.hint}` : 'Freies Zusatzfoto ohne feste Vorgabe.'}
+${need.length ? 'Pflichtinhalte, die erkennbar sein müssen:\n' + need.map(n => '- ' + n).join('\n') : ''}
+
+Antworte NUR mit einem JSON-Objekt genau in dieser Form:
+{"passt": true, "pruefung": [{"punkt": "…", "ok": true, "kommentar": "kurz"}], "tiefe_cm": null, "tiefe_sicher": false, "beschreibung": "Ein sachlicher Satz, was zu sehen ist.", "stichworte": ["…"], "hinweis": "", "personen": [], "kennzeichen": []}
+
+Regeln:
+- "pruefung": je Pflichtinhalt ein Eintrag (leer, wenn es keine gibt). "passt" nur true, wenn alle Pflichtinhalte klar erkennbar sind. Bei freien Fotos ist "passt" true.
+- "tiefe_cm": Nur wenn ein Meterstab oder Zollstock in einer Grube oder einem Graben steht: Tiefe von der Geländeoberkante bis zur Sohle in Zentimetern ablesen. Sonst null. "tiefe_sicher": false, wenn die Skala schlecht lesbar ist.
+- "hinweis": Wenn etwas fehlt oder schlecht erkennbar ist, eine konkrete, kurze Anweisung für ein besseres Foto (z. B. "Einen Schritt zurück, Hausnummer mit aufs Bild"). Sonst "".
+- "personen": Rechtecke um erkennbare Gesichter bzw. Köpfe. "kennzeichen": Rechtecke um lesbare Kfz-Kennzeichen. Format [x, y, breite, höhe] mit Werten von 0 bis 1 relativ zur Bildgröße (x, y = linke obere Ecke).
+- "stichworte": höchstens 4 kurze deutsche Fachbegriffe.
+- Erfinde nichts, was nicht im Bild zu sehen ist.`;
+  return AI.json(prompt, [small], 'default');
+}
+
+/* ---------------- Datenschutz: Personen & Kennzeichen unkenntlich ---------------- */
+const loadScript = src => new Promise((res, rej) => { if ([...document.scripts].some(s => s.src === src && s.dataset.ok)) return res(); const s = document.createElement('script'); s.src = src; s.onload = () => { s.dataset.ok = '1'; res(); }; s.onerror = () => rej(new Error('Laden fehlgeschlagen')); document.head.appendChild(s); });
+const Det = {
+  model: null, p: null, live: [], busy: false,
+  load() {
+    if (inFrame || !S.set.privacy) return Promise.resolve(null);
+    this.p ??= (async () => {
+      await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js');
+      await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js');
+      this.model = await window.cocoSsd.load({ base: 'lite_mobilenet_v2' }); return this.model;
+    })().catch(e => { console.warn('Erkennung nicht verfügbar', e); this.p = null; return null; });
+    return this.p;
+  },
+  async detect(src) {
+    if (!this.model) return [];
+    try { return (await this.model.detect(src, 12, 0.45)).filter(d => ['person', 'car', 'truck', 'bus', 'motorcycle'].includes(d.class)); } catch (e) { return []; }
+  }
+};
+function privacyRects(dets, ai, W, H) {
+  const out = [];
+  const nb = (b, kind) => { if (!Array.isArray(b) || b.length < 4 || !b.every(v => typeof v === 'number' && isFinite(v))) return; const [x, y, w, h] = b;
+    const px = Math.max(0, (x - w * 0.15) * W), py = Math.max(0, (y - h * 0.15) * H); out.push({ x: px, y: py, w: Math.min(W - px, w * 1.3 * W), h: Math.min(H - py, h * 1.3 * H), kind }); };
+  if (ai) { (ai.personen || []).forEach(b => nb(b, 'Gesicht')); (ai.kennzeichen || []).forEach(b => nb(b, 'Kennzeichen')); }
+  else for (const d of dets) {
+    const [x, y, w, h] = d.bbox;
+    if (d.class === 'person') out.push({ x: x + w * 0.1, y, w: w * 0.8, h: h > w * 1.2 ? h * 0.3 : h * 0.45, kind: 'Person' });
+    else out.push({ x: x + w * 0.16, y: y + h * 0.52, w: w * 0.68, h: h * 0.44, kind: 'Kennzeichen-Bereich' });
+  }
+  return out.filter(r => r.w > 4 && r.h > 4);
+}
+function pixelate(c, r) {
+  const g = c.getContext('2d'), bs = Math.max(10, Math.round(Math.max(r.w, r.h) / 9));
+  const t = document.createElement('canvas'); t.width = Math.max(1, Math.round(r.w / bs)); t.height = Math.max(1, Math.round(r.h / bs));
+  t.getContext('2d').drawImage(c, r.x, r.y, r.w, r.h, 0, 0, t.width, t.height);
+  g.imageSmoothingEnabled = false; g.drawImage(t, 0, 0, t.width, t.height, r.x, r.y, r.w, r.h); g.imageSmoothingEnabled = true;
+}
+function drawDet() {
+  const cv = $('#detCv'), v = $('#camVideo'); if (!cv || !v.videoWidth) return;
+  const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  const k = Math.max(W / v.videoWidth, H / v.videoHeight), ox = (W - v.videoWidth * k) / 2, oy = (H - v.videoHeight * k) / 2;
+  g.font = '600 11px "JetBrains Mono", monospace';
+  for (const d of Det.live) {
+    const [x, y, w, h] = d.bbox; const X = ox + x * k, Y = oy + y * k;
+    g.strokeStyle = '#ffa040'; g.setLineDash([6, 4]); g.lineWidth = 1.5; g.strokeRect(X, Y, w * k, h * k); g.setLineDash([]);
+    const t = d.class === 'person' ? 'PERSON → GESICHT WIRD UNKENNTLICH' : 'FAHRZEUG → KENNZEICHEN WIRD UNKENNTLICH';
+    g.fillStyle = 'rgba(20,12,4,.8)'; g.fillRect(X, Y - 16, g.measureText(t).width + 10, 16); g.fillStyle = '#ffa040'; g.fillText(t, X + 5, Y - 4);
+  }
+}
+
+/* ---------------- Geisterbild ---------------- */
+function ghostRef(site, item) {
+  if (!site || !item) return null;
+  const meta = itemMeta(site, item), refItem = meta.ref != null ? site.items[meta.ref] : null;
+  const pool = S.photos.filter(p => p.siteId === site.id && p.blob && p.itemId !== item.id);
+  let cand = refItem ? pool.filter(p => p.itemId === refItem.id) : [];
+  if (!cand.length && item.phase === 'N') cand = pool.filter(p => p.phase === 'V' && p.cat === item.cat);
+  if (!cand.length && item.phase === 'N') cand = pool.filter(p => p.phase === 'V');
+  return cand.sort((a, b) => a.ts - b.ts)[0] || null;
+}
+let ghostUrl = null, ghostId = null, ghostOff = false;
+function updateGhost() {
+  const img = $('#ghost'), bar = $('#ghostBar');
+  const { site, item } = camTarget(); const ref = S.set.ghost && $('#review').hidden ? ghostRef(site, item) : null;
+  if (!ref) { img.hidden = true; bar.hidden = true; ghostId = null; return; }
+  if (ghostId !== ref.id) {
+    if (ghostUrl) URL.revokeObjectURL(ghostUrl); ghostUrl = URL.createObjectURL(ref.blob); img.src = ghostUrl; ghostId = ref.id;
+    bar.innerHTML = `<span class="k">GEISTERBILD · ${PH[ref.phase].n.toUpperCase()} VOM ${fmtDate(ref.ts).slice(0, 6)} ${fmtTime(ref.ts)}</span><button class="chip" id="ghostToggle"></button><span class="g" id="ghostGuide"></span><input type="range" id="ghostOp" min="0.1" max="0.8" step="0.05" value="${S.set.ghostOpacity}" aria-label="Deckkraft des Geisterbilds">`;
+  }
+  bar.hidden = false; img.hidden = !camStream || ghostOff; img.style.opacity = S.set.ghostOpacity;
+  $('#ghostToggle').textContent = ghostOff ? 'Einblenden' : 'Ausblenden'; $('#ghostOp').hidden = !camStream || ghostOff;
+  let guide = '';
+  if (S.pos && ref.lat != null) { const d = dist(S.pos, ref); guide += d <= Math.max(2.5, Math.min(S.pos.acc, 8)) ? '<b class="ok">Standpunkt passt.</b> ' : `<b class="w">Geh ${fmtDist(d)} Richtung ${dirName(bearing(S.pos, ref))}.</b> `; }
+  if (S.heading != null && ref.heading != null) { const dh = ((ref.heading - S.heading + 540) % 360) - 180; guide += Math.abs(dh) < 8 ? '<b class="ok">Blickrichtung passt.</b>' : `<b class="w">${Math.abs(Math.round(dh))}° nach ${dh > 0 ? 'rechts' : 'links'} drehen.</b>`; }
+  $('#ghostGuide').innerHTML = guide + (camStream ? ' Bring das Bild mit dem Vorher-Foto zur Deckung.' : ' Gleicher Standort wie beim Vorher-Foto.');
+}
+
+/* ---------------- Beweissicherung: SHA-256-Kette + OpenTimestamps ---------------- */
+const hexOf = buf => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+const sha256 = async d => hexOf(await crypto.subtle.digest('SHA-256', d instanceof Blob ? await d.arrayBuffer() : typeof d === 'string' ? new TextEncoder().encode(d) : d));
+let sealQ = Promise.resolve();
+const sealSafe = (p, kind) => (sealQ = sealQ.then(() => seal(p, kind)).catch(e => console.warn(e)));
+async function seal(p, kind = 'foto') {
+  if (!crypto?.subtle) return;
+  p.hash = await sha256(p.blob);
+  const prev = S.set.chainHead || '0'.repeat(64), ts = kind === 'foto' ? p.ts : Date.now();
+  const chain = await sha256(`${prev}|${p.hash}|${p.id}|${ts}|${p.lat ?? ''}|${p.lon ?? ''}|${kind}`);
+  const seq = S.ledger.length + 1;
+  const e = { id: 'L' + String(seq).padStart(7, '0'), seq, kind, photo: p.id, hash: p.hash, ts, lat: p.lat, lon: p.lon, prev, chain };
+  S.ledger.push(e); await DB.put('ledger', e); S.set.chainHead = chain; saveSet();
+  p.seq = seq; p.chain = chain; p.ots = S.set.ots && !inFrame ? { st: 'wait', tries: 0 } : null;
+}
+const OTS_MAGIC = [0x00, 0x4f, 0x70, 0x65, 0x6e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x73, 0x00, 0x00, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x00, 0xbf, 0x89, 0xe2, 0xe8, 0x84, 0xe8, 0x92, 0x94];
+const OTS_CALS = ['https://a.pool.opentimestamps.org', 'https://b.pool.opentimestamps.org', 'https://alice.btc.calendar.opentimestamps.org'];
+async function otsStamp(p) {
+  if (!p.hash || p.ots?.st === 'ok' || !S.set.ots || inFrame || !navigator.onLine) return false;
+  const dig = new Uint8Array(p.hash.match(/../g).map(h => parseInt(h, 16)));
+  for (const cal of OTS_CALS) {
+    try {
+      const r = await fetch(cal + '/digest', { method: 'POST', body: dig, headers: { Accept: 'application/vnd.opentimestamps.v1' } });
+      if (!r.ok) continue; const t = new Uint8Array(await r.arrayBuffer()); if (!t.length) continue;
+      let s = ''; t.forEach(b => s += String.fromCharCode(b));
+      p.ots = { st: 'ok', cal, at: Date.now(), b64: btoa(s) }; await DB.put('photos', p); return true;
+    } catch (e) {}
+  }
+  p.ots = { st: 'wait', tries: (p.ots?.tries || 0) + 1 }; await DB.put('photos', p).catch(() => {}); return false;
+}
+function otsFile(p) { const t = Uint8Array.from(atob(p.ots.b64), c => c.charCodeAt(0)); return new Uint8Array([...OTS_MAGIC, 0x01, 0x08, ...p.hash.match(/../g).map(h => parseInt(h, 16)), ...t]); }
+let otsRunning = false;
+async function otsQueue() {
+  if (otsRunning || !navigator.onLine || !S.set.ots || inFrame) return; otsRunning = true;
+  for (const p of S.photos.filter(p => p.hash && p.ots && p.ots.st !== 'ok' && (p.ots.tries || 0) < 10)) await otsStamp(p);
+  otsRunning = false;
+}
+const otsTxt = p => p.ots?.st === 'ok' ? 'Zeitstempel bei OpenTimestamps eingereicht' : p.ots ? 'Zeitstempel wartet auf Internet' : 'lokal versiegelt';
+async function verifyFiles(files) {
+  const rows = [];
+  for (const f of files) { const h = await sha256(f); const p = S.photos.find(x => x.hash === h || x.origHash === h); rows.push({ f, h, p, orig: !!p && p.origHash === h }); }
+  const el = sheet(`<h3>Echtheitsprüfung</h3><p class="sub">Jede Datei wird mit dem Fingerabdruck (SHA-256) verglichen, der beim Speichern versiegelt wurde. Schon ein geändertes Pixel ergibt einen anderen Fingerabdruck.</p>
+    ${rows.map(r => { const s = r.p && S.sites.find(x => x.id === r.p.siteId);
+      return r.p ? `<div class="aibox" style="border-color:var(--ok)"><div class="h"><span style="color:var(--ok)">✓ ECHT UND UNVERÄNDERT</span><span>Siegel #${r.p.seq || '–'}</span></div><b>${esc(r.f.name)}</b>
+        <p class="note" style="margin:6px 0">Aufgenommen ${fmtDay(r.p.ts)}, ${fmtTime(r.p.ts)} Uhr · ${s ? esc(s.name) : 'ohne Baustelle'} · ${coord(r.p.lat, r.p.lon)}${r.orig ? ' · <b>Originalfassung vor einer Bearbeitung</b>' : ''}<br>${otsTxt(r.p)}</p><div class="seal">${r.h}</div></div>`
+        : `<div class="aibox" style="border-color:var(--bad)"><div class="h"><span style="color:var(--bad)">✗ KEIN TREFFER</span></div><b>${esc(r.f.name)}</b><p class="note" style="margin:6px 0">Diese Datei wurde verändert oder stammt nicht aus SEF-KI auf diesem Gerät.</p><div class="seal">${r.h}</div></div>`; }).join('')}
+    <button class="btn wide" data-x="close">Fertig</button>`);
+  el.querySelector('[data-x=close]').onclick = closeSheet;
+}
+
+/* ---------------- Trassen-Aufnahme ---------------- */
+const TKIND = ['Speedpipe / Mikrorohr', 'Leerrohr', 'Glasfaserkabel', 'Stromkabel', 'Wasserleitung', 'Gasleitung', 'Abwasser / Kanal', 'Sonstige Leitung'];
+const MTYPES = ['Richtungswechsel', 'Muffe', 'Abzweig', 'Hausanschluss', 'Kreuzung', 'Schacht', 'Hindernis', 'Sonstiges'];
+const tLen = t => t.points.reduce((a, p, i) => i ? a + dist(t.points[i - 1], p) : 0, 0);
+const curTrasse = () => S.trassen.find(t => t.id === S.rec) || null;
+const saveTrasse = t => DB.put('trassen', t).catch(() => {});
+function accSummary(t) {
+  if (!t.points.length) return '–'; const a = t.points.map(p => p.acc || 0).sort((x, y) => x - y), med = a[Math.floor(a.length / 2)];
+  const rtk = t.points.filter(p => /RTK FIX/.test(p.fix || '')).length;
+  return `${rtk ? 'RTK FIX ' + Math.round(rtk / t.points.length * 100) + ' %, ' : ''}Median ±${fmtAcc(med)}`;
+}
+function startTrasse(quick) {
+  const st = siteStatus(), site = st.state === 'in' ? st.site : null;
+  const mk = (name, kind, siteId) => {
+    const t = { id: uid(), name, kind, siteId, created: Date.now(), points: [], marks: [], status: 'rec' };
+    S.trassen.push(t); S.rec = t.id; S.demoWalk = null; saveTrasse(t); if (S.pos) recPoint(S.pos, true);
+    closeSheet(); toast(`Trasse „${name}“ läuft. Lauf den Leitungsverlauf ab.`); speak('Trassen-Aufnahme läuft. Lauf den Leitungsverlauf ab und markier besondere Punkte.');
+    if (S.view !== 'karte') go('karte'); refresh(true);
+  };
+  const def = `Trasse ${site ? short(site.name) : fmtDate(Date.now())} ${S.trassen.filter(t => t.siteId === site?.id).length + 1}`;
+  if (quick) return mk(def, TKIND[0], site?.id || null);
+  const el = sheet(`<h3>Trasse aufnehmen</h3><p class="sub">Lauf den Leitungsverlauf ab – ich zeichne die Linie auf. Muffen, Abzweige und Richtungswechsel markierst du per Knopf oder Zuruf („Punkt“).</p>
+    <div class="fld"><label class="lbl" for="trName">Name</label><input type="text" id="trName" value="${esc(def)}"></div>
+    <div class="fld"><label class="lbl" for="trKind">Art der Leitung</label><select id="trKind">${TKIND.map(k => `<option>${k}</option>`).join('')}</select></div>
+    <div class="fld"><label class="lbl" for="trSite">Baustelle</label><select id="trSite"><option value="">Ohne Baustelle</option>${activeSites().map(s => `<option value="${s.id}"${s.id === site?.id ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</select></div>
+    <p class="note">Genauigkeit jetzt: <b>${S.pos ? '±' + fmtAcc(S.pos.acc) + (S.pos.fix ? ' · ' + S.pos.fix : '') : 'kein GPS'}</b>. Punkte ungenauer als ±${S.set.trassMaxAcc} m lasse ich weg. Für Netzbetreiber-Dokumentation einen RTK-Empfänger verbinden (Einstellungen).</p>
+    <div class="row"><button class="btn" data-x="cancel">Abbrechen</button><button class="btn pri" id="trGo">Aufnahme starten</button></div>`);
+  el.querySelector('[data-x=cancel]').onclick = closeSheet;
+  $('#trGo', el).onclick = () => mk($('#trName', el).value.trim() || def, $('#trKind', el).value, $('#trSite', el).value || null);
+}
+function recPoint(pos, force) {
+  const t = curTrasse(); if (!t || t.status !== 'rec' || !pos) return;
+  const rtk = /RTK/.test(pos.fix || '');
+  if (!force && pos.acc > S.set.trassMaxAcc && !rtk) { t.skipped = (t.skipped || 0) + 1; renderTrassLive(); return; }
+  const last = t.points[t.points.length - 1], minD = rtk ? 0.25 : Math.max(1, (pos.acc || 5) * 0.5);
+  if (!force && last && dist(last, pos) < minD) return;
+  t.points.push({ lat: pos.lat, lon: pos.lon, acc: pos.acc, alt: pos.alt ?? null, ts: Date.now(), fix: pos.fix || (pos.src === 'demo' ? 'DEMO' : 'GPS') });
+  if (force || t.points.length % 3 === 0) saveTrasse(t);
+  renderTrassLive();
+}
+function markPoint(type, quick) {
+  const t = curTrasse(); if (!t) return toast('Starte zuerst eine Trassen-Aufnahme.'); if (!S.pos) return toast('Noch keine Position.');
+  const recent = S.photos.filter(p => p.depthCm && Date.now() - p.ts < 15 * 60e3).sort((a, b) => b.ts - a.ts)[0];
+  const mk = (ty, depth, note) => {
+    const m = { id: uid(), n: t.marks.length + 1, lat: S.pos.lat, lon: S.pos.lon, acc: S.pos.acc, alt: S.pos.alt ?? null, fix: S.pos.fix || (S.pos.src === 'demo' ? 'DEMO' : 'GPS'), ts: Date.now(), type: ty, depthCm: depth, note };
+    t.marks.push(m); recPoint(S.pos, true); saveTrasse(t); renderTrassPanel(); buzz(40); return m;
+  };
+  if (quick) { const m = mk(type || 'Sonstiges', null, ''); speak(`Punkt ${m.n} gesetzt.`); toast(`Punkt ${m.n} gesetzt (${m.type}).`); return m; }
+  let ty = MTYPES[0];
+  const el = sheet(`<h3>Punkt ${t.marks.length + 1} markieren</h3><p class="sub">Position ±${fmtAcc(S.pos.acc)}${S.pos.fix ? ' · ' + S.pos.fix : ''}</p>
+    <div class="fld"><span class="lbl">Art</span><div class="chips" id="mkTy" style="flex-wrap:wrap">${MTYPES.map((x, i) => `<button type="button" class="chip${i ? '' : ' on'}" data-t="${x}">${x}</button>`).join('')}</div></div>
+    <div class="fld"><label class="lbl" for="mkDepth">Tiefe (cm)${recent ? ' – zuletzt per KI abgelesen' : ''}</label><input type="text" inputmode="decimal" id="mkDepth" value="${recent ? recent.depthCm : ''}" placeholder="z. B. 60"></div>
+    <div class="fld"><label class="lbl" for="mkNote">Notiz</label><input type="text" id="mkNote" placeholder="optional"></div>
+    <div class="row"><button class="btn" id="mkPhoto">Mit Foto</button><button class="btn pri" id="mkSave">Punkt speichern</button></div>`);
+  $('#mkTy', el).onclick = e => { const b = e.target.closest('[data-t]'); if (!b) return; ty = b.dataset.t; $$('#mkTy .chip', el).forEach(x => x.classList.toggle('on', x === b)); };
+  const vals = () => [ty, parseFloat(String($('#mkDepth', el).value).replace(',', '.')) || null, $('#mkNote', el).value.trim()];
+  $('#mkSave', el).onclick = () => { const m = mk(...vals()); closeSheet(); toast(`Punkt ${m.n} gespeichert.`); };
+  $('#mkPhoto', el).onclick = () => { const m = mk(...vals()); closeSheet(); openCamera(t.siteId || null, null, m.id); };
+}
+function pauseTrasse() { const t = curTrasse(); if (!t) return; t.status = t.status === 'rec' ? 'paused' : 'rec'; saveTrasse(t); toast(t.status === 'rec' ? 'Aufnahme läuft weiter.' : 'Aufnahme pausiert.'); refresh(true); }
+function finishTrasse() {
+  const t = curTrasse(); if (!t) return; if (S.pos) recPoint(S.pos, true);
+  t.status = 'done'; t.ended = Date.now(); S.rec = null; S.demoWalk = null; saveTrasse(t);
+  toast(`Trasse gespeichert: ${fmtDist(tLen(t))}, ${t.points.length} Punkte, ${t.marks.length} Markierungen.`); speak(`Trasse gespeichert. ${Math.round(tLen(t))} Meter.`);
+  refresh(true);
+}
+function renderTrassLive() {
+  const t = curTrasse(); if (!t) return;
+  const set = (id, v) => { const e = $('#' + id); if (e) e.textContent = v; };
+  set('trLen', fmtLen(tLen(t))); set('trPts', t.points.length + ' Punkte · ' + t.marks.length + ' Markierungen');
+  set('trAcc', S.pos ? `±${fmtAcc(S.pos.acc)}${S.pos.fix ? ' · ' + S.pos.fix : ''}${t.skipped ? ' · ' + t.skipped + ' ungenaue Punkte verworfen' : ''}` : 'kein GPS');
+  renderNext();
+}
+const fmtLen = m => m < 1000 ? m.toFixed(1).replace('.', ',') + ' m' : fmtDist(m);
+function renderTrassPanel() {
+  const p = $('#trassPanel'); if (!p) return; const t = curTrasse();
+  let h = `<div class="ph"><h2>Trassen</h2><span class="lbl">${S.trassen.length} gesamt</span></div>`;
+  if (t) h += `<div class="recbox"><div class="lbl" style="color:var(--amber)">${t.status === 'rec' ? '● AUFNAHME LÄUFT' : 'PAUSIERT'} · ${esc(t.name)}</div>
+      <div class="big" id="trLen">${fmtLen(tLen(t))}</div><div class="meta" style="margin:4px 0 2px"><span id="trPts"></span></div><div class="meta"><span id="trAcc"></span></div>
+      <div class="row" style="margin-top:12px"><button class="btn amb" data-tr="mark">Punkt markieren</button><button class="btn" data-tr="pause">${t.status === 'rec' ? 'Pause' : 'Weiter'}</button><button class="btn pri" data-tr="finish">Fertig</button></div></div>`;
+  else h += `<button class="btn pri wide" data-tr="start">+ Trasse aufnehmen</button>`;
+  const done = S.trassen.filter(x => x.id !== S.rec).sort((a, b) => b.created - a.created);
+  if (done.length) h += `<div style="margin-top:10px">${done.map(x => `<div class="trow"><span><b>${esc(x.name)}</b><span class="meta" style="display:flex"><span>${esc(x.kind)}</span><span>${fmtDate(x.created)}</span></span></span><span class="sd num" style="text-align:right">${fmtDist(tLen(x))}<br><span class="meta">${x.points.length} P · ${x.marks.length} M</span></span>
+      <span class="row" style="grid-column:1/-1;margin-top:6px"><button class="btn" data-tr="exp" data-id="${x.id}">GIS-Export</button><button class="btn" data-tr="show" data-id="${x.id}">Auf Karte</button><button class="btn danger" data-tr="del" data-id="${x.id}">Löschen</button></span></div>`).join('')}</div>`;
+  h += `<p class="note" style="margin:12px 0 0">${S.gnss ? `<b style="color:var(--ok)">${esc(S.gnss.name)} verbunden</b> · ${esc(S.gnss.fix || '')}` : GNSS.supported() ? 'Für Zentimeter-Genauigkeit: RTK-Empfänger in den Einstellungen verbinden.' : 'Für Zentimeter-Genauigkeit: RTK-Empfänger über dessen App als Standortquelle setzen (siehe Einstellungen).'}</p>`;
+  p.innerHTML = h; renderTrassLive();
+}
+async function trassAction(e) {
+  const b = e.target.closest('[data-tr]'); if (!b) return; const a = b.dataset.tr, t = S.trassen.find(x => x.id === b.dataset.id);
+  if (a === 'start') startTrasse(); if (a === 'mark') markPoint(); if (a === 'pause') pauseTrasse(); if (a === 'finish') finishTrasse();
+  if (a === 'exp' && t) exportTrasse(t, b);
+  if (a === 'show' && t && t.points.length) { M.lat = t.points[0].lat; M.lon = t.points[0].lon; M.follow = false; $('#mFollow').classList.remove('on'); M.z = 3; window.scrollTo(0, 0); }
+  if (a === 'del' && t) { if (b.dataset.sure) { await DB.del('trassen', t.id); S.trassen = S.trassen.filter(x => x.id !== t.id); toast('Trasse gelöscht.'); renderTrassPanel(); } else { b.dataset.sure = '1'; b.textContent = 'Wirklich löschen?'; } }
+}
+
+/* ---------------- Externer GNSS-Empfänger (Bluetooth LE, NMEA) ---------------- */
+const GNSS = {
+  dev: null, buf: '', last: 0, gst: null,
+  supported: () => !!navigator.bluetooth && !inFrame,
+  async connect() {
+    try {
+      const NUS = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+      this.dev = await navigator.bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: [NUS, 0xffe0] });
+      this.dev.addEventListener('gattserverdisconnected', () => { S.gnss = null; toast('GNSS-Empfänger getrennt – ich nutze wieder das Handy-GPS.'); startGPS(); refresh(true); });
+      const srv = await this.dev.gatt.connect(); let ch;
+      try { ch = await (await srv.getPrimaryService(NUS)).getCharacteristic('6e400003-b5a3-f393-e0a9-e50e24dcca9e'); }
+      catch (e) { ch = await (await srv.getPrimaryService(0xffe0)).getCharacteristic(0xffe1); }
+      await ch.startNotifications();
+      ch.addEventListener('characteristicvaluechanged', e => this.feed(new TextDecoder().decode(e.target.value)));
+      S.gnss = { name: this.dev.name || 'GNSS-Empfänger', fix: 'warte auf Daten' }; stopGPS(); stopDemo();
+      toast(`${S.gnss.name} verbunden. Ich nutze jetzt seine Position.`); refresh(true);
+    } catch (e) { if (e?.name !== 'NotFoundError') toast('Verbindung fehlgeschlagen: ' + (e.message || e) + '. Tipp: Empfänger-App mit „Mock-Standort“ nutzen.', 6000); }
+  },
+  disconnect() { try { this.dev?.gatt?.disconnect(); } catch (e) {} },
+  feed(txt) { this.buf += txt; const lines = this.buf.split(/\r?\n/); this.buf = lines.pop(); lines.forEach(l => this.line(l.trim())); if (this.buf.length > 4096) this.buf = ''; },
+  ok(l) { const i = l.indexOf('*'); if (i < 0) return true; let c = 0; for (let k = 1; k < i; k++) c ^= l.charCodeAt(k); return c === parseInt(l.slice(i + 1, i + 3), 16); },
+  line(l) {
+    if (!l.startsWith('$') || !this.ok(l) || !S.gnss) return;
+    const f = l.split('*')[0].split(','), typ = f[0].slice(3);
+    const dm = (v, h, deg) => { if (!v) return null; const r = parseInt(v.slice(0, deg), 10) + parseFloat(v.slice(deg)) / 60; return /[SW]/.test(h) ? -r : r; };
+    if (typ === 'GGA') {
+      const q = +f[6]; if (!q) { S.gnss.fix = 'kein Fix'; updatePill(); return; }
+      const lat = dm(f[2], f[3], 2), lon = dm(f[4], f[5], 3); if (lat == null || lon == null || isNaN(lat) || isNaN(lon)) return;
+      const fix = { 1: 'GPS', 2: 'DGPS', 4: 'RTK FIX', 5: 'RTK FLOAT', 6: 'KOPPELNAV.' }[q] || 'GNSS';
+      const acc = this.gst && Date.now() - this.gst.ts < 5000 ? this.gst.acc : ({ 4: 0.02, 5: 0.3, 2: 0.8 }[q] || (+f[8] || 2) * 2.5);
+      S.gnss.fix = fix; S.gnss.sats = +f[7];
+      S.pos = { lat, lon, acc: Math.max(0.01, Math.round(acc * 100) / 100), alt: f[9] !== '' ? +f[9] + (+f[11] || 0) : null, ts: Date.now(), src: 'gnss', fix };
+      S.gps = q === 4 || acc < 1 ? 'good' : 'ok'; recPoint(S.pos);
+      if (Date.now() - this.last > 900) { this.last = Date.now(); adoptOrphans(); tick(); }
+    } else if (typ === 'GST') { const la = +f[6], lo = +f[7]; if (isFinite(la) && isFinite(lo)) this.gst = { acc: Math.hypot(la, lo), ts: Date.now() }; }
+  }
+};
+
+/* ---------------- GIS-Export (ETRS89 / UTM, Shapefile, DXF, GeoJSON, KML, CSV) ---------------- */
+function toUTM(lat, lon, zone) { // Krüger-Reihe, GRS80 – genau im Millimeterbereich
+  const a = 6378137, f = 1 / 298.257222101, k0 = 0.9996, n = f / (2 - f), n2 = n * n, n3 = n2 * n, n4 = n3 * n;
+  const A = a / (1 + n) * (1 + n2 / 4 + n4 / 64);
+  const al = [0, n / 2 - 2 * n2 / 3 + 5 * n3 / 16 + 41 * n4 / 180, 13 * n2 / 48 - 3 * n3 / 5 + 557 * n4 / 1440, 61 * n3 / 240 - 103 * n4 / 140, 49561 * n4 / 161280];
+  const phi = lat * RAD, lam = lon * RAD - (zone * 6 - 183) * RAD, e = Math.sqrt(f * (2 - f));
+  const t = Math.sinh(Math.atanh(Math.sin(phi)) - e * Math.atanh(e * Math.sin(phi)));
+  const xi = Math.atan2(t, Math.cos(lam)), eta = Math.atanh(Math.sin(lam) / Math.sqrt(1 + t * t));
+  let x = eta, y = xi; for (let j = 1; j <= 4; j++) { x += al[j] * Math.cos(2 * j * xi) * Math.sinh(2 * j * eta); y += al[j] * Math.sin(2 * j * xi) * Math.cosh(2 * j * eta); }
+  return [500000 + k0 * A * x, k0 * A * y];
+}
+function shpWrite(type, geoms) {
+  const recs = geoms.map(g => {
+    if (type === 1) { const b = new DataView(new ArrayBuffer(20)); b.setInt32(0, 1, true); b.setFloat64(4, g[0], true); b.setFloat64(12, g[1], true); return { buf: b.buffer, bb: [g[0], g[1], g[0], g[1]] }; }
+    const np = g.length, b = new DataView(new ArrayBuffer(48 + 16 * np)), xs = g.map(p => p[0]), ys = g.map(p => p[1]);
+    const bb = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+    b.setInt32(0, 3, true); bb.forEach((v, i) => b.setFloat64(4 + i * 8, v, true)); b.setInt32(36, 1, true); b.setInt32(40, np, true); b.setInt32(44, 0, true);
+    g.forEach((p, i) => { b.setFloat64(48 + i * 16, p[0], true); b.setFloat64(56 + i * 16, p[1], true); }); return { buf: b.buffer, bb };
+  });
+  const bb = recs.reduce((a, r) => [Math.min(a[0], r.bb[0]), Math.min(a[1], r.bb[1]), Math.max(a[2], r.bb[2]), Math.max(a[3], r.bb[3])], [Infinity, Infinity, -Infinity, -Infinity]);
+  const shpLen = 100 + recs.reduce((a, r) => a + 8 + r.buf.byteLength, 0), shxLen = 100 + 8 * recs.length;
+  const head = len => { const h = new DataView(new ArrayBuffer(100)); h.setInt32(0, 9994); h.setInt32(24, len / 2); h.setInt32(28, 1000, true); h.setInt32(32, type, true); bb.forEach((v, i) => h.setFloat64(36 + i * 8, isFinite(v) ? v : 0, true)); return new Uint8Array(h.buffer); };
+  const shp = new Uint8Array(shpLen), shx = new Uint8Array(shxLen); shp.set(head(shpLen)); shx.set(head(shxLen));
+  const sv = new DataView(shp.buffer), xv = new DataView(shx.buffer); let off = 100;
+  recs.forEach((r, i) => { xv.setInt32(100 + i * 8, off / 2); xv.setInt32(104 + i * 8, r.buf.byteLength / 2); sv.setInt32(off, i + 1); sv.setInt32(off + 4, r.buf.byteLength / 2); shp.set(new Uint8Array(r.buf), off + 8); off += 8 + r.buf.byteLength; });
+  return { shp, shx };
+}
+function dbfWrite(fields, rows) {
+  const enc = new TextEncoder(), recLen = 1 + fields.reduce((a, f) => a + f.len, 0), hLen = 32 + 32 * fields.length + 1;
+  const buf = new Uint8Array(hLen + recLen * rows.length + 1), dv = new DataView(buf.buffer), d = new Date();
+  buf[0] = 3; buf[1] = d.getFullYear() - 1900; buf[2] = d.getMonth() + 1; buf[3] = d.getDate(); dv.setUint32(4, rows.length, true); dv.setUint16(8, hLen, true); dv.setUint16(10, recLen, true);
+  fields.forEach((f, i) => { const o = 32 + i * 32; buf.set(enc.encode(f.name.slice(0, 10)), o); buf[o + 11] = f.type.charCodeAt(0); buf[o + 16] = f.len; buf[o + 17] = f.dec || 0; });
+  buf[hLen - 1] = 0x0d; let o = hLen;
+  rows.forEach(r => {
+    buf[o++] = 0x20;
+    fields.forEach((f, i) => {
+      const cell = new Uint8Array(f.len).fill(0x20), v = r[i];
+      if (f.type === 'N') { const s = v == null || v === '' || !isFinite(v) ? '' : Number(v).toFixed(f.dec || 0); cell.set(enc.encode(s.padStart(f.len).slice(-f.len))); }
+      else { let s = String(v ?? ''); while (enc.encode(s).length > f.len) s = s.slice(0, -1); cell.set(enc.encode(s)); }
+      buf.set(cell, o); o += f.len;
+    });
+  });
+  buf[o] = 0x1a; return buf;
+}
+const asciiDE = s => String(s || '').replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/Ä/g, 'Ae').replace(/Ö/g, 'Oe').replace(/Ü/g, 'Ue').replace(/ß/g, 'ss').replace(/[^\x20-\x7e]/g, '');
+function dxfOf(t, U) {
+  const L = [], add = (...a) => L.push(...a.map(String));
+  add(0, 'SECTION', 2, 'HEADER', 9, '$ACADVER', 1, 'AC1009', 0, 'ENDSEC', 0, 'SECTION', 2, 'TABLES', 0, 'TABLE', 2, 'LAYER', 70, 3);
+  [['TRASSE', 1], ['PUNKTE', 3], ['BESCHRIFTUNG', 7]].forEach(([n, c]) => add(0, 'LAYER', 2, n, 70, 0, 62, c, 6, 'CONTINUOUS'));
+  add(0, 'ENDTAB', 0, 'ENDSEC', 0, 'SECTION', 2, 'ENTITIES', 0, 'POLYLINE', 8, 'TRASSE', 66, 1, 70, 8);
+  t.points.forEach(p => { const [x, y] = U(p); add(0, 'VERTEX', 8, 'TRASSE', 10, x.toFixed(3), 20, y.toFixed(3), 30, (p.alt ?? 0).toFixed(3), 70, 32); });
+  add(0, 'SEQEND', 8, 'TRASSE');
+  t.marks.forEach(m => { const [x, y] = U(m); add(0, 'POINT', 8, 'PUNKTE', 10, x.toFixed(3), 20, y.toFixed(3), 30, (m.alt ?? 0).toFixed(3)); add(0, 'TEXT', 8, 'BESCHRIFTUNG', 10, (x + 0.4).toFixed(3), 20, (y + 0.4).toFixed(3), 30, '0.000', 40, '0.5', 1, asciiDE(`${m.n} ${m.type}${m.depthCm ? ' T=' + m.depthCm + 'cm' : ''}`)); });
+  add(0, 'ENDSEC', 0, 'EOF'); return L.join('\r\n') + '\r\n';
+}
+async function exportTrasse(t, btn) {
+  if (t.points.length < 2) return toast('Zu wenige Punkte für eine Linie.');
+  if (btn) { btn.disabled = true; btn.textContent = 'Erstelle …'; }
+  try {
+    await needLib('ZIP-Baustein', () => window.JSZip);
+    const pts = t.points, zone = Math.floor((pts[0].lon + 180) / 6) + 1, epsg = 25800 + zone, U = p => toUTM(p.lat, p.lon, zone);
+    const prj = `PROJCS["ETRS_1989_UTM_Zone_${zone}N",GEOGCS["GCS_ETRS_1989",DATUM["D_ETRS_1989",SPHEROID["GRS_1980",6378137.0,298.257222101]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",${zone * 6 - 183}.0],PARAMETER["Scale_Factor",0.9996],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]`;
+    const site = S.sites.find(s => s.id === t.siteId), base = `${stamp(t.created).slice(0, 8)}_${slug(t.name)}`, zip = new window.JSZip(), f = zip.folder(base);
+    const L = shpWrite(3, [pts.map(U)]);
+    f.file('trasse_linie.shp', L.shp); f.file('trasse_linie.shx', L.shx); f.file('trasse_linie.prj', prj); f.file('trasse_linie.cpg', 'UTF-8');
+    f.file('trasse_linie.dbf', dbfWrite([{ name: 'NAME', type: 'C', len: 60 }, { name: 'ART', type: 'C', len: 40 }, { name: 'BAUSTELLE', type: 'C', len: 80 }, { name: 'LAENGE_M', type: 'N', len: 12, dec: 2 }, { name: 'PUNKTE', type: 'N', len: 8 }, { name: 'DATUM', type: 'C', len: 10 }, { name: 'GENAUIGK', type: 'C', len: 40 }],
+      [[t.name, t.kind, site?.name || '', tLen(t), pts.length, fmtDate(t.created), accSummary(t)]]));
+    if (t.marks.length) {
+      const P = shpWrite(1, t.marks.map(U));
+      f.file('trasse_punkte.shp', P.shp); f.file('trasse_punkte.shx', P.shx); f.file('trasse_punkte.prj', prj); f.file('trasse_punkte.cpg', 'UTF-8');
+      f.file('trasse_punkte.dbf', dbfWrite([{ name: 'NR', type: 'N', len: 5 }, { name: 'TYP', type: 'C', len: 30 }, { name: 'TIEFE_CM', type: 'N', len: 8 }, { name: 'NOTIZ', type: 'C', len: 120 }, { name: 'ZEIT', type: 'C', len: 19 }, { name: 'GENAU_M', type: 'N', len: 9, dec: 3 }, { name: 'FIX', type: 'C', len: 12 }, { name: 'HOEHE_ELL', type: 'N', len: 10, dec: 3 }],
+        t.marks.map(m => [m.n, m.type, m.depthCm, m.note, new Date(m.ts).toISOString().slice(0, 19), m.acc, m.fix, m.alt])));
+    }
+    f.file('trasse.dxf', dxfOf(t, U));
+    f.file('trasse.geojson', JSON.stringify({ type: 'FeatureCollection', name: t.name, features: [
+      { type: 'Feature', geometry: { type: 'LineString', coordinates: pts.map(p => [+p.lon.toFixed(8), +p.lat.toFixed(8), ...(p.alt != null ? [+p.alt.toFixed(3)] : [])]) }, properties: { name: t.name, art: t.kind, baustelle: site?.name || null, laenge_m: +tLen(t).toFixed(2), genauigkeit: accSummary(t) } },
+      ...t.marks.map(m => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [+m.lon.toFixed(8), +m.lat.toFixed(8)] }, properties: { nr: m.n, typ: m.type, tiefe_cm: m.depthCm, notiz: m.note || null, zeit: new Date(m.ts).toISOString(), genauigkeit_m: m.acc, fix: m.fix } }))] }, null, 1));
+    f.file('trasse.kml', `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>${esc(t.name)}</name><Style id="l"><LineStyle><color>ff40a0ff</color><width>4</width></LineStyle></Style>
+<Placemark><name>${esc(t.name)}</name><description>${esc(t.kind + ' · ' + fmtDist(tLen(t)))}</description><styleUrl>#l</styleUrl><LineString><coordinates>${pts.map(p => `${p.lon},${p.lat},0`).join(' ')}</coordinates></LineString></Placemark>
+${t.marks.map(m => `<Placemark><name>${m.n} ${esc(m.type)}</name><description>${esc((m.depthCm ? 'Tiefe ' + m.depthCm + ' cm. ' : '') + (m.note || ''))}</description><Point><coordinates>${m.lon},${m.lat},0</coordinates></Point></Placemark>`).join('\n')}
+</Document></kml>`);
+    const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`, nf = (v, d) => v == null ? '' : Number(v).toFixed(d).replace('.', ',');
+    f.file('trasse_punkte.csv', '﻿' + ['Nr', 'Typ', `Rechtswert_E (EPSG:${epsg})`, `Hochwert_N (EPSG:${epsg})`, 'Hoehe_ellipsoidisch_m', 'Breite_WGS84', 'Laenge_WGS84', 'Genauigkeit_m', 'Fix', 'Zeit', 'Tiefe_cm', 'Notiz'].join(';') + '\n' +
+      [...pts.map((p, i) => ({ ...p, n: i + 1, type: 'Linienpunkt' })), ...t.marks].map(p => { const [x, y] = U(p); return [p.n, p.type, nf(x, 3), nf(y, 3), nf(p.alt, 3), nf(p.lat, 8), nf(p.lon, 8), nf(p.acc, 3), p.fix, new Date(p.ts).toLocaleString('de-DE'), p.depthCm ?? '', p.note || ''].map(q).join(';'); }).join('\n'));
+    f.file('LIESMICH.txt', `SEF-KI Baudoku – Trassen-Export\r\n\r\nTrasse: ${t.name}\r\nArt: ${t.kind}\r\nBaustelle: ${site?.name || '-'}\r\nAufgenommen: ${new Date(t.created).toLocaleString('de-DE')}${t.ended ? ' bis ' + new Date(t.ended).toLocaleString('de-DE') : ''}\r\nLaenge: ${tLen(t).toFixed(2)} m · ${pts.length} Linienpunkte · ${t.marks.length} Markierungen\r\nGenauigkeit: ${accSummary(t)}\r\n\r\nKoordinatensystem: ETRS89 / UTM Zone ${zone}N (EPSG:${epsg}) fuer Shapefile, DXF und CSV.\r\nGeoJSON und KML: WGS84 (EPSG:4326).\r\nHoehen: ellipsoidisch laut Empfaenger (nicht DHHN2016).\r\n\r\nDateien:\r\n- trasse_linie.shp/.shx/.dbf/.prj  – Linie (Shapefile)\r\n- trasse_punkte.shp/...            – Markierungen mit Typ und Tiefe\r\n- trasse.dxf                       – CAD (Layer TRASSE, PUNKTE, BESCHRIFTUNG)\r\n- trasse.geojson / trasse.kml      – Web-Karten, Google Earth\r\n- trasse_punkte.csv                – Tabelle aller Punkte\r\n\r\nHinweis: Mit Handy-GPS liegt die Genauigkeit bei etwa 3–10 m. Fuer die Bestandsdokumentation\r\nbei Netzbetreibern einen RTK-Empfaenger (z. B. ueber SAPOS) verwenden.\r\n\r\n(c) ${new Date().getFullYear()} Lukas Smolenski · Smolens-KI\r\n`);
+    const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+    if (await saveFile(base + '_GIS.zip', blob)) toast('GIS-Paket erstellt: Shapefile, DXF, GeoJSON, KML und CSV.');
+  } catch (e) { toast('Export fehlgeschlagen: ' + (e.message || e), 5000); }
+  if (btn) { btn.disabled = false; btn.textContent = 'GIS-Export'; }
+}
+
+/* ---------------- Freihändig: Sprachbefehle ---------------- */
+const Voice = {
+  rec: null, on: false, mute: 0,
+  supported: () => !inFrame && !!(window.SpeechRecognition || window.webkitSpeechRecognition),
+  toggle() { this.on ? this.stop() : this.start(); },
+  start() {
+    if (!this.supported()) { toast(inFrame ? 'Sprachbefehle gehen in der installierten App, nicht in dieser Vorschau.' : 'Dieser Browser kann keine Sprachbefehle. Bitte Chrome nutzen.'); return; }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition, r = new SR();
+    r.lang = 'de-DE'; r.continuous = true; r.interimResults = false; r.maxAlternatives = 1;
+    r.onresult = e => { for (let i = e.resultIndex; i < e.results.length; i++) if (e.results[i].isFinal) this.cmd(e.results[i][0].transcript); };
+    r.onend = () => { if (this.on) setTimeout(() => { try { r.start(); } catch (e) {} }, 300); };
+    r.onerror = e => { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { this.on = false; this.ui(); toast('Mikrofon ist nicht erlaubt.'); } };
+    this.rec = r; this.on = true; try { r.start(); } catch (e) {}
+    this.ui(); speak('Freihändig an. Sag Foto, Speichern, Nochmal, Nächstes, Punkt oder Notiz.', true);
+  },
+  stop() { this.on = false; try { this.rec?.stop(); } catch (e) {} this.ui(); toast('Freihändig aus.'); },
+  ui() { $$('.micbtn').forEach(b => { b.classList.toggle('on', this.on); b.setAttribute('aria-pressed', this.on); }); },
+  cmd(raw) {
+    if (window.speechSynthesis?.speaking || Date.now() < this.mute) return;
+    const t = raw.toLowerCase().trim(); if (!t) return;
+    const camOpen = !$('#cam').hidden, revOpen = camOpen && !$('#review').hidden;
+    const has = re => re.test(t);
+    let m;
+    if ((m = t.match(/^(?:notiz|anmerkung|vermerk)\s*[:,]?\s*(.+)/))) { const txt = m[1].charAt(0).toUpperCase() + m[1].slice(1); if (revOpen) { const d = $('#rvDesc'); d.value = (d.value ? d.value + ' ' : '') + txt; } else saveNote(txt); speak('Notiert.', true); return; }
+    if (revOpen && has(/speicher|passt|übernehm|\bok(ay)?\b|ja\b/)) { $('#rvSave')?.click(); return; }
+    if (revOpen && has(/nochmal|wiederhol|neu\b|verwerf/)) { $('#rvRetake')?.click(); speak('Nochmal.', true); return; }
+    if (has(/trasse.*(start|beginn|aufnehm)/)) { startTrasse(true); return; }
+    if (has(/trasse.*(fertig|ende|beend|stopp)/)) { finishTrasse(); return; }
+    if (has(/\bpunkt\b|markier/) && curTrasse()) { const ty = MTYPES.find(x => t.includes(x.toLowerCase().slice(0, 6))); markPoint(ty, true); return; }
+    if (has(/foto|bild|auslös|aufnahme|klick|schnapp/)) { if (camOpen && !revOpen) shoot(); else if (!camOpen) openCamera(); return; }
+    if (camOpen && has(/nächst|weiter|überspring/)) { skipItem(); return; }
+    if (camOpen && has(/schließ|beend|fertig|zurück/)) { closeCamera(); speak('Kamera zu.', true); return; }
+    if (has(/kamera/)) { openCamera(); return; }
+    if (has(/was fehlt|status|was jetzt|wo bin ich/)) { speak(lotse().say, true); return; }
+    if (has(/hilfe|was kann/)) { speak('Du kannst sagen: Foto. Speichern. Nochmal. Nächstes. Notiz und dann deinen Text. Trasse starten. Punkt. Trasse fertig. Was fehlt.', true); return; }
+  }
+};
+function skipItem() {
+  const { site, item, pr } = camTarget(); if (!site || !pr) return;
+  const open = pr.its.filter(i => !i.photos.length); if (!open.length) return;
+  const idx = open.findIndex(i => i.id === item?.id), nx = open[(idx + 1) % open.length];
+  camCtx = { ...camCtx, siteId: site.id, itemId: nx.id }; renderCamHud(); updateGhost(); speak('Als Nächstes: ' + nx.label, true);
+}
+
+/* ---------------- Notizen ---------------- */
+async function saveNote(text) {
+  if (!text) return; const st = siteStatus();
+  const n = { id: uid(), ts: Date.now(), text, siteId: st.state === 'in' ? st.site.id : null, lat: S.pos?.lat ?? null, lon: S.pos?.lon ?? null };
+  S.notes.push(n); await DB.put('notes', n).catch(() => {}); toast('Notiz gespeichert.'); if (S.view === 'bericht') renderNotes();
+}
+
+/* ---------------- KI-Tagesbericht ---------------- */
+const WMO = c => c === 0 ? 'klar' : c <= 3 ? 'bewölkt' : c <= 48 ? 'Nebel' : c <= 57 ? 'Nieselregen' : c <= 67 ? 'Regen' : c <= 77 ? 'Schnee' : c <= 82 ? 'Regenschauer' : c <= 86 ? 'Schneeschauer' : 'Gewitter';
+async function weatherFor(day, pos) {
+  if (inFrame || !pos || !navigator.onLine) return null;
+  const k = 'w|' + day + '|' + pos.lat.toFixed(2) + '|' + pos.lon.toFixed(2); if (S.daily[k]) return S.daily[k];
+  try {
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pos.lat.toFixed(3)}&longitude=${pos.lon.toFixed(3)}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max&timezone=Europe%2FBerlin&start_date=${day}&end_date=${day}`);
+    if (!r.ok) return null; const d = (await r.json()).daily;
+    const w = `${WMO(d.weather_code[0])}, ${Math.round(d.temperature_2m_min[0])} bis ${Math.round(d.temperature_2m_max[0])} °C, Niederschlag ${String(d.precipitation_sum[0]).replace('.', ',')} mm, Wind bis ${Math.round(d.wind_speed_10m_max[0])} km/h`;
+    S.daily[k] = w; saveDaily(); return w;
+  } catch (e) { return null; }
+}
+const saveDaily = () => DB.put('kv', { id: 'daily', map: S.daily }).catch(() => {});
+function dayData(day, siteF) {
+  const inSite = x => siteF === 'all' || (siteF === 'none' ? !x.siteId : x.siteId === siteF);
+  const ph = S.photos.filter(p => dayKey(p.ts) === day && inSite(p)).sort((a, b) => a.ts - b.ts);
+  const notes = S.notes.filter(n => dayKey(n.ts) === day && inSite(n)).sort((a, b) => a.ts - b.ts);
+  const tr = S.trassen.filter(t => (dayKey(t.created) === day || t.points.some(p => dayKey(p.ts) === day)) && inSite(t));
+  const siteIds = [...new Set([...ph.map(p => p.siteId), ...notes.map(n => n.siteId), ...tr.map(t => t.siteId)].filter(Boolean))];
+  const sites = siteIds.map(id => S.sites.find(s => s.id === id)).filter(Boolean);
+  return { day, ph, notes, tr, sites };
+}
+function ruleReport(D, weather) {
+  const L = [`TAGESBERICHT ${new Date(D.day + 'T12:00').toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }).toUpperCase()}`, `Bearbeiter: ${S.set.name || '–'}`];
+  if (weather) L.push(`Wetter: ${weather}`);
+  for (const s of D.sites) {
+    const ps = D.ph.filter(p => p.siteId === s.id), pr = progress(s);
+    L.push('', s.name.toUpperCase() + (s.order ? ` (Auftrag ${s.order})` : ''));
+    if (ps.length) L.push(`- ${ps.length} Foto${ps.length > 1 ? 's' : ''} zwischen ${fmtTime(ps[0].ts)} und ${fmtTime(ps[ps.length - 1].ts)} Uhr`);
+    ps.filter(p => p.itemId).forEach(p => { const it = s.items.find(i => i.id === p.itemId); L.push(`- ${PH[p.phase].n}: ${it?.label || catName(p.cat)}${p.depthCm ? ` – Tiefe ${p.depthCm} cm` : ''}${p.desc ? ` – ${p.desc}` : p.aiDesc ? ` – ${p.aiDesc}` : ''}`); });
+    D.tr.filter(t => t.siteId === s.id).forEach(t => L.push(`- Trasse „${t.name}“ (${t.kind}): ${tLen(t).toFixed(1).replace('.', ',')} m aufgenommen, ${t.marks.length} Markierungen, ${accSummary(t)}`));
+    D.notes.filter(n => n.siteId === s.id).forEach(n => L.push(`- Notiz ${fmtTime(n.ts)}: ${n.text}`));
+    L.push(pr.missing.length ? `- Offen: ${pr.missing.map(i => i.label).join(', ')}` : '- Alle Pflichtfotos vorhanden.');
+  }
+  const loose = D.ph.filter(p => !p.siteId), ln = D.notes.filter(n => !n.siteId);
+  if (loose.length || ln.length) { L.push('', 'OHNE BAUSTELLE'); if (loose.length) L.push(`- ${loose.length} Foto${loose.length > 1 ? 's' : ''}`); ln.forEach(n => L.push(`- Notiz ${fmtTime(n.ts)}: ${n.text}`)); }
+  if (!D.sites.length && !loose.length && !ln.length) L.push('', 'Für diesen Tag liegen keine Fotos, Notizen oder Trassen vor.');
+  return L.join('\n');
+}
+async function aiReport(D, weather, onText) {
+  const data = {
+    datum: D.day, bearbeiter: S.set.name, wetter: weather || 'unbekannt',
+    baustellen: D.sites.map(s => { const pr = progress(s); return { name: s.name, art: TPL[s.tpl]?.n, auftrag: s.order || null, pflichtfotos: `${pr.done}/${pr.must}`, fehlend: pr.missing.map(i => i.label) }; }),
+    fotos: D.ph.map(p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId); return { zeit: fmtTime(p.ts), baustelle: s?.name || null, pflichtfoto: it?.label || null, phase: PH[p.phase].n, kategorie: catName(p.cat), tiefe_cm: p.depthCm ?? null, beschreibung: p.desc || p.aiDesc || null, ki_pruefung: p.aiOk == null ? null : p.aiOk ? 'passt' : 'unvollständig', stichworte: p.labels }; }),
+    sprachnotizen: D.notes.map(n => ({ zeit: fmtTime(n.ts), baustelle: S.sites.find(s => s.id === n.siteId)?.name || null, text: n.text })),
+    trassen: D.tr.map(t => ({ name: t.name, art: t.kind, laenge_m: +tLen(t).toFixed(1), markierungen: t.marks.map(m => ({ nr: m.n, typ: m.type, tiefe_cm: m.depthCm, notiz: m.note || null })), genauigkeit: accSummary(t) }))
+  };
+  const prompt = `Schreibe einen Bautagebuch-Tagesbericht auf Deutsch aus den folgenden Daten einer Baustellen-Foto-App. Sachlich, knapp, wie ihn ein erfahrener Bauleiter schreibt.
+Format: reiner Text. Überschriften als eigene Zeile in GROSSBUCHSTABEN. Aufzählungen mit "- ". Keine Markdown-Sternchen.
+Abschnitte: TAGESBERICHT (Datum, Bearbeiter, Wetter) · AUSGEFÜHRTE ARBEITEN (je Baustelle) · MESSWERTE (Tiefen, Trassenlängen, falls vorhanden) · BESONDERHEITEN (aus Notizen und Beschreibungen) · OFFENE PUNKTE (fehlende Pflichtfotos, unvollständige Prüfungen) · NÄCHSTE SCHRITTE.
+Erfinde nichts. Was nicht in den Daten steht, lässt du weg. Höchstens 350 Wörter.
+
+DATEN:
+${JSON.stringify(data, null, 1).slice(0, 60000)}`;
+  return AI.text(prompt, 'default', onText);
+}
+function renderDaily() {
+  const p = $('#dailyPanel'); if (!p) return;
+  S.rep.day ??= dayKey(Date.now());
+  const key = S.rep.day + '|' + S.rep.site, txt = S.daily['t|' + key] || '';
+  p.innerHTML = `<div class="ph"><h2>Tagesbericht</h2><span class="lbl">Bautagebuch</span></div>
+    <div class="inrow" style="align-items:flex-end;margin-bottom:10px"><div class="fld" style="margin:0"><label class="lbl" for="dayPick">Tag</label><input type="date" id="dayPick" value="${S.rep.day}" style="padding:10px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8)"></div></div>
+    <p class="note" id="dayWeather" style="margin:0 0 10px"></p>
+    <div class="row"><button class="btn pri" data-dy="ai">Mit SEF-KI schreiben</button><button class="btn" data-dy="rule">Ohne KI erstellen</button></div>
+    <textarea class="daily" id="dayText" style="margin-top:10px" placeholder="Hier entsteht der Tagesbericht. Du kannst ihn danach frei bearbeiten.">${esc(txt)}</textarea>
+    <div class="row" style="margin-top:8px"><button class="btn" data-dy="pdf">Tagesbericht + Fotos als PDF</button><button class="btn" data-dy="copy">Text kopieren</button></div>`;
+  const D = dayData(S.rep.day, S.rep.site), pos = D.sites[0] || S.pos;
+  weatherFor(S.rep.day, pos).then(w => { const e = $('#dayWeather'); if (e) e.textContent = w ? 'Wetter: ' + w : inFrame ? 'Wetter wird in der installierten App automatisch eingetragen.' : ''; });
+}
+async function dailyAction(e) {
+  const b = e.target.closest('[data-dy]'); if (!b) return; const a = b.dataset.dy, key = S.rep.day + '|' + S.rep.site, ta = $('#dayText');
+  const D = dayData(S.rep.day, S.rep.site), weather = await weatherFor(S.rep.day, D.sites[0] || S.pos);
+  if (a === 'rule') { ta.value = ruleReport(D, weather); S.daily['t|' + key] = ta.value; saveDaily(); }
+  if (a === 'ai') {
+    if (!D.ph.length && !D.notes.length && !D.tr.length) return toast('Für diesen Tag gibt es noch keine Daten.');
+    b.disabled = true; const old = b.textContent; b.innerHTML = '<span class="spin"></span> SEF-KI schreibt …'; ta.value = '';
+    try { const t = await aiReport(D, weather, x => { ta.value = x; }); ta.value = t.trim(); S.daily['t|' + key] = ta.value; saveDaily(); speak('Der Tagesbericht ist fertig.'); }
+    catch (err) { toast(aiErr(err) + ' Ich erstelle ihn ohne KI.', 5000); ta.value = ruleReport(D, weather); S.daily['t|' + key] = ta.value; saveDaily(); }
+    b.disabled = false; b.textContent = old;
+  }
+  if (a === 'copy') { try { await navigator.clipboard.writeText(ta.value); toast('Text kopiert.'); } catch (err) { ta.select(); toast('Text markiert – jetzt kopieren.'); } }
+  if (a === 'pdf') {
+    if (!ta.value.trim()) ta.value = ruleReport(D, weather); S.daily['t|' + key] = ta.value; saveDaily();
+    exportPDF(b, D.ph, ta.value);
+  }
+}
+function renderNotes() {
+  const p = $('#notesPanel'); if (!p) return; S.rep.day ??= dayKey(Date.now());
+  const ns = dayData(S.rep.day, S.rep.site).notes;
+  p.innerHTML = `<div class="ph"><h2>Notizen</h2><span class="lbl">${ns.length} am ${fmtDate(new Date(S.rep.day + 'T12:00'))}</span></div>
+    <div class="inrow"><input type="text" id="noteIn" placeholder="Notiz eintippen … oder unten diktieren" style="padding:11px 12px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8)">
+      <button class="btn" data-nt="add">+</button>${hasDictation() ? '<button class="iconbtn" data-nt="mic" aria-label="Notiz diktieren" style="width:44px;height:44px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>' : ''}</div>
+    <div class="notes">${ns.map(n => `<div class="note-i"><small>${fmtTime(n.ts)} · ${esc(S.sites.find(s => s.id === n.siteId)?.name || 'ohne Baustelle')}</small>${esc(n.text)}</div>`).join('') || '<p class="note" style="margin:6px 0 0">Tipp: Mit „Freihändig“ einfach „Notiz …“ sagen.</p>'}</div>`;
+}
+async function notesAction(e) {
+  const b = e.target.closest('[data-nt]'); if (!b) return; const inp = $('#noteIn');
+  if (b.dataset.nt === 'add') { const t = inp.value.trim(); if (t) { await saveNote(t); inp.value = ''; } }
+  if (b.dataset.nt === 'mic') dictate(inp, b);
 }
 
 /* ---------------- Einstellungen ---------------- */
@@ -1800,6 +2588,21 @@ async function openSettings() {
     <label class="tog"><span>Stempel im Foto<small>Baustelle, Zeit, Koordinaten und Blickrichtung fest ins Bild.</small></span><input type="checkbox" class="sw" id="stWm"${S.set.watermark ? ' checked' : ''}></label>
     <label class="tog"><span>Serienmodus<small>Speichert sofort ohne Nachfrage, wenn Schärfe, Licht und GPS passen.</small></span><input type="checkbox" class="sw" id="stSeries"${S.set.series ? ' checked' : ''}></label>
     <label class="tog"><span>Demo-Position<small>Simuliert GPS auf den Baustellen – zum Ausprobieren.</small></span><input type="checkbox" class="sw" id="stDemo"${S.set.demo ? ' checked' : ''}></label>
+    <div class="ph" style="margin-top:18px"><h2>SEF-KI Intelligenz</h2><span class="lbl" id="aiState">prüfe …</span></div>
+    ${inFrame ? '<p class="note" style="margin:0 0 8px">In dieser Vorschau nutzt SEF-KI dein Claude-Konto. Beim ersten Mal fragt Claude einmal um Erlaubnis.</p>' : `
+    <div class="fld"><label class="lbl" for="stKey">Anthropic-API-Schlüssel</label><div class="inrow"><input type="password" id="stKey" value="${S.set.aiKey ? '••••••••••••' : ''}" placeholder="sk-ant-…" autocomplete="off"><button class="btn" id="stKeyTest">Testen</button></div></div>
+    <div class="fld"><label class="lbl" for="stModel">Modell für die Bildprüfung</label><select id="stModel"><option value="claude-sonnet-5-5"${S.set.aiModel !== 'claude-haiku-5-5' ? ' selected' : ''}>Claude Sonnet 5.5 – genauer (empfohlen)</option><option value="claude-haiku-5-5"${S.set.aiModel === 'claude-haiku-5-5' ? ' selected' : ''}>Claude Haiku 5.5 – schneller und günstiger</option></select></div>
+    <p class="note" style="margin:0 0 8px">Der Schlüssel bleibt nur auf diesem Gerät und kommt nie ins Backup. Zur Prüfung wird jedes Foto verkleinert an Anthropic gesendet. Einen Schlüssel gibt es unter console.anthropic.com.</p>`}
+    <label class="tog"><span>KI-Bildprüfung<small>Prüft Pflichtinhalte, liest die Tiefe vom Meterstab, schlägt Beschreibung und Stichworte vor.</small></span><input type="checkbox" class="sw" id="stAI"${S.set.aiCheck ? ' checked' : ''}></label>
+    <label class="tog"><span>Personen & Kennzeichen unkenntlich<small>Automatisch vor dem Speichern – mit Vorschau, abschaltbar pro Foto.</small></span><input type="checkbox" class="sw" id="stPriv"${S.set.privacy ? ' checked' : ''}></label>
+    <label class="tog"><span>Geisterbild<small>Blendet bei Nachher-Fotos das Vorher-Foto halbtransparent ein und lotst zum gleichen Standpunkt.</small></span><input type="checkbox" class="sw" id="stGhost"${S.set.ghost ? ' checked' : ''}></label>
+    <div class="ph" style="margin-top:18px"><h2>Beweissicherung</h2></div>
+    <p class="note" style="margin:0 0 8px"><b>${S.ledger.length}</b> Einträge in der Prüfkette${S.set.chainHead ? ` · Stand <span class="num">${S.set.chainHead.slice(0, 16)}…</span>` : ''}. Jedes Foto bekommt beim Speichern einen SHA-256-Fingerabdruck.</p>
+    <label class="tog"><span>Zeitstempel (OpenTimestamps)<small>Reicht jeden Fingerabdruck kostenlos bei OpenTimestamps ein – unabhängiger Beweis, dass das Foto zu diesem Zeitpunkt existierte.</small></span><input type="checkbox" class="sw" id="stOts"${S.set.ots ? ' checked' : ''}></label>
+    <div class="ph" style="margin-top:18px"><h2>GNSS-Empfänger & Trassen</h2></div>
+    ${S.gnss ? `<p class="note"><b style="color:var(--ok)">${esc(S.gnss.name)}</b> verbunden · ${esc(S.gnss.fix || '')}</p><button class="btn wide" id="stGnssOff">Empfänger trennen</button>` : GNSS.supported() ? '<button class="btn wide" id="stGnss">RTK-Empfänger per Bluetooth verbinden</button>' : ''}
+    <p class="note">Bluetooth-LE-Empfänger mit NMEA-Ausgabe (z. B. über den Nordic-UART-Dienst) verbinde ich direkt. Jeder andere RTK-Empfänger funktioniert über seine App (z. B. Emlid Flow, Lefebure NTRIP, SW Maps) mit der Einstellung <b>„Mock-Standort / Fake-GPS“</b> – SEF-KI übernimmt die Zentimeter-Position dann automatisch.</p>
+    <div class="fld"><label class="lbl" for="stTrAcc">Trassenpunkte ungenauer als <span id="stTrAccV" class="num">±${S.set.trassMaxAcc} m</span> weglassen</label><input type="range" id="stTrAcc" min="1" max="25" step="1" value="${S.set.trassMaxAcc}"></div>
     <div class="ph" style="margin-top:18px"><h2>Speicher</h2></div>
     <p class="note" style="margin:0 0 10px">${S.photos.length} Fotos · ${mb.toFixed(1).replace('.', ',')} MB auf diesem Gerät${est?.quota ? ` · frei ca. ${((est.quota - est.usage) / 1073741824).toFixed(1).replace('.', ',')} GB` : ''}.<br>
       ${!DB.db ? '<b style="color:var(--bad)">Achtung: Der Gerätespeicher ist nicht verfügbar. Fotos gehen beim Schließen verloren – sofort exportieren.</b>' : S.persisted ? 'Dauerhafter Speicher ist <b style="color:var(--ok)">aktiv</b> – der Browser löscht die Fotos nicht von selbst.' : 'Dauerhafter Speicher ist <b style="color:var(--amber)">nicht bestätigt</b>. Installier die App auf dem Startbildschirm, dann ist er sicherer.'}</p>
@@ -1815,6 +2618,17 @@ async function openSettings() {
   $('#stWm', el).onchange = e => { S.set.watermark = e.target.checked; saveSet(); };
   $('#stSeries', el).onchange = e => { S.set.series = e.target.checked; saveSet(); };
   $('#stDemo', el).onchange = e => setDemo(e.target.checked);
+  AI.mode().then(m => { const e = $('#aiState', el); if (e) e.textContent = m === 'api' ? 'eigener Schlüssel' : m === 'sample' ? 'über Claude-Konto' : 'nicht eingerichtet'; });
+  $('#stKey', el)?.addEventListener('change', e => { const v = e.target.value.trim(); if (/^•+$/.test(v)) return; S.set.aiKey = v; saveSet(); AI.mode().then(m => { $('#aiState', el).textContent = m === 'api' ? 'eigener Schlüssel' : 'nicht eingerichtet'; }); });
+  $('#stKeyTest', el)?.addEventListener('click', async e => { const b = e.target; b.disabled = true; b.textContent = '…'; try { const t = await AI.text('Antworte nur mit dem Wort OK.', 'quick'); toast(/ok/i.test(t) ? 'KI-Schlüssel funktioniert.' : 'Antwort erhalten: ' + t.slice(0, 40)); } catch (err) { toast(aiErr(err), 5000); } b.disabled = false; b.textContent = 'Testen'; });
+  $('#stModel', el)?.addEventListener('change', e => { S.set.aiModel = e.target.value; saveSet(); });
+  $('#stAI', el).onchange = e => { S.set.aiCheck = e.target.checked; saveSet(); };
+  $('#stPriv', el).onchange = e => { S.set.privacy = e.target.checked; saveSet(); if (S.set.privacy) Det.load(); };
+  $('#stGhost', el).onchange = e => { S.set.ghost = e.target.checked; saveSet(); };
+  $('#stOts', el).onchange = e => { S.set.ots = e.target.checked; saveSet(); otsQueue(); };
+  $('#stGnss', el)?.addEventListener('click', () => { closeSheet(); GNSS.connect(); });
+  $('#stGnssOff', el)?.addEventListener('click', () => { GNSS.disconnect(); closeSheet(); });
+  $('#stTrAcc', el).oninput = e => { S.set.trassMaxAcc = +e.target.value; $('#stTrAccV', el).textContent = '±' + e.target.value + ' m'; saveSet(); };
   $('#stBackup', el).onclick = e => backup(e.target);
   $('#stRestore', el).onclick = () => $('#fileRestore').click();
   $('#stEx', el)?.addEventListener('click', e => { if (e.target.dataset.sure) { closeSheet(); removeExamples(); } else { e.target.dataset.sure = '1'; e.target.textContent = 'Sicher? Beispiele löschen'; } });
@@ -1846,6 +2660,20 @@ function bind() {
   $('#fileImp').onchange = e => { const f = [...e.target.files]; e.target.value = ''; if (f.length) importFiles(f, false); };
   $('#fileRestore').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) { closeSheet(); restore(f); } };
   $('#btnImport').onclick = () => $('#fileImp').click();
+  $('#btnVerify').onclick = () => $('#fileVerify').click();
+  $('#fileVerify').onchange = e => { const f = [...e.target.files]; e.target.value = ''; if (f.length) verifyFiles(f); };
+  $('#btnMic').onclick = () => Voice.toggle();
+  $('#camMic').onclick = () => Voice.toggle();
+  $('#camSkip').onclick = skipItem;
+  $('#ghostBar').addEventListener('click', e => { if (e.target.id === 'ghostToggle') { ghostOff = !ghostOff; updateGhost(); } });
+  $('#ghostBar').addEventListener('input', e => { if (e.target.id === 'ghostOp') { S.set.ghostOpacity = +e.target.value; $('#ghost').style.opacity = S.set.ghostOpacity; saveSet(); } });
+  $('#trassPanel').addEventListener('click', trassAction);
+  $('#dailyPanel').addEventListener('click', dailyAction);
+  $('#dailyPanel').addEventListener('change', e => { if (e.target.id === 'dayPick' && e.target.value) { S.rep.day = e.target.value; renderDaily(); renderNotes(); } });
+  $('#dailyPanel').addEventListener('input', e => { if (e.target.id === 'dayText') { S.daily['t|' + S.rep.day + '|' + S.rep.site] = e.target.value; clearTimeout(S.dT); S.dT = setTimeout(saveDaily, 600); } });
+  $('#notesPanel').addEventListener('click', notesAction);
+  $('#notesPanel').addEventListener('keydown', e => { if (e.target.id === 'noteIn' && e.key === 'Enter') { e.preventDefault(); notesAction({ target: $('[data-nt=add]') }); } });
+  addEventListener('online', () => otsQueue());
   $('#galSeg').onclick = e => { const b = e.target.closest('[data-g]'); if (b) { S.gal.mode = b.dataset.g; renderGallery(); } };
   $('#galSites').onclick = e => { const b = e.target.closest('[data-gs]'); if (b) { S.gal.site = b.dataset.gs; renderGallery(); } };
   $('#galList').onclick = e => { const b = e.target.closest('[data-photo]'); if (b) openPhoto(b.dataset.photo); };
@@ -1867,6 +2695,10 @@ function bind() {
   try {
     const kv = await DB.all('kv'); const st = kv.find(x => x.id === 'settings'); if (st) Object.assign(S.set, st);
     S.sites = await DB.all('sites'); S.photos = await DB.all('photos');
+    S.notes = await DB.all('notes'); S.trassen = await DB.all('trassen');
+    S.ledger = (await DB.all('ledger')).sort((a, b) => a.seq - b.seq);
+    S.daily = kv.find(x => x.id === 'daily')?.map || {};
+    S.rec = S.trassen.find(t => t.status === 'rec' || t.status === 'paused')?.id || null;
   } catch (e) {}
   if (!ok) toast('Gerätespeicher nicht verfügbar – Fotos bitte sofort exportieren.', 6000);
   if (!S.set.seeded) {
@@ -1879,6 +2711,8 @@ function bind() {
   startGPS();
   if (S.set.demo) toast('Demo-Position aktiv – in den Einstellungen abschaltbar.', 3000);
   if ('serviceWorker' in navigator && !inFrame && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+  setTimeout(otsQueue, 4000); setInterval(otsQueue, 120000);
+  if (S.rec) toast('Eine Trassen-Aufnahme läuft noch – weiter in der Karte.', 4000);
 })();
 </script>
 </body></html>
