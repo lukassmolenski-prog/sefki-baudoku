@@ -300,6 +300,44 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
 .review .actions .row{max-width:560px;width:100%}
 
 /* ---------- Markup ---------- */
+.lrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tourchip{padding:5px 10px;font-size:10.5px;color:var(--cyan);border-color:var(--line-hi);background:rgba(63,216,239,.08)}
+#tour{position:fixed;inset:0;z-index:120;touch-action:none}
+#tour .tspot{position:fixed;left:50%;top:50%;width:0;height:0;border:2px solid var(--cyan);border-radius:10px;pointer-events:none;
+  box-shadow:0 0 0 200vmax rgba(2,6,14,.7),0 0 22px rgba(63,216,239,.6),inset 0 0 14px rgba(63,216,239,.22);transition:left .3s,top .3s,width .3s,height .3s,border-color .2s}
+#tour .tspot::after{content:"";position:absolute;inset:-8px;border:1px solid rgba(63,216,239,.55);border-radius:14px;animation:tpulse 1.7s ease-out infinite}
+#tour .tspot.none{border-color:transparent;box-shadow:0 0 0 200vmax rgba(2,6,14,.7)}
+#tour .tspot.none::after{display:none}
+@keyframes tpulse{from{opacity:.9;transform:scale(.97)}to{opacity:0;transform:scale(1.07)}}
+#tour .tcap{position:fixed;left:50%;transform:translateX(-50%);width:min(calc(100vw - 20px),520px);padding:12px 14px 10px;border:1px solid var(--line-hi);border-radius:14px;
+  background:linear-gradient(180deg,#0f2848,#081a32);box-shadow:0 18px 50px rgba(0,0,0,.65),0 0 0 1px rgba(63,216,239,.08) inset}
+#tour .tcap.tc-bot{bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+#tour .tcap.tc-top{top:calc(10px + env(safe-area-inset-top,0px))}
+#tour .tcap.tc-mid{top:50%;bottom:auto;transform:translate(-50%,-50%)}
+#tour .thead{display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+#tour .tcnt{margin-left:auto;color:var(--mute);letter-spacing:.06em}
+#tour .teq{display:flex;gap:2px;align-items:flex-end;height:14px}
+#tour .teq i{width:3px;height:4px;background:var(--cyan);border-radius:1px;opacity:.6}
+#tour.talk .teq i{animation:teq .9s ease-in-out infinite;opacity:1}
+#tour.talk .teq i:nth-child(2){animation-delay:.15s}#tour.talk .teq i:nth-child(3){animation-delay:.3s}#tour.talk .teq i:nth-child(4){animation-delay:.45s}
+@keyframes teq{0%,100%{height:4px}50%{height:14px}}
+#tour .ttxt{margin:8px 0 10px;font-size:16.5px;line-height:1.45;color:var(--ink);min-height:48px}
+#tour .tbar{height:3px;border-radius:2px;background:rgba(82,206,236,.15);overflow:hidden}
+#tour .tbar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),#8af0ff);transition:width .35s}
+#tour .tctl{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:10px}
+#tour .tctl button{height:44px;display:grid;place-items:center;border:1px solid var(--line);border-radius:10px;background:rgba(8,24,48,.8);color:var(--ink)}
+#tour .tctl button svg{width:19px;height:19px}
+#tour .tctl button:disabled{opacity:.35}
+#tour .tctl [data-tc=play]{border-color:var(--line-hi);color:var(--cyan)}
+#tour .tctl .end{color:var(--bad)}
+#tour.paused [data-tc=play]{color:var(--amber);border-color:var(--amber)}
+#tour.paused [data-tc=play] svg{display:none}
+#tour.paused [data-tc=play]::before{content:"";border-left:14px solid currentColor;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
+#tour.muted [data-tc=mute]{color:var(--amber)}
+#tour.muted [data-tc=mute] .w{display:none}
+#cam.tourcam{background:radial-gradient(120% 80% at 50% 40%,#2a3a46,#0a0f14 70%)}
+#cam.tourcam::before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 33%,rgba(255,255,255,.08) 33.3%,transparent 33.6%,transparent 66.4%,rgba(255,255,255,.08) 66.7%,transparent 67%),linear-gradient(90deg,transparent 33%,rgba(255,255,255,.08) 33.3%,transparent 33.6%,transparent 66.4%,rgba(255,255,255,.08) 66.7%,transparent 67%)}
+@media (prefers-reduced-motion:reduce){#tour .tspot{transition:none}#tour .tspot::after{animation:none}}
 body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
 .mk{position:fixed;inset:0;z-index:90;background:#02060d;display:flex;flex-direction:column}
 .mk canvas{flex:1;min-height:0;width:100%;touch-action:none}
@@ -424,7 +462,7 @@ body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
       <div class="lhead">
         <canvas id="avatar" aria-hidden="true"></canvas>
         <div style="min-width:0;flex:1">
-          <div class="lbl">SEF-KI · <span id="lotseState">bereit</span></div>
+          <div class="lrow"><div class="lbl">SEF-KI · <span id="lotseState">bereit</span></div><button class="chip tourchip" id="btnTour" aria-label="Rundgang: App erklären lassen">▶ Rundgang</button></div>
           <p class="say" id="say" aria-live="polite"></p>
         </div>
       </div>
@@ -782,6 +820,7 @@ function typeSay(html, plain) {
   }, 22);
 }
 function speak(text, force) {
+  if (window.TOUR_ON) return;
   const handsFree = typeof Voice !== 'undefined' && Voice.on;
   if (!(S.set.voice || (force && handsFree) || handsFree) || !('speechSynthesis' in window)) return;
   try {
@@ -955,6 +994,7 @@ function lotse() {
   }
   const over = S.defects.filter(isOver);
   if (!tr && over.length) { key += '|ov' + over.length; cards.splice(1, 0, { t: `${over.length} Mangel${over.length > 1 ? 'fristen' : 'frist'} überschritten`, x: over.slice(0, 2).map(d => `M${d.no} ${d.title}`).join(' · ') + (over.length > 2 ? ' …' : '') + ' – nachhaken oder Status setzen.', tag: 'MÄNGEL', a: () => { S.def.status = 'over'; S.def.site = 'all'; go('maengel'); } }); }
+  if (!tr && !S.set.tourSeen) { key += '|tour'; cards.splice(1, 0, { t: 'Rundgang: Ich erkläre dir die App', x: 'Jeder Knopf kurz erklärt – automatisch und mit Sprache. Lehn dich zurück.', tag: 'NEU HIER?', a: () => Tour.menu() }); }
   const h = new Date().getHours();
   if (!tr && open > 0 && (h >= 15 || open >= 25)) {
     key += '|fa';
@@ -2675,7 +2715,8 @@ const Voice = {
     if (camOpen && has(/schließ|beend|fertig|zurück/)) { closeCamera(); speak('Kamera zu.', true); return; }
     if (has(/kamera/)) { openCamera(); return; }
     if (has(/was fehlt|status|was jetzt|wo bin ich/)) { speak(lotse().say, true); return; }
-    if (has(/hilfe|was kann/)) { speak('Du kannst sagen: Foto. Speichern. Nochmal. Nächstes. Notiz und dann deinen Text. Trasse starten. Punkt. Trasse fertig. Was fehlt.', true); return; }
+    if (has(/rundgang|tutorial|erklär/)) { Tour.start(); return; }
+    if (has(/hilfe|was kann/)) { speak('Du kannst sagen: Rundgang. Foto. Speichern. Nochmal. Nächstes. Notiz und dann deinen Text. Trasse starten. Punkt. Trasse fertig. Was fehlt.', true); return; }
   }
 };
 function skipItem() {
@@ -3457,6 +3498,7 @@ async function openSettings() {
   const mb = S.photos.reduce((a, p) => a + (p.blob?.size || 0), 0) / 1048576;
   const hasEx = S.sites.some(s => s.example) || S.photos.some(p => p.example) || S.defects.some(d => d.example) || S.plans.some(p => p.example);
   const el = sheet(`<h3>Einstellungen</h3><p class="sub">SEF-KI Baudoku · Smolens·KI</p>
+    <button class="btn pri wide" id="stTour" style="margin-bottom:14px">▶ Rundgang: Jeden Knopf erklären lassen</button>
     <div class="fld"><label class="lbl" for="stName">Dein Name (für Begrüßung und Bericht)</label><input type="text" id="stName" value="${esc(S.set.name)}"></div>
     <label class="tog"><span>Sprachausgabe<small>SEF-KI sagt dir die nächsten Schritte an – praktisch mit Handschuhen.</small></span><input type="checkbox" class="sw" id="stVoice"${S.set.voice ? ' checked' : ''}></label>
     <label class="tog"><span>Stempel im Foto<small>Baustelle, Zeit, Koordinaten und Blickrichtung fest ins Bild.</small></span><input type="checkbox" class="sw" id="stWm"${S.set.watermark ? ' checked' : ''}></label>
@@ -3496,6 +3538,7 @@ async function openSettings() {
     <p class="note"><b>Android (Chrome):</b> Menü ⋮ → „App installieren“ bzw. „Zum Startbildschirm“.<br><b>iPhone (Safari):</b> Teilen-Symbol → „Zum Home-Bildschirm“.<br>Danach läuft SEF-KI wie eine normale App, auch ohne Netz.</p>
     <button class="btn wide" style="margin-top:14px" data-x="close">Fertig</button>
     <p class="copy" style="margin-top:16px">SEF-KI Baudoku · © 2026 Lukas Smolenski · Smolens·KI<br>Alle Rechte vorbehalten. Weitergabe oder Kopie nur mit Erlaubnis.</p>`);
+  $('#stTour', el).onclick = () => Tour.menu();
   $('#stName', el).onchange = e => { S.set.name = e.target.value.trim() || 'Sefkan'; saveSet(); refresh(true); };
   $('#stVoice', el).onchange = e => { S.set.voice = e.target.checked; saveSet(); if (S.set.voice) speak('Sprachausgabe ist an.'); else window.speechSynthesis?.cancel(); };
   $('#stWm', el).onchange = e => { S.set.watermark = e.target.checked; saveSet(); };
@@ -3527,6 +3570,342 @@ async function openSettings() {
   el.querySelector('[data-x=close]').onclick = closeSheet;
 }
 
+/* =====================================================================
+   SPRACH-RUNDGANG – SEF-KI erklärt jeden Knopf, automatisch nacheinander
+   ===================================================================== */
+const tSite = () => siteStatus().site || activeSites()[0] || S.sites[0] || null;
+const tDefSite = () => S.sites.find(s => openDefs().some(d => d.siteId === s.id)) || tSite();
+const tPhoto = () => S.photos.filter(p => p.kind !== 'video').sort((a, b) => b.ts - a.ts)[0] || S.photos[0] || null;
+const tSh = sel => () => $('#scrim .sheet ' + sel);
+const tRow = sel => () => $('#scrim .sheet ' + sel)?.closest('.tog,.fld,.row,.inrow') || null;
+const tOf = (sel, up) => () => $(sel)?.closest(up) || null;
+
+/* Kontexte: was auf dem Bildschirm offen sein muss. Rückgabe false = Kapitel überspringen */
+const TOUR_CTX = {
+  cockpit: () => go('cockpit'),
+  karte: () => go('karte'),
+  plaene: () => { const pl = S.plans[0]; if (pl) S.planSite = pl.siteId; go('plaene'); },
+  maengel: () => { S.def.status = 'all'; S.def.site = 'all'; go('maengel'); },
+  galerie: () => { S.gal.mode = 'all'; S.gal.site = 'all'; go('galerie'); },
+  bericht: () => { S.rep.range = 'all'; S.rep.site = 'all'; go('bericht'); },
+  site: () => { const s = tSite(); if (!s) return false; go('cockpit'); openSite(s.id); },
+  abn: () => { const s = tDefSite(); if (!s) return false; go('cockpit'); openAbnahme(s.id); },
+  cam: () => { go('cockpit'); tourCamOpen(); },
+  plan: async () => { const pl = S.plans[0]; if (!pl) return false; S.planSite = pl.siteId; go('plaene'); await openPlan(pl.id); },
+  defect: () => { const d = S.defects.find(x => x.status === 'open' || x.status === 'work') || S.defects[0]; if (!d) return false; go('maengel'); openDefect(d.id); },
+  photo: () => { const p = tPhoto(); if (!p) return false; go('galerie'); openPhoto(p.id); },
+  settings: async () => { go('cockpit'); await openSettings(); }
+};
+
+function tourSteps() {
+  const n = S.set.name || 'Sefkan';
+  const C = (c, ctx, list) => list.map(([el, t]) => ({ c, ctx, el, t }));
+  return [
+    ...C('Willkommen', 'cockpit', [
+      [null, `Hallo ${n}! Ich bin SEF-KI. Ich zeige dir jetzt jeden Knopf dieser App, einen nach dem anderen. Du musst nichts tun. Unten kannst du jederzeit anhalten, zurück- oder weiterspringen.`],
+      ['.brand', 'Oben links steht der Name: SEF-KI Baudoku. Das ist deine Foto-Dokumentation für die Baustelle, mit GPS.'],
+      ['#gpsPill', 'Diese Anzeige zeigt dein GPS. Die Zahl ist die Genauigkeit in Metern. Grün heißt: genau genug. Orange heißt: Ich suche noch.'],
+      ['#btnMic', 'Das Mikrofon schaltet Freihändig ein. Dann sagst du einfach Foto, Speichern, Nochmal, Nächstes oder Notiz. Das geht ohne Tippen, auch mit Handschuhen.'],
+      ['#btnSettings', 'Das Zahnrad öffnet die Einstellungen. Die schauen wir uns am Ende genau an.']
+    ]),
+    ...C('Cockpit', 'cockpit', [
+      ['.tab[data-v=cockpit]', 'Unten ist die Leiste mit allen Bereichen. Wir starten im Cockpit, deiner Startseite.'],
+      ['.lotse .lhead', 'Das hier bin ich. Ich sage dir immer, wo du bist und was als Nächstes zu tun ist. Wenn du willst, auch laut.'],
+      ['#cards', 'SEF-KI schlägt vor: Hier stehen bis zu drei Vorschläge. Der oberste ist der wichtigste. Ein Tipp darauf, und ich erledige den Rest, zum Beispiel öffne ich die Kamera für das richtige Pflichtfoto.'],
+      ['#btnTour', 'Mit diesem Knopf startest du den Rundgang jederzeit wieder.'],
+      [() => $('#sitePanel .site-hero') || $('#sitePanel'), 'Aktuelle Baustelle: Ich erkenne per GPS, auf welcher Baustelle du stehst. Der Ring zeigt, wie viele Pflichtfotos schon fertig sind.'],
+      ['#sitePanel .check', 'Das ist die Checkliste. Jede Zeile ist ein Pflichtfoto, sortiert nach Vorher, Während und Nachher. Das orange JETZT markiert das nächste Foto. Tipp auf eine Zeile, dann öffnet sich die Kamera genau dafür.'],
+      ['#stats', 'Die Zahlen auf einen Blick: Fotos von heute, noch ungesicherte Fotos, fehlende Pflichtfotos und offene Mängel. Ein Tipp auf Mängel bringt dich direkt zur Mängelliste.'],
+      ['#siteList', 'Hier stehen alle deine Baustellen, die nächste ganz oben. Der Balken zeigt den Fortschritt. Antippen öffnet die Baustelle mit allen Details.'],
+      ['#btnNewSite', 'Baustelle hier anlegen: Stell dich auf die Baustelle und tipp hier drauf. Dann gibst du einen Namen ein und wählst eine Vorlage. Die Pflichtfotos gebe ich dir dann vor.'],
+      [() => { const b = $('#demoBox'); return b && !b.hidden ? b : null; }, 'Die Demo-Position tut so, als stündest du auf einer Baustelle. Das ist praktisch zum Ausprobieren im Büro.']
+    ]),
+    ...C('Baustelle im Detail', 'site', [
+      [tSh('h3'), 'So sieht eine Baustelle im Detail aus: Name, Auftragsnummer, Umkreis und Fortschritt, darunter die Checkliste.'],
+      [tSh('[data-x=plans]'), 'Pläne zeigt die Grundrisse dieser Baustelle.'],
+      [tSh('[data-x=defs]'), 'Mängel zeigt alle offenen Mängel nur von dieser Baustelle.'],
+      [tSh('[data-x=abn]'), 'Abnahme mit Unterschrift: das Protokoll für die Übergabe. Gleich zeige ich es dir.'],
+      [tSh('[data-x=tpl]'), 'Checkliste bearbeiten: Hier fügst du Pflichtfotos für genau diese Baustelle hinzu oder nimmst welche weg.'],
+      [tSh('[data-x=client]'), 'Auftraggeber und Logo: Das Logo des Kunden erscheint dann oben im Bericht.'],
+      [tSh('[data-x=route]'), 'Route startet die Navigation zur Baustelle.'],
+      [tSh('[data-x=report]'), 'Bericht springt direkt zum Bericht dieser Baustelle.'],
+      [tSh('[data-x=center]'), 'Mitte gleich meine Position setzt den Mittelpunkt der Baustelle auf deinen Standort.'],
+      [tSh('[data-x=radius]'), 'Umkreis ändern legt fest, wie groß die Baustelle ist. Fotos innerhalb dieses Kreises ordne ich automatisch zu.'],
+      [tSh('[data-x=arch]'), 'Abschließen: Die Baustelle ist fertig und verschwindet aus der Liste. Die Fotos bleiben erhalten.'],
+      [tSh('[data-x=del]'), 'Löschen fragt immer noch einmal nach. Die Fotos bleiben auch dann erhalten, nur ohne Baustelle.']
+    ]),
+    ...C('Abnahme', 'abn', [
+      [() => $('#scrim #abAG')?.closest('.inrow'), 'Im Abnahmeprotokoll stehen oben Auftraggeber und Auftragnehmer. Die Namen fülle ich vor.'],
+      [tRow('#abRes'), 'Hier wählst du das Ergebnis: abgenommen, mit Vorbehalt oder verweigert.'],
+      [() => $('#scrim [data-def]')?.closest('.fld'), 'Offene Mängel übernehme ich automatisch als Vorbehalte. Was nicht ins Protokoll soll, schaltest du einfach aus.'],
+      [tRow('#abRem'), 'Bemerkungen und Gewährleistung trägst du hier ein, wenn nötig.'],
+      [tSh('#sigAG'), 'Hier unterschreibt der Auftraggeber, einfach mit dem Finger.'],
+      [tSh('#sigAN'), 'Und hier unterschreibst du für den Auftragnehmer. Löschen setzt eine Unterschrift zurück.'],
+      [tSh('#abDone'), 'Protokoll abschließen: Ich versiegele das Protokoll fälschungssicher und erstelle sofort das PDF.']
+    ]),
+    ...C('Kamera', 'cockpit', [
+      ['#fab', 'Der große Knopf unten in der Mitte ist die Kamera. Du erreichst ihn von überall.']
+    ]),
+    ...C('Kamera', 'cam', [
+      ['#instr', 'Oben steht immer, welches Foto ich gerade brauche, mit einem Tipp, worauf es ankommt.'],
+      ['#camStat', 'Darunter siehst du die Live-Prüfung: GPS-Genauigkeit, Schärfe und Licht. Ist alles grün, wird das Foto gut.'],
+      ['#camClose', 'Das X schließt die Kamera.'],
+      ['#camMic', 'Das Mikrofon: Freihändig, direkt aus der Kamera. Sag Foto, und ich löse aus.'],
+      ['#camSkip', 'Der Doppelpfeil springt zum nächsten Pflichtfoto, wenn du dieses gerade nicht machen kannst.'],
+      [tOf('#camImport', '.camside'), 'Import übernimmt Fotos aus der Galerie deines Handys.'],
+      ['#camMode', 'Hier wählst du Foto oder Video.'],
+      ['#shutter', 'Das ist der Auslöser. Danach zeige ich dir das Foto zur Kontrolle: Speichern oder Nochmal. Dort kannst du es auch gleich als Mangel erfassen.'],
+      ['#camSeries', 'Serie: Ich speichere jedes Foto sofort ohne Nachfrage, wenn Schärfe, Licht und GPS passen. Ideal, wenn es schnell gehen muss.']
+    ]),
+    ...C('Karte & Trassen', 'karte', [
+      ['.tab[data-v=karte]', 'Weiter zur Karte.'],
+      ['#map', 'Die Karte zeigt alle Baustellen und Fotos. Die kleinen Fächer zeigen, in welche Richtung fotografiert wurde.'],
+      ['.maplegend', 'Die Farben: Türkis heißt vorher, Orange während, Grün nachher.'],
+      ['#mzIn', 'Plus vergrößert die Karte.'],
+      ['#mzOut', 'Minus verkleinert sie.'],
+      ['#mFollow', 'Der Kreis zentriert die Karte wieder auf dich.'],
+      [() => { const b = $('#nextBar'); return b && !b.hidden ? b : null; }, 'Diese orange Leiste zeigt dir auf jeder Seite die nächste Aufgabe. Antippen, und es geht los.'],
+      ['#mapSites', 'Mit diesen Knöpfen springst du direkt zu einer Baustelle.'],
+      [() => $('#trassPanel [data-tr=start]') || $('#trassPanel [data-tr=mark]'), 'Trasse aufnehmen: Du läufst den Leitungsverlauf ab, und ich zeichne die Linie per GPS mit. Unterwegs markierst du Muffen, Abzweige oder Hausanschlüsse. Fertige Trassen exportierst du als Shapefile, DXF oder KML für den Netzbetreiber.'],
+      ['#trassPanel [data-tr=exp]', 'GIS-Export: Hier holst du dir die fertige Trasse als Datei.'],
+      ['#trassPanel [data-tr=show]', 'Auf Karte zeigt dir die Trasse oben in der Karte.'],
+      ['#trassPanel [data-tr=del]', 'Löschen entfernt die Trasse, nach einer Rückfrage.'],
+      ['#mapInfo', 'Hier unten stehen Details zu Baustellen und Fotos in der Nähe.']
+    ]),
+    ...C('Baupläne', 'plaene', [
+      ['.tab[data-v=plaene]', 'Jetzt die Pläne. Die brauchst du drinnen, wo GPS nicht reicht.'],
+      ['#planSites', 'Oben wählst du die Baustelle.'],
+      ['#planList', 'Hier liegen die Pläne. Ein Tipp öffnet den Plan.'],
+      ['#btnAddPlan', 'Plan hinzufügen: ein Foto vom Grundriss, ein Bild oder eine PDF-Datei.']
+    ]),
+    ...C('Baupläne', 'plan', [
+      ['.pv canvas', 'Im Plan tippst du auf eine Stelle. Dann erfasst du genau dort ein Foto oder einen Mangel. Mit zwei Fingern zoomst und verschiebst du.'],
+      ['.pv canvas', 'Runde Punkte sind Fotos, Rauten sind Mängel. Die Farbe zeigt den Status. Ein Tipp auf einen Punkt öffnet ihn.'],
+      ['.pv [data-pv=in]', 'Plus und Minus zoomen den Plan.'],
+      ['.pv [data-pv=close]', 'Das X schließt den Plan wieder.']
+    ]),
+    ...C('Mängel', 'maengel', [
+      ['.tab[data-v=maengel]', 'Weiter zu den Mängeln. Die Zahl am Symbol zeigt, wie viele offen sind. Rot heißt: Eine Frist ist überschritten.'],
+      ['#defStats', 'Oben siehst du offene, überfällige und erledigte Mängel auf einen Blick.'],
+      ['#defSeg', 'Mit diesen Reitern filterst du: offen, überfällig, erledigt oder alle.'],
+      ['#defSites', 'Und hier nach Baustelle.'],
+      ['#btnNewDefect', 'Mangel erfassen: Titel, Gewerk, Zuständiger und Frist, fertig.'],
+      ['#btnDefExport', 'Liste exportieren: als PDF für den Nachunternehmer, als Tabelle für Excel oder als Kalender mit allen Fristen.'],
+      ['#defList .dcard', 'Jeder Mangel ist eine Karte: Nummer, Status, Zuständiger und Frist. Rot umrandet heißt überfällig. Ein Tipp öffnet den Mangel.']
+    ]),
+    ...C('Mangel im Detail', 'defect', [
+      [tRow('#dfTitle'), 'Hier steht, was nicht passt. Das Mikrofon daneben diktiert den Text.'],
+      [tRow('#dfTrade'), 'Gewerk und Priorität.'],
+      [tRow('#dfAss'), 'Zuständig: Wer den Mangel beheben muss. Firmen, die du schon einmal eingetragen hast, schlage ich vor.'],
+      [() => $('#scrim [data-due]')?.closest('.fld') || $('#scrim [data-due]')?.parentElement, 'Die Frist. Mit einem Tipp setzt du drei Tage, eine Woche oder zwei Wochen.'],
+      [tSh('#dfSt'), 'Der Status: Offen, In Arbeit, Erledigt, Abgenommen. Jede Änderung halte ich im Verlauf fest, mit Datum und Namen.'],
+      [tSh('[data-x=photo]'), 'Foto hängt ein Beweisfoto an.'],
+      [tSh('[data-x=plan]'), 'Auf Plan verorten markiert die genaue Stelle im Grundriss.'],
+      [tSh('[data-x=send]'), 'An Zuständigen senden schickt den Mangel mit Foto per Mail, WhatsApp oder Teams weiter.'],
+      [tSh('[data-x=save]'), 'Speichern nicht vergessen.']
+    ]),
+    ...C('Galerie', 'galerie', [
+      ['.tab[data-v=galerie]', 'Weiter zur Galerie.'],
+      ['#galSeg', 'Ungesichert zeigt nur Fotos, die noch nicht exportiert sind. Alle zeigt alles.'],
+      ['#galSites', 'Hier filterst du nach Baustelle.'],
+      ['#btnImport', 'Fotos importieren holt Bilder aus der Handy-Galerie. Ort und Zeit lese ich aus dem Foto aus.'],
+      ['#btnVerify', 'Echtheit prüfen: Gib mir ein Foto zurück, und ich beweise per Fingerabdruck, dass es nicht verändert wurde.'],
+      ['#galList .th', 'Auf jedem Bild: der Buchstabe ist die Phase, der Punkt zeigt, ob es gesichert ist. Videos und 360-Grad-Fotos sind extra markiert.']
+    ]),
+    ...C('Foto im Detail', 'photo', [
+      [() => $('#scrim .sheet .seal')?.closest('dl') || $('#scrim .sheet dl'), 'Zu jedem Foto speichere ich Ort, Zeit, Blickrichtung und ein Siegel. Das Siegel beweist, dass das Foto unverändert ist.'],
+      [tSh('[data-x=edit]'), 'Markieren oder Unkenntlich: Du zeichnest Pfeile ein oder machst Gesichter und Kennzeichen unkenntlich. Das Original bleibt versiegelt.'],
+      [tSh('[data-x=share]'), 'Teilen schickt das Foto direkt weiter.'],
+      [tSh('[data-x=defect]'), 'Als Mangel erfassen macht aus dem Foto sofort einen Mangel.'],
+      [tSh('[data-x=plan]'), 'Auf Plan verorten setzt das Foto an die richtige Stelle im Grundriss.'],
+      [tSh('[data-x=map]'), 'Auf Karte zeigt, wo das Foto entstanden ist.'],
+      [tSh('[data-x=del]'), 'Löschen entfernt das Foto, nach einer Rückfrage.']
+    ]),
+    ...C('Bericht & Bautagebuch', 'bericht', [
+      ['.tab[data-v=bericht]', 'Zum Schluss der Bericht.'],
+      ['#repRange', 'Wähle den Zeitraum: heute, sieben Tage, nur ungesicherte Fotos oder alles.'],
+      ['#repSites', 'Und die Baustelle.'],
+      ['#repSum [data-ex=pdf]', 'PDF-Bericht erstellen: der fertige Fotobericht für den Auftraggeber, mit deinem Logo, Lageplan und Mängelliste.'],
+      ['#repSum [data-ex=zip]', 'Das ZIP-Paket enthält alle Fotos, die Karte und die Echtheitsnachweise. Danach markiere ich die Fotos als gesichert.'],
+      [tOf('#dayPick', '.fld'), 'Das Bautagebuch: Hier wählst du den Tag. Das Wetter trage ich automatisch ein.'],
+      ['#diaryBox [data-dadd=crew]', 'Plus Personal fügt eine Kolonne oder Firma mit Anzahl und Stunden hinzu.'],
+      ['#diaryBox [data-dcopy]', 'Wie letztes Mal übernimmt Personal und Geräte vom letzten Arbeitstag.'],
+      ['#diaryBox [data-dadd=equip]', 'Plus Gerät trägt Maschinen mit Betriebsstunden ein.'],
+      [tOf('#dHind', '.fld'), 'Hier kommen Behinderungen hin, zum Beispiel Regen oder eine gesperrte Zufahrt. Das ist wichtig bei Nachträgen.'],
+      ['#dailyPanel [data-dy=ai]', 'Mit SEF-KI schreiben: Ich formuliere den Tagesbericht aus Fotos, Notizen, Personal und Wetter.'],
+      ['#dailyPanel [data-dy=rule]', 'Ohne KI erstellen macht das Gleiche als feste Vorlage, auch ohne Internet.'],
+      ['#dayText', 'Hier steht der Bericht. Du kannst ihn frei ändern.'],
+      ['#dailyPanel [data-dy=pdf]', 'Tagesbericht plus Fotos als PDF.'],
+      ['#dailyPanel [data-dy=copy]', 'Text kopieren, zum Einfügen in eine Mail.'],
+      [tOf('#noteIn', '.inrow'), 'Notizen: eintippen und auf Plus, oder mit dem Mikrofon diktieren.'],
+      ['#notesPanel [data-nt=memo]', 'Sprachmemo nimmt eine Sprachnachricht auf und hängt sie an den Tag.']
+    ]),
+    ...C('Einstellungen', 'settings', [
+      [tRow('#stName'), 'In den Einstellungen trägst du zuerst deinen Namen ein. Er steht im Bericht.'],
+      [tRow('#stVoice'), 'Sprachausgabe: Ich sage dir die nächsten Schritte laut an.'],
+      [tRow('#stWm'), 'Stempel im Foto: Baustelle, Zeit, Koordinaten und Blickrichtung kommen fest ins Bild.'],
+      [tRow('#stSeries'), 'Serienmodus, wie in der Kamera.'],
+      [tRow('#stDemo'), 'Demo-Position zum Ausprobieren ohne echtes GPS.'],
+      [() => $('#scrim #stKey')?.closest('.fld') || $('#scrim #aiState')?.closest('.ph'), 'SEF-KI Intelligenz: Hier wird die KI eingerichtet, die Fotos prüft und Berichte schreibt.'],
+      [tRow('#stAI'), 'KI-Bildprüfung: Ich prüfe, ob alles Wichtige drauf ist, und lese die Tiefe vom Meterstab ab.'],
+      [tRow('#stPriv'), 'Personen und Kennzeichen mache ich automatisch unkenntlich, bevor das Foto gespeichert wird.'],
+      [tRow('#stGhost'), 'Geisterbild: Beim Nachher-Foto blende ich das Vorher-Foto ein, damit du vom gleichen Standpunkt fotografierst.'],
+      [tRow('#stOts'), 'Zeitstempel: Ein unabhängiger Beweis, dass das Foto zu dieser Zeit existiert hat.'],
+      [() => $('#scrim #stGnss') || $('#scrim #stGnssOff') || $('#scrim #stTrAcc')?.closest('.fld'), 'Hier verbindest du einen RTK-Empfänger für zentimetergenaue Trassen und legst fest, wie genau Trassenpunkte sein müssen.'],
+      [tRow('#stCo'), 'Firmenname und Firmenlogo erscheinen im Kopf jedes Berichts.'],
+      [tSh('#stLogo'), 'Logo hochladen, als Bild.'],
+      [tSh('#stTpl'), 'Vorlagen und Checklisten: Im Büro legst du fest, welche Pflichtfotos die App verlangt. Das Paket schickst du dann ans Team.'],
+      [tRow('#stHook'), 'Webhook: Damit landen Fotos, Mängel und Abnahmen automatisch in eurer Büro-Software, zum Beispiel in Excel oder SharePoint.'],
+      [tSh('#stJson'), 'Projekt-Export als Datei für andere Programme.'],
+      [tSh('#stIcs'), 'Mängelfristen als Kalender, für Outlook oder Google.'],
+      [tSh('#stBackup'), 'Komplett-Backup sichert alles in einer Datei. Mach das regelmäßig.'],
+      [tSh('#stRestore'), 'Backup einspielen holt alles zurück, zum Beispiel auf ein neues Handy.'],
+      [tSh('#stEx'), 'Beispieldaten entfernen löscht die Demo-Baustellen, wenn du richtig loslegst.'],
+      [tSh('[data-x=close]'), 'Fertig schließt die Einstellungen.']
+    ]),
+    ...C('Ende', 'cockpit', [
+      [null, `Das war der Rundgang, ${n}. Den Rundgang startest du jederzeit wieder über den Knopf im Cockpit. Oder sag einfach Rundgang. Viel Erfolg auf der Baustelle!`]
+    ])
+  ];
+}
+
+let tourLock = null;
+const Tour = {
+  on: false, i: 0, steps: [], ctx: null, run: 0, paused: false, muted: false, timer: 0, raf: 0, el: null, voiceWas: false, snap: null, estMs: 0,
+  chapters() { const m = []; this.steps.forEach((s, i) => { if (!m.length || m[m.length - 1].c !== s.c) m.push({ c: s.c, i, n: 0, ms: 0 }); const x = m[m.length - 1]; x.n++; x.ms += 1400 + s.t.length * 62; }); return m; },
+  menu() {
+    this.steps = tourSteps(); const ch = this.chapters(), all = ch.reduce((a, c) => a + c.ms, 0);
+    const el = sheet(`<h3>Rundgang mit SEF-KI</h3><p class="sub">Ich erkläre dir jeden Knopf, automatisch nacheinander und mit Sprache. Lautstärke am Handy aufdrehen.</p>
+      <button class="btn pri wide" data-t="0">▶ Alles abspielen · ca. ${Math.round(all / 60000)} Min.</button>
+      <div class="lbl" style="margin:16px 0 6px">Oder ein Kapitel</div>
+      ${ch.filter(c => c.c !== 'Ende').map(c => `<button class="trow" data-t="${c.i}" style="width:100%;text-align:left"><span><b>${esc(c.c)}</b><span class="meta" style="display:flex"><span>${c.n} Schritte</span></span></span><span class="sd num">${Math.max(1, Math.round(c.ms / 60000))} Min.</span></button>`).join('')}`);
+    el.addEventListener('click', e => { const b = e.target.closest('[data-t]'); if (b) { closeSheet(); this.start(+b.dataset.t); } });
+  },
+  start(from = 0) {
+    if (this.on) this.end(false);
+    // Sprachausgabe im Klick freischalten (iOS braucht das)
+    try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } catch (e) {}
+    this.steps = tourSteps(); this.on = true; this.paused = false; this.ctx = null; this.dir = 1;
+    this.snap = { def: { ...S.def }, gal: { ...S.gal }, rep: { ...S.rep }, planSite: S.planSite, view: S.view };
+    window.TOUR_ON = true; this.voiceWas = Voice.on; if (Voice.on) Voice.stop();
+    S.set.tourSeen = true; saveSet(); S.lotseKey = '';
+    try { navigator.wakeLock?.request('screen').then(w => tourLock = w).catch(() => {}); } catch (e) {}
+    const ov = document.createElement('div'); ov.id = 'tour';
+    ov.innerHTML = `<div class="tspot none"></div><div class="tcap tc-bot" role="dialog" aria-live="polite" aria-label="Rundgang">
+      <div class="thead"><span class="teq"><i></i><i></i><i></i><i></i></span><span class="tch"></span><span class="tcnt"></span></div>
+      <p class="ttxt"></p><div class="tbar"><i></i></div>
+      <div class="tctl">
+        <button data-tc="prev" aria-label="Zurück"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button data-tc="play" aria-label="Pause"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></button>
+        <button data-tc="next" aria-label="Weiter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg></button>
+        <button data-tc="chap" aria-label="Nächstes Kapitel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l7 7-7 7M12 5l7 7-7 7"/></svg></button>
+        <button data-tc="mute" aria-label="Ton aus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="w" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg></button>
+        <button data-tc="end" class="end" aria-label="Rundgang beenden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div></div>`;
+    document.body.appendChild(ov); this.ov = ov; this.muted = false;
+    ov.addEventListener('click', e => { const b = e.target.closest('[data-tc]'); if (!b) return; e.stopPropagation(); this.ctl(b.dataset.tc); });
+    const loop = () => { if (!this.on) return; this.place(); this.raf = requestAnimationFrame(loop); }; this.raf = requestAnimationFrame(loop);
+    this.show(from);
+  },
+  ctl(a) {
+    if (a === 'end') return this.end(true, true);
+    if (a === 'play') return this.paused ? this.resume() : this.pause();
+    if (a === 'mute') { this.muted = !this.muted; this.ov.classList.toggle('muted', this.muted); return this.show(this.i); }
+    this.paused = false; this.ov.classList.remove('paused');
+    if (a === 'next') { this.dir = 1; this.show(this.i + 1); }
+    if (a === 'prev') { this.dir = -1; this.show(Math.max(0, this.i - 1)); }
+    if (a === 'chap') { const c = this.steps[this.i]?.c; let j = this.i; while (j < this.steps.length && this.steps[j].c === c) j++; this.dir = 1; this.show(j); }
+  },
+  pause() { this.paused = true; this.run++; clearTimeout(this.timer); try { speechSynthesis.cancel(); } catch (e) {} speaking = false; this.ov.classList.add('paused'); this.ov.classList.remove('talk'); },
+  resume() { this.paused = false; this.ov.classList.remove('paused'); this.dir = 1; this.show(this.i); },
+  teardown() { closeSheet(); if (PV) closePlan(); if (!$('#cam').hidden) tourCamClose(); },
+  async show(i) {
+    const run = ++this.run; clearTimeout(this.timer); try { speechSynthesis.cancel(); } catch (e) {} speaking = false;
+    if (!this.on) return;
+    if (i >= this.steps.length) return this.end(true);
+    if (i < 0) i = 0;
+    const s = this.steps[i]; this.i = i;
+    if (s.ctx !== this.ctx || (s.ctx !== 'cam' && s.ctx !== 'plan' && !['site', 'abn', 'defect', 'photo', 'settings'].includes(s.ctx) && ($('#scrim') || PV || !$('#cam').hidden))) {
+      this.teardown(); this.ctx = s.ctx; this.ctxOk = true;
+      try { const r = await TOUR_CTX[s.ctx]?.(); if (r === false) this.ctxOk = false; } catch (e) { this.ctxOk = false; }
+      if (run !== this.run) return;
+      await new Promise(r => setTimeout(r, 420));
+      if (run !== this.run) return;
+    }
+    let el = null;
+    if (this.ctxOk && s.el) { try { el = typeof s.el === 'function' ? s.el() : $(s.el); } catch (e) { el = null; } }
+    if (!this.ctxOk || (s.el && (!el || !el.getClientRects().length))) { const nx = i + (this.dir || 1); if (nx < 0) { this.dir = 1; return this.show(i + 1); } return this.show(nx); }
+    this.el = el;
+    if (el) { try { el.scrollIntoView({ block: 'center', behavior: reduced ? 'auto' : 'smooth' }); } catch (e) {} }
+    const ch = this.chapters(), ci = ch.findIndex(c => c.i > i) - 1, cIdx = ci < 0 ? ch.length - 1 : ci;
+    $('.tch', this.ov).textContent = `${s.c}`; $('.tcnt', this.ov).textContent = `${i + 1} / ${this.steps.length}`;
+    $('.ttxt', this.ov).textContent = s.t;
+    $('.tbar i', this.ov).style.width = ((i + 1) / this.steps.length * 100) + '%';
+    $('[data-tc=prev]', this.ov).disabled = i === 0;
+    this.dir = 1;
+    await this.say(s.t, run);
+    if (run !== this.run || this.paused || !this.on) return;
+    this.show(i + 1);
+  },
+  say(text, run) {
+    return new Promise(res => {
+      const est = 1100 + text.length * 62, done = () => { if (run === this.run) { this.ov?.classList.remove('talk'); speaking = false; res(); } };
+      if (this.muted || !('speechSynthesis' in window)) { this.timer = setTimeout(done, est + 600); return; }
+      let fin = false; const f = () => { if (fin) return; fin = true; clearTimeout(this.timer); setTimeout(done, 380); };
+      setTimeout(() => {
+        if (run !== this.run) return;
+        try {
+          const u = new SpeechSynthesisUtterance(text); u.lang = 'de-DE'; u.rate = 1.02;
+          const v = speechSynthesis.getVoices().filter(v => v.lang?.toLowerCase().startsWith('de')); const pick = v.find(x => /google|anna|petra|markus|helena|katja|neural|premium|enhanced/i.test(x.name)) || v[0]; if (pick) u.voice = pick;
+          u.onstart = () => { if (run === this.run) { speaking = true; this.ov?.classList.add('talk'); } };
+          u.onend = f; u.onerror = f;
+          speechSynthesis.speak(u);
+          this.timer = setTimeout(f, est * 1.9 + 3000); // falls der Browser kein Ende meldet
+        } catch (e) { this.timer = setTimeout(done, est); }
+      }, 90);
+    });
+  },
+  place() {
+    const sp = $('.tspot', this.ov), cap = $('.tcap', this.ov); if (!sp) return;
+    const el = this.el && this.el.isConnected ? this.el : null;
+    if (!el) { sp.classList.add('none'); cap.classList.remove('tc-top', 'tc-bot'); cap.classList.add('tc-mid'); return; }
+    cap.classList.remove('tc-mid');
+    const r = el.getBoundingClientRect(), pad = 6, W = innerWidth, H = innerHeight;
+    const x = Math.max(4, r.left - pad), y = Math.max(4, r.top - pad), x2 = Math.min(W - 4, r.right + pad), y2 = Math.min(H - 4, r.bottom + pad);
+    sp.classList.remove('none');
+    sp.style.left = x + 'px'; sp.style.top = y + 'px'; sp.style.width = Math.max(0, x2 - x) + 'px'; sp.style.height = Math.max(0, y2 - y) + 'px';
+    const capH = cap.offsetHeight + 24, mid = (y + y2) / 2;
+    const top = mid > H * 0.5 ? true : false;
+    // passt die Erklärung nicht neben das Element, dann dorthin, wo mehr Platz ist
+    const spaceTop = y, spaceBot = H - y2;
+    const wantTop = spaceTop >= capH ? (spaceBot >= capH ? top : true) : spaceBot >= capH ? false : spaceTop > spaceBot;
+    cap.classList.toggle('tc-top', wantTop); cap.classList.toggle('tc-bot', !wantTop);
+  },
+  end(back = true, user = false) {
+    if (!this.on) return; this.on = false; window.TOUR_ON = false; this.run++; clearTimeout(this.timer); cancelAnimationFrame(this.raf);
+    try { speechSynthesis.cancel(); } catch (e) {} speaking = false;
+    this.ov?.remove(); this.ov = null; this.el = null;
+    this.teardown(); this.ctx = null;
+    if (this.snap) { Object.assign(S.def, this.snap.def); Object.assign(S.gal, this.snap.gal); Object.assign(S.rep, this.snap.rep); S.planSite = this.snap.planSite; }
+    try { tourLock?.release(); } catch (e) {} tourLock = null;
+    if (back) go('cockpit');
+    if (this.voiceWas) Voice.start();
+    S.lotseKey = ''; refresh(true);
+    if (user) toast('Rundgang beendet. Du startest ihn jederzeit im Cockpit über „Rundgang“.');
+  }
+};
+function tourCamOpen() {
+  camCtx = { siteId: undefined, itemId: undefined, mark: null, planPin: null, defect: null };
+  const ov = $('#cam'); ov.classList.add('tourcam'); ov.hidden = false; document.body.classList.add('noscroll');
+  $('#review').hidden = true; $('#camFallback').hidden = true; $('#ghost').hidden = true;
+  camModeV = 'foto'; $$('#camMode button').forEach(b => b.classList.toggle('on', b.dataset.m === 'foto')); $('#shutter').classList.remove('vid');
+  $('#camSeries').classList.toggle('on', !!S.set.series);
+  renderCamHud(); Voice.ui();
+}
+function tourCamClose() { const ov = $('#cam'); ov.classList.remove('tourcam'); ov.hidden = true; document.body.classList.remove('noscroll'); }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && Tour.on && !Tour.paused) Tour.pause(); });
+addEventListener('keydown', e => { if (!Tour.on) return; if (e.key === 'Escape') { e.stopImmediatePropagation(); Tour.end(true, true); } if (e.key === 'ArrowRight') Tour.ctl('next'); if (e.key === 'ArrowLeft') Tour.ctl('prev'); if (e.key === ' ') { e.preventDefault(); Tour.ctl('play'); } }, true);
+
 /* ---------------- Ereignisse ---------------- */
 function bind() {
   $('#logo').innerHTML = logoSVG();
@@ -3534,6 +3913,7 @@ function bind() {
   $('#fab').onclick = () => openCamera();
   $('#btnSettings').onclick = openSettings;
   $('#btnNewSite').onclick = newSite;
+  $('#btnTour').onclick = () => Tour.menu();
   $('#cards').onclick = e => { const b = e.target.closest('.card'); if (b) S.cards[+b.dataset.i]?.a(); };
   $('#nextBar').onclick = () => S.cards[0]?.a();
   $('#v-cockpit').addEventListener('click', e => {
