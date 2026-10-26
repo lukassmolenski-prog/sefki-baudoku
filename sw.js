@@ -1,6 +1,6 @@
 // © 2026 Lukas Smolenski · Smolens·KI · Alle Rechte vorbehalten.
 // SEF-KI Baudoku – Offline-Cache
-const C = 'sefki-v8';
+const C = 'sefki-v9';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 const CACHE_HOSTS = /cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com|storage\.googleapis\.com/;
 self.addEventListener('install', e => { e.waitUntil(caches.open(C).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });

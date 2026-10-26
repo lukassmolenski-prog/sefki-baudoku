@@ -2783,7 +2783,7 @@ function ruleReport(D, weather) {
   for (const s of D.sites) {
     const ps = D.ph.filter(p => p.siteId === s.id), pr = progress(s);
     L.push('', s.name.toUpperCase() + (s.order ? ` (Auftrag ${s.order})` : ''));
-    if (ps.length) L.push(`- ${ps.length} Foto${ps.length > 1 ? 's' : ''} zwischen ${fmtTime(ps[0].ts)} und ${fmtTime(ps[ps.length - 1].ts)} Uhr`);
+    if (ps.length) L.push(ps.length > 1 && fmtTime(ps[0].ts) !== fmtTime(ps[ps.length - 1].ts) ? `- ${ps.length} Fotos zwischen ${fmtTime(ps[0].ts)} und ${fmtTime(ps[ps.length - 1].ts)} Uhr` : `- ${ps.length} Foto${ps.length > 1 ? 's' : ''} um ${fmtTime(ps[0].ts)} Uhr`);
     ps.filter(p => p.itemId).forEach(p => { const it = s.items.find(i => i.id === p.itemId); L.push(`- ${PH[p.phase].n}: ${it?.label || catName(p.cat)}${p.depthCm ? ` – Tiefe ${p.depthCm} cm` : ''}${p.desc ? ` – ${p.desc}` : p.aiDesc ? ` – ${p.aiDesc}` : ''}`); });
     D.tr.filter(t => t.siteId === s.id).forEach(t => L.push(`- Trasse „${t.name}“ (${t.kind}): ${tLen(t).toFixed(1).replace('.', ',')} m aufgenommen, ${t.marks.length} Markierungen, ${accSummary(t)}`));
     D.notes.filter(n => n.siteId === s.id).forEach(n => L.push(`- Notiz ${fmtTime(n.ts)}: ${n.text}`));
