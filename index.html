@@ -1,4 +1,9 @@
 <!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>SEF-KI Baudoku</title>
+<!-- SEF-KI Baudoku · © 2026 Lukas Smolenski (Smolens·KI). Alle Rechte vorbehalten.
+     Nutzung, Vervielfältigung, Veränderung oder Weitergabe nur mit schriftlicher Erlaubnis des Urhebers. -->
+<meta name="author" content="Lukas Smolenski">
+<meta name="copyright" content="© 2026 Lukas Smolenski · Smolens·KI">
+<meta name="robots" content="noindex, nofollow">
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="theme-color" content="#050b16">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -306,6 +311,7 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
 .banner b{color:var(--amber);font-family:var(--f-mono);font-size:11px;letter-spacing:.16em}
 .banner p{margin:4px 0 10px;font-size:15px;font-weight:600}
 .view[hidden]{display:none!important}
+.copy{margin:6px 0 0;text-align:center;font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;color:var(--mute);opacity:.8}
 .hidden-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 @media (min-width:760px){
   .app{padding-top:10px}
@@ -352,6 +358,7 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
       <button class="btn wide" id="btnNewSite" style="margin-top:12px">+ Baustelle hier anlegen</button>
     </section>
     <section class="panel demo" id="demoBox" hidden></section>
+    <p class="copy">© 2026 Lukas Smolenski · Smolens·KI · Alle Rechte vorbehalten</p>
   </main>
 
   <!-- KARTE -->
@@ -441,7 +448,9 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
 'use strict';
 /* =========================================================
    SEF-KI Baudoku – GPS-Fotodokumentation für Baustellen
-   Smolens·KI · für Sefkan
+   © 2026 Lukas Smolenski · Smolens·KI · Alle Rechte vorbehalten.
+   Nutzung, Vervielfältigung, Veränderung oder Weitergabe nur mit
+   schriftlicher Erlaubnis des Urhebers.
    ========================================================= */
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -1799,7 +1808,8 @@ async function openSettings() {
     <div class="ph" style="margin-top:18px"><h2>Als App installieren</h2></div>
     ${installEvt ? '<button class="btn pri wide" id="stInstall">Jetzt installieren</button>' : ''}
     <p class="note"><b>Android (Chrome):</b> Menü ⋮ → „App installieren“ bzw. „Zum Startbildschirm“.<br><b>iPhone (Safari):</b> Teilen-Symbol → „Zum Home-Bildschirm“.<br>Danach läuft SEF-KI wie eine normale App, auch ohne Netz.</p>
-    <button class="btn wide" style="margin-top:14px" data-x="close">Fertig</button>`);
+    <button class="btn wide" style="margin-top:14px" data-x="close">Fertig</button>
+    <p class="copy" style="margin-top:16px">SEF-KI Baudoku · © 2026 Lukas Smolenski · Smolens·KI<br>Alle Rechte vorbehalten. Weitergabe oder Kopie nur mit Erlaubnis.</p>`);
   $('#stName', el).onchange = e => { S.set.name = e.target.value.trim() || 'Sefkan'; saveSet(); refresh(true); };
   $('#stVoice', el).onchange = e => { S.set.voice = e.target.checked; saveSet(); if (S.set.voice) speak('Sprachausgabe ist an.'); else window.speechSynthesis?.cancel(); };
   $('#stWm', el).onchange = e => { S.set.watermark = e.target.checked; saveSet(); };

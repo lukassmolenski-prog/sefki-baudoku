@@ -17,3 +17,7 @@ GPS-Fotodokumentation für Baustellen – Smolens·KI.
 3. Einstellungen (Zahnrad) → „Beispieldaten entfernen“, dann erste Baustelle anlegen
 
 Die Fotos liegen nur auf dem Handy. Regelmäßig über „Bericht“ ein ZIP oder in den Einstellungen ein Komplett-Backup sichern.
+
+## Urheberrecht
+© 2026 Lukas Smolenski · Smolens·KI. Alle Rechte vorbehalten – siehe [LICENSE](LICENSE).
+Das Repository ist nur öffentlich, damit GitHub Pages die App ausliefern kann. Das ist keine Erlaubnis zur Weiterverwendung.
