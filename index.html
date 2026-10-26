@@ -136,6 +136,8 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .crow .go{font-family:var(--f-mono);font-size:10.5px;color:var(--amber);letter-spacing:.1em}
 
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#stats{grid-template-columns:repeat(4,1fr);gap:6px}
+#stats .stat{padding:9px 8px}#stats .v{font-size:21px}#stats .lbl{letter-spacing:.1em;font-size:9.5px}
 .stat{border:1px solid var(--line);border-radius:var(--r);padding:10px;background:rgba(8,24,48,.55)}
 .stat .v{font-family:var(--f-mono);font-size:24px;font-weight:600;line-height:1.1;margin-top:4px}
 .stat .v.warn{color:var(--amber)}.stat .v.good{color:var(--ok)}
@@ -176,12 +178,14 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .next .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.16em;color:var(--amber)}
 .next .t{font-weight:700;font-size:14px;line-height:1.25;min-width:0}
 .next svg{width:18px;height:18px;color:var(--amber)}
-.nav{display:grid;grid-template-columns:1fr 1fr 76px 1fr 1fr;align-items:end;height:64px;border-top:1px solid var(--line);background:rgba(6,16,32,.96);border-radius:12px 12px 0 0;padding:0 6px}
-.tab{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;color:var(--mute);text-transform:uppercase}
+.tab{position:relative}
+.tab .tbadge{position:absolute;top:4px;left:calc(50% + 6px);min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--bad);color:#fff;font-size:9.5px;font-weight:700;display:grid;place-items:center;letter-spacing:0}
+.nav{display:grid;grid-template-columns:1fr 1fr 1fr 66px 1fr 1fr 1fr;align-items:end;height:64px;border-top:1px solid var(--line);background:rgba(6,16,32,.96);border-radius:12px 12px 0 0;padding:0 6px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0;font-family:var(--f-mono);font-size:8.6px;letter-spacing:.06em;color:var(--mute);text-transform:uppercase;min-width:0;overflow:hidden}
 .tab svg{width:20px;height:20px}
 .tab.on{color:var(--cyan)}
 .tab.on::after{content:"";width:22px;height:2px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);margin-top:-1px}
-.fab{justify-self:center;align-self:center;width:66px;height:66px;margin-top:-30px;border-radius:50%;display:grid;place-items:center;
+.fab{justify-self:center;align-self:center;width:62px;height:62px;margin-top:-30px;border-radius:50%;display:grid;place-items:center;
   background:radial-gradient(circle at 50% 35%,#5fe6fb,#1a90b0 70%);border:3px solid var(--void);box-shadow:0 0 0 1px var(--cyan),0 0 30px rgba(63,216,239,.45);color:#03121f}
 .fab svg{width:28px;height:28px}
 
@@ -296,6 +300,7 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
 .review .actions .row{max-width:560px;width:100%}
 
 /* ---------- Markup ---------- */
+body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
 .mk{position:fixed;inset:0;z-index:90;background:#02060d;display:flex;flex-direction:column}
 .mk canvas{flex:1;min-height:0;width:100%;touch-action:none}
 .mkbar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:10px max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));border-top:1px solid var(--line)}
@@ -340,6 +345,52 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
 .notes{display:flex;flex-direction:column;gap:6px;margin-top:8px}
 .note-i{font-size:13.5px;padding:8px 10px;border-left:2px solid var(--cyan);background:rgba(8,24,48,.6)}
 .note-i small{display:block;font-family:var(--f-mono);font-size:10px;color:var(--mute);letter-spacing:.08em}
+/* Pläne */
+.plans{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.plan-c{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#0b1a30;text-align:left}
+.plan-c img{width:100%;aspect-ratio:4/3;object-fit:contain;background:#fff;display:block}
+.plan-c div{padding:7px 8px;font-size:13px;font-weight:600}
+.plan-c small{display:block;font-family:var(--f-mono);font-size:10px;color:var(--mute);font-weight:400}
+.pvtop{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 10px max(12px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line)}
+.pvtop .t{flex:1;min-width:0;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pvhint{padding:8px 14px;font-size:13px;color:var(--amber);text-align:center;border-top:1px solid var(--line)}
+/* Mängel */
+.dcard{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:start;width:100%;text-align:left;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:rgba(8,24,48,.6);margin-top:8px}
+.dcard.over{border-color:var(--bad);box-shadow:0 0 18px rgba(255,90,110,.15)}
+.dno{font-family:var(--f-mono);font-weight:600;font-size:13px;width:38px;height:38px;display:grid;place-items:center;border:1.5px solid currentColor;border-radius:4px}
+.dcard .dt{font-weight:700;font-size:15px;line-height:1.25}
+.dcard img{width:52px;height:40px;object-fit:cover;border:1px solid var(--line);border-radius:2px}
+.dst{display:inline-block;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.1em;padding:2px 6px;border-radius:2px;color:#04101e;font-weight:600}
+.segs{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px}
+.segs button{padding:10px 4px;border:1px solid var(--line);border-radius:var(--r);font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+.segs button.on{background:var(--cyan);color:var(--void);border-color:var(--cyan);font-weight:600}
+.hist{font-family:var(--f-mono);font-size:11px;color:var(--mute);display:flex;flex-direction:column;gap:3px;margin-top:6px}
+.thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.thumbs img{width:64px;height:48px;object-fit:cover;border:1px solid var(--line);border-radius:2px}
+/* Unterschrift */
+.sig{width:100%;height:150px;background:#fff;border:1px solid var(--line-hi);border-radius:var(--r);touch-action:none;display:block}
+.sigrow{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+/* Tagebuch */
+.drow{display:grid;grid-template-columns:1fr 56px 56px 34px;gap:6px;margin-top:6px}
+.drow.eq{grid-template-columns:1fr 56px 34px}
+.drow input{min-width:0;padding:9px 8px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8);font-size:14px}
+.drow button{border:1px solid var(--line);border-radius:var(--r);color:var(--mute)}
+/* Vorlagen-Editor */
+.tpl-i{border:1px solid var(--line);border-radius:var(--r);margin-top:8px;background:rgba(8,24,48,.6)}
+.tpl-i summary{display:flex;align-items:center;gap:8px;padding:10px;cursor:pointer;list-style:none}
+.tpl-i summary::-webkit-details-marker{display:none}
+.tpl-i .in{padding:0 10px 10px;display:flex;flex-direction:column;gap:8px}
+.tpl-i input[type=text],.tpl-i select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8);font-size:14px}
+.ph-b{font-family:var(--f-mono);font-size:10px;font-weight:700;width:20px;height:20px;display:grid;place-items:center;border-radius:2px;color:#03121f;flex:none}
+/* Medien */
+.cammode{position:absolute;z-index:3;left:50%;transform:translateX(-50%);bottom:calc(118px + env(safe-area-inset-bottom,0px));display:flex;border:1px solid var(--line-hi);border-radius:999px;overflow:hidden;background:rgba(4,14,30,.75)}
+.cammode button{padding:6px 14px;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.cammode button.on{background:var(--cyan);color:var(--void);font-weight:600}
+.shutter.rec i{border-radius:8px;transform:scale(.55);background:var(--bad)}
+.shutter.vid i{background:var(--bad)}
+.pano{width:100%;height:300px;display:block;border:1px solid var(--line);border-radius:var(--r);touch-action:none;cursor:grab;background:#000}
+.th .vb{position:absolute;right:4px;bottom:20px;font-family:var(--f-mono);font-size:10px;background:rgba(3,10,20,.85);padding:1px 5px;border-radius:2px;color:var(--ink)}
+.logo-prev{max-height:48px;max-width:160px;background:#fff;padding:4px;border-radius:3px;display:block;margin:6px 0}
 .copy{margin:6px 0 0;text-align:center;font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;color:var(--mute);opacity:.8}
 .hidden-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 @media (min-width:760px){
@@ -407,6 +458,26 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
     <section class="panel" id="mapInfo"></section>
   </main>
 
+  <!-- PLÄNE -->
+  <main class="view stack" id="v-plaene" hidden>
+    <section class="panel">
+      <div class="ph"><h2>Baupläne</h2><span class="lbl" id="planCount"></span></div>
+      <p class="note" style="margin:0 0 10px">Für Innenräume und überall, wo GPS nicht reicht: Plan hochladen, antippen, Foto oder Mangel genau dort verorten.</p>
+      <div class="chips" id="planSites"></div>
+      <div id="planList" style="margin-top:12px"></div>
+      <button class="btn pri wide" id="btnAddPlan" style="margin-top:12px">+ Plan hinzufügen (Bild oder PDF)</button>
+    </section>
+  </main>
+
+  <!-- MÄNGEL -->
+  <main class="view stack" id="v-maengel" hidden>
+    <section class="stats" id="defStats"></section>
+    <div class="seg" id="defSeg"></div>
+    <div class="chips" id="defSites"></div>
+    <div class="row"><button class="btn pri" id="btnNewDefect">+ Mangel erfassen</button><button class="btn" id="btnDefExport">Liste exportieren</button></div>
+    <div id="defList"></div>
+  </main>
+
   <!-- GALERIE -->
   <main class="view" id="v-galerie" hidden>
     <div class="stack">
@@ -438,7 +509,9 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
     <nav class="nav" aria-label="Hauptnavigation">
       <button class="tab on" data-v="cockpit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3"/></svg>Cockpit</button>
       <button class="tab" data-v="karte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>Karte</button>
+      <button class="tab" data-v="plaene"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18"/><path d="M3 10h8v11M11 14h10M15 3v7"/></svg>Pläne</button>
       <button class="fab" id="fab" aria-label="Foto aufnehmen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg></button>
+      <button class="tab" data-v="maengel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.6"/></svg>Mängel<span class="tbadge" id="defBadge" hidden></span></button>
       <button class="tab" data-v="galerie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7.5" height="7.5"/><rect x="13.5" y="3" width="7.5" height="7.5"/><rect x="3" y="13.5" width="7.5" height="7.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5"/></svg>Galerie</button>
       <button class="tab" data-v="bericht"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h7"/></svg>Bericht</button>
     </nav>
@@ -457,6 +530,7 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
     <div class="lbl">Kamera</div>
     <p id="camFbTxt">Die Live-Kamera ist hier nicht freigegeben. Tipp auf den Knopf – dann öffnet sich die Kamera deines Handys.</p>
     <button class="btn pri" id="btnCamApp">Kamera öffnen</button>
+    <button class="btn" id="btnVidApp">Video aufnehmen</button>
     <button class="btn" id="btnDemoShot" hidden>Beispielfoto erzeugen</button>
   </div>
   <div class="camtop">
@@ -471,6 +545,7 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
   <div class="ghostbar" id="ghostBar" hidden></div>
   <div class="cambot">
     <div class="camside" style="justify-self:start"><button class="iconbtn" id="camImport" aria-label="Aus Galerie importieren"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14"/><path d="M3 16l5-5 4 4 3-3 6 6"/></svg></button>Import</div>
+    <div class="cammode" id="camMode"><button data-m="foto" class="on">Foto</button><button data-m="video">Video</button></div>
     <button class="shutter" id="shutter" aria-label="Auslösen"><i></i></button>
     <div class="camside" id="camSeries" style="justify-self:end"><button class="iconbtn" aria-label="Serienmodus umschalten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="7" width="13" height="13"/><path d="M4 16V4h12"/></svg></button><span>Serie</span></div>
   </div>
@@ -482,6 +557,10 @@ input[type=range]{width:100%;accent-color:var(--cyan)}
 <input type="file" id="fileImp" class="hidden-input" accept="image/*" multiple tabindex="-1" aria-hidden="true">
 <input type="file" id="fileRestore" class="hidden-input" accept=".zip,application/zip" tabindex="-1" aria-hidden="true">
 <input type="file" id="fileVerify" class="hidden-input" multiple tabindex="-1" aria-hidden="true">
+<input type="file" id="filePlan" class="hidden-input" accept="image/*,application/pdf,.pdf" tabindex="-1" aria-hidden="true">
+<input type="file" id="fileLogo" class="hidden-input" accept="image/*" tabindex="-1" aria-hidden="true">
+<input type="file" id="fileTpl" class="hidden-input" accept=".json,application/json" tabindex="-1" aria-hidden="true">
+<input type="file" id="fileVid" class="hidden-input" accept="video/*" capture="environment" tabindex="-1" aria-hidden="true">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" async></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" async></script>
@@ -568,18 +647,23 @@ const TPL = {
     ['W', 'Arbeit läuft', 'Der wichtigste Zwischenstand.', 'sonstiges', true, { need: ['Laufende Arbeit'] }],
     ['N', 'Ergebnis', 'Gleicher Standort wie das Vorher-Foto.', 'uebersicht', true, { need: ['Ergebnis der Arbeit'], ref: 0 }]] }
 };
-const mkItems = tpl => TPL[tpl].items.map((a, i) => ({ id: 'i' + i, phase: a[0], label: a[1], hint: a[2], cat: a[3], must: a[4] !== false }));
-/* Zusatzinfos (Pflichtinhalte, Tiefe, Geisterbild-Bezug) immer aus der Vorlage – so profitieren auch ältere Baustellen */
-const itemMeta = (site, it) => (site && it && TPL[site.tpl]?.items[+String(it.id).slice(1)]?.[5]) || {};
+const BUILTIN_TPL = JSON.parse(JSON.stringify(TPL));
+const mkItems = tpl => TPL[tpl].items.map((a, i) => ({ id: 'i' + i, phase: a[0], label: a[1], hint: a[2], cat: a[3], must: a[4] !== false, ...(a[5] || {}) }));
+/* Zusatzinfos (Pflichtinhalte, Tiefe, Geisterbild-Bezug): zuerst am Punkt selbst, sonst aus der Standard-Vorlage (ältere Baustellen) */
+const itemMeta = (site, it) => {
+  if (!site || !it) return {};
+  if (it.need || it.depth || it.ref != null) return { need: it.need, depth: it.depth, ref: it.ref };
+  return BUILTIN_TPL[site.tpl]?.items[+String(it.id).slice(1)]?.[5] || {};
+};
 
 /* ---------------- Speicher (IndexedDB, Fallback im Arbeitsspeicher) ---------------- */
 const DB = {
-  db: null, mem: { sites: new Map(), photos: new Map(), kv: new Map(), notes: new Map(), trassen: new Map(), ledger: new Map() },
+  db: null, mem: { sites: new Map(), photos: new Map(), kv: new Map(), notes: new Map(), trassen: new Map(), ledger: new Map(), plans: new Map(), defects: new Map(), protocols: new Map() },
   async open() {
     try {
       this.db = await new Promise((res, rej) => {
-        const r = indexedDB.open('sefki-baudoku', 2);
-        r.onupgradeneeded = () => { const d = r.result; ['sites', 'photos', 'kv', 'notes', 'trassen', 'ledger'].forEach(s => { if (!d.objectStoreNames.contains(s)) d.createObjectStore(s, { keyPath: 'id' }); }); };
+        const r = indexedDB.open('sefki-baudoku', 3);
+        r.onupgradeneeded = () => { const d = r.result; ['sites', 'photos', 'kv', 'notes', 'trassen', 'ledger', 'plans', 'defects', 'protocols'].forEach(s => { if (!d.objectStoreNames.contains(s)) d.createObjectStore(s, { keyPath: 'id' }); }); };
         r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
         setTimeout(() => rej(new Error('timeout')), 5000);
       });
@@ -602,7 +686,8 @@ const DB = {
 
 /* ---------------- Zustand ---------------- */
 const S = {
-  sites: [], photos: [], notes: [], trassen: [], ledger: [], daily: {}, rec: null,
+  sites: [], photos: [], notes: [], trassen: [], ledger: [], daily: {}, rec: null, plans: [], defects: [], protocols: [], customTpl: {},
+  def: { status: 'open', site: 'all' }, planSite: null,
   set: { id: 'settings', name: 'Sefkan', voice: false, watermark: true, series: false, demo: false, demoAt: null, pin: null, seeded: false, lastLabels: [],
     aiKey: '', aiModel: 'claude-sonnet-5-5', aiCheck: true, privacy: true, ghost: true, ghostOpacity: 0.42, ots: true, chainHead: '', trassMaxAcc: 10 },
   pos: null, heading: null, realHeading: false, tilt: null, gps: 'idle',
@@ -629,7 +714,7 @@ function sheet(html, onMount) {
 }
 function closeSheet() {
   const sc = $('#scrim'); if (!sc) return;
-  sc.querySelectorAll('img[data-url]').forEach(i => URL.revokeObjectURL(i.src));
+  sc.querySelectorAll('[data-url]').forEach(i => URL.revokeObjectURL(i.src));
   sc.remove(); if ($('#cam').hidden) document.body.classList.remove('noscroll');
 }
 const buzz = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
@@ -840,12 +925,13 @@ function lotse() {
       say = `${greet()}, ${nm}. Du bist auf ${s.name}. Als Nächstes: ${PH[it.phase].n} – ${it.label}.${weak}`;
       cards.push({ t: it.label, x: it.hint, tag: `PFLICHT ${pr.done + 1}/${pr.must}`, a: () => openCamera(s.id, it.id), hot: true });
       cards.push({ t: 'Zusatzfoto', x: 'Etwas Auffälliges gesehen? Ich hänge es an diese Baustelle.', tag: 'FREI', a: () => openCamera(s.id, null) });
-      cards.push({ t: 'Checkliste ansehen', x: `Noch ${pr.missing.length} Pflichtfoto${pr.missing.length > 1 ? 's' : ''}. Reihenfolge: Vorher → Während → Nachher.`, tag: 'ÜBERSICHT', a: () => openSite(s.id) });
+      if (S.pos.acc > 20 && plansOf(s.id).length) cards.push({ t: 'Drinnen? Auf dem Bauplan arbeiten', x: 'GPS ist ungenau. Tipp im Plan auf die Stelle – Foto oder Mangel landen genau dort.', tag: 'PLAN', a: () => choosePlan(s.id) });
+      else cards.push({ t: 'Checkliste ansehen', x: `Noch ${pr.missing.length} Pflichtfoto${pr.missing.length > 1 ? 's' : ''}. Reihenfolge: Vorher → Während → Nachher.`, tag: 'ÜBERSICHT', a: () => openSite(s.id) });
     } else {
       say = `${s.name} ist komplett: alle ${pr.must} Pflichtfotos sind drin. Erstell jetzt den Bericht, dann ist alles gesichert.`;
       cards.push({ t: 'Bericht & Sicherung', x: 'PDF für den Auftraggeber und ein ZIP mit allen Fotos.', tag: 'ABSCHLUSS', a: () => { S.rep.site = s.id; S.rep.range = 'all'; go('bericht'); }, hot: true });
       cards.push({ t: 'Zusatzfoto', x: 'Wird dieser Baustelle zugeordnet.', tag: 'FREI', a: () => openCamera(s.id, null) });
-      cards.push({ t: 'Baustelle abschließen', x: 'Sie verschwindet aus der Zuordnung. Fotos bleiben erhalten.', tag: 'ARCHIV', a: () => openSite(s.id) });
+      cards.push({ t: 'Abnahme mit Unterschrift', x: 'Protokoll mit Vorbehalten, beide unterschreiben direkt auf dem Handy.', tag: 'ABNAHME', a: () => openAbnahme(s.id) });
     }
   } else if (st.state === 'maybe') {
     hl = [st.site.name];
@@ -867,6 +953,8 @@ function lotse() {
     cards.push({ t: tr.status === 'rec' ? 'Pause' : 'Weiter aufnehmen', x: 'Unterbricht die Linie, z. B. für eine Straßenquerung.', tag: 'PAUSE', a: pauseTrasse });
     cards.push({ t: 'Trasse beenden', x: 'Speichert die Linie. Danach GIS-Export für den Netzbetreiber.', tag: 'FERTIG', a: finishTrasse });
   }
+  const over = S.defects.filter(isOver);
+  if (!tr && over.length) { key += '|ov' + over.length; cards.splice(1, 0, { t: `${over.length} Mangel${over.length > 1 ? 'fristen' : 'frist'} überschritten`, x: over.slice(0, 2).map(d => `M${d.no} ${d.title}`).join(' · ') + (over.length > 2 ? ' …' : '') + ' – nachhaken oder Status setzen.', tag: 'MÄNGEL', a: () => { S.def.status = 'over'; S.def.site = 'all'; go('maengel'); } }); }
   const h = new Date().getHours();
   if (!tr && open > 0 && (h >= 15 || open >= 25)) {
     key += '|fa';
@@ -962,7 +1050,8 @@ function renderCockpit() {
   const miss = activeSites().reduce((a, s) => a + progress(s).missing.length, 0);
   $('#stats').innerHTML = `<div class="stat"><div class="lbl">Heute</div><div class="v">${tp}</div><div class="s">Fotos</div></div>
     <div class="stat"><div class="lbl">Ungesichert</div><div class="v ${open ? 'warn' : 'good'}">${open}</div><div class="s">${open ? 'noch exportieren' : 'alles gesichert'}</div></div>
-    <div class="stat"><div class="lbl">Fehlend</div><div class="v ${miss ? 'warn' : 'good'}">${miss}</div><div class="s">Pflichtfotos</div></div>`;
+    <div class="stat"><div class="lbl">Fehlend</div><div class="v ${miss ? 'warn' : 'good'}">${miss}</div><div class="s">Pflichtfotos</div></div>
+    <button class="stat" data-gomaengel="1" style="text-align:left"><div class="lbl">Mängel</div><div class="v" style="color:${S.defects.some(isOver) ? 'var(--bad)' : openDefs().length ? 'var(--amber)' : 'var(--ok)'}">${openDefs().length}</div><div class="s">${S.defects.some(isOver) ? S.defects.filter(isOver).length + ' überfällig' : 'offen'}</div></button>`;
   renderSiteList(); renderDemoBox(); renderLive();
 }
 function renderSiteList() {
@@ -996,6 +1085,9 @@ function refresh(force) {
   if (S.view === 'galerie') renderGallery();
   if (S.view === 'bericht') renderReport();
   if (S.view === 'karte') renderMapSide();
+  if (S.view === 'plaene') renderPlans();
+  if (S.view === 'maengel') renderDefects();
+  updDefBadge(); PV?.draw?.();
 }
 function go(v) {
   S.view = v;
@@ -1043,9 +1135,10 @@ function camTarget() {
   }
   return { site: null, item: null, pr: null };
 }
-async function openCamera(siteId, itemId, mark) {
+async function openCamera(siteId, itemId, mark, extra = {}) {
   askOrientation();
-  camCtx = { siteId, itemId, mark: mark || null };
+  camCtx = { siteId, itemId, mark: mark || null, planPin: extra.planPin || null, defect: extra.defect || null };
+  if (mediaRec) mediaRec.stop(); setCamMode('foto');
   if (S.set.privacy) Det.load();
   const ov = $('#cam'); ov.hidden = false; document.body.classList.add('noscroll');
   $('#review').hidden = true; $('#camFallback').hidden = true;
@@ -1090,6 +1183,12 @@ function renderCamHud() {
   if (site && item) {
     ins.className = 'instr';
     ins.innerHTML = `<div class="k">PFLICHTFOTO ${pr.its.filter(i => i.must).findIndex(i => i.id === item.id) + 1 || '+'}/${pr.must} · ${PH[item.phase].n.toUpperCase()}</div><div class="t">${esc(item.label)}</div><div class="h">${esc(item.hint)}</div>`;
+  } else if (camCtx.defect) {
+    const d = S.defects.find(x => x.id === camCtx.defect);
+    ins.className = 'instr'; ins.innerHTML = `<div class="k">FOTO ZU MANGEL M${d?.no || ''}</div><div class="t">${esc(d?.title || 'Mangel')}</div><div class="h">${d?.status === 'done' ? 'Nachweis der Behebung: gleicher Blickwinkel wie das Mangelfoto.' : 'Den Mangel deutlich zeigen – gern mit Maßstab daneben.'}</div>`;
+  } else if (camCtx.planPin) {
+    const pl = S.plans.find(x => x.id === camCtx.planPin.planId);
+    ins.className = 'instr free'; ins.innerHTML = `<div class="k">AUF DEM PLAN VERORTET</div><div class="t">${esc(pl?.name || 'Bauplan')}</div><div class="h">Das Foto wird an der angetippten Stelle im Plan abgelegt.</div>`;
   } else if (camCtx.mark) {
     const m = curTrasse()?.marks.find(x => x.id === camCtx.mark);
     ins.className = 'instr';
@@ -1110,6 +1209,7 @@ function renderCamHud() {
     (np || nv ? `<span class="pill" style="color:var(--amber)">${[np ? np + ' PERSON' + (np > 1 ? 'EN' : '') : '', nv ? nv + ' FAHRZEUG' + (nv > 1 ? 'E' : '') : ''].filter(Boolean).join(' · ')} → UNKENNTLICH</span>` : '') +
     (camCtx.mark ? `<span class="pill" style="color:var(--amber)">TRASSENPUNKT ${curTrasse()?.marks.find(m => m.id === camCtx.mark)?.n || ''}</span>` : '') +
     (S.set.series ? '<span class="pill" style="color:var(--amber)">SERIE</span>' : '') +
+    (mediaRec ? `<span class="pill" style="color:var(--bad)">● REC ${fmtDur((Date.now() - recStart) / 1000)}</span>` : camModeV === 'video' ? '<span class="pill" style="color:var(--bad)">VIDEO</span>' : '') +
     (Voice.on ? '<span class="pill" style="color:var(--amber)">HÖRT ZU</span>' : '');
   if (!$('#cam').hidden) updateGhost();
 }
@@ -1121,6 +1221,7 @@ function renderLevel() {
 }
 function snapMeta() { return { ts: Date.now(), lat: S.pos?.lat ?? null, lon: S.pos?.lon ?? null, acc: S.pos?.acc ?? null, alt: S.pos?.alt ?? null, fix: S.pos?.fix || null, heading: S.heading, src: S.pos?.src || null }; }
 async function shoot() {
+  if (camModeV === 'video') { toggleVideo(); return; }
   if (!camStream) { $('#fileCap').click(); return; }
   const v = $('#camVideo'); if (!v.videoWidth) return;
   const meta = snapMeta();
@@ -1151,6 +1252,13 @@ async function handleCapture(src, meta) {
   }
   pending = { c, meta, q, dets, ai: null, aiState: 'idle', blurOn: S.set.privacy, rects: S.set.privacy ? privacyRects(dets, null, c.width, c.height) : [], tg };
   showReview(f); runReviewAI();
+}
+/* Kontext der Aufnahme anhängen: Trassenpunkt, Planposition, Mangel */
+function attachCtx(p) {
+  if (camCtx.mark) { const t = S.trassen.find(tr => tr.marks.some(m => m.id === camCtx.mark)), m = t?.marks.find(mm => mm.id === camCtx.mark);
+    if (m) { m.photoId = p.id; if (!m.depthCm && p.depthCm) m.depthCm = p.depthCm; saveTrasse(t); } }
+  if (camCtx.planPin) p.plan = camCtx.planPin;
+  if (camCtx.defect) { const d = S.defects.find(x => x.id === camCtx.defect); if (d) { d.photoIds = [...(d.photoIds || []), p.id]; d.updated = Date.now(); d.history = [...(d.history || []), { ts: Date.now(), text: 'Foto hinzugefügt' }]; DB.put('defects', d).catch(() => {}); if (!p.plan && d.plan) p.plan = d.plan; } }
 }
 /* KI-Ergebnis nachträglich an ein schon gespeichertes Foto hängen (Serienmodus) – das Bild selbst bleibt unverändert versiegelt */
 async function applyAILater(p, r) {
@@ -1215,12 +1323,14 @@ function itemOptions(siteId, sel) {
 function showReview(f) {
   const { c, meta, q } = pending; const rv = $('#review'); rv.hidden = false; $('#ghost').hidden = true; $('#ghostBar').hidden = true;
   const warn = q.flags.length ? `<div class="warnbox" style="margin-top:10px">${q.flags.includes('unscharf') ? 'Das Bild wirkt verwackelt. ' : ''}${q.flags.includes('dunkel') ? 'Das Bild ist sehr dunkel. ' : ''}${q.flags.includes('überbelichtet') ? 'Das Bild ist überbelichtet. ' : ''}Lieber nochmal aufnehmen?</div>` : '';
-  const tgItem = pending.tg?.item, needDepth = !!(itemMeta(pending.tg?.site, tgItem).depth || camCtx.mark);
+  const tgItem = pending.tg?.item, isVid = !!pending.video, needDepth = !isVid && !!(itemMeta(pending.tg?.site, tgItem).depth || camCtx.mark);
+  if (isVid) pending.vurl = URL.createObjectURL(pending.video);
   $('#reviewIn').innerHTML = `
-    <div class="ph"><h2>Foto prüfen</h2><span class="lbl">${fmtTime(meta.ts)}</span></div>
-    <img class="big" id="rvImg" alt="Aufgenommenes Foto">
-    <div class="qual">${qualHTML(q, meta)}</div><div class="qual" id="rvPriv"></div>${warn}
+    <div class="ph"><h2>${isVid ? 'Video prüfen' : 'Foto prüfen'}</h2><span class="lbl">${fmtTime(meta.ts)}${isVid ? ' · ' + fmtDur(pending.dur) : ''}</span></div>
+    ${isVid ? `<video class="big" src="${pending.vurl}" controls playsinline></video>` : '<img class="big" id="rvImg" alt="Aufgenommenes Foto">'}
+    <div class="qual">${isVid ? `<span class="q g">VIDEO ${fmtDur(pending.dur)}</span>${meta.lat != null ? `<span class="q g">GPS ±${fmtAcc(meta.acc)}</span>` : '<span class="q b">KEIN GPS</span>'}` : qualHTML(q, meta)}</div><div class="qual" id="rvPriv"></div>${isVid ? '' : warn}
     <div id="rvAI"></div>
+    ${!isVid && !camCtx.defect && !camCtx.mark ? '<label class="tog" style="padding:8px 0"><span>Als Mangel erfassen<small>Nach dem Speichern öffne ich die Mangel-Erfassung mit diesem Foto.</small></span><input type="checkbox" class="sw" id="rvAsDef"></label>' : ''}
     <div class="fld" id="rvDepthF"${needDepth ? '' : ' hidden'}><label class="lbl" for="rvDepth">Tiefe (cm)</label><input type="text" inputmode="decimal" id="rvDepth" placeholder="wird von der KI abgelesen – oder selbst eintragen"></div>
     <div class="fld" style="margin-top:14px"><label class="lbl" for="rvSite">Baustelle</label>
       <select id="rvSite"><option value="">Ohne Baustelle</option>${activeSites().map(s => `<option value="${s.id}"${s.id === f.siteId ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</select></div>
@@ -1247,8 +1357,21 @@ function showReview(f) {
   $('#rvSave').onclick = async () => {
     const btn = $('#rvSave'); if (btn.disabled) return; btn.disabled = true; btn.textContent = 'Speichere …';
     const ff = { siteId: $('#rvSite').value, itemId: $('#rvItem').value, phase: st.phase, cat: st.cat, labels: $('#rvLabels').value, desc: $('#rvDesc').value.trim() };
-    const pd = pending, depth = parseFloat(String($('#rvDepth').value).replace(',', '.')), wasMark = camCtx.mark;
+    const pd = pending, depth = parseFloat(String($('#rvDepth').value).replace(',', '.')), wasMark = camCtx.mark, ctxDef = camCtx.defect, ctxPin = camCtx.planPin, asDefect = $('#rvAsDef')?.checked;
     try {
+      if (pd.video) {
+        const p = await saveMedia(pd, ff); pending = null; rv.hidden = true;
+        if (ctxDef || ctxPin) { closeCamera(); ctxDef ? openDefect(ctxDef) : openPlan(ctxPin.planId); } else { camCtx = { siteId: ff.siteId || undefined, itemId: undefined, mark: null }; renderCamHud(); }
+        toast(`Video gespeichert (${fmtDur(p.dur)}).`); return;
+      }
+      if (ctxDef || ctxPin || asDefect) {
+        const p = await savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: 'KI/manuell' });
+        pending = null; rv.hidden = true; closeCamera();
+        if (asDefect && !ctxDef) openDefect(null, { siteId: ff.siteId || null, photoId: p.id, plan: p.plan || null, title: (pd.ai?.beschreibung || '').replace(/\.$/, '').slice(0, 70), desc: ff.desc || pd.ai?.beschreibung || '' });
+        else if (ctxDef) { toast('Foto am Mangel gespeichert.'); openDefect(ctxDef); }
+        else { toast('Foto im Plan verortet.'); openPlan(ctxPin.planId); }
+        return;
+      }
       if (wasMark) {
         await savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: 'KI/manuell' });
         pending = null; rv.hidden = true; closeCamera(); toast('Foto am Trassenpunkt gespeichert.'); speak('Foto am Trassenpunkt gespeichert.'); return;
@@ -1296,7 +1419,7 @@ const toBlob = (c, q = 0.88) => new Promise((res, rej) => c.toBlob(b => b ? res(
 const thumbOf = c => fitCanvas(c, 400).toDataURL('image/jpeg', 0.72);
 async function savePhoto(c, meta, f, q, x = {}) {
   const labels = String(f.labels || '').split(',').map(v => v.trim()).filter(Boolean);
-  const p = { id: uid(), ts: meta.ts, lat: meta.lat, lon: meta.lon, acc: meta.acc, alt: meta.alt ?? null, fix: meta.fix || null, heading: meta.heading, src: meta.src,
+  const p = { id: uid(), kind: x.kind || 'photo', ts: meta.ts, lat: meta.lat, lon: meta.lon, acc: meta.acc, alt: meta.alt ?? null, fix: meta.fix || null, heading: meta.heading, src: meta.src,
     siteId: f.siteId || null, itemId: f.itemId || null, phase: f.phase, cat: f.cat, labels, desc: f.desc || '', address: '',
     q: { sharp: q.sharp, bright: q.bright, flags: q.flags }, exported: false, w: c.width, h: c.height, imported: !!meta.imported,
     depthCm: x.depthCm ?? null, depthSrc: x.depthCm != null ? x.depthSrc || 'manuell' : null,
@@ -1306,9 +1429,8 @@ async function savePhoto(c, meta, f, q, x = {}) {
   if (S.set.watermark) drawWatermark(c, p);                          // 2. Stempel
   p.blob = await toBlob(c); p.thumb = thumbOf(c);                    // 3. Datei
   await sealSafe(p, 'foto');                                         // 4. Fingerabdruck + Kette
-  await DB.put('photos', p); S.photos.push(p);
-  if (camCtx.mark) { const t = curTrasse() || S.trassen.find(tr => tr.marks.some(m => m.id === camCtx.mark)); const m = t?.marks.find(mm => mm.id === camCtx.mark);
-    if (m) { m.photoId = p.id; if (!m.depthCm && p.depthCm) m.depthCm = p.depthCm; saveTrasse(t); } }
+  attachCtx(p);                                                      // 5. Plan, Mangel, Trassenpunkt
+  await DB.put('photos', p); S.photos.push(p); hook('foto', photoJSON(p));
   S.set.lastPhase = p.phase; S.set.lastCat = p.cat; S.set.lastLabelsStr = labels.join(', ');
   S.set.lastLabels = [...new Set([...labels, ...(S.set.lastLabels || [])])].slice(0, 12); saveSet();
   buzz([20, 40, 20]); geocode(p); otsStamp(p); refresh(true);
@@ -1387,11 +1509,12 @@ async function importFiles(files, fromCam) {
       if (ex.lat != null && !(ex.lat === 0 && ex.lon === 0)) { meta = { ts: ex.ts || file.lastModified || Date.now(), lat: ex.lat, lon: ex.lon, acc: 10, heading: ex.heading ?? null, src: 'exif', imported: true }; gpsN++; }
       else if (fromCam) meta = snapMeta();
       else meta = { ts: ex.ts || file.lastModified || Date.now(), lat: null, lon: null, acc: null, heading: null, src: null, imported: true };
-      if (fromCam && files.length === 1) { handleCapture(img, meta); return; }
-      const c = fitCanvas(img), q = analyze(c);
+      const pano = isPano(img, buf);
+      if (fromCam && files.length === 1 && !pano) { handleCapture(img, meta); return; }
+      const c = fitCanvas(img, pano ? 4096 : 2560), q = analyze(c);
       const st = meta.lat != null ? siteStatus({ lat: meta.lat, lon: meta.lon, acc: meta.acc }) : { state: 'none' };
       const site = st.state === 'in' ? st.site : null;
-      await savePhoto(c, meta, { siteId: site?.id || '', itemId: '', phase: 'W', cat: 'uebersicht', labels: 'Import', desc: '' }, q); n++;
+      await savePhoto(c, meta, { siteId: site?.id || '', itemId: '', phase: 'W', cat: 'uebersicht', labels: pano ? 'Import, 360°' : 'Import', desc: '' }, q, { kind: pano ? 'pano' : 'photo' }); n++;
     } catch (e) { console.warn(e); }
   }
   if (n) toast(`${n} Foto${n > 1 ? 's' : ''} importiert, ${gpsN} mit GPS aus dem Bild${gpsN ? ' – automatisch zugeordnet' : ''}.`, 4200);
@@ -1432,6 +1555,34 @@ async function seedExamples() {
   }
   S.set.watermark = wm; S.set.seeded = true; saveSet();
 }
+/* Beispiele für Pläne und Mängel (Tiefgarage) */
+function demoPlanCanvas() {
+  const c = document.createElement('canvas'); c.width = 2400; c.height = 1500; const g = c.getContext('2d');
+  g.fillStyle = '#fff'; g.fillRect(0, 0, 2400, 1500); g.strokeStyle = '#e3e8ee'; g.lineWidth = 1;
+  for (let x = 0; x < 2400; x += 50) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, 1500); g.stroke(); } for (let y = 0; y < 1500; y += 50) { g.beginPath(); g.moveTo(0, y); g.lineTo(2400, y); g.stroke(); }
+  g.strokeStyle = '#111'; g.lineWidth = 14; g.strokeRect(120, 120, 2160, 1260);
+  g.lineWidth = 4; for (let i = 0; i < 12; i++) { const x = 160 + i * 170; g.strokeRect(x, 140, 160, 420); g.strokeRect(x, 940, 160, 420); }
+  g.fillStyle = '#111'; g.font = '600 34px Arial'; for (let i = 0; i < 12; i++) { g.fillText('P' + (i + 1), 200 + i * 170, 360); g.fillText('P' + (i + 13), 200 + i * 170, 1160); }
+  g.lineWidth = 8; g.strokeRect(2080, 600, 200, 280); g.fillText('Treppenhaus', 2085, 590);
+  g.setLineDash([24, 16]); g.lineWidth = 6; g.beginPath(); g.moveTo(120, 640); g.lineTo(2060, 640); g.moveTo(120, 860); g.lineTo(2060, 860); g.stroke(); g.setLineDash([]);
+  g.font = '700 46px Arial'; g.fillText('Fahrgasse', 900, 765); g.fillText('Rampe →', 150, 765);
+  g.font = '700 54px Arial'; g.fillText('Tiefgarage UG -1 · Grundriss (Beispiel)', 130, 90); g.font = '400 30px Arial'; g.fillText('M 1:200', 2150, 90);
+  return c;
+}
+async function seedExamples2() {
+  const s = S.sites.find(x => x.id === 'ex3'); if (!s) { S.set.seeded2 = true; saveSet(); return; }
+  const c = demoPlanCanvas();
+  const pl = { id: 'expl1', siteId: s.id, name: 'Tiefgarage UG -1', w: c.width, h: c.height, created: Date.now() - 864e5, blob: await toBlob(c, 0.9), thumb: fitCanvas(c, 500).toDataURL('image/jpeg', 0.75), example: true };
+  await DB.put('plans', pl); S.plans.push(pl);
+  const now = Date.now(), day = 864e5;
+  const mk = (no, title, desc, trade, ass, dueOff, status, x, y, siteId = s.id) => ({ id: 'exd' + no + siteId, no, siteId, title, desc, trade, assignee: ass, due: dayKey(now + dueOff * day), prio: dueOff < 0 ? 'hoch' : 'normal', status, photoIds: [], plan: siteId === s.id ? { planId: pl.id, x, y } : null, created: now - 3 * day, updated: now - day, lat: s.lat, lon: s.lon, example: true, history: [{ ts: now - 3 * day, text: 'Erfasst · zuständig: ' + ass }] });
+  const ds = [mk(1, 'Riss in Bodenbeschichtung vor P7', 'Querriss ca. 1,2 m, Wasser dringt ein. Beschichtung aufschneiden und neu versiegeln.', 'Estrich', 'Bodentechnik Hahn GmbH', -2, 'open', 0.46, 0.33),
+    mk(2, 'Leuchte Fahrgasse defekt', 'Langfeldleuchte zwischen P3 und P4 ohne Funktion.', 'Elektro', 'Elektro Weiß', 5, 'work', 0.22, 0.5),
+    mk(3, 'Fluchtwegschild fehlt am Treppenhaus', '', 'Elektro', 'Elektro Weiß', 10, 'done', 0.9, 0.42),
+    mk(1, 'Pflaster vor Hausnummer 12 abgesackt', 'Fläche ca. 1 m², nach Verfüllung nachgesackt. Nachverdichten und neu verlegen.', 'Straßenbau', 'Pflasterbau Meier', 4, 'open', 0, 0, 'ex1')];
+  for (const d of ds) { await DB.put('defects', d); S.defects.push(d); }
+  S.set.seeded2 = true; saveSet();
+}
 async function savePhotoQuiet(c, meta, f) {
   const p = { id: uid(), ts: meta.ts, lat: meta.lat, lon: meta.lon, acc: meta.acc, heading: meta.heading, src: meta.src, siteId: f.siteId, itemId: f.itemId, phase: f.phase, cat: f.cat, labels: ['Beispiel'], desc: f.desc, address: '', q: analyze(c), exported: false, w: c.width, h: c.height };
   drawWatermark(c, p); p.blob = await toBlob(c, 0.8); p.thumb = thumbOf(c);
@@ -1439,6 +1590,9 @@ async function savePhotoQuiet(c, meta, f) {
   await DB.put('photos', p); S.photos.push(p); return p;
 }
 async function removeExamples() {
+  for (const p of S.plans.filter(p => p.example)) await DB.del('plans', p.id);
+  for (const d of S.defects.filter(d => d.example)) await DB.del('defects', d.id);
+  S.plans = S.plans.filter(p => !p.example); S.defects = S.defects.filter(d => !d.example);
   for (const p of S.photos.filter(p => p.example)) await DB.del('photos', p.id);
   for (const s of S.sites.filter(s => s.example)) await DB.del('sites', s.id);
   S.photos = S.photos.filter(p => !p.example); S.sites = S.sites.filter(s => !s.example);
@@ -1476,7 +1630,10 @@ function openSite(id) {
     <p class="sub">${esc(TPL[s.tpl]?.n || '')}${s.order ? ' · Nr. ' + esc(s.order) : ''} · Umkreis ${s.radius} m${d != null ? ' · ' + fmtDist(d) + ' entfernt' : ''}</p>
     <div style="display:flex;gap:14px;align-items:center">${ringSVG(s)}<div class="note"><b>${pr.done} von ${pr.must}</b> Pflichtfotos erledigt.${pr.next ? `<br>Als Nächstes: <b style="color:var(--amber)">${esc(pr.next.label)}</b>` : '<br>Alles komplett.'}<br>${S.photos.filter(p => p.siteId === s.id).length} Fotos insgesamt.</div></div>
     ${checklistHTML(s)}
-    <div class="row" style="margin-top:16px"><button class="btn" data-x="route">Route</button><button class="btn" data-x="report">Bericht</button></div>
+    <div class="row" style="margin-top:16px"><button class="btn" data-x="plans">Pläne (${plansOf(s.id).length})</button><button class="btn" data-x="defs">Mängel (${S.defects.filter(d => d.siteId === s.id && (d.status === 'open' || d.status === 'work')).length} offen)</button></div>
+    <div class="row" style="margin-top:8px"><button class="btn amb" data-x="abn">Abnahme mit Unterschrift</button></div>
+    <div class="row" style="margin-top:8px"><button class="btn" data-x="tpl">Checkliste bearbeiten</button><button class="btn" data-x="client">Auftraggeber & Logo</button></div>
+    <div class="row" style="margin-top:8px"><button class="btn" data-x="route">Route</button><button class="btn" data-x="report">Bericht</button></div>
     <div class="row" style="margin-top:8px"><button class="btn" data-x="center">Mitte = meine Position</button><button class="btn" data-x="radius">Umkreis ändern</button></div>
     <div class="row" style="margin-top:8px"><button class="btn" data-x="arch">${s.archived ? 'Wieder aktivieren' : 'Abschließen (archivieren)'}</button><button class="btn danger" data-x="del">Löschen</button></div>`);
   el.addEventListener('click', async e => {
@@ -1485,6 +1642,11 @@ function openSite(id) {
     const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
     if (x === 'route') openRoute(s);
     if (x === 'report') { closeSheet(); S.rep.site = s.id; S.rep.range = 'all'; go('bericht'); }
+    if (x === 'plans') { closeSheet(); S.planSite = s.id; go('plaene'); }
+    if (x === 'defs') { closeSheet(); S.def.site = s.id; S.def.status = 'open'; go('maengel'); }
+    if (x === 'abn') openAbnahme(s.id);
+    if (x === 'tpl') openTplEditor({ siteId: s.id });
+    if (x === 'client') openClient(s);
     if (x === 'center') { if (!S.pos) return toast('Noch keine Position.'); s.lat = S.pos.lat; s.lon = S.pos.lon; await DB.put('sites', s); toast('Mittelpunkt aktualisiert.'); closeSheet(); refresh(true); }
     if (x === 'radius') {
       const b = e.target.closest('[data-x]'); b.outerHTML = `<div class="fld" style="flex:1 1 100%;margin:0"><label class="lbl">Umkreis: <span class="num" id="rdV">${s.radius} m</span></label><input type="range" id="rdIn" min="15" max="500" step="5" value="${s.radius}"></div>`;
@@ -1499,6 +1661,28 @@ function openSite(id) {
     }
   });
 }
+let logoTarget = null;
+function openClient(s) {
+  const el = sheet(`<h3>Auftraggeber</h3><p class="sub">${esc(s.name)} – Name und Logo erscheinen im Bericht und im Abnahmeprotokoll.</p>
+    <div class="fld"><label class="lbl" for="clN">Auftraggeber</label><input type="text" id="clN" value="${esc(s.client || '')}" placeholder="z. B. Stadtwerke Musterstadt"></div>
+    <div class="fld"><label class="lbl" for="clR">Ansprechpartner</label><input type="text" id="clR" value="${esc(s.clientRep || '')}"></div>
+    <div class="fld"><span class="lbl">Logo</span>${s.clientLogo ? `<img class="logo-prev" src="${s.clientLogo.d}" alt="Kundenlogo">` : '<p class="note" style="margin:0">Noch kein Logo.</p>'}<div class="row"><button class="btn" data-x="logo">${s.clientLogo ? 'Logo ändern' : 'Logo hochladen'}</button>${s.clientLogo ? '<button class="btn danger" data-x="rm">Entfernen</button>' : ''}</div></div>
+    <button class="btn pri wide" data-x="save">Speichern</button>`);
+  el.addEventListener('click', async e => { const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
+    s.client = $('#clN', el).value.trim(); s.clientRep = $('#clR', el).value.trim();
+    if (x === 'logo') { logoTarget = { site: s }; await DB.put('sites', s); $('#fileLogo').click(); }
+    if (x === 'rm') { s.clientLogo = null; await DB.put('sites', s); openClient(s); }
+    if (x === 'save') { await DB.put('sites', s); closeSheet(); toast('Gespeichert.'); }
+  });
+}
+async function onLogoFile(file) {
+  try { const L = await logoFromFile(file);
+    if (logoTarget?.site) { logoTarget.site.clientLogo = L; await DB.put('sites', logoTarget.site); openClient(logoTarget.site); }
+    else { S.set.coLogo = L; saveSet(); openSettings(); }
+    toast('Logo übernommen.');
+  } catch (e) { toast('Logo konnte nicht gelesen werden.'); }
+  logoTarget = null;
+}
 function openRoute(s) {
   const url = `https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}`;
   const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
@@ -1508,10 +1692,12 @@ function openRoute(s) {
 function openPhoto(id) {
   const p = S.photos.find(x => x.id === id); if (!p) return;
   const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId);
-  const url = URL.createObjectURL(p.blob);
-  const el = sheet(`<img class="big" src="${url}" data-url="1" alt="Foto">
-    <div class="qual">${qualHTML({ flags: p.q?.flags || [] }, p)}${p.exported ? '<span class="q g">GESICHERT</span>' : '<span class="q w">NOCH NICHT GESICHERT</span>'}</div>
+  const url = URL.createObjectURL(p.blob), isV = p.kind === 'video', isP = p.kind === 'pano';
+  const defs = S.defects.filter(d => d.photoIds?.includes(p.id));
+  const el = sheet(`${isV ? `<video class="big" src="${url}" data-url="1" controls playsinline></video>` : isP ? '<div id="panoHost"></div><p class="note" style="margin:4px 0 0">360°-Foto: ziehen zum Umschauen, zwei Finger zum Zoomen.</p>' : `<img class="big" src="${url}" data-url="1" alt="Foto">`}
+    <div class="qual">${isV ? `<span class="q g">VIDEO ${fmtDur(p.dur || 0)}</span>` : isP ? '<span class="q g">360°</span>' : qualHTML({ flags: p.q?.flags || [] }, p)}${p.exported ? '<span class="q g">GESICHERT</span>' : '<span class="q w">NOCH NICHT GESICHERT</span>'}</div>
     <h3>${esc(it ? it.label : catName(p.cat))}</h3>
+    ${defs.length ? `<p class="note" style="margin:0 0 6px">Gehört zu: ${defs.map(d => `<button class="chip" data-opendef="${d.id}">Mangel M${d.no}</button>`).join(' ')}</p>` : ''}
     <dl class="kv"><dt>Baustelle</dt><dd>${s ? esc(s.name) : 'Ohne Baustelle'}</dd>
       <dt>Phase</dt><dd style="color:${PH[p.phase].c}">${PH[p.phase].n}</dd>
       <dt>Kategorie</dt><dd>${catName(p.cat)}</dd>
@@ -1525,13 +1711,18 @@ function openPhoto(id) {
       ${p.privacy?.length ? `<dt>Datenschutz</dt><dd>${p.privacy.length} Bereich${p.privacy.length > 1 ? 'e' : ''} unkenntlich gemacht</dd>` : ''}
       <dt>Siegel</dt><dd><div class="seal">${p.hash ? `<b>#${p.seq} · SHA-256</b> ${p.hash}<br>${otsTxt(p)}${p.origHash ? '<br>Bearbeitet – Original versiegelt: ' + p.origHash.slice(0, 16) + '…' : ''}` : 'nicht versiegelt (älteres Foto)'}</div></dd></dl>
     <div class="fld"><label class="lbl" for="pdDesc">Beschreibung</label><textarea id="pdDesc">${esc(p.desc)}</textarea></div>
-    <div class="row"><button class="btn" data-x="edit">Markieren / Unkenntlich</button><button class="btn" data-x="share">Teilen</button></div>
+    <div class="row">${isV ? '' : '<button class="btn" data-x="edit">Markieren / Unkenntlich</button>'}<button class="btn" data-x="share">Teilen</button></div>
+    <div class="row" style="margin-top:8px"><button class="btn amb" data-x="defect">Als Mangel erfassen</button><button class="btn" data-x="plan"${p.siteId ? '' : ' disabled'}>${p.plan ? 'Auf Plan ansehen' : 'Auf Plan verorten'}</button></div>
     <div class="row" style="margin-top:8px"><button class="btn" data-x="map"${p.lat == null ? ' disabled' : ''}>Auf Karte</button><button class="btn danger" data-x="del">Löschen</button></div>`);
+  if (isP) panoViewer($('#panoHost', el), p.blob);
   $('#pdDesc', el).onchange = async e => { p.desc = e.target.value.trim(); p.exported = false; await DB.put('photos', p); toast('Beschreibung gespeichert.'); };
   el.addEventListener('click', async e => {
+    const od = e.target.closest('[data-opendef]'); if (od) { openDefect(od.dataset.opendef); return; }
     const b = e.target.closest('[data-x]'); if (!b) return; const x = b.dataset.x;
     if (x === 'edit') { closeSheet(); openMarkup(p); }
-    if (x === 'share') saveFile(`${stamp(p.ts)}_${slug(it ? it.label : catName(p.cat))}.jpg`, p.blob, true);
+    if (x === 'defect') openDefect(null, { siteId: p.siteId, photoId: p.id, plan: p.plan || null, desc: p.desc || p.aiDesc || '' });
+    if (x === 'plan') { closeSheet(); if (p.plan) openPlan(p.plan.planId); else choosePlan(p.siteId, { t: 'p', id: p.id }); }
+    if (x === 'share') saveFile(fileName(p), p.blob, true);
     if (x === 'map') { closeSheet(); M.lat = p.lat; M.lon = p.lon; M.follow = false; M.z = 2.2; M.sel = p.id; go('karte'); }
     if (x === 'del') { if (b.dataset.sure) { await DB.del('photos', p.id); S.photos = S.photos.filter(z => z.id !== p.id); closeSheet(); toast('Foto gelöscht.'); refresh(true); } else { b.dataset.sure = '1'; b.textContent = 'Wirklich löschen?'; } }
   });
@@ -1719,7 +1910,7 @@ function renderGallery() {
   const days = new Map(); list.forEach(p => { const k = dayKey(p.ts); if (!days.has(k)) days.set(k, []); days.get(k).push(p); });
   $('#galList').innerHTML = [...days.values()].map(ps => `<section class="day"><div class="ph" style="margin:0"><span class="lbl">${fmtDay(ps[0].ts)}</span><span class="lbl">${ps.length} Foto${ps.length > 1 ? 's' : ''}</span></div>
     <div class="grid">${ps.map(p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId);
-      return `<button class="th" data-photo="${p.id}" aria-label="${esc(it ? it.label : catName(p.cat))}"><img src="${p.thumb}" alt="" loading="lazy"><span class="pb" style="background:${PH[p.phase].c}">${p.phase}</span><span class="sy${p.exported ? ' ok' : ''}"></span><span class="tl">${esc(it ? it.label : catName(p.cat))}</span></button>`; }).join('')}</div></section>`).join('');
+      return `<button class="th" data-photo="${p.id}" aria-label="${esc(it ? it.label : catName(p.cat))}"><img src="${p.thumb}" alt="" loading="lazy"><span class="pb" style="background:${PH[p.phase].c}">${p.phase}</span><span class="sy${p.exported ? ' ok' : ''}"></span>${p.kind === 'video' ? `<span class="vb">▶ ${fmtDur(p.dur || 0)}</span>` : p.kind === 'pano' ? '<span class="vb">360°</span>' : ''}<span class="tl">${esc(it ? it.label : catName(p.cat))}</span></button>`; }).join('')}</div></section>`).join('');
 }
 
 /* ---------------- Bericht & Export ---------------- */
@@ -1758,7 +1949,7 @@ async function saveFile(name, blob, preferShare) {
   if (window.claude?.use) {
     dlCap ??= window.claude.use('downloads').catch(() => null);
     const dl = await dlCap;
-    if (dl) { try { await dl.save({ filename: name, data: blob }); return true; } catch (e) { if (e?.code === 'declined') return false; if (e?.code === 'rate_limited') { toast('Einen Moment – es ist schon ein Speicher-Dialog offen.'); return false; } } }
+    if (dl) { try { await dl.save({ filename: name, data: blob }); return true; } catch (e) { if (e?.code === 'declined') return false; if (e?.code === 'rejected_extension') { toast('Dieses Dateiformat lässt sich nur in der installierten App speichern.'); return false; } if (e?.code === 'rate_limited') { toast('Einen Moment – es ist schon ein Speicher-Dialog offen.'); return false; } } }
   }
   const file = new File([blob], name, { type: blob.type || 'application/octet-stream' });
   const mobile = matchMedia('(pointer:coarse)').matches;
@@ -1786,12 +1977,7 @@ async function buildPDF(l, title, daily) {
   const pageTitle = []; let first = true;
   const newPage = t => {
     if (!first) doc.addPage(); first = false; pageTitle[doc.getNumberOfPages()] = t;
-    doc.setFillColor(...NAVY); doc.rect(0, 0, W, 19, 'F'); doc.setFillColor(...CYAN); doc.rect(0, 19, W, 0.7, 'F');
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(240, 248, 255); doc.text('Smolens', m, 12);
-    const w1 = doc.getTextWidth('Smolens'); doc.setTextColor(...CYAN); doc.text('·KI', m + w1, 12);
-    const w2 = w1 + doc.getTextWidth('·KI');
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(150, 186, 206); doc.text('SEF-KI BAUDOKU  ·  FOTOBERICHT', m + w2 + 5, 11.6);
-    doc.setTextColor(225, 238, 246); doc.setFontSize(8.5); doc.text(span(l), W - m, 11.6, { align: 'right' });
+    pdfHeader(doc, span(l), daily && !l.length ? 'TAGESBERICHT' : 'FOTOBERICHT');
   };
   const chip = (x, y, txt, rgb, w) => { doc.setFillColor(...rgb); doc.roundedRect(x, y - 3.4, w, 4.6, 0.8, 0.8, 'F'); doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.6); doc.text(txt, x + w / 2, y, { align: 'center' }); };
   const label = (x, y, txt) => { doc.setFont('helvetica', 'bold'); doc.setFontSize(7.2); doc.setTextColor(24, 140, 170); doc.text(txt.toUpperCase(), x, y, { charSpace: 0.35 }); };
@@ -1816,6 +2002,8 @@ async function buildPDF(l, title, daily) {
   for (const g of groups) {
     const s = g.s, pr = s ? progress(s) : null, addr = g.ps.find(p => p.address)?.address;
     newPage(s ? s.name : 'Ohne Baustelle'); let y = 31;
+    if (s?.clientLogo) { try { const L = s.clientLogo, h = 15, w = Math.min(48, h * L.w / L.h); doc.addImage(L.d, pdfImgType(L.d), W - m - w, 25, w, h); } catch (e) {} }
+    if (s?.client) { doc.setFont('helvetica', 'normal'); doc.setFontSize(7.6); doc.setTextColor(...GREY); doc.text(pdfSafe('Auftraggeber: ' + s.client), W - m, s.clientLogo ? 44 : 31, { align: 'right' }); }
     label(m, y, s ? 'Baustelle' : 'Fotos ohne Baustelle'); y += 8;
     doc.setFont('helvetica', 'bold'); doc.setFontSize(21); doc.setTextColor(...INK);
     const tl = doc.splitTextToSize(s ? s.name : 'Ohne Baustelle', cw); doc.text(tl, m, y); y += 8.5 * tl.length - 2;
@@ -1899,17 +2087,40 @@ async function buildPDF(l, title, daily) {
       doc.setFont('helvetica', 'normal'); doc.setFontSize(7.4); doc.setTextColor(...GREY);
       doc.text(doc.splitTextToSize('Beweissicherung: Jedes Foto wurde beim Speichern mit einem SHA-256-Fingerabdruck versiegelt und in einer fortlaufenden Prüfkette verknüpft. Die Originaldateien lassen sich mit dem ZIP-Export prüfen (pruefsummen.sha256, Zeitstempel-Dateien .ots für opentimestamps.org). Die Bilder in diesem PDF sind verkleinert.', cw), m, 276);
     }
+    // Baupläne mit verorteten Fotos und Mängeln
+    if (s) for (const pl of plansOf(s.id)) {
+      const pp = g.ps.filter(p => p.plan?.planId === pl.id), dd = S.defects.filter(d => d.plan?.planId === pl.id);
+      if (!pp.length && !dd.length) continue;
+      newPage(s.name); label(m, 31, 'Bauplan · ' + pdfSafe(pl.name));
+      const im = await blobToPdfImg(pl.blob, 2200), bw = cw, bh = 238, kk = Math.min(bw / im.w, bh / im.h), ix = m + (bw - im.w * kk) / 2, iy = 36;
+      doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.rect(ix, iy, im.w * kk, im.h * kk, 'S'); doc.addImage(im.d, 'JPEG', ix, iy, im.w * kk, im.h * kk);
+      pp.forEach(p => { const px = ix + p.plan.x * im.w * kk, py = iy + p.plan.y * im.h * kk; doc.setFillColor(...PC[p.phase]); doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.5); doc.circle(px, py, 2.8, 'FD'); doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.6); doc.text(String(num.get(p.id)), px, py + 1, { align: 'center' }); });
+      dd.forEach(d => { const px = ix + d.plan.x * im.w * kk, py = iy + d.plan.y * im.h * kk, c = [1, 3, 5].map(i => parseInt(DSTAT[d.status].c.slice(i, i + 2), 16)); doc.setFillColor(...c); doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.5); doc.triangle(px, py - 3.6, px + 3.2, py, px - 3.2, py, 'FD'); doc.triangle(px, py + 3.6, px + 3.2, py, px - 3.2, py, 'FD'); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.4); doc.setTextColor(120, 30, 20); doc.text('M' + d.no, px + 4, py + 1); });
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7.4); doc.setTextColor(...GREY); doc.text(`Kreise = Fotos (Nummer wie im Bericht)  ·  Rauten = Mängel  ·  ${pp.length} Fotos, ${dd.length} Mängel auf diesem Plan`, m, iy + im.h * kk + 5);
+    }
+    // Mängel der Baustelle
+    const sd = s ? S.defects.filter(d => d.siteId === s.id).sort((a, b) => a.no - b.no) : [];
+    if (sd.length) {
+      newPage(s.name); let yy = 31; label(m, yy, `Mängel · ${sd.filter(d => d.status === 'open' || d.status === 'work').length} offen, ${sd.filter(isOver).length} überfällig`); yy += 4;
+      doc.setFillColor(...NAVY); doc.rect(m, yy, cw, 6.5, 'F'); doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(225, 240, 248);
+      ['NR', 'MANGEL', 'ZUSTÄNDIG', 'FRIST', 'STATUS'].forEach((h, i) => doc.text(h, [m + 1, m + 14, m + 92, m + 128, m + 154][i], yy + 4.4)); yy += 6.5;
+      sd.forEach((d, i) => { if (yy > 276) return; const rh = 7.2; if (i % 2) { doc.setFillColor(246, 249, 251); doc.rect(m, yy, cw, rh, 'F'); }
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(8.8); doc.setTextColor(...INK); doc.text('M' + d.no, m + 1, yy + 4.9); doc.setFont('helvetica', 'normal'); doc.text(doc.splitTextToSize(pdfSafe(d.title || '–'), 76)[0], m + 14, yy + 4.9); doc.text(doc.splitTextToSize(pdfSafe(d.assignee || '–'), 34)[0], m + 92, yy + 4.9);
+        doc.setTextColor(...(isOver(d) ? [205, 60, 40] : INK)); doc.text(d.due ? fmtDate(new Date(d.due + 'T12:00')) : '–', m + 128, yy + 4.9);
+        chip(m + 154, yy + 4.9, DSTAT[d.status].n.toUpperCase(), [1, 3, 5].map(k => parseInt(DSTAT[d.status].c.slice(k, k + 2), 16)), 26);
+        doc.setDrawColor(...LINE); doc.setLineWidth(0.15); doc.line(m, yy + rh, m + cw, yy + rh); yy += rh; });
+    }
     // Fotoseiten: 2 Fotos pro Seite in festen Feldern
     for (let i = 0; i < g.ps.length; i++) {
       const p = g.ps[i], slot = i % 2; if (!slot) newPage(s ? s.name : 'Ohne Baustelle');
-      const y0 = 27 + slot * 129, it = s?.items.find(x => x.id === p.itemId), img = await pdfImg(p.blob);
+      const y0 = 27 + slot * 129, it = s?.items.find(x => x.id === p.itemId), img = await pdfImg(p.posterBlob || p.blob);
       const bh = 91, kk = Math.min(cw / img.w, bh / img.h), iw = img.w * kk, ih = img.h * kk;
       doc.setFillColor(236, 241, 245); doc.rect(m, y0, cw, bh, 'F');
       doc.addImage(img.d, 'JPEG', m + (cw - iw) / 2, y0 + (bh - ih) / 2, iw, ih);
       let y = y0 + bh + 7;
       doc.setFillColor(...PC[p.phase]); doc.roundedRect(m, y - 4.6, 8, 6.2, 0.8, 0.8, 'F');
       doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.text(String(num.get(p.id)), m + 4, y, { align: 'center' });
-      doc.setTextColor(...INK); doc.setFontSize(11.5); doc.text(doc.splitTextToSize(pdfSafe(`${PH[p.phase].n} – ${it ? it.label : catName(p.cat)}${p.depthCm ? '  ·  Tiefe ' + p.depthCm + ' cm' : ''}`), cw - 48)[0], m + 11, y);
+      doc.setTextColor(...INK); doc.setFontSize(11.5); doc.text(doc.splitTextToSize(pdfSafe(`${PH[p.phase].n} – ${p.kind === 'video' ? 'Video ' + fmtDur(p.dur || 0) + ': ' : p.kind === 'pano' ? '360°: ' : ''}${it ? it.label : catName(p.cat)}${p.depthCm ? '  ·  Tiefe ' + p.depthCm + ' cm' : ''}`), cw - 48)[0], m + 11, y);
       chip(m + cw - 26, y - 0.6, it?.must ? 'PFLICHTFOTO' : 'ZUSATZFOTO', it?.must ? NAVY : [150, 160, 170], 26);
       y += 6; doc.setFont('helvetica', 'normal'); doc.setFontSize(8.4); doc.setTextColor(...GREY);
       doc.text(`${fmtDay(p.ts)}, ${fmtTime(p.ts)} Uhr   ·   ${p.lat != null ? coord(p.lat, p.lon) + '  ±' + fmtAcc(p.acc) + (p.fix && /RTK/.test(p.fix) ? ' ' + p.fix : '') : 'ohne GPS'}${p.heading != null ? '   ·   Blick ' + p.heading + '° ' + dirName(p.heading) : ''}`, m + 11, y);
@@ -1919,13 +2130,7 @@ async function buildPDF(l, title, daily) {
       if (p.hash) { y += 4.6; doc.setFont('courier', 'normal'); doc.setFontSize(6.6); doc.setTextColor(130, 142, 156); doc.text(`Siegel #${p.seq}  SHA-256 ${p.hash}${p.origHash ? '  (bearbeitet)' : ''}`, m + 11, y); }
     }
   }
-  const pages = doc.getNumberOfPages();
-  for (let i = 1; i <= pages; i++) {
-    doc.setPage(i); doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.line(m, 285, W - m, 285);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.4); doc.setTextColor(130, 142, 156);
-    doc.text(`SEF-KI Baudoku  ·  ${pageTitle[i] || title}  ·  erstellt ${created}`, m, 290);
-    doc.text(`Seite ${i} von ${pages}`, W - m, 290, { align: 'right' });
-  }
+  pdfFooter(doc, i => pageTitle[i] || title);
   return doc;
 }
 async function exportPDF(btn, list, daily) {
@@ -1944,7 +2149,7 @@ function geoFeatures(l) {
   return { type: 'FeatureCollection', features: l.filter(p => p.lat != null).map(p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId);
     return { type: 'Feature', geometry: { type: 'Point', coordinates: [+p.lon.toFixed(7), +p.lat.toFixed(7)] }, properties: { datei: fileName(p), zeit: new Date(p.ts).toISOString(), baustelle: s?.name || null, pflichtfoto: it?.label || null, phase: PH[p.phase].n, kategorie: catName(p.cat), genauigkeit_m: p.acc, blickrichtung_grad: p.heading, adresse: p.address || null, stichworte: p.labels, beschreibung: p.desc || null } }; }) };
 }
-function fileName(p) { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId); return `${stamp(p.ts)}_${p.phase}_${slug(it ? it.label : catName(p.cat))}_${p.id.slice(-4)}.jpg`; }
+function fileName(p) { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId); const ext = p.kind === 'video' ? (/mp4/.test(p.mime || '') ? '.mp4' : '.webm') : '.jpg'; return `${stamp(p.ts)}_${p.phase}_${p.kind === 'pano' ? '360_' : ''}${slug(it ? it.label : catName(p.cat))}_${p.id.slice(-4)}${ext}`; }
 function kml(l) {
   const x = s => esc(s);
   return `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>SEF-KI Fotos</name>\n` +
@@ -1972,6 +2177,10 @@ async function exportZIP(btn) {
       if (p.origBlob) { const on = fn.replace(/\.jpg$/, '_ORIGINAL.jpg'); f.file(sub + on, p.origBlob); if (p.origHash) sums.push(`${p.origHash}  ${sub}${on}`); }
     }
     f.file('fotos.geojson', JSON.stringify(geoFeatures(l), null, 1)); f.file('fotos.kml', kml(l)); f.file('fotoliste.csv', csv(l));
+    const days = new Set(l.map(p => dayKey(p.ts)));
+    for (const n of S.notes.filter(n => n.audio && days.has(dayKey(n.ts)))) { const fn = `sprachmemos/${stamp(n.ts)}_sprachmemo${/mp4/.test(n.mime || '') ? '.m4a' : '.webm'}`; f.file(fn, n.audio); if (n.hash) sums.push(`${n.hash}  ${fn}`); }
+    const dl = site ? S.defects.filter(d => d.siteId === site.id) : S.defects.filter(d => l.some(p => p.siteId === d.siteId));
+    if (dl.length) f.file('maengelliste.csv', defCSV(dl));
     if (sums.length) {
       f.file('pruefsummen.sha256', sums.join('\n') + '\n');
       f.file('nachweis-kette.json', JSON.stringify({ app: 'SEF-KI Baudoku', erstellt: new Date().toISOString(), regel: 'kette_n = SHA256(kette_n-1 | hash | foto-id | zeit_ms | breite | laenge | art), Start = 64 Nullen', eintraege: S.ledger }, null, 1));
@@ -1989,8 +2198,11 @@ async function backup(btn) {
     await needLib('ZIP-Baustein', () => window.JSZip);
     const zip = new window.JSZip();
     const { aiKey, ...setNoKey } = S.set; // der KI-Schlüssel kommt nie ins Backup
-    zip.file('daten.json', JSON.stringify({ app: 'sefki-baudoku', v: 2, at: Date.now(), settings: setNoKey, sites: S.sites, photos: S.photos.map(({ blob, origBlob, ...r }) => r), notes: S.notes, trassen: S.trassen, ledger: S.ledger, daily: S.daily }));
-    const ph = zip.folder('fotos'); S.photos.forEach(p => { ph.file(p.id + '.jpg', p.blob); if (p.origBlob) ph.file(p.id + '_orig.jpg', p.origBlob); });
+    zip.file('daten.json', JSON.stringify({ app: 'sefki-baudoku', v: 3, at: Date.now(), settings: setNoKey, sites: S.sites, photos: S.photos.map(({ blob, origBlob, posterBlob, ...r }) => r), notes: S.notes.map(({ audio, ...r }) => r), trassen: S.trassen, ledger: S.ledger, daily: S.daily,
+      plans: S.plans.map(({ blob, ...r }) => r), defects: S.defects, protocols: S.protocols, customTpl: S.customTpl }));
+    const ph = zip.folder('fotos'); S.photos.forEach(p => { ph.file(p.id + '.jpg', p.blob); if (p.origBlob) ph.file(p.id + '_orig.jpg', p.origBlob); if (p.posterBlob) ph.file(p.id + '_poster.jpg', p.posterBlob); });
+    const pf = zip.folder('plaene'); S.plans.forEach(p => pf.file(p.id + '.jpg', p.blob));
+    const mf = zip.folder('memos'); S.notes.filter(n => n.audio).forEach(n => mf.file(n.id + '.bin', n.audio));
     const blob = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
     if (await saveFile(`SEF-KI_Backup_${stamp(Date.now())}.zip`, blob)) toast('Komplett-Backup erstellt.');
   } catch (e) { toast('Backup fehlgeschlagen: ' + (e.message || e)); }
@@ -2003,10 +2215,14 @@ async function restore(file) {
     if (j.app !== 'sefki-baudoku') throw new Error('Das ist kein SEF-KI-Backup');
     let ns = 0, np = 0;
     for (const s of j.sites) if (!S.sites.find(x => x.id === s.id)) { await DB.put('sites', s); S.sites.push(s); ns++; }
-    for (const [store, arr] of [['notes', j.notes], ['trassen', j.trassen], ['ledger', j.ledger]]) for (const r of arr || []) if (!S[store].find(x => x.id === r.id)) { await DB.put(store, r); S[store].push(r); }
+    for (const [store, arr] of [['notes', j.notes], ['trassen', j.trassen], ['ledger', j.ledger], ['defects', j.defects], ['protocols', j.protocols]]) for (const r0 of arr || []) if (!S[store].find(x => x.id === r0.id)) {
+      const r = { ...r0 }; if (store === 'notes' && r.mime) { const f = zip.file('memos/' + r.id + '.bin'); if (f) r.audio = new Blob([await f.async('arraybuffer')], { type: r.mime }); }
+      await DB.put(store, r); S[store].push(r); }
+    for (const r of j.plans || []) if (!S.plans.find(x => x.id === r.id)) { const f = zip.file('plaene/' + r.id + '.jpg'); if (!f) continue; const p = { ...r, blob: new Blob([await f.async('arraybuffer')], { type: 'image/jpeg' }) }; await DB.put('plans', p); S.plans.push(p); }
+    if (j.customTpl) { Object.assign(S.customTpl, j.customTpl); applyCustomTpl(); saveTpls(); }
     if (j.daily) { Object.assign(S.daily, j.daily); saveDaily(); }
     if (j.ledger?.length && (!S.set.chainHead || S.ledger.length === j.ledger.length)) { S.set.chainHead = S.ledger[S.ledger.length - 1].chain; saveSet(); }
-    for (const r of j.photos) { if (S.photos.find(x => x.id === r.id)) continue; const f = zip.file('fotos/' + r.id + '.jpg'); if (!f) continue; const p = { ...r, blob: new Blob([await f.async('arraybuffer')], { type: 'image/jpeg' }) }; const fo = zip.file('fotos/' + r.id + '_orig.jpg'); if (fo) p.origBlob = new Blob([await fo.async('arraybuffer')], { type: 'image/jpeg' }); await DB.put('photos', p); S.photos.push(p); np++; }
+    for (const r of j.photos) { if (S.photos.find(x => x.id === r.id)) continue; const f = zip.file('fotos/' + r.id + '.jpg'); if (!f) continue; const p = { ...r, blob: new Blob([await f.async('arraybuffer')], { type: r.kind === 'video' ? r.mime || 'video/webm' : 'image/jpeg' }) }; const fo = zip.file('fotos/' + r.id + '_orig.jpg'); if (fo) p.origBlob = new Blob([await fo.async('arraybuffer')], { type: 'image/jpeg' }); const fp = zip.file('fotos/' + r.id + '_poster.jpg'); if (fp) p.posterBlob = new Blob([await fp.async('arraybuffer')], { type: 'image/jpeg' }); await DB.put('photos', p); S.photos.push(p); np++; }
     toast(`Wiederhergestellt: ${ns} Baustellen, ${np} Fotos.`); refresh(true);
   } catch (e) { toast('Wiederherstellen fehlgeschlagen: ' + (e.message || e), 5000); }
 }
@@ -2126,8 +2342,9 @@ function drawDet() {
 /* ---------------- Geisterbild ---------------- */
 function ghostRef(site, item) {
   if (!site || !item) return null;
-  const meta = itemMeta(site, item), refItem = meta.ref != null ? site.items[meta.ref] : null;
-  const pool = S.photos.filter(p => p.siteId === site.id && p.blob && p.itemId !== item.id);
+  const meta = itemMeta(site, item), refId = meta.ref == null ? null : typeof meta.ref === 'number' ? 'i' + meta.ref : meta.ref;
+  const refItem = refId ? site.items.find(i => i.id === refId) : null;
+  const pool = S.photos.filter(p => p.siteId === site.id && p.blob && p.itemId !== item.id && (!p.kind || p.kind === 'photo'));
   let cand = refItem ? pool.filter(p => p.itemId === refItem.id) : [];
   if (!cand.length && item.phase === 'N') cand = pool.filter(p => p.phase === 'V' && p.cat === item.cat);
   if (!cand.length && item.phase === 'N') cand = pool.filter(p => p.phase === 'V');
@@ -2167,7 +2384,7 @@ async function seal(p, kind = 'foto') {
 }
 const OTS_MAGIC = [0x00, 0x4f, 0x70, 0x65, 0x6e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x73, 0x00, 0x00, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x00, 0xbf, 0x89, 0xe2, 0xe8, 0x84, 0xe8, 0x92, 0x94];
 const OTS_CALS = ['https://a.pool.opentimestamps.org', 'https://b.pool.opentimestamps.org', 'https://alice.btc.calendar.opentimestamps.org'];
-async function otsStamp(p) {
+async function otsStamp(p, store = 'photos') {
   if (!p.hash || p.ots?.st === 'ok' || !S.set.ots || inFrame || !navigator.onLine) return false;
   const dig = new Uint8Array(p.hash.match(/../g).map(h => parseInt(h, 16)));
   for (const cal of OTS_CALS) {
@@ -2175,10 +2392,10 @@ async function otsStamp(p) {
       const r = await fetch(cal + '/digest', { method: 'POST', body: dig, headers: { Accept: 'application/vnd.opentimestamps.v1' } });
       if (!r.ok) continue; const t = new Uint8Array(await r.arrayBuffer()); if (!t.length) continue;
       let s = ''; t.forEach(b => s += String.fromCharCode(b));
-      p.ots = { st: 'ok', cal, at: Date.now(), b64: btoa(s) }; await DB.put('photos', p); return true;
+      p.ots = { st: 'ok', cal, at: Date.now(), b64: btoa(s) }; await DB.put(store, p); return true;
     } catch (e) {}
   }
-  p.ots = { st: 'wait', tries: (p.ots?.tries || 0) + 1 }; await DB.put('photos', p).catch(() => {}); return false;
+  p.ots = { st: 'wait', tries: (p.ots?.tries || 0) + 1 }; await DB.put(store, p).catch(() => {}); return false;
 }
 function otsFile(p) { const t = Uint8Array.from(atob(p.ots.b64), c => c.charCodeAt(0)); return new Uint8Array([...OTS_MAGIC, 0x01, 0x08, ...p.hash.match(/../g).map(h => parseInt(h, 16)), ...t]); }
 let otsRunning = false;
@@ -2495,11 +2712,12 @@ function dayData(day, siteF) {
   const tr = S.trassen.filter(t => (dayKey(t.created) === day || t.points.some(p => dayKey(p.ts) === day)) && inSite(t));
   const siteIds = [...new Set([...ph.map(p => p.siteId), ...notes.map(n => n.siteId), ...tr.map(t => t.siteId)].filter(Boolean))];
   const sites = siteIds.map(id => S.sites.find(s => s.id === id)).filter(Boolean);
-  return { day, ph, notes, tr, sites };
+  return { day, ph, notes, tr, sites, siteF };
 }
 function ruleReport(D, weather) {
   const L = [`TAGESBERICHT ${new Date(D.day + 'T12:00').toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }).toUpperCase()}`, `Bearbeiter: ${S.set.name || '–'}`];
   if (weather) L.push(`Wetter: ${weather}`);
+  const dt = diaryText(D.day, D.siteF || 'all'); if (dt) L.push('', dt);
   for (const s of D.sites) {
     const ps = D.ph.filter(p => p.siteId === s.id), pr = progress(s);
     L.push('', s.name.toUpperCase() + (s.order ? ` (Auftrag ${s.order})` : ''));
@@ -2517,6 +2735,8 @@ function ruleReport(D, weather) {
 async function aiReport(D, weather, onText) {
   const data = {
     datum: D.day, bearbeiter: S.set.name, wetter: weather || 'unbekannt',
+    personal: diaryOf(D.day, D.siteF).crew.filter(c => c.name), geraete: diaryOf(D.day, D.siteF).equip.filter(c => c.name), behinderungen: diaryOf(D.day, D.siteF).hind || null,
+    maengel_heute: S.defects.filter(d => dayKey(d.created) === D.day || (d.history || []).some(h => dayKey(h.ts) === D.day)).map(defJSON),
     baustellen: D.sites.map(s => { const pr = progress(s); return { name: s.name, art: TPL[s.tpl]?.n, auftrag: s.order || null, pflichtfotos: `${pr.done}/${pr.must}`, fehlend: pr.missing.map(i => i.label) }; }),
     fotos: D.ph.map(p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId); return { zeit: fmtTime(p.ts), baustelle: s?.name || null, pflichtfoto: it?.label || null, phase: PH[p.phase].n, kategorie: catName(p.cat), tiefe_cm: p.depthCm ?? null, beschreibung: p.desc || p.aiDesc || null, ki_pruefung: p.aiOk == null ? null : p.aiOk ? 'passt' : 'unvollständig', stichworte: p.labels }; }),
     sprachnotizen: D.notes.map(n => ({ zeit: fmtTime(n.ts), baustelle: S.sites.find(s => s.id === n.siteId)?.name || null, text: n.text })),
@@ -2524,7 +2744,7 @@ async function aiReport(D, weather, onText) {
   };
   const prompt = `Schreibe einen Bautagebuch-Tagesbericht auf Deutsch aus den folgenden Daten einer Baustellen-Foto-App. Sachlich, knapp, wie ihn ein erfahrener Bauleiter schreibt.
 Format: reiner Text. Überschriften als eigene Zeile in GROSSBUCHSTABEN. Aufzählungen mit "- ". Keine Markdown-Sternchen.
-Abschnitte: TAGESBERICHT (Datum, Bearbeiter, Wetter) · AUSGEFÜHRTE ARBEITEN (je Baustelle) · MESSWERTE (Tiefen, Trassenlängen, falls vorhanden) · BESONDERHEITEN (aus Notizen und Beschreibungen) · OFFENE PUNKTE (fehlende Pflichtfotos, unvollständige Prüfungen) · NÄCHSTE SCHRITTE.
+Abschnitte: TAGESBERICHT (Datum, Bearbeiter, Wetter) · PERSONAL UND GERÄTE (mit Stunden, falls vorhanden) · AUSGEFÜHRTE ARBEITEN (je Baustelle) · MESSWERTE (Tiefen, Trassenlängen, falls vorhanden) · BEHINDERUNGEN UND BESONDERHEITEN (aus Notizen, Beschreibungen, Behinderungen) · MÄNGEL (neu erfasst oder geändert) · OFFENE PUNKTE (fehlende Pflichtfotos, unvollständige Prüfungen) · NÄCHSTE SCHRITTE.
 Erfinde nichts. Was nicht in den Daten steht, lässt du weg. Höchstens 350 Wörter.
 
 DATEN:
@@ -2538,13 +2758,15 @@ function renderDaily() {
   p.innerHTML = `<div class="ph"><h2>Tagesbericht</h2><span class="lbl">Bautagebuch</span></div>
     <div class="inrow" style="align-items:flex-end;margin-bottom:10px"><div class="fld" style="margin:0"><label class="lbl" for="dayPick">Tag</label><input type="date" id="dayPick" value="${S.rep.day}" style="padding:10px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8)"></div></div>
     <p class="note" id="dayWeather" style="margin:0 0 10px"></p>
-    <div class="row"><button class="btn pri" data-dy="ai">Mit SEF-KI schreiben</button><button class="btn" data-dy="rule">Ohne KI erstellen</button></div>
+    <div id="diaryBox">${diaryHTML()}</div>
+    <div class="row" style="margin-top:12px"><button class="btn pri" data-dy="ai">Mit SEF-KI schreiben</button><button class="btn" data-dy="rule">Ohne KI erstellen</button></div>
     <textarea class="daily" id="dayText" style="margin-top:10px" placeholder="Hier entsteht der Tagesbericht. Du kannst ihn danach frei bearbeiten.">${esc(txt)}</textarea>
     <div class="row" style="margin-top:8px"><button class="btn" data-dy="pdf">Tagesbericht + Fotos als PDF</button><button class="btn" data-dy="copy">Text kopieren</button></div>`;
   const D = dayData(S.rep.day, S.rep.site), pos = D.sites[0] || S.pos;
   weatherFor(S.rep.day, pos).then(w => { const e = $('#dayWeather'); if (e) e.textContent = w ? 'Wetter: ' + w : inFrame ? 'Wetter wird in der installierten App automatisch eingetragen.' : ''; });
 }
 async function dailyAction(e) {
+  if (diaryAction(e)) return;
   const b = e.target.closest('[data-dy]'); if (!b) return; const a = b.dataset.dy, key = S.rep.day + '|' + S.rep.site, ta = $('#dayText');
   const D = dayData(S.rep.day, S.rep.site), weather = await weatherFor(S.rep.day, D.sites[0] || S.pos);
   if (a === 'rule') { ta.value = ruleReport(D, weather); S.daily['t|' + key] = ta.value; saveDaily(); }
@@ -2567,12 +2789,664 @@ function renderNotes() {
   p.innerHTML = `<div class="ph"><h2>Notizen</h2><span class="lbl">${ns.length} am ${fmtDate(new Date(S.rep.day + 'T12:00'))}</span></div>
     <div class="inrow"><input type="text" id="noteIn" placeholder="Notiz eintippen … oder unten diktieren" style="padding:11px 12px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8)">
       <button class="btn" data-nt="add">+</button>${hasDictation() ? '<button class="iconbtn" data-nt="mic" aria-label="Notiz diktieren" style="width:44px;height:44px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>' : ''}</div>
-    <div class="notes">${ns.map(n => `<div class="note-i"><small>${fmtTime(n.ts)} · ${esc(S.sites.find(s => s.id === n.siteId)?.name || 'ohne Baustelle')}</small>${esc(n.text)}</div>`).join('') || '<p class="note" style="margin:6px 0 0">Tipp: Mit „Freihändig“ einfach „Notiz …“ sagen.</p>'}</div>`;
+    <button class="btn wide${memoRec ? ' amb' : ''}" data-nt="memo" style="margin-top:8px">${memoRec ? '■ Aufnahme stoppen' : '● Sprachmemo aufnehmen'}</button>
+    <div class="notes">${ns.map(n => `<div class="note-i"><small>${fmtTime(n.ts)} · ${esc(S.sites.find(s => s.id === n.siteId)?.name || 'ohne Baustelle')}${n.audio ? ' · Sprachmemo ' + fmtDur(n.dur || 0) : ''}</small>${n.audio ? `<audio controls preload="none" data-memo="${n.id}" style="width:100%;margin-top:4px"></audio>` : ''}${esc(n.text || '')}</div>`).join('') || '<p class="note" style="margin:6px 0 0">Tipp: Mit „Freihändig“ einfach „Notiz …“ sagen.</p>'}</div>`;
+  (S.memoUrls || []).forEach(u => URL.revokeObjectURL(u)); S.memoUrls = [];
+  $$('[data-memo]', p).forEach(a => { const n = S.notes.find(x => x.id === a.dataset.memo); if (n?.audio) { const u = URL.createObjectURL(n.audio); S.memoUrls.push(u); a.src = u; } });
 }
 async function notesAction(e) {
   const b = e.target.closest('[data-nt]'); if (!b) return; const inp = $('#noteIn');
   if (b.dataset.nt === 'add') { const t = inp.value.trim(); if (t) { await saveNote(t); inp.value = ''; } }
   if (b.dataset.nt === 'mic') dictate(inp, b);
+  if (b.dataset.nt === 'memo') toggleMemo(b);
+}
+
+/* =====================================================================
+   BRANDING: Firmenlogo, Kundenlogo, PDF-Kopf
+   ===================================================================== */
+async function logoFromFile(file) {
+  const img = await loadImage(file); const c = fitCanvas(img, 600);
+  return { d: c.toDataURL('image/png'), w: c.width, h: c.height };
+}
+function pdfImgType(d) { return /^data:image\/png/.test(d) ? 'PNG' : 'JPEG'; }
+function pdfHeader(doc, right, sub = 'FOTOBERICHT') {
+  const W = 210, m = 14;
+  doc.setFillColor(8, 24, 48); doc.rect(0, 0, W, 19, 'F'); doc.setFillColor(63, 216, 239); doc.rect(0, 19, W, 0.7, 'F');
+  let x = m;
+  if (S.set.coLogo) {
+    try { const L = S.set.coLogo, h = 11, w = Math.min(42, h * L.w / L.h); doc.setFillColor(255, 255, 255); doc.roundedRect(x - 1.5, 3.5, w + 3, h + 1, 1, 1, 'F'); doc.addImage(L.d, pdfImgType(L.d), x, 4, w, h); x += w + 6; } catch (e) {}
+  }
+  if (S.set.coName) {
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(11.5); doc.setTextColor(240, 248, 255); doc.text(S.set.coName.slice(0, 48), x, 10.2);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(6.8); doc.setTextColor(150, 186, 206); doc.text(`${sub}  ·  SEF-KI BAUDOKU`, x, 15.2);
+  } else {
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(240, 248, 255); doc.text('Smolens', x, 12);
+    const w1 = doc.getTextWidth('Smolens'); doc.setTextColor(63, 216, 239); doc.text('·KI', x + w1, 12);
+    const w2 = w1 + doc.getTextWidth('·KI');
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(150, 186, 206); doc.text(`SEF-KI BAUDOKU  ·  ${sub}`, x + w2 + 5, 11.6);
+  }
+  doc.setFont('helvetica', 'normal'); doc.setTextColor(225, 238, 246); doc.setFontSize(8.5); doc.text(right, W - m, 11.6, { align: 'right' });
+}
+function pdfFooter(doc, titleFor) {
+  const W = 210, m = 14, pages = doc.getNumberOfPages(), created = `${fmtDate(Date.now())}, ${fmtTime(Date.now())} Uhr`;
+  for (let i = 1; i <= pages; i++) {
+    doc.setPage(i); doc.setDrawColor(214, 223, 231); doc.setLineWidth(0.2); doc.line(m, 285, W - m, 285);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.4); doc.setTextColor(130, 142, 156);
+    doc.text(`${S.set.coName ? S.set.coName.slice(0, 40) + '  ·  ' : ''}SEF-KI Baudoku  ·  ${titleFor(i)}  ·  erstellt ${created}`, m, 290);
+    doc.text(`Seite ${i} von ${pages}`, W - m, 290, { align: 'right' });
+  }
+}
+const pdfSafeG = s => String(s ?? '').replace(/[→←]/g, '-').replace(/[✓✔]/g, 'OK').replace(/[✗✘]/g, 'X').replace(/[^\x00-\xff€„“‚‘’–—…•]/g, '');
+async function blobToPdfImg(blob, max = 1600) { const img = await loadImage(blob); const c = fitCanvas(img, max); return { d: c.toDataURL('image/jpeg', 0.85), w: c.width, h: c.height }; }
+
+/* =====================================================================
+   BAUPLÄNE – Fotos und Mängel auf dem Plan verorten
+   ===================================================================== */
+const plansOf = siteId => S.plans.filter(p => p.siteId === siteId).sort((a, b) => a.created - b.created);
+async function pdfPages(file) {
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'); // Worker im Hauptthread – funktioniert überall
+  const pdf = await window.pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise, out = [];
+  for (let i = 1; i <= Math.min(pdf.numPages, 20); i++) {
+    const page = await pdf.getPage(i), v0 = page.getViewport({ scale: 1 }), sc = Math.min(5, 3200 / Math.max(v0.width, v0.height)), vp = page.getViewport({ scale: sc });
+    const c = document.createElement('canvas'); c.width = Math.round(vp.width); c.height = Math.round(vp.height);
+    const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height);
+    await page.render({ canvasContext: g, viewport: vp }).promise; out.push(c);
+  }
+  return out;
+}
+let planTargetSite = null;
+function addPlan(siteId) {
+  planTargetSite = siteId || S.planSite || siteStatus().site?.id || activeSites()[0]?.id || null;
+  if (!planTargetSite) return toast('Lege zuerst eine Baustelle an.');
+  $('#filePlan').click();
+}
+async function importPlanFile(file) {
+  const siteId = planTargetSite; if (!siteId) return;
+  toast('Plan wird eingelesen …', 2500);
+  try {
+    let canvases = [];
+    if (/pdf/i.test(file.type) || /\.pdf$/i.test(file.name)) canvases = await pdfPages(file);
+    else canvases = [fitCanvas(await loadImage(file), 3200)];
+    const base = file.name.replace(/\.[^.]+$/, '');
+    const store = async (c, name) => {
+      const p = { id: uid(), siteId, name, w: c.width, h: c.height, created: Date.now() + S.plans.length, blob: await toBlob(c, 0.9), thumb: fitCanvas(c, 500).toDataURL('image/jpeg', 0.75) };
+      await DB.put('plans', p); S.plans.push(p); return p;
+    };
+    if (canvases.length === 1) { const p = await store(canvases[0], base); toast(`Plan „${p.name}“ hinzugefügt.`); S.planSite = siteId; if (S.view === 'plaene') renderPlans(); openPlan(p.id); return; }
+    const sel = new Set([0]);
+    const el = sheet(`<h3>Welche Seiten übernehmen?</h3><p class="sub">${esc(file.name)} hat ${canvases.length} Seiten. Jede gewählte Seite wird ein eigener Plan.</p>
+      <div class="plans" id="pgSel">${canvases.map((c, i) => `<button class="plan-c" data-i="${i}" style="${i === 0 ? 'border-color:var(--cyan)' : ''}"><img src="${fitCanvas(c, 360).toDataURL('image/jpeg', 0.7)}" alt=""><div>Seite ${i + 1}</div></button>`).join('')}</div>
+      <div class="row" style="margin-top:12px"><button class="btn" data-x="all">Alle</button><button class="btn pri" data-x="ok">Übernehmen</button></div>`);
+    el.addEventListener('click', async e => {
+      const b = e.target.closest('[data-i]'); if (b) { const i = +b.dataset.i; sel.has(i) ? sel.delete(i) : sel.add(i); b.style.borderColor = sel.has(i) ? 'var(--cyan)' : ''; return; }
+      const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
+      if (x === 'all') canvases.forEach((c, i) => sel.add(i));
+      closeSheet(); for (const i of [...sel].sort((a, b) => a - b)) await store(canvases[i], `${base} – S. ${i + 1}`);
+      toast(`${sel.size} Plan${sel.size > 1 ? 'seiten' : ''} hinzugefügt.`); S.planSite = siteId; if (S.view === 'plaene') renderPlans();
+    });
+  } catch (e) { toast('Plan konnte nicht gelesen werden: ' + (e.message || e), 5000); }
+}
+function renderPlans() {
+  const act = activeSites(); if (!S.planSite || !S.sites.find(s => s.id === S.planSite)) S.planSite = siteStatus().site?.id || act[0]?.id || null;
+  $('#planSites').innerHTML = act.map(s => `<button class="chip${S.planSite === s.id ? ' on' : ''}" data-ps="${s.id}">${esc(short(s.name))} · ${plansOf(s.id).length}</button>`).join('');
+  const ps = plansOf(S.planSite); $('#planCount').textContent = S.plans.length + ' gesamt';
+  $('#planList').innerHTML = ps.length ? `<div class="plans">${ps.map(p => { const nP = S.photos.filter(x => x.plan?.planId === p.id).length, nD = S.defects.filter(d => d.plan?.planId === p.id).length;
+    return `<button class="plan-c" data-plan="${p.id}"><img src="${p.thumb}" alt=""><div>${esc(p.name)}<small>${nP} Fotos · ${nD} Mängel</small></div></button>`; }).join('')}</div>`
+    : '<p class="empty">Für diese Baustelle gibt es noch keinen Plan. Grundriss als Foto, Bild oder PDF hinzufügen.</p>';
+}
+/* Planansicht */
+let PV = null;
+async function openPlan(planId, place) {
+  const plan = S.plans.find(p => p.id === planId); if (!plan) return;
+  closeSheet(); document.querySelector('.pv')?.remove();
+  const ov = document.createElement('div'); ov.className = 'mk pv';
+  ov.innerHTML = `<div class="pvtop"><button class="iconbtn" data-pv="close" aria-label="Plan schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button><span class="t">${esc(plan.name)}</span>
+    <button class="iconbtn" data-pv="in" aria-label="Hineinzoomen">+</button><button class="iconbtn" data-pv="out" aria-label="Herauszoomen">−</button></div>
+    <canvas></canvas><div class="pvhint" id="pvHint">${place ? 'Tipp auf die Stelle im Plan.' : 'Tipp auf den Plan: Foto oder Mangel genau dort erfassen. Tipp auf einen Punkt zum Öffnen.'}</div>`;
+  document.body.appendChild(ov); document.body.classList.add('noscroll');
+  const img = await loadImage(plan.blob), cv = ov.querySelector('canvas'), g = cv.getContext('2d');
+  PV = { plan, img, ov, cv, k: 1, ox: 0, oy: 0, place, ptrs: new Map(), pinch: null, moved: 0, pins: [] };
+  const fit = () => { const W = cv.clientWidth, H = cv.clientHeight; PV.k = Math.min(W / img.width, H / img.height); PV.ox = (W - img.width * PV.k) / 2; PV.oy = (H - img.height * PV.k) / 2; };
+  const draw = () => {
+    if (!PV || PV.cv !== cv) return;
+    const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.fillStyle = '#1a2433'; g.fillRect(0, 0, W, H); g.drawImage(img, PV.ox, PV.oy, img.width * PV.k, img.height * PV.k);
+    PV.pins = [];
+    const ph = S.photos.filter(p => p.plan?.planId === plan.id).sort((a, b) => a.ts - b.ts);
+    ph.forEach((p, i) => { const x = PV.ox + p.plan.x * img.width * PV.k, y = PV.oy + p.plan.y * img.height * PV.k;
+      g.fillStyle = PH[p.phase].c; g.strokeStyle = '#fff'; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 11, 0, 7); g.fill(); g.stroke();
+      g.fillStyle = '#04101e'; g.font = '700 11px "JetBrains Mono", monospace'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(String(i + 1), x, y + 0.5); PV.pins.push({ x, y, t: 'p', id: p.id }); });
+    S.defects.filter(d => d.plan?.planId === plan.id).forEach(d => { const x = PV.ox + d.plan.x * img.width * PV.k, y = PV.oy + d.plan.y * img.height * PV.k;
+      g.fillStyle = DSTAT[d.status].c; g.strokeStyle = '#fff'; g.lineWidth = 2; g.beginPath(); g.moveTo(x, y - 14); g.lineTo(x + 12, y); g.lineTo(x, y + 14); g.lineTo(x - 12, y); g.closePath(); g.fill(); g.stroke();
+      g.fillStyle = '#04101e'; g.font = '700 10px "JetBrains Mono", monospace'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('M' + d.no, x, y + 0.5); PV.pins.push({ x, y, t: 'd', id: d.id }); });
+    g.textAlign = 'left'; g.textBaseline = 'alphabetic';
+  };
+  PV.draw = draw; fit(); draw();
+  const zoom = (f, cx, cy) => { const nk = Math.max(0.05, Math.min(12, PV.k * f)); cx ??= cv.clientWidth / 2; cy ??= cv.clientHeight / 2; PV.ox = cx - (cx - PV.ox) * nk / PV.k; PV.oy = cy - (cy - PV.oy) * nk / PV.k; PV.k = nk; draw(); };
+  cv.addEventListener('wheel', e => { e.preventDefault(); const r = cv.getBoundingClientRect(); zoom(e.deltaY < 0 ? 1.2 : 1 / 1.2, e.clientX - r.left, e.clientY - r.top); }, { passive: false });
+  cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); PV.ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); PV.moved = 0; if (PV.ptrs.size === 2) { const [a, b] = [...PV.ptrs.values()]; PV.pinch = Math.hypot(a.x - b.x, a.y - b.y); } });
+  cv.addEventListener('pointermove', e => {
+    const p = PV.ptrs.get(e.pointerId); if (!p) return; const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
+    if (PV.ptrs.size === 2) { const [a, b] = [...PV.ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y); if (PV.pinch) zoom(d / PV.pinch, (a.x + b.x) / 2 - cv.getBoundingClientRect().left, (a.y + b.y) / 2 - cv.getBoundingClientRect().top); PV.pinch = d; PV.moved += 10; return; }
+    PV.moved += Math.abs(dx) + Math.abs(dy); PV.ox += dx; PV.oy += dy; draw();
+  });
+  cv.addEventListener('pointerup', e => {
+    const tap = PV.ptrs.size === 1 && PV.moved < 6; PV.ptrs.delete(e.pointerId); if (PV.ptrs.size < 2) PV.pinch = null; if (!tap) return;
+    const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    const nx = (x - PV.ox) / (img.width * PV.k), ny = (y - PV.oy) / (img.height * PV.k);
+    if (PV.place) { if (nx < 0 || ny < 0 || nx > 1 || ny > 1) return; placeOnPlan(PV.place, { planId: plan.id, x: nx, y: ny }); return; }
+    const hit = PV.pins.map(p => ({ ...p, d: Math.hypot(p.x - x, p.y - y) })).filter(p => p.d < 18).sort((a, b) => a.d - b.d)[0];
+    if (hit) { if (hit.t === 'p') openPhoto(hit.id); else openDefect(hit.id); return; }
+    if (nx < 0 || ny < 0 || nx > 1 || ny > 1) return;
+    const pin = { planId: plan.id, x: nx, y: ny };
+    const el = sheet(`<h3>An dieser Stelle …</h3><p class="sub">${esc(plan.name)}</p>
+      <div class="stack" style="gap:8px"><button class="btn pri wide" data-a="photo">Foto hier aufnehmen</button><button class="btn amb wide" data-a="defect">Mangel hier erfassen</button><button class="btn wide" data-a="pick">Vorhandenes Foto hier verorten</button></div>`);
+    el.addEventListener('click', ev => {
+      const a = ev.target.closest('[data-a]')?.dataset.a; if (!a) return; closeSheet();
+      if (a === 'photo') { closePlan(); openCamera(plan.siteId, null, null, { planPin: pin }); }
+      if (a === 'defect') openDefect(null, { siteId: plan.siteId, plan: pin });
+      if (a === 'pick') pickPhotoForPin(plan, pin);
+    });
+  });
+  ov.addEventListener('click', e => { const a = e.target.closest('[data-pv]')?.dataset.pv; if (a === 'close') closePlan(); if (a === 'in') zoom(1.4); if (a === 'out') zoom(1 / 1.4); });
+  addEventListener('resize', () => { if (PV?.cv === cv) { fit(); draw(); } });
+}
+function closePlan() { document.querySelector('.pv')?.remove(); PV = null; if ($('#cam').hidden && !$('#scrim')) document.body.classList.remove('noscroll'); if (S.view === 'plaene') renderPlans(); }
+function pickPhotoForPin(plan, pin) {
+  const ps = S.photos.filter(p => p.siteId === plan.siteId && !p.plan).sort((a, b) => b.ts - a.ts).slice(0, 30);
+  if (!ps.length) return toast('Alle Fotos dieser Baustelle sind schon verortet.');
+  const el = sheet(`<h3>Foto verorten</h3><p class="sub">Welches Foto gehört an diese Stelle?</p><div class="grid">${ps.map(p => `<button class="th" data-photo="${p.id}"><img src="${p.thumb}" alt=""><span class="tl">${fmtTime(p.ts)} ${esc(catName(p.cat))}</span></button>`).join('')}</div>`);
+  el.addEventListener('click', async e => { const b = e.target.closest('[data-photo]'); if (!b) return; const p = S.photos.find(x => x.id === b.dataset.photo); p.plan = pin; await DB.put('photos', p); closeSheet(); toast('Foto verortet.'); PV?.draw(); });
+}
+async function placeOnPlan(target, pin) {
+  if (target.t === 'p') { const p = S.photos.find(x => x.id === target.id); if (p) { p.plan = pin; await DB.put('photos', p); } }
+  if (target.t === 'd') { const d = S.defects.find(x => x.id === target.id); if (d) { d.plan = pin; d.updated = Date.now(); await DB.put('defects', d); } }
+  closePlan(); toast('Auf dem Plan verortet.');
+  if (target.t === 'd') openDefect(target.id);
+}
+function choosePlan(siteId, target) {
+  const ps = plansOf(siteId);
+  if (!ps.length) { toast('Für diese Baustelle gibt es noch keinen Plan.'); addPlan(siteId); return; }
+  if (ps.length === 1) return openPlan(ps[0].id, target);
+  const el = sheet(`<h3>Welcher Plan?</h3><div class="plans">${ps.map(p => `<button class="plan-c" data-plan="${p.id}"><img src="${p.thumb}" alt=""><div>${esc(p.name)}</div></button>`).join('')}</div>`);
+  el.addEventListener('click', e => { const b = e.target.closest('[data-plan]'); if (b) openPlan(b.dataset.plan, target); });
+}
+function planMini(pin) { const pl = S.plans.find(p => p.id === pin?.planId); return pl ? `<button class="btn wide" data-showplan="${pl.id}">Auf Plan ansehen: ${esc(pl.name)}</button>` : ''; }
+
+/* =====================================================================
+   MÄNGELVERWALTUNG
+   ===================================================================== */
+const DSTAT = { open: { n: 'Offen', c: '#ff5a6e' }, work: { n: 'In Arbeit', c: '#ffa040' }, done: { n: 'Erledigt', c: '#48e59a' }, closed: { n: 'Abgenommen', c: '#89a9bd' } };
+const TRADES = ['Tiefbau', 'Straßenbau', 'Glasfaser / Telekom', 'Rohbau', 'Elektro', 'Sanitär', 'Heizung', 'Lüftung', 'Trockenbau', 'Maler', 'Fliesen', 'Estrich', 'Dach', 'Fenster / Türen', 'Außenanlagen', 'Sonstiges'];
+const PRIO = { hoch: 'Hoch', normal: 'Normal', niedrig: 'Niedrig' };
+const isOver = d => !!d.due && (d.status === 'open' || d.status === 'work') && d.due < dayKey(Date.now());
+const openDefs = () => S.defects.filter(d => d.status === 'open' || d.status === 'work');
+function updDefBadge() { const b = $('#defBadge'); if (!b) return; const n = openDefs().length, o = S.defects.filter(isOver).length; b.hidden = !n; b.textContent = n; b.style.background = o ? 'var(--bad)' : 'var(--amber)'; }
+function renderDefects() {
+  const all = S.defects, over = all.filter(isOver).length;
+  $('#defStats').innerHTML = `<div class="stat"><div class="lbl">Offen</div><div class="v ${all.filter(d => d.status === 'open').length ? 'warn' : 'good'}">${all.filter(d => d.status === 'open').length}</div><div class="s">Mängel</div></div>
+    <div class="stat"><div class="lbl">Überfällig</div><div class="v" style="color:${over ? 'var(--bad)' : 'var(--ok)'}">${over}</div><div class="s">Frist vorbei</div></div>
+    <div class="stat"><div class="lbl">Erledigt</div><div class="v good">${all.filter(d => d.status === 'done' || d.status === 'closed').length}</div><div class="s">von ${all.length}</div></div>`;
+  const segs = [['open', 'Offen'], ['over', 'Überfällig'], ['done', 'Erledigt'], ['all', 'Alle']];
+  $('#defSeg').innerHTML = segs.map(([k, n]) => `<button data-ds="${k}" class="${S.def.status === k ? 'on' : ''}">${n}</button>`).join('');
+  $('#defSites').innerHTML = `<button class="chip${S.def.site === 'all' ? ' on' : ''}" data-dsite="all">Alle Baustellen</button>` + S.sites.map(s => `<button class="chip${S.def.site === s.id ? ' on' : ''}" data-dsite="${s.id}">${esc(short(s.name))}</button>`).join('');
+  let l = all.slice();
+  if (S.def.site !== 'all') l = l.filter(d => d.siteId === S.def.site);
+  if (S.def.status === 'open') l = l.filter(d => d.status === 'open' || d.status === 'work');
+  if (S.def.status === 'over') l = l.filter(isOver);
+  if (S.def.status === 'done') l = l.filter(d => d.status === 'done' || d.status === 'closed');
+  l.sort((a, b) => (isOver(b) - isOver(a)) || ((a.due || '9999') < (b.due || '9999') ? -1 : 1) || b.created - a.created);
+  $('#defList').innerHTML = l.length ? l.map(defCard).join('') : `<p class="empty">${S.def.status === 'open' ? 'Keine offenen Mängel. Sauber!' : 'Keine Einträge.'}</p>`;
+  updDefBadge();
+}
+function defCard(d) {
+  const s = S.sites.find(x => x.id === d.siteId), ph = S.photos.find(p => p.id === d.photoIds?.[0]), st = DSTAT[d.status], ov = isOver(d);
+  return `<button class="dcard${ov ? ' over' : ''}" data-def="${d.id}"><span class="dno" style="color:${st.c}">M${d.no}</span>
+    <span style="min-width:0"><span class="dt">${esc(d.title || 'Ohne Titel')}</span>
+      <span class="meta" style="margin-top:4px"><span class="dst" style="background:${st.c}">${st.n.toUpperCase()}</span>${d.assignee ? `<span>${esc(d.assignee)}</span>` : ''}${d.due ? `<span style="color:${ov ? 'var(--bad)' : 'inherit'}">Frist ${fmtDate(new Date(d.due + 'T12:00'))}${ov ? ' · überfällig' : ''}</span>` : ''}</span>
+      <span class="meta">${s ? esc(short(s.name)) : 'ohne Baustelle'}${d.trade ? ' · ' + esc(d.trade) : ''}${d.prio === 'hoch' ? ' · <b style="color:var(--bad)">hoch</b>' : ''}</span></span>
+    ${ph ? `<img src="${ph.thumb}" alt="">` : '<span></span>'}</button>`;
+}
+function openDefect(id, preset = {}) {
+  const d = id ? S.defects.find(x => x.id === id) : null; if (id && !d) return;
+  const st = siteStatus();
+  const f = d ? { ...d, photoIds: [...(d.photoIds || [])] } : { id: uid(), siteId: preset.siteId ?? (st.state === 'in' ? st.site.id : (S.def.site !== 'all' ? S.def.site : activeSites()[0]?.id || null)), title: preset.title || '', desc: preset.desc || '', trade: '', assignee: '', due: dayKey(Date.now() + 7 * 864e5), prio: 'normal', status: 'open', photoIds: preset.photoId ? [preset.photoId] : [], plan: preset.plan || null, history: [] };
+  const assignees = [...new Set(S.defects.map(x => x.assignee).filter(Boolean))];
+  const el = sheet(`${d ? `<span class="dst" style="background:${DSTAT[d.status].c}">${DSTAT[d.status].n.toUpperCase()}</span>` : ''}<h3>${d ? 'Mangel M' + d.no : 'Neuer Mangel'}</h3>
+    <p class="sub">${d ? 'Erfasst ' + fmtDay(d.created) + ', ' + fmtTime(d.created) : 'Kurz beschreiben, Zuständigen und Frist setzen – den Rest erledige ich.'}</p>
+    <div class="fld"><label class="lbl" for="dfTitle">Was ist der Mangel?</label><input type="text" id="dfTitle" value="${esc(f.title)}" placeholder="z. B. Pflaster abgesackt vor Hauseingang"></div>
+    <div class="fld"><label class="lbl" for="dfDesc">Beschreibung</label><div class="inrow"><textarea id="dfDesc" placeholder="Genaue Lage, Umfang, Ursache …">${esc(f.desc)}</textarea>${hasDictation() ? '<button type="button" class="iconbtn" id="dfMic" aria-label="Diktieren" style="align-self:flex-start;width:44px;height:44px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>' : ''}</div></div>
+    <div class="fld"><label class="lbl" for="dfSite">Baustelle</label><select id="dfSite"><option value="">Ohne Baustelle</option>${S.sites.map(s => `<option value="${s.id}"${s.id === f.siteId ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</select></div>
+    <div class="inrow" style="gap:8px"><div class="fld" style="flex:1"><label class="lbl" for="dfTrade">Gewerk</label><select id="dfTrade"><option value="">–</option>${TRADES.map(t => `<option${t === f.trade ? ' selected' : ''}>${t}</option>`).join('')}</select></div>
+      <div class="fld" style="flex:1"><label class="lbl" for="dfPrio">Priorität</label><select id="dfPrio">${Object.entries(PRIO).map(([k, n]) => `<option value="${k}"${k === f.prio ? ' selected' : ''}>${n}</option>`).join('')}</select></div></div>
+    <div class="fld"><label class="lbl" for="dfAss">Zuständig (Firma / Person)</label><input type="text" id="dfAss" list="dfAssL" value="${esc(f.assignee)}" placeholder="z. B. Pflasterbau Meier, Hr. Kurz"><datalist id="dfAssL">${assignees.map(a => `<option value="${esc(a)}">`).join('')}</datalist></div>
+    <div class="fld"><label class="lbl" for="dfDue">Frist</label><div class="inrow"><input type="date" id="dfDue" value="${f.due || ''}" style="padding:10px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8)">
+      <button type="button" class="chip" data-due="3">+3 T</button><button type="button" class="chip" data-due="7">+1 W</button><button type="button" class="chip" data-due="14">+2 W</button></div></div>
+    <div class="fld"><span class="lbl">Status</span><div class="segs" id="dfSt">${Object.entries(DSTAT).map(([k, v]) => `<button type="button" data-st="${k}" class="${f.status === k ? 'on' : ''}">${v.n}</button>`).join('')}</div></div>
+    <div class="fld"><span class="lbl">Fotos (${f.photoIds.length})</span><div class="thumbs" id="dfPh">${f.photoIds.map(pid => { const p = S.photos.find(x => x.id === pid); return p ? `<img src="${p.thumb}" data-photo="${p.id}" alt="">` : ''; }).join('')}</div></div>
+    <div class="row"><button class="btn" data-x="photo">+ Foto</button><button class="btn" data-x="plan">${f.plan ? 'Ort auf Plan ändern' : 'Auf Plan verorten'}</button></div>
+    ${f.plan ? `<div style="margin-top:8px">${planMini(f.plan)}</div>` : ''}
+    ${d?.history?.length ? `<div class="fld" style="margin-top:12px"><span class="lbl">Verlauf</span><div class="hist">${d.history.slice().reverse().map(h => `<span>${fmtDate(h.ts)} ${fmtTime(h.ts)} · ${esc(h.text)}</span>`).join('')}</div></div>` : ''}
+    <div class="row" style="margin-top:14px"><button class="btn" data-x="send"${d ? '' : ' hidden'}>An Zuständigen senden</button><button class="btn pri" data-x="save">Speichern</button></div>
+    ${d ? '<div class="row" style="margin-top:8px"><button class="btn danger" data-x="del">Löschen</button></div>' : ''}`);
+  let status = f.status;
+  $('#dfMic', el)?.addEventListener('click', () => dictate($('#dfDesc', el), $('#dfMic', el)));
+  $('#dfSt', el).onclick = e => { const b = e.target.closest('[data-st]'); if (!b) return; status = b.dataset.st; $$('#dfSt button', el).forEach(x => x.classList.toggle('on', x === b)); };
+  const collect = () => ({ ...f, title: $('#dfTitle', el).value.trim(), desc: $('#dfDesc', el).value.trim(), siteId: $('#dfSite', el).value || null, trade: $('#dfTrade', el).value, prio: $('#dfPrio', el).value, assignee: $('#dfAss', el).value.trim(), due: $('#dfDue', el).value || '', status });
+  el.addEventListener('click', async e => {
+    const du = e.target.closest('[data-due]'); if (du) { $('#dfDue', el).value = dayKey(Date.now() + du.dataset.due * 864e5); return; }
+    const ph = e.target.closest('[data-photo]'); if (ph) { openPhoto(ph.dataset.photo); return; }
+    const sp = e.target.closest('[data-showplan]'); if (sp) { openPlan(sp.dataset.showplan); return; }
+    const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
+    if (x === 'save') { const nd = await saveDefect(collect(), d); closeSheet(); toast(`Mangel M${nd.no} gespeichert.`); if (!d && !nd.photoIds.length) toast(`Mangel M${nd.no} gespeichert. Tipp: Foto hinzufügen als Nachweis.`, 4000); }
+    if (x === 'photo') { const nd = await saveDefect(collect(), d); closeSheet(); openCamera(nd.siteId || null, null, null, { defect: nd.id }); }
+    if (x === 'plan') { const nd = await saveDefect(collect(), d); if (!nd.siteId) return toast('Erst eine Baustelle wählen.'); closeSheet(); choosePlan(nd.siteId, { t: 'd', id: nd.id }); }
+    if (x === 'send') { const nd = await saveDefect(collect(), d); sendDefect(nd); }
+    if (x === 'del') { const b = e.target.closest('[data-x]'); if (b.dataset.sure) { await DB.del('defects', d.id); S.defects = S.defects.filter(z => z.id !== d.id); closeSheet(); toast('Mangel gelöscht.'); refresh(); } else { b.dataset.sure = '1'; b.textContent = 'Wirklich löschen?'; } }
+  });
+}
+async function saveDefect(f, old) {
+  const now = Date.now(), hist = [...(old?.history || [])];
+  if (!old) hist.push({ ts: now, text: 'Erfasst' + (f.assignee ? ' · zuständig: ' + f.assignee : '') });
+  else {
+    if (old.status !== f.status) hist.push({ ts: now, text: `Status: ${DSTAT[old.status].n} → ${DSTAT[f.status].n}` });
+    if (old.assignee !== f.assignee) hist.push({ ts: now, text: 'Zuständig: ' + (f.assignee || '–') });
+    if (old.due !== f.due) hist.push({ ts: now, text: 'Frist: ' + (f.due ? fmtDate(new Date(f.due + 'T12:00')) : '–') });
+  }
+  const no = old?.no || 1 + Math.max(0, ...S.defects.filter(x => x.siteId === f.siteId).map(x => x.no || 0));
+  const d = { ...f, no, history: hist, created: old?.created || now, updated: now, lat: old?.lat ?? S.pos?.lat ?? null, lon: old?.lon ?? S.pos?.lon ?? null };
+  await DB.put('defects', d);
+  const i = S.defects.findIndex(x => x.id === d.id); if (i >= 0) S.defects[i] = d; else S.defects.push(d);
+  hook(old ? 'mangel_geaendert' : 'mangel_neu', defJSON(d));
+  if (old && old.status !== 'done' && d.status === 'done' && !d.photoIds.some(pid => (S.photos.find(p => p.id === pid)?.ts || 0) > (old.updated || 0))) setTimeout(() => toast('Tipp: Ein Foto nach der Behebung macht die Erledigung beweissicher.', 4500), 400);
+  refresh(true); return d;
+}
+const defJSON = d => ({ nr: 'M' + d.no, titel: d.title, beschreibung: d.desc, baustelle: S.sites.find(s => s.id === d.siteId)?.name || null, gewerk: d.trade, zustaendig: d.assignee, frist: d.due || null, prioritaet: d.prio, status: DSTAT[d.status].n, fotos: d.photoIds.length, erfasst: new Date(d.created).toISOString() });
+async function sendDefect(d) {
+  const s = S.sites.find(x => x.id === d.siteId);
+  const txt = `Mangel M${d.no}: ${d.title}\nBaustelle: ${s?.name || '–'}${s?.order ? ' (Auftrag ' + s.order + ')' : ''}\n${d.desc ? d.desc + '\n' : ''}Gewerk: ${d.trade || '–'}\nFrist: ${d.due ? fmtDate(new Date(d.due + 'T12:00')) : '–'}\nStatus: ${DSTAT[d.status].n}\n\nBitte Erledigung mit Foto bestätigen.\n${S.set.name || ''}${S.set.coName ? ' · ' + S.set.coName : ''}`;
+  const files = d.photoIds.map(id => S.photos.find(p => p.id === id)).filter(p => p && (!p.kind || p.kind === 'photo')).slice(0, 4).map((p, i) => new File([p.blob], `M${d.no}_foto${i + 1}.jpg`, { type: 'image/jpeg' }));
+  try { if (navigator.share && !inFrame) { await navigator.share(files.length && navigator.canShare?.({ files }) ? { title: `Mangel M${d.no}`, text: txt, files } : { title: `Mangel M${d.no}`, text: txt }); return; } } catch (e) { if (e.name === 'AbortError') return; }
+  try { await navigator.clipboard.writeText(txt); toast('Text kopiert – jetzt in WhatsApp oder E-Mail einfügen.', 4000); } catch (e) { toast('Teilen ist hier nicht möglich.'); }
+}
+function defectExportSheet() {
+  const el = sheet(`<h3>Mängelliste exportieren</h3><p class="sub">${S.def.site === 'all' ? 'Alle Baustellen' : esc(S.sites.find(s => s.id === S.def.site)?.name || '')} · Filter: ${({ open: 'offen', over: 'überfällig', done: 'erledigt', all: 'alle' })[S.def.status]}</p>
+    <div class="stack" style="gap:8px"><button class="btn pri wide" data-e="pdf">Mängelliste als PDF (mit Fotos)</button><button class="btn wide" data-e="csv">Tabelle für Excel (CSV)</button><button class="btn wide" data-e="ics">Fristen in den Kalender (.ics)</button></div>`);
+  el.addEventListener('click', async e => { const a = e.target.closest('[data-e]')?.dataset.e; if (!a) return; const l = currentDefList(); if (!l.length) return toast('Keine Mängel in dieser Auswahl.');
+    if (a === 'pdf') { const b = e.target.closest('[data-e]'); b.disabled = true; b.textContent = 'Erstelle PDF …'; try { await needLib('PDF-Baustein', () => window.jspdf?.jsPDF); const doc = await buildDefectPDF(l); await saveFile(`Maengelliste_${stamp(Date.now()).slice(0, 8)}.pdf`, doc.output('blob')); } catch (err) { toast('PDF fehlgeschlagen: ' + (err.message || err)); } closeSheet(); }
+    if (a === 'csv') { closeSheet(); await saveFile(`Maengelliste_${stamp(Date.now()).slice(0, 8)}.csv`, new Blob([defCSV(l)], { type: 'text/csv' })); }
+    if (a === 'ics') { closeSheet(); await saveFile(`Maengel_Fristen.ics`, new Blob([defICS(l)], { type: 'text/calendar' })).catch(() => {}); }
+  });
+}
+function currentDefList() {
+  let l = S.defects.slice(); if (S.def.site !== 'all') l = l.filter(d => d.siteId === S.def.site);
+  if (S.def.status === 'open') l = l.filter(d => d.status === 'open' || d.status === 'work'); if (S.def.status === 'over') l = l.filter(isOver); if (S.def.status === 'done') l = l.filter(d => d.status === 'done' || d.status === 'closed');
+  return l.sort((a, b) => (a.siteId || '').localeCompare(b.siteId || '') || a.no - b.no);
+}
+function defCSV(l) {
+  const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  return '﻿' + ['Nr', 'Baustelle', 'Titel', 'Beschreibung', 'Gewerk', 'Zuständig', 'Frist', 'Priorität', 'Status', 'Überfällig', 'Fotos', 'Erfasst', 'Geändert', 'Breite', 'Länge'].join(';') + '\n' +
+    l.map(d => ['M' + d.no, S.sites.find(s => s.id === d.siteId)?.name, d.title, d.desc, d.trade, d.assignee, d.due ? fmtDate(new Date(d.due + 'T12:00')) : '', PRIO[d.prio], DSTAT[d.status].n, isOver(d) ? 'ja' : 'nein', d.photoIds.length, new Date(d.created).toLocaleString('de-DE'), new Date(d.updated).toLocaleString('de-DE'), d.lat ?? '', d.lon ?? ''].map(q).join(';')).join('\n');
+}
+function defICS(l) {
+  const esc2 = s => String(s || '').replace(/[\\;,]/g, m => '\\' + m).replace(/\n/g, '\\n'), now = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+  return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Smolens-KI//SEF-KI Baudoku//DE', 'CALSCALE:GREGORIAN',
+    ...l.filter(d => d.due && d.status !== 'closed').flatMap(d => { const s = S.sites.find(x => x.id === d.siteId); const dt = d.due.replace(/-/g, ''); const nx = dayKey(new Date(d.due + 'T12:00').getTime() + 864e5).replace(/-/g, '');
+      return ['BEGIN:VEVENT', `UID:${d.id}@sefki`, `DTSTAMP:${now}`, `DTSTART;VALUE=DATE:${dt}`, `DTEND;VALUE=DATE:${nx}`, `SUMMARY:${esc2(`Frist Mangel M${d.no}: ${d.title}${s ? ' – ' + s.name : ''}`)}`, `DESCRIPTION:${esc2(`Zuständig: ${d.assignee || '–'}\nStatus: ${DSTAT[d.status].n}\n${d.desc || ''}`)}`, 'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', 'DESCRIPTION:Mängelfrist morgen', 'END:VALARM', 'END:VEVENT']; }),
+    'END:VCALENDAR'].join('\r\n');
+}
+async function buildDefectPDF(l) {
+  const { jsPDF } = window.jspdf, doc = new jsPDF({ unit: 'mm', format: 'a4' }), W = 210, m = 14, cw = W - 2 * m, INK = [16, 26, 40], GREY = [96, 110, 126];
+  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const titles = []; const np = t => { if (doc.getNumberOfPages() > 1 || titles.length) doc.addPage(); titles[doc.getNumberOfPages()] = t; pdfHeader(doc, fmtDate(Date.now()), 'MÄNGELLISTE'); };
+  np('Mängelliste'); let y = 31;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(20); doc.setTextColor(...INK); doc.text('Mängelliste', m, y + 4); y += 10;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); doc.setTextColor(...GREY);
+  doc.text(pdfSafeG(`${l.length} Mängel · ${l.filter(isOver).length} überfällig · Stand ${fmtDate(Date.now())} ${fmtTime(Date.now())} · Bearbeiter ${S.set.name || '–'}`), m, y); y += 8;
+  const cx = [m + 1, m + 14, m + 88, m + 120, m + 152], head = () => { doc.setFillColor(8, 24, 48); doc.rect(m, y, cw, 6.5, 'F'); doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(225, 240, 248); ['NR', 'MANGEL / BAUSTELLE', 'ZUSTÄNDIG', 'FRIST', 'STATUS'].forEach((h, i) => doc.text(h, cx[i], y + 4.4)); y += 6.5; };
+  head();
+  l.forEach((d, i) => {
+    if (y > 268) { np('Mängelliste'); y = 30; head(); }
+    const rh = 10; if (i % 2) { doc.setFillColor(246, 249, 251); doc.rect(m, y, cw, rh, 'F'); }
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(...INK); doc.text('M' + d.no, cx[0], y + 4.4);
+    doc.text(doc.splitTextToSize(pdfSafeG(d.title || '–'), 72)[0], cx[1], y + 4.4);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.6); doc.setTextColor(...GREY); doc.text(doc.splitTextToSize(pdfSafeG((S.sites.find(s => s.id === d.siteId)?.name || '–') + (d.trade ? ' · ' + d.trade : '')), 72)[0], cx[1], y + 8.2);
+    doc.setFontSize(8.4); doc.setTextColor(...INK); doc.text(doc.splitTextToSize(pdfSafeG(d.assignee || '–'), 30)[0], cx[2], y + 4.4);
+    doc.setTextColor(...(isOver(d) ? [205, 60, 40] : INK)); doc.text(d.due ? fmtDate(new Date(d.due + 'T12:00')) : '–', cx[3], y + 4.4); if (isOver(d)) { doc.setFontSize(6.8); doc.text('überfällig', cx[3], y + 8.2); }
+    doc.setFillColor(...hex(DSTAT[d.status].c)); doc.roundedRect(cx[4], y + 1.4, 26, 4.6, 0.8, 0.8, 'F'); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.6); doc.setTextColor(4, 16, 30); doc.text(DSTAT[d.status].n.toUpperCase(), cx[4] + 13, y + 4.6, { align: 'center' });
+    doc.setDrawColor(214, 223, 231); doc.setLineWidth(0.15); doc.line(m, y + rh, m + cw, y + rh); y += rh;
+  });
+  for (const d of l) {
+    np(`Mangel M${d.no}`); let yy = 30;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(...INK); doc.text(doc.splitTextToSize(pdfSafeG(`M${d.no}  ${d.title || ''}`), cw)[0], m, yy + 4); yy += 10;
+    const rows = [['Baustelle', S.sites.find(s => s.id === d.siteId)?.name || '–'], ['Gewerk', d.trade || '–'], ['Zuständig', d.assignee || '–'], ['Frist', d.due ? fmtDate(new Date(d.due + 'T12:00')) + (isOver(d) ? ' (überfällig)' : '') : '–'], ['Priorität', PRIO[d.prio]], ['Status', DSTAT[d.status].n], ['Erfasst', `${fmtDate(d.created)} ${fmtTime(d.created)}`], ['Position', d.lat != null ? coord(d.lat, d.lon) : '–']];
+    doc.setFontSize(9.2); rows.forEach(([k, v]) => { doc.setFont('helvetica', 'bold'); doc.setTextColor(...GREY); doc.text(k, m, yy); doc.setFont('helvetica', 'normal'); doc.setTextColor(...INK); doc.text(pdfSafeG(v), m + 28, yy); yy += 5; });
+    if (d.desc) { yy += 2; doc.setFontSize(9.6); const t = doc.splitTextToSize(pdfSafeG(d.desc), cw); doc.text(t.slice(0, 8), m, yy); yy += t.slice(0, 8).length * 4.4 + 2; }
+    if (d.history?.length) { yy += 2; doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(...GREY); doc.text('VERLAUF', m, yy); yy += 4.4; doc.setFont('helvetica', 'normal'); doc.setFontSize(7.8); d.history.slice(-6).forEach(h => { doc.text(pdfSafeG(`${fmtDate(h.ts)} ${fmtTime(h.ts)}  ${h.text}`), m, yy); yy += 3.9; }); }
+    const ps = d.photoIds.map(id => S.photos.find(p => p.id === id)).filter(Boolean).slice(0, 4); yy += 4;
+    for (let i = 0; i < ps.length; i++) {
+      const p = ps[i], col = i % 2, bw = (cw - 6) / 2, bh = 62; if (col === 0 && i) yy += bh + 10; if (yy + bh > 280) break;
+      const im = await blobToPdfImg(p.posterBlob || p.blob, 1200), kk = Math.min(bw / im.w, bh / im.h);
+      doc.setFillColor(236, 241, 245); doc.rect(m + col * (bw + 6), yy, bw, bh, 'F'); doc.addImage(im.d, 'JPEG', m + col * (bw + 6) + (bw - im.w * kk) / 2, yy + (bh - im.h * kk) / 2, im.w * kk, im.h * kk);
+      doc.setFontSize(7.4); doc.setTextColor(...GREY); doc.text(`${fmtDate(p.ts)} ${fmtTime(p.ts)}${p.hash ? '  ·  Siegel #' + p.seq : ''}`, m + col * (bw + 6), yy + bh + 4);
+    }
+    if (d.plan) { const pl = S.plans.find(x => x.id === d.plan.planId); if (pl) { const nyy = yy + (ps.length ? 72 : 0); if (nyy < 200) { const im = await blobToPdfImg(pl.blob, 1400), bw = cw, bh = Math.min(70, 278 - nyy), kk = Math.min(bw / im.w, bh / im.h), ix = m + (bw - im.w * kk) / 2;
+      doc.addImage(im.d, 'JPEG', ix, nyy, im.w * kk, im.h * kk); const px = ix + d.plan.x * im.w * kk, py = nyy + d.plan.y * im.h * kk; doc.setFillColor(205, 60, 40); doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.5); doc.triangle(px, py - 4, px + 3.4, py, px - 3.4, py, 'FD'); doc.triangle(px, py + 4, px + 3.4, py, px - 3.4, py, 'FD');
+      doc.setFontSize(7.4); doc.setTextColor(...GREY); doc.text(pdfSafeG('Lage im Plan: ' + pl.name), m, nyy + bh + 4); } } }
+  }
+  pdfFooter(doc, i => titles[i] || 'Mängelliste');
+  return doc;
+}
+
+/* =====================================================================
+   ABNAHMEPROTOKOLL mit Unterschrift
+   ===================================================================== */
+function sigPad(cv) {
+  const g = cv.getContext('2d'); let drawing = false, dirty = false, last = null;
+  const fit = () => { const dpr = Math.min(2, devicePixelRatio || 1); cv.width = cv.clientWidth * dpr; cv.height = cv.clientHeight * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0); g.fillStyle = '#fff'; g.fillRect(0, 0, cv.clientWidth, cv.clientHeight); g.strokeStyle = '#0a1830'; g.lineWidth = 2.2; g.lineCap = 'round'; g.lineJoin = 'round'; dirty = false; };
+  requestAnimationFrame(fit);
+  const pt = e => { const r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+  cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); drawing = true; last = pt(e); });
+  cv.addEventListener('pointermove', e => { if (!drawing) return; const p = pt(e); g.beginPath(); g.moveTo(last.x, last.y); g.lineTo(p.x, p.y); g.stroke(); last = p; dirty = true; });
+  const end = () => { drawing = false; }; cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+  return { clear: fit, empty: () => !dirty, data: () => cv.toDataURL('image/png') };
+}
+function openAbnahme(siteId) {
+  const s = S.sites.find(x => x.id === siteId); if (!s) return;
+  const pr = progress(s), defs = S.defects.filter(d => d.siteId === s.id && (d.status === 'open' || d.status === 'work'));
+  let result = defs.length ? 'vorbehalt' : 'ok';
+  const el = sheet(`<h3>Abnahme</h3><p class="sub">${esc(s.name)}${s.order ? ' · Auftrag ' + esc(s.order) : ''} · ${fmtDay(Date.now())}, ${fmtTime(Date.now())} Uhr</p>
+    <div class="inrow" style="gap:8px"><div class="fld" style="flex:1"><label class="lbl" for="abAG">Auftraggeber</label><input type="text" id="abAG" value="${esc(s.client || '')}" placeholder="Firma / Name"></div>
+      <div class="fld" style="flex:1"><label class="lbl" for="abAGP">Vertreten durch</label><input type="text" id="abAGP" value="${esc(s.clientRep || '')}" placeholder="Name"></div></div>
+    <div class="inrow" style="gap:8px"><div class="fld" style="flex:1"><label class="lbl" for="abAN">Auftragnehmer</label><input type="text" id="abAN" value="${esc(S.set.coName || '')}" placeholder="Firma"></div>
+      <div class="fld" style="flex:1"><label class="lbl" for="abANP">Vertreten durch</label><input type="text" id="abANP" value="${esc(S.set.name || '')}"></div></div>
+    <div class="fld"><span class="lbl">Ergebnis</span><div class="segs" id="abRes"><button type="button" data-r="ok" class="${result === 'ok' ? 'on' : ''}">Abgenommen</button><button type="button" data-r="vorbehalt" class="${result === 'vorbehalt' ? 'on' : ''}">Mit Vorbehalt</button><button type="button" data-r="nein">Verweigert</button></div></div>
+    <div class="fld"><span class="lbl">Vorbehalte – offene Mängel (${defs.length})</span>${defs.length ? defs.map(d => `<label class="tog" style="padding:8px 0"><span><b>M${d.no}</b> ${esc(d.title)}<small>${esc(d.assignee || '')}${d.due ? ' · Frist ' + fmtDate(new Date(d.due + 'T12:00')) : ''}</small></span><input type="checkbox" class="sw" data-def="${d.id}" checked></label>`).join('') : '<p class="note" style="margin:0">Keine offenen Mängel.</p>'}</div>
+    <p class="note">Pflichtfotos: <b>${pr.done} von ${pr.must}</b>${pr.missing.length ? ` · fehlend: ${esc(pr.missing.map(i => i.label).join(', '))}` : ''}</p>
+    <div class="fld"><label class="lbl" for="abRem">Bemerkungen</label><textarea id="abRem" placeholder="z. B. Restarbeiten, vereinbarte Termine"></textarea></div>
+    <div class="fld"><label class="lbl" for="abWar">Gewährleistung bis (optional)</label><input type="date" id="abWar" style="padding:10px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8)"></div>
+    <div class="fld"><span class="lbl">Unterschrift Auftraggeber</span><canvas class="sig" id="sigAG"></canvas><div class="sigrow"><span class="note" id="sigAGn"></span><button type="button" class="chip" data-clr="AG">Löschen</button></div></div>
+    <div class="fld"><span class="lbl">Unterschrift Auftragnehmer</span><canvas class="sig" id="sigAN"></canvas><div class="sigrow"><span class="note" id="sigANn"></span><button type="button" class="chip" data-clr="AN">Löschen</button></div></div>
+    <button class="btn pri wide" id="abDone">Protokoll abschließen & PDF erstellen</button>`);
+  const pads = { AG: sigPad($('#sigAG', el)), AN: sigPad($('#sigAN', el)) };
+  const nm = () => { $('#sigAGn', el).textContent = $('#abAGP', el).value || $('#abAG', el).value; $('#sigANn', el).textContent = $('#abANP', el).value || $('#abAN', el).value; }; nm(); el.addEventListener('input', nm);
+  $('#abRes', el).onclick = e => { const b = e.target.closest('[data-r]'); if (!b) return; result = b.dataset.r; $$('#abRes button', el).forEach(x => x.classList.toggle('on', x === b)); };
+  el.addEventListener('click', e => { const c = e.target.closest('[data-clr]'); if (c) pads[c.dataset.clr].clear(); });
+  $('#abDone', el).onclick = async () => {
+    if (pads.AG.empty() || pads.AN.empty()) return toast('Bitte beide Unterschriften leisten lassen.');
+    const btn = $('#abDone', el); btn.disabled = true; btn.textContent = 'Erstelle Protokoll …';
+    const sel = $$('[data-def]', el).filter(x => x.checked).map(x => S.defects.find(d => d.id === x.dataset.def)).filter(Boolean);
+    const pt = { id: uid(), siteId: s.id, ts: Date.now(), client: $('#abAG', el).value.trim(), clientRep: $('#abAGP', el).value.trim(), contractor: $('#abAN', el).value.trim(), contractorRep: $('#abANP', el).value.trim(),
+      result, remarks: $('#abRem', el).value.trim(), warrantyUntil: $('#abWar', el).value || '', defects: sel.map(d => ({ no: d.no, title: d.title, trade: d.trade, assignee: d.assignee, due: d.due, status: DSTAT[d.status].n })),
+      photos: `${pr.done}/${pr.must}`, missing: pr.missing.map(i => i.label), lat: S.pos?.lat ?? null, lon: S.pos?.lon ?? null, sigAG: pads.AG.data(), sigAN: pads.AN.data() };
+    pt.hash = await sha256(JSON.stringify({ ...pt, hash: undefined }));
+    s.client = pt.client; s.clientRep = pt.clientRep; await DB.put('sites', s);
+    await sealDoc(pt, 'abnahme'); await DB.put('protocols', pt); S.protocols.push(pt); otsStamp(pt, 'protocols');
+    hook('abnahme', { baustelle: s.name, ergebnis: pt.result, vorbehalte: pt.defects.length, zeit: new Date(pt.ts).toISOString(), hash: pt.hash });
+    try { await needLib('PDF-Baustein', () => window.jspdf?.jsPDF); const doc = buildAbnahmePDF(pt, s); await saveFile(`Abnahmeprotokoll_${slug(s.name)}_${stamp(pt.ts).slice(0, 8)}.pdf`, doc.output('blob')); } catch (err) { toast('PDF fehlgeschlagen: ' + (err.message || err)); }
+    closeSheet(); toast('Abnahme protokolliert und versiegelt.'); speak('Abnahme protokolliert.'); refresh(true);
+  };
+}
+async function sealDoc(o, kind) {
+  await (sealQ = sealQ.then(async () => {
+    const prev = S.set.chainHead || '0'.repeat(64), seq = S.ledger.length + 1;
+    const chain = await sha256(`${prev}|${o.hash}|${o.id}|${o.ts}|${o.lat ?? ''}|${o.lon ?? ''}|${kind}`);
+    const e = { id: 'L' + String(seq).padStart(7, '0'), seq, kind, photo: o.id, hash: o.hash, ts: o.ts, lat: o.lat, lon: o.lon, prev, chain };
+    S.ledger.push(e); await DB.put('ledger', e); S.set.chainHead = chain; saveSet(); o.seq = seq; o.chain = chain; o.ots = S.set.ots && !inFrame ? { st: 'wait', tries: 0 } : null;
+  }).catch(e => console.warn(e)));
+}
+function buildAbnahmePDF(pt, s) {
+  const { jsPDF } = window.jspdf, doc = new jsPDF({ unit: 'mm', format: 'a4' }), W = 210, m = 14, cw = W - 2 * m, INK = [16, 26, 40], GREY = [96, 110, 126];
+  pdfHeader(doc, fmtDate(pt.ts), 'ABNAHMEPROTOKOLL'); let y = 32;
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(21); doc.setTextColor(...INK); doc.text('Abnahmeprotokoll', m, y + 3);
+  if (s.clientLogo) { try { const L = s.clientLogo, h = 14, w = Math.min(45, h * L.w / L.h); doc.addImage(L.d, pdfImgType(L.d), W - m - w, y - 7, w, h); } catch (e) {} }
+  y += 11; doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...GREY); doc.text(pdfSafeG(`${s.name}${s.order ? '  ·  Auftrag ' + s.order : ''}  ·  ${TPL[s.tpl]?.n || ''}`), m, y); y += 9;
+  const box = (x, w, t, a, b) => { doc.setFillColor(242, 246, 249); doc.roundedRect(x, y, w, 20, 1.2, 1.2, 'F'); doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(...GREY); doc.text(t, x + 4, y + 5.5, { charSpace: 0.3 }); doc.setFontSize(10.5); doc.setTextColor(...INK); doc.text(pdfSafeG(a || '–'), x + 4, y + 11.5); doc.setFont('helvetica', 'normal'); doc.setFontSize(8.6); doc.setTextColor(...GREY); doc.text(pdfSafeG(b ? 'vertreten durch ' + b : ''), x + 4, y + 16.5); };
+  box(m, cw / 2 - 2, 'AUFTRAGGEBER', pt.client, pt.clientRep); box(m + cw / 2 + 2, cw / 2 - 2, 'AUFTRAGNEHMER', pt.contractor, pt.contractorRep); y += 26;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9.4); doc.setTextColor(...INK);
+  [['Ort / Position', pt.lat != null ? coord(pt.lat, pt.lon) : '–'], ['Datum, Uhrzeit', `${fmtDay(pt.ts)}, ${fmtTime(pt.ts)} Uhr`], ['Pflichtfotos', pt.photos + (pt.missing.length ? '  (fehlend: ' + pt.missing.join(', ') + ')' : '')], ['Gewährleistung bis', pt.warrantyUntil ? fmtDate(new Date(pt.warrantyUntil + 'T12:00')) : '–']].forEach(([k, v]) => { doc.setFont('helvetica', 'bold'); doc.setTextColor(...GREY); doc.text(k, m, y); doc.setFont('helvetica', 'normal'); doc.setTextColor(...INK); const t = doc.splitTextToSize(pdfSafeG(v), cw - 40); doc.text(t, m + 40, y); y += 5.4 * t.length; });
+  y += 4; const R = { ok: ['DIE LEISTUNG WIRD ABGENOMMEN.', [30, 150, 90]], vorbehalt: ['DIE LEISTUNG WIRD UNTER VORBEHALT DER UNTEN GENANNTEN MÄNGEL ABGENOMMEN.', [214, 120, 20]], nein: ['DIE ABNAHME WIRD VERWEIGERT.', [205, 60, 40]] }[pt.result];
+  doc.setFillColor(...R[1]); doc.rect(m, y, 1.6, 12, 'F'); doc.setFillColor(248, 250, 252); doc.rect(m + 1.6, y, cw - 1.6, 12, 'F'); doc.setFont('helvetica', 'bold'); doc.setFontSize(10.5); doc.setTextColor(...R[1]); doc.text(doc.splitTextToSize(R[0], cw - 10), m + 6, y + 7.6); y += 18;
+  if (pt.defects.length) {
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(7.4); doc.setTextColor(24, 140, 170); doc.text('VORBEHALTE / OFFENE MÄNGEL', m, y, { charSpace: 0.3 }); y += 3;
+    doc.setFillColor(8, 24, 48); doc.rect(m, y, cw, 6, 'F'); doc.setFontSize(7.4); doc.setTextColor(225, 240, 248); ['NR', 'MANGEL', 'ZUSTÄNDIG', 'FRIST'].forEach((h, i) => doc.text(h, [m + 1, m + 14, m + 110, m + 152][i], y + 4.1)); y += 6;
+    pt.defects.forEach((d, i) => { if (y > 228) return; if (i % 2) { doc.setFillColor(246, 249, 251); doc.rect(m, y, cw, 6.4, 'F'); } doc.setFont('helvetica', 'normal'); doc.setFontSize(8.6); doc.setTextColor(...INK);
+      doc.text('M' + d.no, m + 1, y + 4.4); doc.text(doc.splitTextToSize(pdfSafeG(d.title), 94)[0], m + 14, y + 4.4); doc.text(doc.splitTextToSize(pdfSafeG(d.assignee || '–'), 40)[0], m + 110, y + 4.4); doc.text(d.due ? fmtDate(new Date(d.due + 'T12:00')) : '–', m + 152, y + 4.4); y += 6.4; });
+    y += 5;
+  }
+  if (pt.remarks) { doc.setFont('helvetica', 'bold'); doc.setFontSize(7.4); doc.setTextColor(24, 140, 170); doc.text('BEMERKUNGEN', m, y, { charSpace: 0.3 }); y += 4.5; doc.setFont('helvetica', 'normal'); doc.setFontSize(9.4); doc.setTextColor(...INK); const t = doc.splitTextToSize(pdfSafeG(pt.remarks), cw).slice(0, 7); doc.text(t, m, y); y += t.length * 4.4 + 4; }
+  y = Math.max(y + 4, 228);
+  [['Auftraggeber', pt.sigAG, pt.clientRep || pt.client], ['Auftragnehmer', pt.sigAN, pt.contractorRep || pt.contractor]].forEach(([t, sig, n], i) => {
+    const x = m + i * (cw / 2 + 4), w = cw / 2 - 4; try { doc.addImage(sig, 'PNG', x, y, w, 26); } catch (e) {}
+    doc.setDrawColor(...GREY); doc.setLineWidth(0.3); doc.line(x, y + 27, x + w, y + 27);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(...GREY); doc.text(pdfSafeG(`${t}: ${n || ''}`), x, y + 31); doc.text(`${fmtDate(pt.ts)}, ${fmtTime(pt.ts)} Uhr`, x, y + 35);
+  });
+  doc.setFont('courier', 'normal'); doc.setFontSize(6.4); doc.setTextColor(130, 142, 156); doc.text(`Protokoll-Siegel #${pt.seq || '–'}  SHA-256 ${pt.hash}`, m, 281);
+  pdfFooter(doc, () => 'Abnahmeprotokoll · ' + s.name);
+  return doc;
+}
+
+/* =====================================================================
+   VORLAGEN-EDITOR (Büro) – Checklisten & Pflichtfotos
+   ===================================================================== */
+const saveTpls = () => DB.put('kv', { id: 'tpls', map: S.customTpl }).catch(() => {});
+function applyCustomTpl() { for (const [k, t] of Object.entries(S.customTpl || {})) TPL[k] = t; }
+function openTplList() {
+  const el = sheet(`<h3>Vorlagen & Checklisten</h3><p class="sub">Hier legst du fest, welche Pflichtfotos die App auf der Baustelle vorgibt. Am besten im Büro am PC bearbeiten und als Vorlagen-Paket aufs Handy schicken.</p>
+    ${Object.entries(TPL).map(([k, t]) => `<div class="trow"><span><b>${esc(t.n)}</b><span class="meta" style="display:flex"><span>${t.items.length} Punkte</span><span>Umkreis ${t.r} m</span><span>${S.customTpl[k] ? (BUILTIN_TPL[k] ? 'angepasst' : 'eigene Vorlage') : 'Standard'}</span></span></span><span><button class="btn" data-ed="${k}">Bearbeiten</button></span></div>`).join('')}
+    <div class="stack" style="gap:8px;margin-top:12px"><button class="btn pri wide" data-x="new">+ Neue Vorlage</button><div class="row"><button class="btn" data-x="exp">Vorlagen-Paket exportieren</button><button class="btn" data-x="imp">Paket importieren</button></div></div>`);
+  el.addEventListener('click', async e => {
+    const ed = e.target.closest('[data-ed]'); if (ed) return openTplEditor({ key: ed.dataset.ed });
+    const x = e.target.closest('[data-x]')?.dataset.x;
+    if (x === 'new') openTplEditor({ key: null });
+    if (x === 'exp') { if (!Object.keys(S.customTpl).length) return toast('Noch keine eigenen oder angepassten Vorlagen.'); await saveFile(`SEF-KI_Vorlagen_${stamp(Date.now()).slice(0, 8)}.json`, new Blob([JSON.stringify({ app: 'sefki-baudoku', typ: 'vorlagen', v: 1, vorlagen: S.customTpl }, null, 1)], { type: 'application/json' })); }
+    if (x === 'imp') $('#fileTpl').click();
+  });
+}
+async function importTplFile(file) {
+  try { const j = JSON.parse(await file.text()); if (j.typ !== 'vorlagen' || !j.vorlagen) throw new Error('Kein SEF-KI-Vorlagen-Paket');
+    let n = 0; for (const [k, t] of Object.entries(j.vorlagen)) { if (!t?.n || !Array.isArray(t.items)) continue; S.customTpl[k] = t; TPL[k] = t; n++; }
+    await saveTpls(); closeSheet(); toast(`${n} Vorlage${n === 1 ? '' : 'n'} importiert.`);
+  } catch (e) { toast('Import fehlgeschlagen: ' + (e.message || e), 5000); }
+}
+/* opts: {key} für Vorlagen · {siteId} für die Checkliste einer laufenden Baustelle */
+function openTplEditor(opts) {
+  const site = opts.siteId ? S.sites.find(s => s.id === opts.siteId) : null;
+  let name, radius, items;
+  if (site) { name = site.name; radius = site.radius; items = site.items.map(i => ({ ...i, need: i.need || itemMeta(site, i).need || [] })); }
+  else if (opts.key) { const t = TPL[opts.key]; name = t.n; radius = t.r; items = t.items.map((a, i) => ({ id: 'i' + i, phase: a[0], label: a[1], hint: a[2], cat: a[3], must: a[4] !== false, need: a[5]?.need || [], depth: !!a[5]?.depth, ref: a[5]?.ref != null ? 'i' + a[5].ref : null })); }
+  else { name = 'Neue Vorlage'; radius = 60; items = [{ id: 'i0', phase: 'V', label: 'Übersicht vorher', hint: '', cat: 'uebersicht', must: true, need: [] }]; }
+  const row = (it, i) => `<details class="tpl-i" data-i="${i}"><summary><span class="ph-b" style="background:${PH[it.phase].c}">${it.phase}</span><span style="flex:1;min-width:0;font-weight:600">${esc(it.label || 'Neuer Punkt')}</span>${it.must ? '' : '<span class="opt">optional</span>'}</summary><div class="in">
+      <div class="inrow" style="gap:6px"><select data-f="phase">${['V', 'W', 'N'].map(p => `<option value="${p}"${p === it.phase ? ' selected' : ''}>${PH[p].n}</option>`).join('')}</select><select data-f="cat">${CATS.map(([k, n]) => `<option value="${k}"${k === it.cat ? ' selected' : ''}>${n}</option>`).join('')}</select></div>
+      <input type="text" data-f="label" value="${esc(it.label)}" placeholder="Pflichtfoto, z. B. Graben mit Meterstab">
+      <input type="text" data-f="hint" value="${esc(it.hint || '')}" placeholder="Anweisung für den Fotografen">
+      <input type="text" data-f="need" value="${esc((it.need || []).join(', '))}" placeholder="Was muss zu sehen sein? (mit Komma) – für die KI-Prüfung">
+      <select data-f="ref"><option value="">Geisterbild: keins</option>${items.map((o, j) => j !== i ? `<option value="${o.id}"${o.id === it.ref ? ' selected' : ''}>Geisterbild von: ${esc(o.label)}</option>` : '').join('')}</select>
+      <label class="tog" style="padding:4px 0;border:0"><span>Pflicht</span><input type="checkbox" class="sw" data-f="must"${it.must ? ' checked' : ''}></label>
+      <label class="tog" style="padding:4px 0;border:0"><span>Tiefe ablesen (Meterstab)</span><input type="checkbox" class="sw" data-f="depth"${it.depth ? ' checked' : ''}></label>
+      <div class="row"><button type="button" class="btn" data-mv="-1">Nach oben</button><button type="button" class="btn" data-mv="1">Nach unten</button><button type="button" class="btn danger" data-rm="1">Entfernen</button></div></div></details>`;
+  const el = sheet(`<h3>${site ? 'Checkliste: ' + esc(site.name) : opts.key ? 'Vorlage bearbeiten' : 'Neue Vorlage'}</h3><p class="sub">${site ? 'Gilt nur für diese Baustelle. Bereits gemachte Fotos bleiben zugeordnet.' : 'Gilt für neue Baustellen. Laufende Baustellen behalten ihre Checkliste.'}</p>
+    <div class="fld"><label class="lbl" for="teName">Name</label><input type="text" id="teName" value="${esc(name)}"${site ? ' disabled' : ''}></div>
+    ${site ? '' : `<div class="fld"><label class="lbl" for="teR">Standard-Umkreis: <span id="teRV" class="num">${radius} m</span></label><input type="range" id="teR" min="15" max="500" step="5" value="${radius}"></div>`}
+    <div class="lbl">Pflichtfotos in Reihenfolge</div><div id="teItems"></div>
+    <button class="btn wide" data-x="add" style="margin-top:8px">+ Punkt hinzufügen</button>
+    <div class="row" style="margin-top:14px">${opts.key && BUILTIN_TPL[opts.key] && S.customTpl[opts.key] ? '<button class="btn" data-x="reset">Standard wiederherstellen</button>' : ''}${opts.key && !BUILTIN_TPL[opts.key] ? '<button class="btn danger" data-x="del">Vorlage löschen</button>' : ''}<button class="btn pri" data-x="save">Speichern</button></div>`);
+  const paint = (open) => { $('#teItems', el).innerHTML = items.map(row).join(''); if (open != null) el.querySelector(`.tpl-i[data-i="${open}"]`)?.setAttribute('open', ''); };
+  paint();
+  $('#teR', el)?.addEventListener('input', e => { radius = +e.target.value; $('#teRV', el).textContent = radius + ' m'; });
+  el.addEventListener('input', e => { const f = e.target.dataset.f, d = e.target.closest('.tpl-i'); if (!f || !d) return; const it = items[+d.dataset.i];
+    if (f === 'need') it.need = e.target.value.split(',').map(x => x.trim()).filter(Boolean); else if (f === 'must' || f === 'depth') it[f] = e.target.checked; else it[f] = e.target.value || (f === 'ref' ? null : '');
+    if (f === 'label') d.querySelector('summary span[style*="flex:1"]').textContent = it.label || 'Neuer Punkt'; if (f === 'phase') { const b = d.querySelector('.ph-b'); b.textContent = it.phase; b.style.background = PH[it.phase].c; } });
+  el.addEventListener('change', e => { if (e.target.dataset.f) e.target.dispatchEvent(new Event('input', { bubbles: true })); });
+  el.addEventListener('click', async e => {
+    const d = e.target.closest('.tpl-i'), mv = e.target.closest('[data-mv]'), rm = e.target.closest('[data-rm]');
+    if (mv && d) { const i = +d.dataset.i, j = i + +mv.dataset.mv; if (j < 0 || j >= items.length) return; [items[i], items[j]] = [items[j], items[i]]; paint(j); return; }
+    if (rm && d) { items.splice(+d.dataset.i, 1); paint(); return; }
+    const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
+    if (x === 'add') { items.push({ id: 'c' + uid(), phase: 'W', label: '', hint: '', cat: 'uebersicht', must: true, need: [] }); paint(items.length - 1); el.querySelector(`.tpl-i[data-i="${items.length - 1}"] [data-f=label]`)?.focus(); return; }
+    if (x === 'reset') { delete S.customTpl[opts.key]; TPL[opts.key] = JSON.parse(JSON.stringify(BUILTIN_TPL[opts.key])); await saveTpls(); closeSheet(); toast('Standard wiederhergestellt.'); return; }
+    if (x === 'del') { delete S.customTpl[opts.key]; delete TPL[opts.key]; await saveTpls(); closeSheet(); toast('Vorlage gelöscht.'); return; }
+    if (x === 'save') {
+      const clean = items.filter(i => i.label.trim()); if (!clean.length) return toast('Mindestens ein Pflichtfoto eintragen.');
+      if (site) {
+        site.items = clean.map(i => ({ id: i.id, phase: i.phase, label: i.label.trim(), hint: i.hint || '', cat: i.cat, must: !!i.must, need: i.need || [], depth: !!i.depth, ref: i.ref || null }));
+        await DB.put('sites', site); closeSheet(); toast('Checkliste gespeichert.'); refresh(true); return;
+      }
+      const key = opts.key || 'u_' + slug($('#teName', el).value).toLowerCase() + '_' + uid().slice(-4);
+      const ids = clean.map(i => i.id);
+      const t = { n: $('#teName', el).value.trim() || 'Eigene Vorlage', r: radius, items: clean.map(i => [i.phase, i.label.trim(), i.hint || '', i.cat, !!i.must, { need: i.need || [], depth: !!i.depth, ...(i.ref && ids.includes(i.ref) ? { ref: ids.indexOf(i.ref) } : {}) }]) };
+      S.customTpl[key] = t; TPL[key] = t; await saveTpls(); closeSheet(); toast(`Vorlage „${t.n}“ gespeichert.`); hook('vorlage', { name: t.n, punkte: t.items.length });
+    }
+  });
+}
+
+/* =====================================================================
+   BAUTAGEBUCH: Personal & Geräte
+   ===================================================================== */
+const diaryKey = () => 'd|' + S.rep.day + '|' + S.rep.site;
+const diaryOf = (day, site) => S.daily['d|' + day + '|' + site] || { crew: [], equip: [], hind: '' };
+function diaryHTML() {
+  const d = diaryOf(S.rep.day, S.rep.site);
+  return `<div class="lbl" style="margin-top:12px">Personal</div>
+    ${d.crew.map((c, i) => `<div class="drow"><input data-dk="crew.${i}.name" value="${esc(c.name)}" placeholder="Firma / Kolonne / Name"><input data-dk="crew.${i}.n" value="${esc(c.n)}" inputmode="numeric" placeholder="Anz."><input data-dk="crew.${i}.h" value="${esc(c.h)}" inputmode="decimal" placeholder="Std."><button type="button" data-drm="crew.${i}" aria-label="Entfernen">✕</button></div>`).join('')}
+    <div class="row" style="margin-top:6px"><button type="button" class="btn" data-dadd="crew">+ Personal</button><button type="button" class="btn" data-dcopy="1">Wie letztes Mal</button></div>
+    <div class="lbl" style="margin-top:12px">Geräte & Maschinen</div>
+    ${d.equip.map((c, i) => `<div class="drow eq"><input data-dk="equip.${i}.name" value="${esc(c.name)}" placeholder="z. B. Minibagger 1,8 t"><input data-dk="equip.${i}.h" value="${esc(c.h)}" inputmode="decimal" placeholder="Std."><button type="button" data-drm="equip.${i}" aria-label="Entfernen">✕</button></div>`).join('')}
+    <div class="row" style="margin-top:6px"><button type="button" class="btn" data-dadd="equip">+ Gerät</button></div>
+    <div class="fld" style="margin-top:12px"><label class="lbl" for="dHind">Behinderungen / Besonderheiten</label><textarea id="dHind" data-dk="hind" placeholder="z. B. Regen ab 13 Uhr, Zufahrt gesperrt, Material fehlte">${esc(d.hind)}</textarea></div>`;
+}
+function diaryAction(e) {
+  const k = diaryKey(), d = S.daily[k] ||= { crew: [], equip: [], hind: '' };
+  const add = e.target.closest('[data-dadd]'), rm = e.target.closest('[data-drm]'), cp = e.target.closest('[data-dcopy]');
+  if (add) { d[add.dataset.dadd].push(add.dataset.dadd === 'crew' ? { name: '', n: '', h: '8' } : { name: '', h: '' }); saveDaily(); $('#diaryBox').innerHTML = diaryHTML(); $$('#diaryBox [data-dk$=".name"]').pop()?.focus(); return true; }
+  if (rm) { const [a, i] = rm.dataset.drm.split('.'); d[a].splice(+i, 1); saveDaily(); $('#diaryBox').innerHTML = diaryHTML(); return true; }
+  if (cp) {
+    const prev = Object.keys(S.daily).filter(x => x.startsWith('d|') && x.endsWith('|' + S.rep.site) && x < k && (S.daily[x].crew.length || S.daily[x].equip.length)).sort().pop();
+    if (!prev) { toast('Kein früherer Eintrag gefunden.'); return true; }
+    d.crew = JSON.parse(JSON.stringify(S.daily[prev].crew)); d.equip = JSON.parse(JSON.stringify(S.daily[prev].equip)); saveDaily(); $('#diaryBox').innerHTML = diaryHTML(); toast('Übernommen vom ' + fmtDate(new Date(prev.split('|')[1] + 'T12:00')) + '.'); return true;
+  }
+  return false;
+}
+function diaryInput(e) {
+  const dk = e.target.dataset.dk; if (!dk) return false;
+  const d = S.daily[diaryKey()] ||= { crew: [], equip: [], hind: '' };
+  if (dk === 'hind') d.hind = e.target.value; else { const [a, i, f] = dk.split('.'); d[a][+i][f] = e.target.value; }
+  clearTimeout(S.dT); S.dT = setTimeout(saveDaily, 500); return true;
+}
+function diaryText(day, site) {
+  const d = diaryOf(day, site), L = [];
+  const crew = d.crew.filter(c => c.name), eq = d.equip.filter(c => c.name);
+  if (crew.length) { const tot = crew.reduce((a, c) => a + (+c.n || 1), 0), hrs = crew.reduce((a, c) => a + (+String(c.h).replace(',', '.') || 0) * (+c.n || 1), 0); L.push('PERSONAL', ...crew.map(c => `- ${c.name}: ${c.n || 1} Person${(+c.n || 1) > 1 ? 'en' : ''}${c.h ? ', ' + c.h + ' Std.' : ''}`), `- Gesamt: ${tot} Personen${hrs ? ', ' + String(Math.round(hrs * 10) / 10).replace('.', ',') + ' Arbeitsstunden' : ''}`); }
+  if (eq.length) L.push('', 'GERÄTE', ...eq.map(c => `- ${c.name}${c.h ? ': ' + c.h + ' Std.' : ''}`));
+  if (d.hind?.trim()) L.push('', 'BEHINDERUNGEN / BESONDERHEITEN', ...d.hind.trim().split('\n').map(x => '- ' + x));
+  return L.join('\n');
+}
+
+/* =====================================================================
+   MEDIEN: Video, Sprachmemos, 360°
+   ===================================================================== */
+let camModeV = 'foto', mediaRec = null, recChunks = [], recStart = 0, recMeta = null, recPoster = null, recTimer = null;
+const pickMime = list => list.find(t => window.MediaRecorder?.isTypeSupported?.(t)) || '';
+const fmtDur = s => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
+async function setCamMode(m) {
+  if (mediaRec) return; camModeV = m; $$('#camMode button').forEach(b => b.classList.toggle('on', b.dataset.m === m)); $('#shutter').classList.toggle('vid', m === 'video');
+  if (m === 'video' && camStream && !camStream.getAudioTracks().length && !inFrame) {
+    try { const a = await navigator.mediaDevices.getUserMedia({ audio: true }); a.getAudioTracks().forEach(t => camStream.addTrack(t)); } catch (e) { toast('Ohne Mikrofon – Video wird stumm aufgenommen.'); }
+  }
+  renderCamHud();
+}
+function toggleVideo() {
+  if (!camStream) { $('#fileVid').click(); return; }
+  if (mediaRec) { mediaRec.stop(); return; }
+  if (!window.MediaRecorder) return toast('Videoaufnahme wird von diesem Browser nicht unterstützt.');
+  const mime = pickMime(['video/mp4;codecs=avc1,mp4a.40.2', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm']);
+  try { mediaRec = new MediaRecorder(camStream, mime ? { mimeType: mime, videoBitsPerSecond: 4e6 } : undefined); } catch (e) { mediaRec = null; return toast('Video konnte nicht gestartet werden.'); }
+  recChunks = []; recMeta = snapMeta(); recPoster = fitCanvas($('#camVideo'), 1920); recStart = Date.now();
+  mediaRec.ondataavailable = e => { if (e.data?.size) recChunks.push(e.data); };
+  mediaRec.onstop = () => { clearInterval(recTimer); $('#shutter').classList.remove('rec'); const type = mediaRec.mimeType || mime || 'video/webm'; const blob = new Blob(recChunks, { type }); const dur = (Date.now() - recStart) / 1000; mediaRec = null; renderCamHud(); handleVideo(blob, recPoster, recMeta, dur); };
+  mediaRec.start(1000); $('#shutter').classList.add('rec'); buzz(30);
+  recTimer = setInterval(() => { renderCamHud(); if (Date.now() - recStart > 180000) mediaRec?.stop(); }, 500);
+}
+async function videoPoster(file) {
+  return new Promise(res => { const v = document.createElement('video'); v.muted = true; v.playsInline = true; v.preload = 'auto'; v.src = URL.createObjectURL(file);
+    v.onloadeddata = () => { v.currentTime = Math.min(0.5, (v.duration || 1) / 3); }; v.onseeked = () => { const c = fitCanvas(v, 1920); res({ c, dur: v.duration || 0 }); URL.revokeObjectURL(v.src); };
+    v.onerror = () => { const c = document.createElement('canvas'); c.width = 1280; c.height = 720; const g = c.getContext('2d'); g.fillStyle = '#0a1830'; g.fillRect(0, 0, 1280, 720); g.fillStyle = '#3fd8ef'; g.font = '700 60px sans-serif'; g.fillText('VIDEO', 520, 380); res({ c, dur: 0 }); }; });
+}
+async function handleVideo(blob, poster, meta, dur) {
+  const tg = camTarget();
+  pending = { video: blob, c: poster, meta, q: { flags: [], sharp: 0, bright: 0, ok: true }, dur, dets: [], rects: [], blurOn: false, ai: null, aiState: 'disabled', tg };
+  showReview({ siteId: tg.site?.id || '', itemId: tg.item?.id || '', phase: tg.item?.phase || S.set.lastPhase || 'W', cat: tg.item?.cat || 'sonstiges', labels: '', desc: '' });
+}
+async function saveMedia(pd, f, x = {}) {
+  const labels = String(f.labels || '').split(',').map(v => v.trim()).filter(Boolean);
+  const p = { id: uid(), kind: 'video', mime: pd.video.type || 'video/webm', dur: Math.round(pd.dur || 0), ts: pd.meta.ts, lat: pd.meta.lat, lon: pd.meta.lon, acc: pd.meta.acc, alt: pd.meta.alt ?? null, fix: pd.meta.fix || null, heading: pd.meta.heading, src: pd.meta.src,
+    siteId: f.siteId || null, itemId: f.itemId || null, phase: f.phase, cat: f.cat, labels, desc: f.desc || '', address: '', q: pd.q, exported: false, w: pd.c.width, h: pd.c.height };
+  if (S.set.watermark) drawWatermark(pd.c, p);
+  p.blob = pd.video; p.posterBlob = await toBlob(pd.c, 0.85); p.thumb = thumbOf(pd.c);
+  await sealSafe(p, 'video'); attachCtx(p); await DB.put('photos', p); S.photos.push(p);
+  buzz([20, 40, 20]); geocode(p); otsStamp(p); hook('video', photoJSON(p)); refresh(true); return p;
+}
+/* Sprachmemo (Audio) */
+let memoRec = null, memoChunks = [], memoStart = 0;
+async function toggleMemo(btn) {
+  if (memoRec) { memoRec.stop(); return; }
+  if (inFrame || !navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) return toast('Sprachmemos gehen in der installierten App, nicht in dieser Vorschau.');
+  try {
+    const st = await navigator.mediaDevices.getUserMedia({ audio: true }); const mime = pickMime(['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm']);
+    memoRec = new MediaRecorder(st, mime ? { mimeType: mime } : undefined); memoChunks = []; memoStart = Date.now();
+    memoRec.ondataavailable = e => { if (e.data?.size) memoChunks.push(e.data); };
+    memoRec.onstop = async () => { st.getTracks().forEach(t => t.stop()); const blob = new Blob(memoChunks, { type: memoRec.mimeType || mime || 'audio/webm' }); const dur = (Date.now() - memoStart) / 1000; memoRec = null;
+      const s = siteStatus(); const n = { id: uid(), ts: memoStart, text: '', audio: blob, mime: blob.type, dur: Math.round(dur), siteId: s.state === 'in' ? s.site.id : null, lat: S.pos?.lat ?? null, lon: S.pos?.lon ?? null };
+      n.hash = await sha256(blob); S.notes.push(n); await DB.put('notes', n); toast(`Sprachmemo gespeichert (${fmtDur(dur)}).`); renderNotes(); };
+    memoRec.start(); btn.classList.add('on'); btn.innerHTML = '■ Aufnahme stoppen'; toast('Aufnahme läuft – sprich jetzt.');
+  } catch (e) { toast('Mikrofon nicht verfügbar oder nicht erlaubt.'); }
+}
+/* 360°-Panorama-Viewer (WebGL) */
+function isPano(img, buf) {
+  const r = img.width / img.height; if (Math.abs(r - 2) < 0.03 && img.width >= 2000) return true;
+  try { const head = new TextDecoder('latin1').decode(new Uint8Array(buf, 0, Math.min(buf.byteLength, 200000))); return /ProjectionType(="|>)equirectangular/i.test(head); } catch (e) { return false; }
+}
+async function panoViewer(host, blob) {
+  const cv = document.createElement('canvas'); cv.className = 'pano'; host.appendChild(cv);
+  const gl = cv.getContext('webgl'); if (!gl) { cv.remove(); return; }
+  let img = await loadImage(blob); const maxT = Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE), 8192); if (img.width > maxT) img = fitCanvas(img, maxT);
+  const vs = 'attribute vec2 p;varying vec2 v;void main(){v=p;gl_Position=vec4(p,0.,1.);}';
+  const fs = 'precision highp float;varying vec2 v;uniform sampler2D t;uniform float yaw,pitch,fov,asp;const float PI=3.14159265;void main(){vec3 d=normalize(vec3(v.x*tan(fov/2.)*asp,v.y*tan(fov/2.),-1.));float cp=cos(pitch),sp=sin(pitch);d=vec3(d.x,d.y*cp-d.z*sp,d.y*sp+d.z*cp);float cy=cos(yaw),sy=sin(yaw);d=vec3(d.x*cy+d.z*sy,d.y,-d.x*sy+d.z*cy);float lon=atan(d.x,-d.z),lat=asin(clamp(d.y,-1.,1.));gl_FragColor=texture2D(t,vec2(lon/(2.*PI)+.5,.5-lat/PI));}';
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+  const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(pr); gl.useProgram(pr);
+  const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  const tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
+  [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]].forEach(([k, v]) => gl.texParameteri(gl.TEXTURE_2D, k, v));
+  const U = n => gl.getUniformLocation(pr, n); let yaw = 0, pitch = 0, fov = 1.4;
+  const draw = () => { const dpr = Math.min(2, devicePixelRatio || 1); cv.width = cv.clientWidth * dpr; cv.height = cv.clientHeight * dpr; gl.viewport(0, 0, cv.width, cv.height); gl.uniform1f(U('yaw'), yaw); gl.uniform1f(U('pitch'), pitch); gl.uniform1f(U('fov'), fov); gl.uniform1f(U('asp'), cv.width / cv.height); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); };
+  const ptrs = new Map(); let pinch = null;
+  cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (ptrs.size === 2) { const [a, c] = [...ptrs.values()]; pinch = Math.hypot(a.x - c.x, a.y - c.y); } });
+  cv.addEventListener('pointermove', e => { const p = ptrs.get(e.pointerId); if (!p) return; const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
+    if (ptrs.size === 2) { const [a, c] = [...ptrs.values()], d = Math.hypot(a.x - c.x, a.y - c.y); if (pinch) fov = Math.max(0.4, Math.min(2.2, fov * pinch / d)); pinch = d; draw(); return; }
+    yaw -= dx * fov / cv.clientHeight; pitch = Math.max(-1.5, Math.min(1.5, pitch + dy * fov / cv.clientHeight)); draw(); });
+  const up = e => { ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch = null; }; cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+  cv.addEventListener('wheel', e => { e.preventDefault(); fov = Math.max(0.4, Math.min(2.2, fov * (e.deltaY > 0 ? 1.1 : 0.9))); draw(); }, { passive: false });
+  requestAnimationFrame(draw);
+}
+
+/* =====================================================================
+   SCHNITTSTELLEN: Webhook, Projekt-JSON
+   ===================================================================== */
+const photoJSON = p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId); return { id: p.id, art: p.kind || 'foto', zeit: new Date(p.ts).toISOString(), baustelle: s?.name || null, pflichtfoto: it?.label || null, phase: PH[p.phase]?.n, kategorie: catName(p.cat), breite: p.lat, laenge: p.lon, genauigkeit_m: p.acc, blick_grad: p.heading, tiefe_cm: p.depthCm ?? null, beschreibung: p.desc || null, stichworte: p.labels, sha256: p.hash || null, siegel: p.seq || null }; };
+function hook(event, data) {
+  if (!S.set.hookUrl || inFrame) return;
+  try { fetch(S.set.hookUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify({ app: 'SEF-KI Baudoku', ereignis: event, zeit: new Date().toISOString(), bearbeiter: S.set.name, firma: S.set.coName || null, daten: data }) }).catch(() => {}); } catch (e) {}
+}
+async function exportProjectJSON() {
+  const data = { app: 'SEF-KI Baudoku', format: 'sefki-projekt', version: 1, erstellt: new Date().toISOString(), bearbeiter: S.set.name, firma: S.set.coName || null,
+    baustellen: S.sites.map(s => ({ id: s.id, name: s.name, auftrag: s.order || null, auftraggeber: s.client || null, art: TPL[s.tpl]?.n, breite: s.lat, laenge: s.lon, umkreis_m: s.radius, abgeschlossen: !!s.archived, pflichtfotos: s.items.map(i => ({ id: i.id, phase: PH[i.phase].n, bezeichnung: i.label, pflicht: i.must, erledigt: S.photos.some(p => p.siteId === s.id && p.itemId === i.id) })) })),
+    fotos: S.photos.map(photoJSON), maengel: S.defects.map(defJSON), notizen: S.notes.map(n => ({ zeit: new Date(n.ts).toISOString(), baustelle: S.sites.find(s => s.id === n.siteId)?.name || null, text: n.text || null, sprachmemo_s: n.dur || null })),
+    trassen: S.trassen.map(t => ({ name: t.name, art: t.kind, baustelle: S.sites.find(s => s.id === t.siteId)?.name || null, laenge_m: +tLen(t).toFixed(2), punkte: t.points.length, markierungen: t.marks.map(m => ({ nr: m.n, typ: m.type, tiefe_cm: m.depthCm, breite: m.lat, laenge: m.lon })) })),
+    abnahmen: S.protocols.map(p => ({ baustelle: S.sites.find(s => s.id === p.siteId)?.name, zeit: new Date(p.ts).toISOString(), ergebnis: p.result, vorbehalte: p.defects.length, sha256: p.hash })),
+    bautagebuch: Object.entries(S.daily).filter(([k]) => k.startsWith('d|') || k.startsWith('t|')).map(([k, v]) => ({ schluessel: k, inhalt: v })) };
+  await saveFile(`SEF-KI_Projekt_${stamp(Date.now()).slice(0, 8)}.json`, new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' }));
 }
 
 /* ---------------- Einstellungen ---------------- */
@@ -2581,7 +3455,7 @@ addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = 
 async function openSettings() {
   let est = null; try { est = await navigator.storage?.estimate(); } catch (e) {}
   const mb = S.photos.reduce((a, p) => a + (p.blob?.size || 0), 0) / 1048576;
-  const hasEx = S.sites.some(s => s.example) || S.photos.some(p => p.example);
+  const hasEx = S.sites.some(s => s.example) || S.photos.some(p => p.example) || S.defects.some(d => d.example) || S.plans.some(p => p.example);
   const el = sheet(`<h3>Einstellungen</h3><p class="sub">SEF-KI Baudoku · Smolens·KI</p>
     <div class="fld"><label class="lbl" for="stName">Dein Name (für Begrüßung und Bericht)</label><input type="text" id="stName" value="${esc(S.set.name)}"></div>
     <label class="tog"><span>Sprachausgabe<small>SEF-KI sagt dir die nächsten Schritte an – praktisch mit Handschuhen.</small></span><input type="checkbox" class="sw" id="stVoice"${S.set.voice ? ' checked' : ''}></label>
@@ -2603,6 +3477,15 @@ async function openSettings() {
     ${S.gnss ? `<p class="note"><b style="color:var(--ok)">${esc(S.gnss.name)}</b> verbunden · ${esc(S.gnss.fix || '')}</p><button class="btn wide" id="stGnssOff">Empfänger trennen</button>` : GNSS.supported() ? '<button class="btn wide" id="stGnss">RTK-Empfänger per Bluetooth verbinden</button>' : ''}
     <p class="note">Bluetooth-LE-Empfänger mit NMEA-Ausgabe (z. B. über den Nordic-UART-Dienst) verbinde ich direkt. Jeder andere RTK-Empfänger funktioniert über seine App (z. B. Emlid Flow, Lefebure NTRIP, SW Maps) mit der Einstellung <b>„Mock-Standort / Fake-GPS“</b> – SEF-KI übernimmt die Zentimeter-Position dann automatisch.</p>
     <div class="fld"><label class="lbl" for="stTrAcc">Trassenpunkte ungenauer als <span id="stTrAccV" class="num">±${S.set.trassMaxAcc} m</span> weglassen</label><input type="range" id="stTrAcc" min="1" max="25" step="1" value="${S.set.trassMaxAcc}"></div>
+    <div class="ph" style="margin-top:18px"><h2>Firma & Bericht</h2></div>
+    <div class="fld"><label class="lbl" for="stCo">Firmenname (erscheint im Berichtskopf)</label><input type="text" id="stCo" value="${esc(S.set.coName || '')}" placeholder="z. B. Kadah Tiefbau GmbH"></div>
+    <div class="fld"><span class="lbl">Firmenlogo</span>${S.set.coLogo ? `<img class="logo-prev" src="${S.set.coLogo.d}" alt="Firmenlogo">` : ''}<div class="row"><button class="btn" id="stLogo">${S.set.coLogo ? 'Logo ändern' : 'Logo hochladen'}</button>${S.set.coLogo ? '<button class="btn danger" id="stLogoRm">Entfernen</button>' : ''}</div></div>
+    <p class="note" style="margin:0 0 8px">Das Kundenlogo legst du pro Baustelle fest: Baustelle öffnen → „Auftraggeber & Logo“.</p>
+    <button class="btn wide" id="stTpl">Vorlagen & Checklisten bearbeiten</button>
+    <div class="ph" style="margin-top:18px"><h2>Schnittstellen</h2></div>
+    <div class="fld"><label class="lbl" for="stHook">Webhook-Adresse (Make, Zapier, n8n, Power Automate …)</label><div class="inrow"><input type="text" id="stHook" value="${esc(S.set.hookUrl || '')}" placeholder="https://hook.eu1.make.com/…" inputmode="url"><button class="btn" id="stHookT">Test</button></div></div>
+    <p class="note" style="margin:0 0 8px">Bei jedem Foto, Mangel, Tagesbericht und jeder Abnahme schicke ich die Daten (ohne Bilder) an diese Adresse. So landen sie automatisch in Excel, SharePoint, Outlook oder eurer Büro-Software.</p>
+    <div class="row"><button class="btn" id="stJson">Projekt-Export (JSON)</button><button class="btn" id="stIcs">Mängelfristen (.ics)</button></div>
     <div class="ph" style="margin-top:18px"><h2>Speicher</h2></div>
     <p class="note" style="margin:0 0 10px">${S.photos.length} Fotos · ${mb.toFixed(1).replace('.', ',')} MB auf diesem Gerät${est?.quota ? ` · frei ca. ${((est.quota - est.usage) / 1073741824).toFixed(1).replace('.', ',')} GB` : ''}.<br>
       ${!DB.db ? '<b style="color:var(--bad)">Achtung: Der Gerätespeicher ist nicht verfügbar. Fotos gehen beim Schließen verloren – sofort exportieren.</b>' : S.persisted ? 'Dauerhafter Speicher ist <b style="color:var(--ok)">aktiv</b> – der Browser löscht die Fotos nicht von selbst.' : 'Dauerhafter Speicher ist <b style="color:var(--amber)">nicht bestätigt</b>. Installier die App auf dem Startbildschirm, dann ist er sicherer.'}</p>
@@ -2628,6 +3511,14 @@ async function openSettings() {
   $('#stOts', el).onchange = e => { S.set.ots = e.target.checked; saveSet(); otsQueue(); };
   $('#stGnss', el)?.addEventListener('click', () => { closeSheet(); GNSS.connect(); });
   $('#stGnssOff', el)?.addEventListener('click', () => { GNSS.disconnect(); closeSheet(); });
+  $('#stCo', el).onchange = e => { S.set.coName = e.target.value.trim(); saveSet(); };
+  $('#stLogo', el).onclick = () => { logoTarget = null; $('#fileLogo').click(); };
+  $('#stLogoRm', el)?.addEventListener('click', () => { S.set.coLogo = null; saveSet(); openSettings(); });
+  $('#stTpl', el).onclick = openTplList;
+  $('#stHook', el).onchange = e => { S.set.hookUrl = e.target.value.trim(); saveSet(); };
+  $('#stHookT', el).onclick = () => { S.set.hookUrl = $('#stHook', el).value.trim(); saveSet(); if (!S.set.hookUrl) return toast('Erst eine Adresse eintragen.'); if (inFrame) return toast('Webhooks gehen in der installierten App.'); hook('test', { nachricht: 'Hallo aus SEF-KI Baudoku' }); toast('Test gesendet – im Webhook-Dienst nachsehen.'); };
+  $('#stJson', el).onclick = exportProjectJSON;
+  $('#stIcs', el).onclick = () => { const l = S.defects.filter(d => d.due && d.status !== 'closed'); if (!l.length) return toast('Keine Mängel mit Frist.'); saveFile('Maengel_Fristen.ics', new Blob([defICS(l)], { type: 'text/calendar' })); };
   $('#stTrAcc', el).oninput = e => { S.set.trassMaxAcc = +e.target.value; $('#stTrAccV', el).textContent = '±' + e.target.value + ' m'; saveSet(); };
   $('#stBackup', el).onclick = e => backup(e.target);
   $('#stRestore', el).onclick = () => $('#fileRestore').click();
@@ -2648,6 +3539,7 @@ function bind() {
   $('#v-cockpit').addEventListener('click', e => {
     const row = e.target.closest('.crow'); if (row) { if (row.dataset.photo) openPhoto(row.dataset.photo); else openCamera(row.dataset.site, row.dataset.item); return; }
     const os = e.target.closest('[data-open-site]'); if (os) { openSite(os.dataset.openSite); return; }
+    if (e.target.closest('[data-gomaengel]')) { S.def.status = S.defects.some(isOver) ? 'over' : 'open'; S.def.site = 'all'; go('maengel'); return; }
     const dm = e.target.closest('[data-demo]'); if (dm) { S.set.demoAt = dm.dataset.demo; S.set.pin = null; saveSet(); startDemo(); renderDemoBox(); }
   });
   $('#camClose').onclick = closeCamera;
@@ -2670,10 +3562,24 @@ function bind() {
   $('#trassPanel').addEventListener('click', trassAction);
   $('#dailyPanel').addEventListener('click', dailyAction);
   $('#dailyPanel').addEventListener('change', e => { if (e.target.id === 'dayPick' && e.target.value) { S.rep.day = e.target.value; renderDaily(); renderNotes(); } });
-  $('#dailyPanel').addEventListener('input', e => { if (e.target.id === 'dayText') { S.daily['t|' + S.rep.day + '|' + S.rep.site] = e.target.value; clearTimeout(S.dT); S.dT = setTimeout(saveDaily, 600); } });
+  $('#dailyPanel').addEventListener('input', e => { if (diaryInput(e)) return; if (e.target.id === 'dayText') { S.daily['t|' + S.rep.day + '|' + S.rep.site] = e.target.value; clearTimeout(S.dT); S.dT = setTimeout(saveDaily, 600); } });
   $('#notesPanel').addEventListener('click', notesAction);
   $('#notesPanel').addEventListener('keydown', e => { if (e.target.id === 'noteIn' && e.key === 'Enter') { e.preventDefault(); notesAction({ target: $('[data-nt=add]') }); } });
   addEventListener('online', () => otsQueue());
+  $('#planSites').onclick = e => { const b = e.target.closest('[data-ps]'); if (b) { S.planSite = b.dataset.ps; renderPlans(); } };
+  $('#planList').onclick = e => { const b = e.target.closest('[data-plan]'); if (b) openPlan(b.dataset.plan); };
+  $('#btnAddPlan').onclick = () => addPlan(S.planSite);
+  $('#filePlan').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) importPlanFile(f); };
+  $('#fileLogo').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) onLogoFile(f); };
+  $('#fileTpl').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) importTplFile(f); };
+  $('#fileVid').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return; const { c, dur } = await videoPoster(f); handleVideo(f, c, snapMeta(), dur); };
+  $('#btnVidApp').onclick = () => $('#fileVid').click();
+  $('#camMode').onclick = e => { const b = e.target.closest('[data-m]'); if (b) setCamMode(b.dataset.m); };
+  $('#defSeg').onclick = e => { const b = e.target.closest('[data-ds]'); if (b) { S.def.status = b.dataset.ds; renderDefects(); } };
+  $('#defSites').onclick = e => { const b = e.target.closest('[data-dsite]'); if (b) { S.def.site = b.dataset.dsite; renderDefects(); } };
+  $('#defList').onclick = e => { const b = e.target.closest('[data-def]'); if (b) openDefect(b.dataset.def); };
+  $('#btnNewDefect').onclick = () => openDefect(null, { siteId: S.def.site !== 'all' ? S.def.site : undefined });
+  $('#btnDefExport').onclick = defectExportSheet;
   $('#galSeg').onclick = e => { const b = e.target.closest('[data-g]'); if (b) { S.gal.mode = b.dataset.g; renderGallery(); } };
   $('#galSites').onclick = e => { const b = e.target.closest('[data-gs]'); if (b) { S.gal.site = b.dataset.gs; renderGallery(); } };
   $('#galList').onclick = e => { const b = e.target.closest('[data-photo]'); if (b) openPhoto(b.dataset.photo); };
@@ -2699,15 +3605,18 @@ function bind() {
     S.ledger = (await DB.all('ledger')).sort((a, b) => a.seq - b.seq);
     S.daily = kv.find(x => x.id === 'daily')?.map || {};
     S.rec = S.trassen.find(t => t.status === 'rec' || t.status === 'paused')?.id || null;
+    S.plans = await DB.all('plans'); S.defects = await DB.all('defects'); S.protocols = await DB.all('protocols');
+    S.customTpl = kv.find(x => x.id === 'tpls')?.map || {}; applyCustomTpl();
   } catch (e) {}
   if (!ok) toast('Gerätespeicher nicht verfügbar – Fotos bitte sofort exportieren.', 6000);
   if (!S.set.seeded) {
     try { await Promise.race([document.fonts?.ready, new Promise(r => setTimeout(r, 2500))]); } catch (e) {}
     try { await seedExamples(); } catch (e) { console.warn(e); }
   }
+  if (!S.set.seeded2 && S.sites.some(s => s.example)) { try { await seedExamples2(); } catch (e) { console.warn(e); } }
   try { S.persisted = await navigator.storage?.persisted?.(); if (!S.persisted && navigator.storage?.persist) S.persisted = await navigator.storage.persist(); } catch (e) {}
   initHeading();
-  const h = location.hash.slice(1); go(['cockpit', 'karte', 'galerie', 'bericht'].includes(h) ? h : 'cockpit');
+  const h = location.hash.slice(1); go(['cockpit', 'karte', 'plaene', 'maengel', 'galerie', 'bericht'].includes(h) ? h : 'cockpit');
   startGPS();
   if (S.set.demo) toast('Demo-Position aktiv – in den Einstellungen abschaltbar.', 3000);
   if ('serviceWorker' in navigator && !inFrame && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});

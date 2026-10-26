@@ -17,6 +17,13 @@ GPS-Fotodokumentation für Baustellen – Smolens·KI.
 - **Trassen-Aufnahme**: Leitungsverlauf ablaufen, Punkte markieren, RTK-Empfänger (Bluetooth/NMEA oder Mock-Standort), Export als Shapefile, DXF, GeoJSON, KML, CSV in ETRS89/UTM
 - **Freihändig**: Sprachbefehle „Foto“, „Speichern“, „Nochmal“, „Nächstes“, „Punkt“, „Notiz …“
 - **KI-Tagesbericht**: Bautagebuch aus Fotos, Notizen und Trassen – mit Wetter, als PDF
+- **Bauplan (indoor)**: Grundriss als Foto, Bild oder PDF hinterlegen, Fotos und Mängel per Tipp genau auf dem Plan verorten – auch dort, wo GPS nicht reicht
+- **Mängelverwaltung**: zuständige Firma, Frist, Status (Offen → In Arbeit → Erledigt → Abgenommen) mit Verlauf, Überfällig-Warnung, Weitergabe per Mail/Teilen, Liste als PDF, CSV oder Kalender (ICS)
+- **Bautagebuch**: Wetter automatisch, Personal und Geräte mit Stunden, Behinderungen – fließt in den Tagesbericht
+- **Abnahmeprotokoll**: Ergebnis, offene Mängel, Unterschrift von Auftraggeber und Auftragnehmer direkt auf dem Handy, versiegelt und als PDF
+- **Eigene Vorlagen**: Checklisten im Büro bearbeiten und als Datei ans Team verteilen; Firmen- und Kundenlogo im Bericht
+- **Video, Sprachnotizen, 360°-Fotos** (Panorama-Betrachter)
+- **Schnittstellen**: Webhook zu Büro-Software (z. B. Make, Zapier, Power Automate), Projekt-Export als JSON, Mängel als CSV/ICS
 
 ## Aufs Handy
 1. Link oben auf dem Handy öffnen, Standort und Kamera erlauben
