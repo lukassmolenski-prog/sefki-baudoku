@@ -3867,7 +3867,7 @@ async function openSettings() {
     <p class="note" style="margin:0 0 10px">${S.photos.length} Fotos · ${mb.toFixed(1).replace('.', ',')} MB auf diesem Gerät${est?.quota ? ` · frei ca. ${((est.quota - est.usage) / 1073741824).toFixed(1).replace('.', ',')} GB` : ''}.<br>
       ${!DB.db ? '<b style="color:var(--bad)">Achtung: Der Gerätespeicher ist nicht verfügbar. Fotos gehen beim Schließen verloren – sofort exportieren.</b>' : S.persisted ? 'Dauerhafter Speicher ist <b style="color:var(--ok)">aktiv</b> – der Browser löscht die Fotos nicht von selbst.' : 'Dauerhafter Speicher ist <b style="color:var(--amber)">nicht bestätigt</b>. Installier die App auf dem Startbildschirm, dann ist er sicherer.'}</p>
     <div class="row"><button class="btn" id="stBackup">Komplett-Backup</button><button class="btn" id="stRestore">Backup einspielen</button></div>
-    ${hasEx ? '<div class="row pro-only" style="margin-top:8px"><button class="btn danger" id="stEx">Beispieldaten entfernen</button></div>' : ''}
+    ${hasEx ? '<div class="row" style="margin-top:8px"><button class="btn danger" id="stEx">Beispieldaten entfernen</button></div>' : ''}
     <div class="ph" style="margin-top:18px"><h2>Als App installieren</h2></div>
     ${installEvt ? '<button class="btn pri wide" id="stInstall">Jetzt installieren</button>' : ''}
     <p class="note"><b>Android (Chrome):</b> Menü ⋮ → „App installieren“ bzw. „Zum Startbildschirm“.<br><b>iPhone (Safari):</b> Teilen-Symbol → „Zum Home-Bildschirm“.<br>Danach läuft SEF-KI wie eine normale App, auch ohne Netz.</p>
@@ -4312,7 +4312,7 @@ function tourSteps() {
       [() => $('#scrim #stTv')?.closest('.fld'), 'Hier stellst du meine Stimme für den Rundgang ein. Für eine besonders natürliche Stimme kannst du hier auch die Premium-Stimme einrichten.', { title: 'Rundgang-Stimme' }],
       [tSh('#stBackup'), 'Komplett-Backup sichert alles in einer Datei. Mach das regelmäßig.'],
       [tSh('#stRestore'), 'Backup einspielen holt alles zurück, zum Beispiel auf ein neues Handy.'],
-      [tSh('#stEx'), 'Beispieldaten entfernen löscht die Demo-Baustellen, wenn du richtig loslegst.', { pro: 1 }],
+      [tSh('#stEx'), 'Beispieldaten entfernen löscht die Demo-Baustellen, wenn du richtig loslegst.'],
       [tSh('[data-x=close]'), 'Fertig schließt die Einstellungen.']
     ]),
     ...C('Ende', 'cockpit', [
