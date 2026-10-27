@@ -1,6 +1,6 @@
 // © 2026 Lukas Smolenski · Smolens·KI · Alle Rechte vorbehalten.
 // SEF-KI Baudoku – Offline-Cache
-const C = 'sefki-v11';
+const C = 'sefki-v12';
 const TC = 'sefki-kacheln';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 const CACHE_HOSTS = /cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com|storage\.googleapis\.com/;

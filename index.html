@@ -1349,8 +1349,10 @@ function fitCanvas(src, max = 2560) {
   c.getContext('2d').drawImage(src, 0, 0, c.width, c.height); return c;
 }
 const RES = { hoch: 4000, mittel: 2560, klein: 1600 };
+const nextFrame = () => new Promise(r => requestAnimationFrame(() => setTimeout(r, 0)));
 async function handleCapture(src, meta) {
-  const c = fitCanvas(src, RES[S.set.res] || 2560), q = analyze(c), tg = camTarget();
+  const fast = !S.set.privacy && !S.set.series, pv = fitCanvas(src, 1100), q = analyze(pv), tg = camTarget();
+  let c = fast ? null : fitCanvas(src, RES[S.set.res] || 2560);
   const f = {
     siteId: tg.site?.id || '', itemId: tg.item?.id || '', phase: tg.item?.phase || S.set.lastPhase || 'W',
     cat: tg.item?.cat || S.set.lastCat || 'uebersicht', labels: (S.set.series && S.set.lastLabelsStr) || '', desc: ''
@@ -1364,7 +1366,9 @@ async function handleCapture(src, meta) {
     if (S.set.aiCheck && await AI.mode()) aiCheck(raw, tg.site, tg.item).then(r => applyAILater(p, r)).catch(() => {});
     return;
   }
-  pending = { c, meta, q, dets, ai: null, aiState: 'idle', blurOn: S.set.privacy, rects: S.set.privacy ? privacyRects(dets, null, c.width, c.height) : [], tg };
+  pending = { c, pv, meta, q, dets, ai: null, aiState: 'idle', blurOn: S.set.privacy, rects: S.set.privacy ? privacyRects(dets, null, c.width, c.height) : [], tg };
+  const pd = pending;
+  if (!c) pd.cP = nextFrame().then(() => { pd.c = fitCanvas(src, RES[S.set.res] || 2560); return pd.c; });
   showReview(f); runReviewAI();
 }
 /* Kontext der Aufnahme anhängen: Trassenpunkt, Planposition, Mangel */
@@ -1414,9 +1418,9 @@ function renderAIBox() {
 }
 function renderPreview() {
   const pd = pending, img = $('#rvImg'); if (!pd || !img) return;
-  const pv = fitCanvas(pd.c, 1100), k = pv.width / pd.c.width;
-  if (pd.blurOn) pd.rects.forEach(r => pixelate(pv, { x: r.x * k, y: r.y * k, w: r.w * k, h: r.h * k }));
-  img.src = pv.toDataURL('image/jpeg', 0.8);
+  const pv = pd.c && pd.rects.length ? fitCanvas(pd.c, 1100) : pd.pv || fitCanvas(pd.c, 1100), k = pd.c ? pv.width / pd.c.width : 1;
+  if (pd.blurOn && pd.c) pd.rects.forEach(r => pixelate(pv, { x: r.x * k, y: r.y * k, w: r.w * k, h: r.h * k }));
+  pv.toBlob(b => { if (!b || pending !== pd || !img.isConnected) return; if (img.dataset.ou) URL.revokeObjectURL(img.dataset.ou); img.dataset.ou = URL.createObjectURL(b); img.src = img.dataset.ou; }, 'image/jpeg', 0.82);
   const pc = $('#rvPriv');
   if (pc) pc.innerHTML = pd.rects.length ? `<span class="q ${pd.blurOn ? 'g' : 'w'}">${pd.rects.length} BEREICH${pd.rects.length > 1 ? 'E' : ''} ${pd.blurOn ? 'UNKENNTLICH' : 'SICHTBAR'}</span><button type="button" class="chip" id="rvPrivT">${pd.blurOn ? 'Unkenntlichmachung aus' : 'Wieder unkenntlich machen'}</button>` : '';
   $('#rvPrivT')?.addEventListener('click', () => { pd.blurOn = !pd.blurOn; renderPreview(); });
@@ -1471,6 +1475,7 @@ function showReview(f) {
   $('#rvSave').onclick = async () => {
     const btn = $('#rvSave'); if (btn.disabled) return; btn.disabled = true; btn.textContent = 'Speichere …';
     const ff = { siteId: $('#rvSite').value, itemId: $('#rvItem').value, phase: st.phase, cat: st.cat, labels: $('#rvLabels').value, desc: $('#rvDesc').value.trim() };
+    if (!pending.c) await pending.cP;
     const pd = pending, depth = parseFloat(String($('#rvDepth').value).replace(',', '.')), wasMark = camCtx.mark, ctxDef = camCtx.defect, ctxPin = camCtx.planPin, asDefect = $('#rvAsDef')?.checked;
     try {
       if (pd.video) {
@@ -1490,7 +1495,8 @@ function showReview(f) {
         await savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: 'KI/manuell' });
         pending = null; rv.hidden = true; closeCamera(); toast('Foto am Trassenpunkt gespeichert.'); speak('Foto am Trassenpunkt gespeichert.'); return;
       }
-      await savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: pd.ai?.tiefe_cm && Math.round(pd.ai.tiefe_cm) === Math.round(depth) ? 'KI' : 'manuell' });
+      const job = savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: pd.ai?.tiefe_cm && Math.round(pd.ai.tiefe_cm) === Math.round(depth) ? 'KI' : 'manuell' });
+      job.catch(err => { toast('Speichern fehlgeschlagen: ' + (err.message || err) + ' – bitte nochmal.', 6000); });
       pending = null; rv.hidden = true; camCtx = { siteId: ff.siteId || undefined, itemId: undefined, mark: null };
       const { item, site } = camTarget(); renderCamHud();
       toast(item ? `Gespeichert. Nächstes Pflichtfoto: ${item.label}` : site ? `Gespeichert. ${site.name} ist komplett!` : 'Gespeichert.', 3600);
@@ -1531,6 +1537,7 @@ function drawWatermark(c, p) {
 }
 const toBlob = (c, q = 0.88) => new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(new Error('Bild konnte nicht erzeugt werden')), 'image/jpeg', q));
 const thumbOf = c => fitCanvas(c, 400).toDataURL('image/jpeg', 0.72);
+const SAVING = new WeakMap(); let savingQ = Promise.resolve();
 async function savePhoto(c, meta, f, q, x = {}) {
   const labels = String(f.labels || '').split(',').map(v => v.trim()).filter(Boolean);
   const p = { id: uid(), kind: x.kind || 'photo', ts: meta.ts, lat: meta.lat, lon: meta.lon, acc: meta.acc, alt: meta.alt ?? null, fix: meta.fix || null, heading: meta.heading, src: meta.src,
@@ -1541,13 +1548,16 @@ async function savePhoto(c, meta, f, q, x = {}) {
     privacy: (x.rects || []).map(r => r.kind) };
   (x.rects || []).forEach(r => pixelate(c, r));                    // 1. Datenschutz
   if (S.set.watermark) drawWatermark(c, p);                          // 2. Stempel
-  p.blob = await toBlob(c); p.thumb = thumbOf(c);                    // 3. Datei
-  await sealSafe(p, 'foto');                                         // 4. Fingerabdruck + Kette
-  attachCtx(p);                                                      // 5. Plan, Mangel, Trassenpunkt
-  await DB.put('photos', p); S.photos.push(p); hook('foto', photoJSON(p));
+  p.thumb = thumbOf(c); p.blob = null;                               // 3. Vorschau sofort
+  attachCtx(p);                                                      // 4. Plan, Mangel, Trassenpunkt
+  S.photos.push(p);                                                  //    in der Oberfläche sofort sichtbar
   S.set.lastPhase = p.phase; S.set.lastCat = p.cat; S.set.lastLabelsStr = labels.join(', ');
   S.set.lastLabels = [...new Set([...labels, ...(S.set.lastLabels || [])])].slice(0, 12); saveSet();
-  buzz([20, 40, 20]); geocode(p); otsStamp(p); refresh(true);
+  buzz([20, 40, 20]); refresh(true);
+  const job = (async () => { p.blob = await toBlob(c); await sealSafe(p, 'foto'); await DB.put('photos', p); })();   // 5. Datei, Siegel, Speicher im Hintergrund
+  SAVING.set(p, job); savingQ = savingQ.then(() => job).catch(() => {});
+  try { await job; } catch (e) { S.photos = S.photos.filter(z => z !== p); refresh(true); throw e; } finally { SAVING.delete(p); }
+  hook('foto', photoJSON(p)); geocode(p); otsStamp(p);
   return p;
 }
 /* Adresse nachschlagen (nur wenn Internet da ist) */
@@ -1806,7 +1816,7 @@ function openRoute(s) {
 function openPhoto(id) {
   const p = S.photos.find(x => x.id === id); if (!p) return;
   const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId);
-  const url = URL.createObjectURL(p.blob), isV = p.kind === 'video', isP = p.kind === 'pano';
+  const url = p.blob ? URL.createObjectURL(p.blob) : p.thumb, isV = p.kind === 'video', isP = p.kind === 'pano';
   const defs = S.defects.filter(d => d.photoIds?.includes(p.id));
   const el = sheet(`${isV ? `<video class="big" src="${url}" data-url="1" controls playsinline></video>` : isP ? '<div id="panoHost"></div><p class="note" style="margin:4px 0 0">360°-Foto: ziehen zum Umschauen, zwei Finger zum Zoomen.</p>' : `<img class="big" src="${url}" data-url="1" alt="Foto">`}
     <div class="qual">${isV ? `<span class="q g">VIDEO ${fmtDur(p.dur || 0)}</span>` : isP ? '<span class="q g">360°</span>' : qualHTML({ flags: p.q?.flags || [] }, p)}${p.exported ? '<span class="q g">GESICHERT</span>' : '<span class="q w">NOCH NICHT GESICHERT</span>'}</div>
@@ -1960,15 +1970,58 @@ function mapStart() {
   const loop = () => { drawMap(cv); M.raf = requestAnimationFrame(loop); }; loop();
 }
 function mapStop() { cancelAnimationFrame(M.raf); }
+const MAPC = { cv: null, key: '', at: null, dirty: false, t: 0, moveT: 0 };
+const mapDataKey = () => { const f = S.mapF || {}; let ex = 0; for (const p of S.photos) if (p.exported) ex++; return [S.photos.length, S.photos[S.photos.length - 1]?.id, ex, S.sites.length, S.sites.map(s => s.lat + s.radius + (s.archived ? 'a' : '')).join(), S.trassen.reduce((a, t) => a + t.points.length + t.marks.length, 0), f.site, f.phase, f.days, f.open, S.set.anchor?.from, S.set.mapLayer, S.set.mapThumbs, M.sel, M.siteSel, Math.floor(Date.now() / 30000)].join('|'); };
 function drawMap(cv) {
   const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight; if (!W) return;
-  if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
-  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
-  if (M.follow && S.pos) { M.lat += (S.pos.lat - M.lat) * 0.15; M.lon += (S.pos.lon - M.lon) * 0.15; }
-  const layer = S.set.mapLayer || 'karte', light = layer === 'karte';
+  if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); MAPC.key = ''; }
+  const g = cv.getContext('2d'), now = performance.now();
+  if (M.follow && S.pos) { const dl = S.pos.lat - M.lat, dn = S.pos.lon - M.lon; if (Math.abs(dl) + Math.abs(dn) > 1e-7) { M.lat += dl * 0.2; M.lon += dn * 0.2; MAPC.moveT = now; } else { M.lat = S.pos.lat; M.lon = S.pos.lon; } }
+  const moving = M.ptrs.size > 0 || now - MAPC.moveT < 140;
+  const dk = mapDataKey() + '|' + W + 'x' + H;
+  const at = MAPC.at, sameData = MAPC.key === dk;
+  let s = 1, ox = 0, oy = 0;
+  if (at) { s = M.z * Math.cos(M.lat * RAD) / (at.z * Math.cos(at.lat * RAD)); const k = mapK(); ox = W / 2 * (1 - s) + (mX(at.lon) - mX(M.lon)) * k; oy = H / 2 * (1 - s) - (mY(at.lat) - mY(M.lat)) * k; }
+  const exact = at && Math.abs(s - 1) < 1e-9 && Math.abs(ox) < 0.05 && Math.abs(oy) < 0.05;
+  const tooFar = Math.abs(s - 1) > 0.9 || Math.abs(ox) > W * 0.6 || Math.abs(oy) > H * 0.6;
+  const need = !at || !sameData || (!exact && (!moving || tooFar)) || (MAPC.dirty && !moving && now - MAPC.t > 220);
+  if (need) {
+    MAPC.cv ||= document.createElement('canvas');
+    if (MAPC.cv.width !== cv.width || MAPC.cv.height !== cv.height) { MAPC.cv.width = cv.width; MAPC.cv.height = cv.height; }
+    const sg = MAPC.cv.getContext('2d'); sg.setTransform(dpr, 0, 0, dpr, 0, 0);
+    MAPC.dirty = !drawMapStatic(sg, W, H); MAPC.at = { lat: M.lat, lon: M.lon, z: M.z }; MAPC.key = dk; MAPC.t = now; s = 1; ox = 0; oy = 0;
+  }
+  M.bl = { s, ox, oy };
+  g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, cv.width, cv.height);
+  if (s !== 1 || ox || oy) { g.fillStyle = (S.set.mapLayer || 'karte') === 'karte' ? '#e8ecef' : '#040a14'; g.fillRect(0, 0, cv.width, cv.height); }
+  g.drawImage(MAPC.cv, ox * dpr, oy * dpr, cv.width * s, cv.height * s);
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  drawMapLive(g, W, H, now / 1000);
+}
+function drawMapLive(g, W, H, t) {
+  const light = (S.set.mapLayer || 'karte') === 'karte', ink = light ? '#0a1830' : '#e2f6ff', halo = light ? 'rgba(255,255,255,.92)' : 'rgba(4,10,20,.85)';
+  if (S.pos) {
+    const [x, y] = mproj(S.pos.lat, S.pos.lon, W, H);
+    g.fillStyle = 'rgba(63,216,239,.16)'; g.beginPath(); g.arc(x, y, Math.max(8, S.pos.acc * M.z), 0, 7); g.fill();
+    g.strokeStyle = 'rgba(20,150,190,.5)'; g.lineWidth = 1; g.stroke();
+    if (S.heading != null) { const a = (S.heading - 90) * RAD; g.fillStyle = 'rgba(30,170,220,.4)'; g.beginPath(); g.moveTo(x, y); g.arc(x, y, 44, a - 0.35, a + 0.35); g.closePath(); g.fill(); }
+    const pul = (t % 1.6) / 1.6; g.strokeStyle = `rgba(30,170,220,${1 - pul})`; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 7 + pul * 18, 0, 7); g.stroke();
+    g.fillStyle = '#fff'; g.beginPath(); g.arc(x, y, 7, 0, 7); g.fill(); g.fillStyle = '#1aa6d6'; g.beginPath(); g.arc(x, y, 4.4, 0, 7); g.fill();
+  }
+  const steps = [0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000]; const step = steps.find(s => s * M.z >= 70) || 100000; const px = step * M.z;
+  g.fillStyle = light ? 'rgba(255,255,255,.8)' : 'rgba(4,10,20,.7)'; g.fillRect(8, H - 44, Math.max(70, px + 20), 36);
+  g.strokeStyle = ink; g.lineWidth = 2; g.beginPath(); g.moveTo(14, H - 18); g.lineTo(14 + px, H - 18); g.moveTo(14, H - 23); g.lineTo(14, H - 13); g.moveTo(14 + px, H - 23); g.lineTo(14 + px, H - 13); g.stroke();
+  g.fillStyle = ink; g.font = '600 11px "JetBrains Mono", monospace'; g.fillText(step < 1 ? '0,5 m' : fmtDist(step), 18, H - 28);
+  g.textAlign = 'center'; g.lineWidth = 3.5; g.strokeStyle = halo; g.strokeText('N', W - 30, H - 42); g.fillStyle = '#1aa6d6'; g.fillText('N', W - 30, H - 42);
+  g.beginPath(); g.moveTo(W - 30, H - 36); g.lineTo(W - 36, H - 18); g.lineTo(W - 30, H - 22); g.lineTo(W - 24, H - 18); g.closePath(); g.fill(); g.textAlign = 'left';
+  const L = TILES[S.set.mapLayer || 'karte']; if (L) { g.font = '9px system-ui, sans-serif'; const w = g.measureText(L.attr).width + 8; g.fillStyle = 'rgba(255,255,255,.75)'; g.fillRect(W - w, H - 13, w, 13); g.fillStyle = '#333'; g.fillText(L.attr, W - w + 4, H - 3.5); }
+}
+/* statische Ebene: Kacheln, Baustellen, Trassen, Fotos. Rückgabe: alles fertig geladen? */
+function drawMapStatic(g, W, H) {
+  const layer = S.set.mapLayer || 'karte', light = layer === 'karte'; let done = true;
   g.fillStyle = light ? '#e8ecef' : '#040a14'; g.fillRect(0, 0, W, H);
   const steps = [0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000]; const step = steps.find(s => s * M.z >= 70) || 100000; const px = step * M.z;
-  if (layer !== 'raster' && navigator.onLine !== false) drawTiles(g, layer, M.lat, M.lon, mapK(), W, H);
+  if (layer !== 'raster' && navigator.onLine !== false) done = drawTiles(g, layer, M.lat, M.lon, mapK(), W, H);
   else {
     const k = mapK(), mx = mX(M.lon) * k, my = mY(M.lat) * k, pk = step * k;
     g.strokeStyle = 'rgba(63,216,239,.07)'; g.lineWidth = 1; g.beginPath();
@@ -1986,7 +2039,7 @@ function drawMap(cv) {
     const col = s.archived ? 'rgba(110,130,150,.8)' : pr.missing.length ? '#f08a1c' : '#1fb877';
     g.fillStyle = s.archived ? 'rgba(137,169,189,.06)' : pr.missing.length ? 'rgba(255,160,64,.12)' : 'rgba(72,229,154,.12)';
     g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
-    g.setLineDash([6, 5]); g.lineDashOffset = -t * 8; g.strokeStyle = col; g.lineWidth = M.siteSel === s.id ? 2.6 : 1.8; g.stroke(); g.setLineDash([]);
+    g.setLineDash([6, 5]); g.lineDashOffset = 0; g.strokeStyle = col; g.lineWidth = M.siteSel === s.id ? 2.6 : 1.8; g.stroke(); g.setLineDash([]);
     g.font = '700 11px "JetBrains Mono", monospace'; g.textAlign = 'center';
     label(short(s.name).toUpperCase(), x, y - r - 16, col); label(`${pr.done}/${pr.must}`, x, y - r - 4, ink); g.textAlign = 'left';
   }
@@ -2031,6 +2084,7 @@ function drawMap(cv) {
     if (showThumbs) {
       const r = sel ? 25 : 21, im = thumbImg(p);
       g.save(); g.beginPath(); g.arc(x, y, r, 0, 7); g.closePath(); g.fillStyle = c; g.fill(); g.clip();
+      if (!im) done = false;
       if (im) { const s = Math.max(2 * r / im.naturalWidth, 2 * r / im.naturalHeight); g.drawImage(im, x - im.naturalWidth * s / 2, y - im.naturalHeight * s / 2, im.naturalWidth * s, im.naturalHeight * s); }
       g.restore(); g.strokeStyle = sel ? '#ffa040' : '#fff'; g.lineWidth = sel ? 3 : 2.2; g.beginPath(); g.arc(x, y, r, 0, 7); g.stroke();
       g.fillStyle = c; g.beginPath(); g.arc(x + r * 0.72, y + r * 0.72, 4.5, 0, 7); g.fill(); g.strokeStyle = '#fff'; g.lineWidth = 1.2; g.stroke();
@@ -2040,21 +2094,7 @@ function drawMap(cv) {
   }
   // Angeheftete Position
   if (S.anchor) { const [x, y] = mproj(S.anchor.lat, S.anchor.lon, W, H); g.font = '20px sans-serif'; g.textAlign = 'center'; g.fillText('📌', x, y - 4); g.textAlign = 'left'; }
-  // eigene Position
-  if (S.pos) {
-    const [x, y] = mproj(S.pos.lat, S.pos.lon, W, H);
-    g.fillStyle = 'rgba(63,216,239,.16)'; g.beginPath(); g.arc(x, y, Math.max(8, S.pos.acc * M.z), 0, 7); g.fill();
-    g.strokeStyle = 'rgba(20,150,190,.5)'; g.lineWidth = 1; g.stroke();
-    if (S.heading != null) { const a = (S.heading - 90) * RAD; g.fillStyle = 'rgba(30,170,220,.4)'; g.beginPath(); g.moveTo(x, y); g.arc(x, y, 44, a - 0.35, a + 0.35); g.closePath(); g.fill(); }
-    const pul = (t % 1.6) / 1.6; g.strokeStyle = `rgba(30,170,220,${1 - pul})`; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 7 + pul * 18, 0, 7); g.stroke();
-    g.fillStyle = '#fff'; g.beginPath(); g.arc(x, y, 7, 0, 7); g.fill(); g.fillStyle = '#1aa6d6'; g.beginPath(); g.arc(x, y, 4.4, 0, 7); g.fill();
-  }
-  // Maßstab, Nordpfeil, Quelle
-  g.fillStyle = light ? 'rgba(255,255,255,.8)' : 'rgba(4,10,20,.7)'; g.fillRect(8, H - 44, Math.max(70, px + 20), 36);
-  g.strokeStyle = ink; g.lineWidth = 2; g.beginPath(); g.moveTo(14, H - 18); g.lineTo(14 + px, H - 18); g.moveTo(14, H - 23); g.lineTo(14, H - 13); g.moveTo(14 + px, H - 23); g.lineTo(14 + px, H - 13); g.stroke();
-  g.fillStyle = ink; g.font = '600 11px "JetBrains Mono", monospace'; g.fillText(step < 1 ? '0,5 m' : fmtDist(step), 18, H - 28);
-  g.fillStyle = '#1aa6d6'; g.textAlign = 'center'; label('N', W - 30, H - 42, '#1aa6d6'); g.fillStyle = '#1aa6d6'; g.beginPath(); g.moveTo(W - 30, H - 36); g.lineTo(W - 36, H - 18); g.lineTo(W - 30, H - 22); g.lineTo(W - 24, H - 18); g.closePath(); g.fill(); g.textAlign = 'left';
-  if (TILES[layer]) { g.font = '9px system-ui, sans-serif'; const a = TILES[layer].attr, w = g.measureText(a).width + 8; g.fillStyle = 'rgba(255,255,255,.75)'; g.fillRect(W - w, H - 13, w, 13); g.fillStyle = '#333'; g.fillText(a, W - w + 4, H - 3.5); }
+  return done;
 }
 function renderMapBar() {
   const b = $('#mapBar'); if (!b) return; const lay = S.set.mapLayer || 'karte';
@@ -2107,7 +2147,7 @@ function mapInput() {
   const zoom = (f, cx, cy) => {
     const W = cv.clientWidth, H = cv.clientHeight;
     const at = cx != null ? munproj(cx, cy, W, H) : null;
-    M.z = Math.max(0.0004, Math.min(60, M.z * f));
+    M.z = Math.max(0.0004, Math.min(60, M.z * f)); MAPC.moveT = performance.now();
     if (at) { const k = mapK(); M.lon = (mX(at.lon) - (cx - W / 2) / k) / (ER * RAD); M.lat = mLat(mY(at.lat) + (cy - H / 2) / k); }
   };
   M.zoom = zoom;
@@ -2117,11 +2157,12 @@ function mapInput() {
     const p = M.ptrs.get(e.pointerId); if (!p) return; const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
     if (M.ptrs.size === 2) { const [a, b] = [...M.ptrs.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y), r = cv.getBoundingClientRect(); if (M.pinch) zoom(d / M.pinch, (a.x + b.x) / 2 - r.left, (a.y + b.y) / 2 - r.top); M.pinch = d; M.moved += 10; return; }
     M.moved += Math.abs(dx) + Math.abs(dy); if (M.moved > 6) { M.follow = false; $('#mFollow').classList.remove('on'); }
-    const k = mapK(); M.lon -= dx / k / (ER * RAD); M.lat = mLat(mY(M.lat) + dy / k);
+    const k = mapK(); M.lon -= dx / k / (ER * RAD); M.lat = mLat(mY(M.lat) + dy / k); MAPC.moveT = performance.now();
   });
   const up = e => {
     const wasTap = M.ptrs.size === 1 && M.moved < 6; M.ptrs.delete(e.pointerId); if (M.ptrs.size < 2) M.pinch = null;
-    if (!wasTap) return; const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, W = cv.clientWidth, H = cv.clientHeight;
+    MAPC.moveT = performance.now();
+    if (!wasTap) return; const r = cv.getBoundingClientRect(), W = cv.clientWidth, H = cv.clientHeight, bl = M.bl || { s: 1, ox: 0, oy: 0 }, x = (e.clientX - r.left - bl.ox) / bl.s, y = (e.clientY - r.top - bl.oy) / bl.s;
     const thumbs = S.set.mapThumbs !== false && M.z >= 1.2;
     const hit = (M.pts || []).map(p => ({ ...p, d: Math.hypot(p.x - x, p.y - y) })).filter(p => p.d < (thumbs ? 24 : 18)).sort((a, b) => a.d - b.d)[0];
     if (hit) { M.sel = hit.id; openPhoto(hit.id); return; }
@@ -2196,18 +2237,33 @@ function renderGallery() {
   const badge = p => p.kind === 'video' ? `<span class="vb">▶ ${fmtDur(p.dur || 0)}</span>` : p.kind === 'pano' ? '<span class="vb">360°</span>' : '';
   let html;
   if ((S.gal.view || 'list') === 'list') {
-    html = `<div class="plist">${shown.map(p => { const s = sn.get(p.siteId);
-      return `<button class="prow" data-photo="${p.id}"><span class="pth"><img src="${p.thumb}" alt="" loading="lazy">${badge(p)}</span>
-        <span class="pmid"><b class="num">${fmtDate(p.ts)} ${fmtTime(p.ts)}</b><span class="pl">${esc(lab(p))}</span><span class="ps">${s ? esc(short(s.name)) : 'ohne Baustelle'}</span></span>
-        <span class="pend"><span class="pb" style="background:${PH[p.phase].c}">${p.phase}</span><span class="sync ${p.exported ? 'ok' : 'no'}" title="${p.exported ? 'gesichert' : 'noch nicht gesichert'}">${p.exported ? '✓' : '✕'}</span></span></button>`; }).join('')}</div>`;
+    html = `<div class="plist">${shown.map(p => galRow(p, sn, lab)).join('')}</div>`;
   } else {
     const days = new Map(); shown.forEach(p => { const k = dayKey(p.ts); if (!days.has(k)) days.set(k, []); days.get(k).push(p); });
     html = [...days.values()].map(ps => `<section class="day"><div class="ph" style="margin:0"><span class="lbl">${fmtDay(ps[0].ts)}</span><span class="lbl">${ps.length} Foto${ps.length > 1 ? 's' : ''}</span></div>
       <div class="grid">${ps.map(p => `<button class="th" data-photo="${p.id}" aria-label="${esc(lab(p))}"><img src="${p.thumb}" alt="" loading="lazy"><span class="pb" style="background:${PH[p.phase].c}">${p.phase}</span><span class="sy${p.exported ? ' ok' : ''}"></span>${badge(p)}<span class="tl">${esc(lab(p))}</span></button>`).join('')}</div></section>`).join('');
   }
   $('#galList').innerHTML = html + (more ? `<button class="btn wide" id="galMore" style="margin-top:12px">Weitere ${Math.min(more, 60)} von ${more} laden</button>` : '');
-  const gm = $('#galMore');
-  if (gm && 'IntersectionObserver' in window) { const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); S.gal.limit = lim + 60; renderGallery(); } }, { rootMargin: '400px' }); io.observe(gm); }
+  galWatch();
+}
+function galRow(p, sn, lab) {
+  const s = sn.get(p.siteId), badge = p.kind === 'video' ? `<span class="vb">▶ ${fmtDur(p.dur || 0)}</span>` : p.kind === 'pano' ? '<span class="vb">360°</span>' : '';
+  return `<button class="prow" data-photo="${p.id}"><span class="pth"><img src="${p.thumb}" alt="" loading="lazy" decoding="async">${badge}</span>
+    <span class="pmid"><b class="num">${fmtDate(p.ts)} ${fmtTime(p.ts)}</b><span class="pl">${esc(lab(p))}</span><span class="ps">${s ? esc(short(s.name)) : 'ohne Baustelle'}</span></span>
+    <span class="pend"><span class="pb" style="background:${PH[p.phase].c}">${p.phase}</span><span class="sync ${p.exported ? 'ok' : 'no'}" title="${p.exported ? 'gesichert' : 'noch nicht gesichert'}">${p.exported ? '✓' : '✕'}</span></span></button>`;
+}
+/* Weitere Fotos nur anhängen – nicht die ganze Liste neu bauen */
+function galMore() {
+  const lim = S.gal.limit || 60, pl = $('#galList .plist');
+  if (!pl) { S.gal.limit = lim + 60; return renderGallery(); }
+  const { list, sn, lab } = galList(), add = list.slice(lim, lim + 60); S.gal.limit = lim + 60;
+  pl.insertAdjacentHTML('beforeend', add.map(p => galRow(p, sn, lab)).join(''));
+  const more = list.length - S.gal.limit, gm = $('#galMore');
+  if (more > 0) { gm.textContent = `Weitere ${Math.min(more, 60)} von ${more} laden`; galWatch(); } else gm?.remove();
+}
+function galWatch() {
+  const gm = $('#galMore'); if (!gm || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); galMore(); } }, { rootMargin: '400px' }); io.observe(gm);
 }
 
 /* ---------------- Bericht & Export ---------------- */
@@ -2261,6 +2317,7 @@ async function saveFile(name, blob, preferShare) {
 async function pdfImg(blob) { const img = await loadImage(blob); const c = fitCanvas(img, 1600); return { d: c.toDataURL('image/jpeg', 0.84), w: c.width, h: c.height }; }
 /* PDF-Bericht: je Baustelle eine Übersichtsseite (Kennzahlen, Pflichtfoto-Nachweis, Lageplan), dann 2 Fotos pro Seite */
 async function buildPDF(l, title, daily) {
+  await savingQ;
   const { jsPDF } = window.jspdf; const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const W = 210, H = 297, m = 14, cw = W - 2 * m;
   const PC = { V: [24, 150, 180], W: [226, 124, 26], N: [30, 160, 98] };
@@ -2436,6 +2493,7 @@ async function buildPDF(l, title, daily) {
   return doc;
 }
 async function exportPDF(btn, list, daily) {
+  await savingQ;
   const l = (list || repList()).slice().sort((a, b) => a.ts - b.ts); if (!l.length && !daily) return;
   btn.disabled = true; const lbl = btn.textContent; btn.textContent = 'Erstelle PDF …';
   try {
@@ -2465,6 +2523,7 @@ function csv(l) {
     return [fileName(p), fmtDate(p.ts), fmtTime(p.ts), s?.name, s?.order, it?.label, PH[p.phase].n, catName(p.cat), p.lat?.toFixed(7).replace('.', ','), p.lon?.toFixed(7).replace('.', ','), p.acc, p.heading, p.address, (p.labels || []).join(', '), p.desc].map(q).join(';'); }).join('\n');
 }
 async function exportZIP(btn) {
+  await savingQ;
   const l = repList(); if (!l.length) return;
   btn.disabled = true; const lbl = btn.textContent; btn.textContent = 'Packe ZIP …';
   try {
@@ -2495,6 +2554,7 @@ async function exportZIP(btn) {
 }
 async function markExported(l) { for (const p of l) { if (!p.exported) { p.exported = true; p.exportedAt = Date.now(); await DB.put('photos', p); } } refresh(true); }
 async function backup(btn) {
+  await savingQ;
   btn.disabled = true;
   try {
     await needLib('ZIP-Baustein', () => window.JSZip);
@@ -2658,7 +2718,7 @@ function updateGhost() {
   const { site, item } = camTarget(); const ref = S.set.ghost && $('#review').hidden ? ghostRef(site, item) : null;
   if (!ref) { img.hidden = true; bar.hidden = true; ghostId = null; return; }
   if (ghostId !== ref.id) {
-    if (ghostUrl) URL.revokeObjectURL(ghostUrl); ghostUrl = URL.createObjectURL(ref.blob); img.src = ghostUrl; ghostId = ref.id;
+    if (!ref.blob) { img.src = ref.thumb; ghostId = null; } else { if (ghostUrl) URL.revokeObjectURL(ghostUrl); ghostUrl = URL.createObjectURL(ref.blob); img.src = ghostUrl; ghostId = ref.id; }
     bar.innerHTML = `<span class="k">GEISTERBILD · ${PH[ref.phase].n.toUpperCase()} VOM ${fmtDate(ref.ts).slice(0, 6)} ${fmtTime(ref.ts)}</span><button class="chip" id="ghostToggle"></button><span class="g" id="ghostGuide"></span><input type="range" id="ghostOp" min="0.1" max="0.8" step="0.05" value="${S.set.ghostOpacity}" aria-label="Deckkraft des Geisterbilds">`;
   }
   bar.hidden = false; img.hidden = !camStream || ghostOff; img.style.opacity = S.set.ghostOpacity;
@@ -3743,6 +3803,7 @@ function hook(event, data) {
   try { fetch(S.set.hookUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify({ app: 'SEF-KI Baudoku', ereignis: event, zeit: new Date().toISOString(), bearbeiter: S.set.name, firma: S.set.coName || null, daten: data }) }).catch(() => {}); } catch (e) {}
 }
 async function exportProjectJSON() {
+  await savingQ;
   const data = { app: 'SEF-KI Baudoku', format: 'sefki-projekt', version: 1, erstellt: new Date().toISOString(), bearbeiter: S.set.name, firma: S.set.coName || null,
     baustellen: S.sites.map(s => ({ id: s.id, name: s.name, auftrag: s.order || null, auftraggeber: s.client || null, art: TPL[s.tpl]?.n, breite: s.lat, laenge: s.lon, umkreis_m: s.radius, abgeschlossen: !!s.archived, pflichtfotos: s.items.map(i => ({ id: i.id, phase: PH[i.phase].n, bezeichnung: i.label, pflicht: i.must, erledigt: S.photos.some(p => p.siteId === s.id && p.itemId === i.id) })) })),
     fotos: S.photos.map(photoJSON), maengel: S.defects.map(defJSON), notizen: S.notes.map(n => ({ zeit: new Date(n.ts).toISOString(), baustelle: S.sites.find(s => s.id === n.siteId)?.name || null, text: n.text || null, sprachmemo_s: n.dur || null })),
@@ -3868,6 +3929,7 @@ async function openSettings() {
    ===================================================================== */
 const tSite = () => siteStatus().site || activeSites()[0] || S.sites[0] || null;
 const tDefSite = () => S.sites.find(s => openDefs().some(d => d.siteId === s.id)) || tSite();
+const tPhotoSite = () => { const n = new Map(); S.photos.forEach(p => { if (p.lat != null && p.siteId && p.kind !== 'video') n.set(p.siteId, (n.get(p.siteId) || 0) + 1); }); const best = [...n].sort((a, b) => b[1] - a[1])[0]; return S.sites.find(s => s.id === best?.[0]) || tSite(); };
 const tPhoto = () => S.photos.filter(p => p.kind !== 'video').sort((a, b) => b.ts - a.ts)[0] || S.photos[0] || null;
 const tSh = sel => () => $('#scrim .sheet ' + sel);
 const tRow = sel => () => $('#scrim .sheet ' + sel)?.closest('.tog,.fld,.row,.inrow') || null;
@@ -4000,6 +4062,33 @@ async function tTap(sel, x, y) { const cv = tRes(sel); if (!cv) return; await tW
 const SIG = (a, b) => { const p = []; for (let i = 0; i <= 60; i++) { const t = i / 60; p.push([0.08 + t * 0.84, 0.55 + Math.sin(t * a) * 0.22 * Math.cos(t * b) - t * 0.08]); } return p; };
 const lastOf = sel => () => { const l = $$(sel); return l[l.length - 1] || null; };
 
+/* Karten-Hilfen für den Rundgang */
+function tKv(label) {
+  return () => {
+    const dt = [...$$('#scrim .sheet dl.kv dt')].find(d => d.textContent.trim() === label), dd = dt?.nextElementSibling; if (!dt || !dd) return null;
+    return { get isConnected() { return dd.isConnected; }, getClientRects: () => dd.getClientRects(), getBoundingClientRect() { const a = dt.getBoundingClientRect(), b = dd.getBoundingClientRect(); return { left: Math.min(a.left, b.left), top: Math.min(a.top, b.top), right: Math.max(a.right, b.right), bottom: Math.max(a.bottom, b.bottom), width: 0, height: 0 }; },
+      scrollIntoView: o => dd.scrollIntoView(o), getAttribute: () => null, matches: () => false, querySelector: () => null, closest: () => null, textContent: label };
+  };
+}
+function mapPick(n) {
+  const cv = $('#map'), W = cv.clientWidth, H = cv.clientHeight, ok = new Set(S.photos.filter(p => p.kind !== 'video' && p.kind !== 'pano').map(p => p.id));
+  const l = (M.pts || []).filter(p => ok.has(p.id) && p.x > 40 && p.y > 70 && p.x < W - 60 && p.y < H - 60).sort((a, b) => Math.hypot(a.x - W / 2, a.y - H / 2) - Math.hypot(b.x - W / 2, b.y - H / 2));
+  return l[Math.min(n, l.length - 1)] || null;
+}
+async function tFly(z, lat, lon, ms) {
+  const z0 = M.z, la0 = M.lat, lo0 = M.lon, t0 = performance.now(); lat ??= la0; lon ??= lo0;
+  while (true) { const f = Math.min(1, (performance.now() - t0) / ms), e = f < 0.5 ? 2 * f * f : 1 - (-2 * f + 2) ** 2 / 2;
+    M.z = Math.exp(Math.log(z0) + (Math.log(z) - Math.log(z0)) * e); M.lat = la0 + (lat - la0) * e; M.lon = lo0 + (lon - lo0) * e; MAPC.moveT = performance.now();
+    if (f >= 1) break; await tWait(16); }
+}
+async function tMapTap(pt) {
+  const cv = $('#map'); await tWait(450);
+  const r = cv.getBoundingClientRect(), bl = M.bl || { s: 1, ox: 0, oy: 0 }, x = r.left + bl.ox + pt.x * bl.s, y = r.top + bl.oy + pt.y * bl.s;
+  Tour.focus({ get isConnected() { return true; }, getClientRects: () => [1], getBoundingClientRect: () => ({ left: x - 26, top: y - 26, right: x + 26, bottom: y + 26 }), scrollIntoView() {}, getAttribute: () => null, matches: () => false, querySelector: () => null, closest: () => null });
+  await tWait(700);
+  const ev = t => cv.dispatchEvent(new PointerEvent(t, { bubbles: true, cancelable: true, pointerId: 72, isPrimary: true, pointerType: 'touch', clientX: x, clientY: y }));
+  ev('pointerdown'); await tWait(80); ev('pointerup'); await tWait(300);
+}
 /* Kontexte: was auf dem Bildschirm offen sein muss. Rückgabe false = Kapitel überspringen */
 const SHEET_CTX = ['site', 'abn', 'defect', 'photo', 'settings'];
 const TOUR_CTX = {
@@ -4089,23 +4178,37 @@ function tourSteps() {
       ['#camSeries', 'Serie: Ich speichere jedes Foto sofort ohne Nachfrage, wenn Schärfe, Licht und GPS passen. Ideal, wenn es schnell gehen muss.', { title: 'Serienmodus' }]
     ]),
     ...C('Karte', 'karte', [
-      ['.tab[data-v=karte]', 'Weiter zur Karte.'],
-      ['#map', 'Die Karte zeigt alle Baustellen und Fotos. Die kleinen Fächer zeigen, in welche Richtung fotografiert wurde.', { title: 'Karte' }],
-      ['#mapBar .mseg', 'Oben wählst du das Kartenbild: Straßenkarte, Satellit, oder Raster – das geht auch ganz ohne Internet. Ich schalte mal auf Satellit.', { title: 'Karte oder Satellit', act: async () => { await tClick('#mapBar [data-ml=satellit]'); await tWait(1800); await tClick('#mapBar [data-ml=karte]'); }, fx: '#map' }],
-      ['#mapBar [data-mb=thumbs]', 'Fotovorschau zeigt die Fotos als kleine Bilder direkt auf der Karte. Weit herausgezoomt fasse ich sie zu Zahlen zusammen. Tipp auf eine Zahl, dann zoome ich hinein.', { title: 'Fotovorschau' }],
-      ['#mapBar [data-mb=filter]', 'Filter: nur eine Baustelle, eine Phase, einen Zeitraum oder nur ungesicherte Fotos zeigen.', { title: 'Filter' }],
-      ['#mapBar [data-mb=view]', 'Ansicht speichern: Die Karte öffnet sich dann immer genau an dieser Stelle.', { title: 'Ansicht speichern' }],
-      ['.maplegend', 'Die Farben: Türkis heißt vorher, Orange während, Grün nachher.', { title: 'Farben' }],
-      ['#mzIn', 'Plus vergrößert die Karte.', { title: 'Hineinzoomen', act: async () => { await tClick('#mzIn'); await tClick('#mzIn'); }, fx: '#map' }],
-      ['#mzOut', 'Minus verkleinert sie.', { title: 'Herauszoomen', act: async () => { await tClick('#mzOut'); await tClick('#mzOut'); }, fx: '#map' }],
-      ['#mFollow', 'Der Kreis zentriert die Karte wieder auf dich.', { title: 'Auf mich zentrieren' }],
+      ['.tab[data-v=karte]', 'Jetzt die Karte. Hier siehst du auf einen Blick, wo welches Foto entstanden ist.'],
+      ['#map', 'Die Karte zeigt alle Baustellen als Kreise und alle Fotos genau an der Stelle, wo sie aufgenommen wurden. Mit einem Finger verschiebst du die Karte, mit zwei Fingern zoomst du.', { title: 'Karte' }],
+      ['#mapBar .mseg', 'Oben wählst du das Kartenbild: Straßenkarte, Satellit, oder Raster – das geht auch ganz ohne Internet. Ich schalte mal auf Satellit, da erkennst du Gehwege und Einfahrten.', { title: 'Karte oder Satellit', act: async () => { await tClick('#mapBar [data-ml=satellit]'); await tWait(2200); await tClick('#mapBar [data-ml=karte]'); }, fx: '#map' }],
+      ['.maplegend', 'Die Farben der Fotos: Türkis heißt vorher, Orange während der Arbeit, Grün nachher.', { title: 'Farben' }],
+      ['#mzOut', 'Mit Minus zoomst du heraus. Weit draußen fasse ich die Fotos zu Zahlen zusammen, so wie in Foto-GIS. Die Zahl sagt, wie viele Fotos dort liegen.', { title: 'Herauszoomen', act: async () => { M.follow = false; $('#mFollow').classList.remove('on'); const s = tPhotoSite(); await tClick('#mzOut'); await tFly(0.004, s?.lat, s?.lon, 1800); await tWait(500); }, fx: '#map' }],
+      ['#map', 'Ich tippe auf eine Zahl. Die Karte zoomt dann genau dort hinein.', { title: 'Auf eine Zahl tippen', act: async () => { await tWait(400); const c = [...(M.cl || [])].sort((a, b) => b.n - a.n)[0]; if (c) await tMapTap(c); else await tClick('#mzIn'); await tWait(700); }, fx: '#map' }],
+      ['#mzIn', 'Plus zoomt weiter hinein. Ganz nah dran zeige ich jedes Foto als kleines Bild – der farbige Punkt daran ist die Phase.', { title: 'Hineinzoomen', act: async () => { const s = tPhotoSite(); const ps = S.photos.filter(p => p.lat != null && p.kind !== 'video' && (!s || p.siteId === s.id)); let la = s?.lat, lo = s?.lon; if (ps.length) { la = ps.reduce((a, p) => a + p.lat, 0) / ps.length; lo = ps.reduce((a, p) => a + p.lon, 0) / ps.length; } await tClick('#mzIn'); await tFly(2.6, la, lo, 1800); await tWait(900); }, fx: '#map' }],
+      ['#mapBar [data-mb=thumbs]', 'Fotovorschau schaltet die kleinen Bilder an oder aus. Ohne Vorschau siehst du Punkte mit einem Fächer für die Blickrichtung.', { title: 'Fotovorschau', act: async () => { await tClick('#mapBar [data-mb=thumbs]'); await tWait(1800); await tClick('#mapBar [data-mb=thumbs]'); await tWait(500); }, fx: '#map' }],
+      ['#map', 'Jetzt tippe ich ein Foto an. Dann siehst du alles, was dazu gespeichert ist.', { title: 'Foto antippen', act: async () => { await tWait(500); const pt = mapPick(0); if (pt) await tMapTap(pt); await tWait(800); }, fx: '#scrim .sheet img.big', keep: true }],
+      [tKv('Zeit'), 'Wann das Foto aufgenommen wurde – auf die Sekunde genau, direkt von der Handyuhr. Das lässt sich nachträglich nicht ändern.', { title: 'Zeit', keep: true }],
+      [tKv('Position'), 'Wo es aufgenommen wurde: die GPS-Koordinaten und dahinter die Genauigkeit in Metern. Je kleiner die Zahl, desto genauer.', { title: 'Position', keep: true }],
+      [tKv('Blick'), 'In welche Himmelsrichtung die Kamera zeigte, vom Kompass im Handy. So weiß später jeder, aus welcher Richtung fotografiert wurde.', { title: 'Blickrichtung', keep: true }],
+      [tKv('Adresse'), 'Die Adresse suche ich automatisch heraus, sobald Internet da ist – Straße, Hausnummer und Ort.', { title: 'Adresse', keep: true }],
+      [tKv('Baustelle'), 'Zu welcher Baustelle das Foto gehört, und darunter Phase und Kategorie. Das ordne ich beim Fotografieren selbst zu.', { title: 'Baustelle und Phase', keep: true }],
+      [() => $('#scrim .sheet .qual'), 'Oben die Prüfung von damals: ob das Foto scharf war, ob das Licht gepasst hat, und ob es schon gesichert ist.', { title: 'Prüfung und Sicherung', keep: true }],
+      [tKv('Siegel'), 'Das Siegel ist der digitale Fingerabdruck. Damit lässt sich jederzeit beweisen, dass das Foto nicht verändert wurde.', { title: 'Siegel', keep: true }],
+      [() => $('#scrim #pdDesc')?.closest('.fld'), 'Hier kannst du noch eine Beschreibung ergänzen. Sie kommt mit in den Bericht.', { title: 'Beschreibung', keep: true }],
+      ['#map', 'Noch ein zweites Foto. So kannst du in Ruhe eins nach dem anderen anschauen.', { title: 'Noch ein Foto', act: async () => { closeSheet(); await tWait(600); const pt = mapPick(1); if (pt) await tMapTap(pt); await tWait(800); }, fx: '#scrim .sheet img.big', keep: true }],
+      [tKv('Position'), 'Auch hier: Ort, Genauigkeit und Zeit. Siehst du die Unterschiede? Jedes Foto hat seinen eigenen Stempel.', { title: 'Position', keep: true }],
+      [tSh('[data-x=map]'), 'Auf Karte springt zurück und zeigt dir genau dieses Foto auf der Karte.', { title: 'Auf Karte', keep: true }],
+      ['#mapBar [data-mb=filter]', 'Mit dem Filter zeige ich nur bestimmte Fotos. Ich wähle mal nur die Fotos während der Arbeit – die anderen verschwinden.', { title: 'Filter', act: async () => { await tClick('#mapBar [data-mb=filter]'); await tWait(500); await tClick('#scrim [data-fk=phase] [data-fv=W]'); await tWait(500); await tClick('#scrim [data-x=ok]'); await tWait(1600); }, fx: '#map' }],
+      ['#mapBar [data-mb=filter]', 'Und wieder alle zeigen: Filter öffnen, Zurücksetzen.', { title: 'Filter zurücksetzen', act: async () => { await tClick('#mapBar [data-mb=filter]'); await tWait(500); await tClick('#scrim [data-x=reset]'); await tWait(800); }, fx: '#map' }],
+      ['#mapBar [data-mb=view]', 'Ansicht speichern: Ich merke mir genau diesen Ausschnitt. Beim nächsten Öffnen startet die Karte direkt hier – praktisch für die laufende Baustelle.', { title: 'Ansicht speichern', act: async () => { await tClick('#mapBar [data-mb=view]'); await tWait(500); await tClick('#scrim [data-v=save]'); await tWait(600); }, fx: '#mapBar [data-mb=view]' }],
+      ['#mFollow', 'Der Kreis rechts holt die Karte zurück zu deiner eigenen Position. Der blaue Punkt bist du, der helle Fächer zeigt, wohin du schaust.', { title: 'Zu mir', act: () => tClick('#mFollow'), fx: '#map' }],
       [() => { const b = $('#nextBar'); return b && !b.hidden ? b : null; }, 'Diese orange Leiste zeigt dir auf jeder Seite die nächste Aufgabe. Antippen, und es geht los.', { title: 'Nächste Aufgabe' }],
       ['#mapSites', 'Mit diesen Knöpfen springst du direkt zu einer Baustelle.', { title: 'Baustelle wählen' }],
       [() => $('#trassPanel [data-tr=start]') || $('#trassPanel [data-tr=mark]'), 'Trasse aufnehmen: Du läufst den Leitungsverlauf ab, und ich zeichne die Linie per GPS mit. Unterwegs markierst du Muffen, Abzweige oder Hausanschlüsse. Fertige Trassen exportierst du als Shapefile, DXF oder KML für den Netzbetreiber.', { pro: 1 }],
       ['#trassPanel [data-tr=exp]', 'GIS-Export: Hier holst du dir die fertige Trasse als Datei.'],
       ['#trassPanel [data-tr=show]', 'Auf Karte zeigt dir die Trasse oben in der Karte.'],
       ['#trassPanel [data-tr=del]', 'Löschen entfernt die Trasse, nach einer Rückfrage.'],
-      ['#mapInfo', 'Hier unten stehen Details zu Baustellen und Fotos in der Nähe.', { title: 'In der Nähe' }]
+      ['#mapInfo', 'Hier unten stehen Details zur gewählten Baustelle. Tipp auf einen Baustellenkreis, dann siehst du Entfernung, Fotos und die nächste Aufgabe.', { title: 'Baustelle in der Nähe' }]
     ]),
     ...C('Pläne', 'plaene', [
       ['.tab[data-v=plaene]', 'Jetzt die Pläne. Die brauchst du drinnen, wo GPS nicht reicht.'],
@@ -4498,7 +4601,7 @@ function bind() {
   $('#btnDefExport').onclick = defectExportSheet;
   $('#galSeg').onclick = e => { const b = e.target.closest('[data-g]'); if (b) { S.gal.mode = b.dataset.g; S.gal.limit = 60; renderGallery(); } };
   $('#galSites').onclick = e => { const b = e.target.closest('[data-gs]'); if (b) { S.gal.site = b.dataset.gs; S.gal.limit = 60; renderGallery(); } };
-  $('#galList').onclick = e => { if (e.target.id === 'galMore') { S.gal.limit = (S.gal.limit || 60) + 60; renderGallery(); return; } const b = e.target.closest('[data-photo]'); if (b) openPhoto(b.dataset.photo); };
+  $('#galList').onclick = e => { if (e.target.id === 'galMore') { galMore(); return; } const b = e.target.closest('[data-photo]'); if (b) openPhoto(b.dataset.photo); };
   $('#galQ').addEventListener('input', e => { S.gal.q = e.target.value; S.gal.limit = 60; clearTimeout(S.gqT); S.gqT = setTimeout(renderGallery, 180); });
   $('#galView').onclick = e => { const b = e.target.closest('[data-gv]'); if (b) { S.gal.view = b.dataset.gv; S.set.galView = b.dataset.gv; saveSet(); renderGallery(); } };
   $('#galSort').onchange = e => { S.gal.sort = e.target.value; S.gal.limit = 60; renderGallery(); };
