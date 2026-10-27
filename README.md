@@ -24,6 +24,11 @@ GPS-Fotodokumentation für Baustellen – Smolens·KI.
 - **Eigene Vorlagen**: Checklisten im Büro bearbeiten und als Datei ans Team verteilen; Firmen- und Kundenlogo im Bericht
 - **Video, Sprachnotizen, 360°-Fotos** (Panorama-Betrachter)
 - **Schnittstellen**: Webhook zu Büro-Software (z. B. Make, Zapier, Power Automate), Projekt-Export als JSON, Mängel als CSV/ICS
+- **Zwei Modi**: *Einfach* für Bediener (großer Kamera-Knopf, Gesichert/Nicht gesichert, Checkliste, Karte, Fotoliste – wie Foto-GIS) und *Komplett* für Supervisor (alle Funktionen); Wechsel zu Komplett auf Wunsch mit PIN
+- **Echte Karte**: Straßenkarte (OpenStreetMap) oder Satellit, Fotovorschau als Bilder auf der Karte, Zahlen-Bündel beim Herauszoomen, Filter (Baustelle, Phase, Zeitraum, ungesichert), gespeicherte Kartenansicht, besuchte Gebiete offline – auch als Kartenhintergrund im PDF-Lageplan
+- **Fotoliste mit Suche**: Liste oder Raster, Suche nach Baustelle, Pflichtfoto, Notiz, Datum; Sortierung; lädt in Etappen (getestet mit 10.000 Fotos)
+- **Anheften** für Orte ohne GPS: neue Fotos übernehmen Ort und Baustelle eines gewählten Fotos
+- **Fotoauflösung** wählbar (Hoch / Mittel / Klein)
 - **Sprach-Rundgang mit Live-Demo**: SEF-KI erklärt jeden Knopf und macht es vor (tippt, unterschreibt, fotografiert, legt Mängel an) – auf Beispieldaten, echte Daten bleiben unverändert. Kapitel, Hören/Lesen, Tempo, automatische Wahl der natürlichsten Stimme, optional Premium-Stimme (ElevenLabs, offline zwischengespeichert)
 
 ## Aufs Handy

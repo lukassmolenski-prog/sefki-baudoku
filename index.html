@@ -192,10 +192,53 @@ button{cursor:pointer;background:none;border:0;padding:0}
 /* ---------- Karte ---------- */
 .mapwrap{position:relative;height:min(62vh,560px);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#040a14;touch-action:none}
 #map{width:100%;height:100%;display:block}
+.galtools{align-items:center}
+.galtools input{flex:1;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8)}
+.galtools .segs{flex:none}
+.plist{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:6px}
+.prow{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center;padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;background:rgba(8,24,48,.35)}
+.prow:last-child{border-bottom:0}
+.prow:active{background:rgba(63,216,239,.1)}
+.pth{position:relative;width:62px;height:62px;border-radius:3px;overflow:hidden;background:#0a1830}
+.pth img{width:100%;height:100%;object-fit:cover;display:block}
+.pth .vb{bottom:2px;right:2px}
+.pmid{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pmid b{font-size:14.5px;color:var(--ink)}
+.pmid .pl{font-size:13px;color:var(--ink);opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pmid .ps{font-family:var(--f-mono);font-size:10.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pend{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pend .pb{position:static}
+.sync{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;color:#04101e}
+.sync.ok{background:var(--ok)}.sync.no{background:var(--bad);color:#fff}
+body.simple .pro-only{display:none!important}
+body:not(.simple) .simple-only{display:none!important}
+body.simple .nav{grid-template-columns:1fr 1fr 66px 1fr 1fr}
+body.simple #simpleHero{order:-1}
+body.simple #v-cockpit{display:flex;flex-direction:column}
+.galtools .segs button{width:44px;height:42px;padding:0;font-size:19px;line-height:1}
+.shero{display:flex;flex-direction:column;align-items:center;gap:16px;padding:22px 16px 16px}
+.bigcam{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--ink)}
+.bigcam span{width:132px;height:132px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#1aa6b8,#0b5d73);border:3px solid #49e3c8;box-shadow:0 0 0 14px rgba(63,216,239,.08),0 0 0 28px rgba(63,216,239,.04),0 10px 40px rgba(0,0,0,.45)}
+.bigcam span svg{width:58px;height:58px;color:#fff}
+.bigcam:active span{transform:scale(.96)}
+.bigcam b{font-family:var(--f-display);font-size:17px;letter-spacing:.02em}
+.cnts{display:flex;gap:28px;justify-content:center;width:100%}
+.cnt{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--ink);font-size:14px}
+.cnt .ring{position:relative;width:84px;height:84px;border-radius:50%;display:grid;place-items:center;border:3px solid rgba(82,206,236,.3);font-family:var(--f-mono);font-size:26px;font-weight:700}
+.cnt .ring i{position:absolute;left:-4px;top:-4px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:13px;color:#fff}
+.cnt .ring.ok i{background:var(--ok);color:#04101e}.cnt .ring.no i{background:var(--bad)}
+.grid .th.on{outline:3px solid var(--amber)}
+.mapbar{position:absolute;left:8px;top:8px;right:56px;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
+.mapbar>*{pointer-events:auto}
+.mseg{display:flex;border:1px solid var(--line-hi);border-radius:999px;overflow:hidden;background:rgba(6,16,32,.88)}
+.mseg button{padding:7px 11px;font-family:var(--f-mono);font-size:11px;letter-spacing:.04em;color:var(--mute)}
+.mseg button.on{background:var(--cyan);color:#04101e;font-weight:700}
+.mbtn{padding:7px 11px;border:1px solid var(--line-hi);border-radius:999px;background:rgba(6,16,32,.88);font-family:var(--f-mono);font-size:11px;color:var(--ink);white-space:nowrap}
+.mbtn.on{border-color:var(--cyan);color:var(--cyan)}
 .mapctl{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}
 .mapctl button{width:38px;height:38px;border:1px solid var(--line-hi);background:rgba(6,16,32,.85);border-radius:var(--r);font-family:var(--f-mono);font-size:18px;display:grid;place-items:center}
 .mapctl button.on{border-color:var(--cyan);color:var(--cyan)}
-.maplegend{position:absolute;left:10px;top:10px;display:flex;gap:10px;font-family:var(--f-mono);font-size:10px;color:var(--mute);background:rgba(6,16,32,.8);padding:5px 8px;border:1px solid var(--line);border-radius:3px}
+.maplegend{position:absolute;left:8px;bottom:52px;display:flex;gap:10px;font-family:var(--f-mono);font-size:10px;color:var(--mute);background:rgba(6,16,32,.8);padding:5px 8px;border:1px solid var(--line);border-radius:3px}
 .maplegend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:0}
 
 /* ---------- Galerie ---------- */
@@ -489,7 +532,8 @@ body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
       <div class="cards" id="cards"></div>
     </section>
     <section class="panel" id="sitePanel"></section>
-    <section class="stats" id="stats"></section>
+    <section class="panel simple-only shero" id="simpleHero"></section>
+    <section class="stats pro-only" id="stats"></section>
     <section class="panel">
       <div class="ph"><h2>Baustellen</h2><span class="lbl" id="siteCount"></span></div>
       <div class="slist" id="siteList"></div>
@@ -503,6 +547,7 @@ body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
   <main class="view stack" id="v-karte" hidden>
     <div class="mapwrap">
       <canvas id="map" aria-label="Karte mit Baustellen und Fotos"></canvas>
+      <div class="mapbar" id="mapBar"></div>
       <div class="maplegend"><span><i style="background:#3fd8ef"></i>Vorher</span><span><i style="background:#ffa040"></i>Während</span><span><i style="background:#48e59a"></i>Nachher</span></div>
       <div class="mapctl">
         <button id="mzIn" aria-label="Hineinzoomen">+</button>
@@ -511,7 +556,7 @@ body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
       </div>
     </div>
     <div class="chips" id="mapSites"></div>
-    <section class="panel" id="trassPanel"></section>
+    <section class="panel pro-only" id="trassPanel"></section>
     <section class="panel" id="mapInfo"></section>
   </main>
 
@@ -540,7 +585,10 @@ body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
     <div class="stack">
       <div class="seg" id="galSeg"></div>
       <div class="chips" id="galSites"></div>
-      <div class="row"><button class="btn" id="btnImport">Fotos importieren</button><button class="btn" id="btnVerify">Echtheit prüfen</button></div>
+      <div class="inrow galtools"><input type="search" id="galQ" placeholder="Suchen: Baustelle, Pflichtfoto, Notiz, Datum …" enterkeyhint="search" aria-label="Fotos durchsuchen">
+        <div class="segs" id="galView"><button type="button" data-gv="list" aria-label="Liste">☰</button><button type="button" data-gv="grid" aria-label="Raster">▦</button></div></div>
+      <div class="inrow" style="align-items:center"><span class="lbl" id="galCount" style="flex:1"></span><select id="galSort" aria-label="Sortierung" style="width:auto;padding:6px 8px"><option value="new">Neueste zuerst</option><option value="old">Älteste zuerst</option><option value="site">Nach Baustelle</option></select></div>
+      <div class="row pro-only"><button class="btn" id="btnImport">Fotos importieren</button><button class="btn" id="btnVerify">Echtheit prüfen</button></div>
     </div>
     <div id="galList"></div>
   </main>
@@ -555,7 +603,7 @@ body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
       <div class="chips" id="repSites"></div>
     </section>
     <section class="panel" id="repSum"></section>
-    <section class="panel" id="dailyPanel"></section>
+    <section class="panel pro-only" id="dailyPanel"></section>
     <section class="panel" id="notesPanel"></section>
   </main>
 </div>
@@ -566,9 +614,9 @@ body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
     <nav class="nav" aria-label="Hauptnavigation">
       <button class="tab on" data-v="cockpit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3"/></svg>Cockpit</button>
       <button class="tab" data-v="karte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>Karte</button>
-      <button class="tab" data-v="plaene"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18"/><path d="M3 10h8v11M11 14h10M15 3v7"/></svg>Pläne</button>
+      <button class="tab pro-only" data-v="plaene"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18"/><path d="M3 10h8v11M11 14h10M15 3v7"/></svg>Pläne</button>
       <button class="fab" id="fab" aria-label="Foto aufnehmen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg></button>
-      <button class="tab" data-v="maengel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.6"/></svg>Mängel<span class="tbadge" id="defBadge" hidden></span></button>
+      <button class="tab pro-only" data-v="maengel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.6"/></svg>Mängel<span class="tbadge" id="defBadge" hidden></span></button>
       <button class="tab" data-v="galerie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7.5" height="7.5"/><rect x="13.5" y="3" width="7.5" height="7.5"/><rect x="3" y="13.5" width="7.5" height="7.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5"/></svg>Galerie</button>
       <button class="tab" data-v="bericht"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h7"/></svg>Bericht</button>
     </nav>
@@ -1022,6 +1070,8 @@ function lotse() {
     cards.splice(1, 0, { t: 'Feierabend-Check', x: `${open} Foto${open > 1 ? 's sind' : ' ist'} noch nicht gesichert. Ein ZIP, und alles ist sicher.`, tag: 'SICHERN', a: () => { S.rep.range = 'open'; S.rep.site = 'all'; go('bericht'); } });
   }
   let html = esc(say); hl.forEach(w => { html = html.replace(esc(w), `<span class="hl">${esc(w)}</span>`); });
+  if (S.set.anchor) { key += '|anc'; cards.unshift({ t: '📌 Ort angeheftet', x: `Neue Fotos bekommen den Ort von „${S.set.anchor.label}“. Tippen zum Lösen.`, tag: 'ANGEHEFTET', a: () => openAnchor(), hot: true }); }
+  if (S.set.mode === 'simple') { const keep = cards.filter(c => !['ABNAHME', 'PLAN', 'MÄNGEL', 'TEST'].includes(c.tag)); cards.splice(0, cards.length, ...keep); }
   return { say, html, cards: cards.slice(0, 3), key };
 }
 
@@ -1113,7 +1163,7 @@ function renderCockpit() {
     <div class="stat"><div class="lbl">Ungesichert</div><div class="v ${open ? 'warn' : 'good'}">${open}</div><div class="s">${open ? 'noch exportieren' : 'alles gesichert'}</div></div>
     <div class="stat"><div class="lbl">Fehlend</div><div class="v ${miss ? 'warn' : 'good'}">${miss}</div><div class="s">Pflichtfotos</div></div>
     <button class="stat" data-gomaengel="1" style="text-align:left"><div class="lbl">Mängel</div><div class="v" style="color:${S.defects.some(isOver) ? 'var(--bad)' : openDefs().length ? 'var(--amber)' : 'var(--ok)'}">${openDefs().length}</div><div class="s">${S.defects.some(isOver) ? S.defects.filter(isOver).length + ' überfällig' : 'offen'}</div></button>`;
-  renderSiteList(); renderDemoBox(); renderLive();
+  renderSiteList(); renderDemoBox(); renderLive(); renderSimpleHero();
 }
 function renderSiteList() {
   const act = activeSites(), arch = S.sites.length - act.length;
@@ -1151,6 +1201,7 @@ function refresh(force) {
   updDefBadge(); PV?.draw?.();
 }
 function go(v) {
+  if (S.set.mode === 'simple' && (v === 'plaene' || v === 'maengel') && !window.TOUR_ON) v = 'cockpit';
   S.view = v;
   $$('.view').forEach(x => x.hidden = x.id !== 'v-' + v);
   $$('.tab').forEach(t => t.classList.toggle('on', t.dataset.v === v));
@@ -1186,7 +1237,7 @@ function checkLeave() {
 let camStream = null, camCtx = { siteId: undefined, itemId: undefined }, wakeLock = null, pending = null, camRaf = 0;
 function camTarget() {
   let site = null, item = null;
-  if (camCtx.siteId === undefined) { const st = siteStatus(); site = st.state === 'in' ? st.site : null; }
+  if (camCtx.siteId === undefined) { if (S.set.anchor) site = S.sites.find(s => s.id === S.set.anchor.siteId) || null; else { const st = siteStatus(); site = st.state === 'in' ? st.site : null; } }
   else site = camCtx.siteId ? S.sites.find(s => s.id === camCtx.siteId) || null : null;
   if (site) {
     const pr = progress(site);
@@ -1269,6 +1320,7 @@ function renderCamHud() {
     (liveQ && (liveQ.flags.includes('dunkel') || liveQ.flags.includes('überbelichtet')) ? `<span class="pill" style="color:var(--amber)">${liveQ.flags.includes('dunkel') ? 'ZU DUNKEL' : 'ZU HELL'}</span>` : '') +
     (np || nv ? `<span class="pill" style="color:var(--amber)">${[np ? np + ' PERSON' + (np > 1 ? 'EN' : '') : '', nv ? nv + ' FAHRZEUG' + (nv > 1 ? 'E' : '') : ''].filter(Boolean).join(' · ')} → UNKENNTLICH</span>` : '') +
     (camCtx.mark ? `<span class="pill" style="color:var(--amber)">TRASSENPUNKT ${curTrasse()?.marks.find(m => m.id === camCtx.mark)?.n || ''}</span>` : '') +
+    (S.set.anchor ? '<span class="pill" style="color:var(--amber)">📌 ANGEHEFTET</span>' : '') +
     (S.set.series ? '<span class="pill" style="color:var(--amber)">SERIE</span>' : '') +
     (mediaRec ? `<span class="pill" style="color:var(--bad)">● REC ${fmtDur((Date.now() - recStart) / 1000)}</span>` : camModeV === 'video' ? '<span class="pill" style="color:var(--bad)">VIDEO</span>' : '') +
     (Voice.on ? '<span class="pill" style="color:var(--amber)">HÖRT ZU</span>' : '');
@@ -1280,7 +1332,7 @@ function renderLevel() {
   l.hidden = false; const g = Math.max(-30, Math.min(30, S.tilt.gamma));
   l.style.transform = `rotate(${-g}deg)`; l.classList.toggle('ok', Math.abs(g) < 2.5);
 }
-function snapMeta() { return { ts: Date.now(), lat: S.pos?.lat ?? null, lon: S.pos?.lon ?? null, acc: S.pos?.acc ?? null, alt: S.pos?.alt ?? null, fix: S.pos?.fix || null, heading: S.heading, src: S.pos?.src || null }; }
+function snapMeta() { const A = S.set.anchor; if (A) return { ts: Date.now(), lat: A.lat, lon: A.lon, acc: A.acc ?? null, alt: null, fix: 'angeheftet', heading: S.heading, src: 'anchor', anchorFrom: A.from }; return { ts: Date.now(), lat: S.pos?.lat ?? null, lon: S.pos?.lon ?? null, acc: S.pos?.acc ?? null, alt: S.pos?.alt ?? null, fix: S.pos?.fix || null, heading: S.heading, src: S.pos?.src || null }; }
 async function shoot() {
   if (camModeV === 'video') { toggleVideo(); return; }
   if (!camStream) { $('#fileCap').click(); return; }
@@ -1296,8 +1348,9 @@ function fitCanvas(src, max = 2560) {
   const c = document.createElement('canvas'); c.width = Math.round(w * k); c.height = Math.round(h * k);
   c.getContext('2d').drawImage(src, 0, 0, c.width, c.height); return c;
 }
+const RES = { hoch: 4000, mittel: 2560, klein: 1600 };
 async function handleCapture(src, meta) {
-  const c = fitCanvas(src), q = analyze(c), tg = camTarget();
+  const c = fitCanvas(src, RES[S.set.res] || 2560), q = analyze(c), tg = camTarget();
   const f = {
     siteId: tg.site?.id || '', itemId: tg.item?.id || '', phase: tg.item?.phase || S.set.lastPhase || 'W',
     cat: tg.item?.cat || S.set.lastCat || 'uebersicht', labels: (S.set.series && S.set.lastLabelsStr) || '', desc: ''
@@ -1391,14 +1444,14 @@ function showReview(f) {
     ${isVid ? `<video class="big" src="${pending.vurl}" controls playsinline></video>` : '<img class="big" id="rvImg" alt="Aufgenommenes Foto">'}
     <div class="qual">${isVid ? `<span class="q g">VIDEO ${fmtDur(pending.dur)}</span>${meta.lat != null ? `<span class="q g">GPS ±${fmtAcc(meta.acc)}</span>` : '<span class="q b">KEIN GPS</span>'}` : qualHTML(q, meta)}</div><div class="qual" id="rvPriv"></div>${isVid ? '' : warn}
     <div id="rvAI"></div>
-    ${!isVid && !camCtx.defect && !camCtx.mark ? '<label class="tog" style="padding:8px 0"><span>Als Mangel erfassen<small>Nach dem Speichern öffne ich die Mangel-Erfassung mit diesem Foto.</small></span><input type="checkbox" class="sw" id="rvAsDef"></label>' : ''}
+    ${!isVid && !camCtx.defect && !camCtx.mark ? '<label class="tog pro-only" style="padding:8px 0"><span>Als Mangel erfassen<small>Nach dem Speichern öffne ich die Mangel-Erfassung mit diesem Foto.</small></span><input type="checkbox" class="sw" id="rvAsDef"></label>' : ''}
     <div class="fld" id="rvDepthF"${needDepth ? '' : ' hidden'}><label class="lbl" for="rvDepth">Tiefe (cm)</label><input type="text" inputmode="decimal" id="rvDepth" placeholder="wird von der KI abgelesen – oder selbst eintragen"></div>
     <div class="fld" style="margin-top:14px"><label class="lbl" for="rvSite">Baustelle</label>
       <select id="rvSite"><option value="">Ohne Baustelle</option>${activeSites().map(s => `<option value="${s.id}"${s.id === f.siteId ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</select></div>
     <div class="fld"><label class="lbl" for="rvItem">Pflichtfoto</label><select id="rvItem">${itemOptions(f.siteId, f.itemId)}</select></div>
-    <div class="fld"><span class="lbl">Phase</span><div class="phs" id="rvPh">${['V', 'W', 'N'].map(p => `<button type="button" data-p="${p}" class="${f.phase === p ? 'on' : ''}">${PH[p].n}</button>`).join('')}</div></div>
-    <div class="fld"><span class="lbl">Kategorie</span><div class="cats" id="rvCat">${CATS.map(([k, n]) => `<button type="button" class="cat${f.cat === k ? ' on' : ''}" data-c="${k}">${icon(k)}${n}</button>`).join('')}</div></div>
-    <div class="fld"><label class="lbl" for="rvLabels">Stichworte (mit Komma)</label><input type="text" id="rvLabels" value="${esc(f.labels)}" placeholder="z. B. Nacharbeit, Telekom, Achse 3">
+    <div class="fld pro-only"><span class="lbl">Phase</span><div class="phs" id="rvPh">${['V', 'W', 'N'].map(p => `<button type="button" data-p="${p}" class="${f.phase === p ? 'on' : ''}">${PH[p].n}</button>`).join('')}</div></div>
+    <div class="fld pro-only"><span class="lbl">Kategorie</span><div class="cats" id="rvCat">${CATS.map(([k, n]) => `<button type="button" class="cat${f.cat === k ? ' on' : ''}" data-c="${k}">${icon(k)}${n}</button>`).join('')}</div></div>
+    <div class="fld pro-only"><label class="lbl" for="rvLabels">Stichworte (mit Komma)</label><input type="text" id="rvLabels" value="${esc(f.labels)}" placeholder="z. B. Nacharbeit, Telekom, Achse 3">
       ${S.set.lastLabels?.length ? `<div class="chips" id="rvLabChips">${S.set.lastLabels.slice(0, 8).map(l => `<button type="button" class="chip" data-l="${esc(l)}">${esc(l)}</button>`).join('')}</div>` : ''}</div>
     <div class="fld"><label class="lbl" for="rvDesc">Beschreibung</label><div class="inrow"><textarea id="rvDesc" placeholder="Was sieht man? (optional)"></textarea>
       ${hasDictation() ? '<button type="button" class="iconbtn" id="rvMic" aria-label="Diktieren" style="align-self:flex-start;width:44px;height:44px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>' : ''}</div></div>
@@ -1691,12 +1744,12 @@ function openSite(id) {
     <p class="sub">${esc(TPL[s.tpl]?.n || '')}${s.order ? ' · Nr. ' + esc(s.order) : ''} · Umkreis ${s.radius} m${d != null ? ' · ' + fmtDist(d) + ' entfernt' : ''}</p>
     <div style="display:flex;gap:14px;align-items:center">${ringSVG(s)}<div class="note"><b>${pr.done} von ${pr.must}</b> Pflichtfotos erledigt.${pr.next ? `<br>Als Nächstes: <b style="color:var(--amber)">${esc(pr.next.label)}</b>` : '<br>Alles komplett.'}<br>${S.photos.filter(p => p.siteId === s.id).length} Fotos insgesamt.</div></div>
     ${checklistHTML(s)}
-    <div class="row" style="margin-top:16px"><button class="btn" data-x="plans">Pläne (${plansOf(s.id).length})</button><button class="btn" data-x="defs">Mängel (${S.defects.filter(d => d.siteId === s.id && (d.status === 'open' || d.status === 'work')).length} offen)</button></div>
-    <div class="row" style="margin-top:8px"><button class="btn amb" data-x="abn">Abnahme mit Unterschrift</button></div>
-    <div class="row" style="margin-top:8px"><button class="btn" data-x="tpl">Checkliste bearbeiten</button><button class="btn" data-x="client">Auftraggeber & Logo</button></div>
+    <div class="row pro-only" style="margin-top:16px"><button class="btn" data-x="plans">Pläne (${plansOf(s.id).length})</button><button class="btn" data-x="defs">Mängel (${S.defects.filter(d => d.siteId === s.id && (d.status === 'open' || d.status === 'work')).length} offen)</button></div>
+    <div class="row pro-only" style="margin-top:8px"><button class="btn amb" data-x="abn">Abnahme mit Unterschrift</button></div>
+    <div class="row pro-only" style="margin-top:8px"><button class="btn" data-x="tpl">Checkliste bearbeiten</button><button class="btn" data-x="client">Auftraggeber & Logo</button></div>
     <div class="row" style="margin-top:8px"><button class="btn" data-x="route">Route</button><button class="btn" data-x="report">Bericht</button></div>
-    <div class="row" style="margin-top:8px"><button class="btn" data-x="center">Mitte = meine Position</button><button class="btn" data-x="radius">Umkreis ändern</button></div>
-    <div class="row" style="margin-top:8px"><button class="btn" data-x="arch">${s.archived ? 'Wieder aktivieren' : 'Abschließen (archivieren)'}</button><button class="btn danger" data-x="del">Löschen</button></div>`);
+    <div class="row pro-only" style="margin-top:8px"><button class="btn" data-x="center">Mitte = meine Position</button><button class="btn" data-x="radius">Umkreis ändern</button></div>
+    <div class="row pro-only" style="margin-top:8px"><button class="btn" data-x="arch">${s.archived ? 'Wieder aktivieren' : 'Abschließen (archivieren)'}</button><button class="btn danger" data-x="del">Löschen</button></div>`);
   el.addEventListener('click', async e => {
     const row = e.target.closest('.crow');
     if (row) { closeSheet(); if (row.dataset.photo) openPhoto(row.dataset.photo); else openCamera(row.dataset.site, row.dataset.item); return; }
@@ -1772,8 +1825,9 @@ function openPhoto(id) {
       ${p.privacy?.length ? `<dt>Datenschutz</dt><dd>${p.privacy.length} Bereich${p.privacy.length > 1 ? 'e' : ''} unkenntlich gemacht</dd>` : ''}
       <dt>Siegel</dt><dd><div class="seal">${p.hash ? `<b>#${p.seq} · SHA-256</b> ${p.hash}<br>${otsTxt(p)}${p.origHash ? '<br>Bearbeitet – Original versiegelt: ' + p.origHash.slice(0, 16) + '…' : ''}` : 'nicht versiegelt (älteres Foto)'}</div></dd></dl>
     <div class="fld"><label class="lbl" for="pdDesc">Beschreibung</label><textarea id="pdDesc">${esc(p.desc)}</textarea></div>
-    <div class="row">${isV ? '' : '<button class="btn" data-x="edit">Markieren / Unkenntlich</button>'}<button class="btn" data-x="share">Teilen</button></div>
-    <div class="row" style="margin-top:8px"><button class="btn amb" data-x="defect">Als Mangel erfassen</button><button class="btn" data-x="plan"${p.siteId ? '' : ' disabled'}>${p.plan ? 'Auf Plan ansehen' : 'Auf Plan verorten'}</button></div>
+    <div class="row">${isV ? '' : '<button class="btn pro-only" data-x="edit">Markieren / Unkenntlich</button>'}<button class="btn" data-x="share">Teilen</button></div>
+    <div class="row pro-only" style="margin-top:8px"><button class="btn amb" data-x="defect">Als Mangel erfassen</button><button class="btn" data-x="plan"${p.siteId ? '' : ' disabled'}>${p.plan ? 'Auf Plan ansehen' : 'Auf Plan verorten'}</button></div>
+    ${p.lat != null ? `<div class="row" style="margin-top:8px"><button class="btn" data-x="anchor">${S.set.anchor?.from === p.id ? '📌 Anheften lösen' : '📌 Ort anheften (für Orte ohne GPS)'}</button></div>` : ''}
     <div class="row" style="margin-top:8px"><button class="btn" data-x="map"${p.lat == null ? ' disabled' : ''}>Auf Karte</button><button class="btn danger" data-x="del">Löschen</button></div>`);
   if (isP) panoViewer($('#panoHost', el), p.blob);
   $('#pdDesc', el).onchange = async e => { p.desc = e.target.value.trim(); p.exported = false; await DB.put('photos', p); toast('Beschreibung gespeichert.'); };
@@ -1785,6 +1839,7 @@ function openPhoto(id) {
     if (x === 'plan') { closeSheet(); if (p.plan) openPlan(p.plan.planId); else choosePlan(p.siteId, { t: 'p', id: p.id }); }
     if (x === 'share') saveFile(fileName(p), p.blob, true);
     if (x === 'map') { closeSheet(); M.lat = p.lat; M.lon = p.lon; M.follow = false; M.z = 2.2; M.sel = p.id; go('karte'); }
+    if (x === 'anchor') { if (S.set.anchor?.from === p.id) unpinAnchor(); else pinAnchor(p); closeSheet(); return; }
     if (x === 'del') { if (b.dataset.sure) { await DB.del('photos', p.id); S.photos = S.photos.filter(z => z.id !== p.id); closeSheet(); toast('Foto gelöscht.'); refresh(true); } else { b.dataset.sure = '1'; b.textContent = 'Wirklich löschen?'; } }
   });
 }
@@ -1843,76 +1898,199 @@ async function openMarkup(p) {
   addEventListener('resize', layout, { once: true }); requestAnimationFrame(layout);
 }
 
-/* ---------------- Karte ---------------- */
-const M = { lat: null, lon: null, z: 1.2, follow: true, sel: null, raf: 0, ptrs: new Map(), pinch: null, moved: 0, siteSel: null };
+/* ---------------- Karte (Web-Mercator, Straßenkarte / Satellit) ---------------- */
+const M = { lat: null, lon: null, z: 1.2, follow: true, sel: null, raf: 0, ptrs: new Map(), pinch: null, moved: 0, siteSel: null, pts: [], cl: [] };
+const ER = 6378137, mX = lon => ER * lon * RAD, mY = lat => ER * Math.log(Math.tan(Math.PI / 4 + lat * RAD / 2)), mLat = y => (2 * Math.atan(Math.exp(y / ER)) - Math.PI / 2) / RAD;
+const TILES = {
+  karte: { url: (z, x, y) => `https://tile.openstreetmap.org/${z}/${x}/${y}.png`, max: 19, attr: '© OpenStreetMap-Mitwirkende' },
+  satellit: { url: (z, x, y) => `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`, max: 19, attr: 'Bild: Esri, Maxar, Earthstar Geographics' }
+};
+const tileCache = new Map();
+function tileImg(layer, z, x, y) {
+  const n = 2 ** z; x = ((x % n) + n) % n; if (y < 0 || y >= n) return null;
+  const k = layer + '/' + z + '/' + x + '/' + y; let t = tileCache.get(k);
+  if (!t) {
+    t = { img: new Image(), ok: false, err: false }; t.img.crossOrigin = 'anonymous'; t.img.decoding = 'async';
+    t.img.onload = () => { t.ok = true; }; t.img.onerror = () => { t.err = true; };
+    t.img.src = TILES[layer].url(z, x, y); tileCache.set(k, t);
+    if (tileCache.size > 600) { for (const [kk, v] of tileCache) { if (v.ok || v.err) { tileCache.delete(kk); if (tileCache.size <= 450) break; } } }
+  } else { tileCache.delete(k); tileCache.set(k, t); }
+  return t;
+}
+const mapK = () => M.z * Math.cos(M.lat * RAD); // Bildpunkte je Mercator-Meter
+function mproj(lat, lon, W, H) { const k = mapK(); return [W / 2 + (mX(lon) - mX(M.lon)) * k, H / 2 - (mY(lat) - mY(M.lat)) * k]; }
+function munproj(x, y, W, H) { const k = mapK(); return { lon: (mX(M.lon) + (x - W / 2) / k) / (ER * RAD), lat: mLat(mY(M.lat) - (y - H / 2) / k) }; }
+/* Kacheln in einen Canvas zeichnen; liefert true, wenn alles geladen war */
+function drawTiles(g, layer, cLat, cLon, kPx, W, H, alpha = 1) {
+  const L = TILES[layer]; if (!L) return true;
+  const Z = Math.log2(kPx * 2 * Math.PI * ER / 256), zt = Math.max(1, Math.min(L.max, Math.round(Z)));
+  const n = 2 ** zt, ts = kPx * 2 * Math.PI * ER / n; // Kachelgröße in Bildpunkten
+  const tx = (mX(cLon) + Math.PI * ER) / (2 * Math.PI * ER) * n, ty = (Math.PI * ER - mY(cLat)) / (2 * Math.PI * ER) * n;
+  const x0 = Math.floor(tx - W / 2 / ts), x1 = Math.floor(tx + W / 2 / ts), y0 = Math.floor(ty - H / 2 / ts), y1 = Math.floor(ty + H / 2 / ts);
+  if ((x1 - x0 + 1) * (y1 - y0 + 1) > 140) return true;
+  let all = true; g.save(); g.globalAlpha = alpha; g.imageSmoothingQuality = 'high';
+  for (let j = y0; j <= y1; j++) for (let i = x0; i <= x1; i++) {
+    const sx = W / 2 + (i - tx) * ts, sy = H / 2 + (j - ty) * ts, t = tileImg(layer, zt, i, j);
+    if (t?.ok) { g.drawImage(t.img, sx, sy, ts + 0.6, ts + 0.6); continue; }
+    all = false;
+    for (let up = 1; up <= 4 && zt - up >= 1; up++) { // gröbere Kachel als Platzhalter
+      const f = 2 ** up, p = tileCache.get(layer + '/' + (zt - up) + '/' + ((((i >> up) % (n / f)) + n / f) % (n / f)) + '/' + (j >> up));
+      if (p?.ok) { const ox = (((i % f) + f) % f) * 256 / f, oy = (((j % f) + f) % f) * 256 / f; g.drawImage(p.img, ox, oy, 256 / f, 256 / f, sx, sy, ts + 0.6, ts + 0.6); break; }
+    }
+  }
+  g.restore(); return all;
+}
+const thumbImgs = new Map();
+function thumbImg(p) { let t = thumbImgs.get(p.id); if (!t) { t = new Image(); t.src = p.thumb; thumbImgs.set(p.id, t); if (thumbImgs.size > 400) thumbImgs.delete(thumbImgs.keys().next().value); } return t.complete && t.naturalWidth ? t : null; }
+function mapPhotos() {
+  const f = S.mapF || {}, now = Date.now();
+  return S.photos.filter(p => p.lat != null && (!f.site || f.site === 'all' || (f.site === 'none' ? !p.siteId : p.siteId === f.site)) && (!f.phase || f.phase === p.phase)
+    && (!f.days || now - p.ts < f.days * 864e5) && (!f.open || !p.exported));
+}
+const mapFilterOn = () => { const f = S.mapF || {}; return !!((f.site && f.site !== 'all') || f.phase || f.days || f.open); };
 function mapStart() {
   const cv = $('#map');
-  if (M.lat == null) { const c = S.pos || activeSites()[0] || { lat: 49.7942, lon: 9.9512 }; M.lat = c.lat; M.lon = c.lon; }
-  renderMapSide();
+  if (M.lat == null) {
+    const v = S.set.mapView;
+    if (v) { M.lat = v.lat; M.lon = v.lon; M.z = v.z; M.follow = false; $('#mFollow').classList.remove('on'); }
+    else { const c = S.pos || activeSites()[0] || { lat: 49.7942, lon: 9.9512 }; M.lat = c.lat; M.lon = c.lon; }
+  }
+  renderMapSide(); renderMapBar();
   cancelAnimationFrame(M.raf);
   const loop = () => { drawMap(cv); M.raf = requestAnimationFrame(loop); }; loop();
 }
 function mapStop() { cancelAnimationFrame(M.raf); }
-function mproj(lat, lon, W, H) { return [W / 2 + (lon - M.lon) * 111320 * Math.cos(M.lat * RAD) * M.z, H / 2 - (lat - M.lat) * 110540 * M.z]; }
 function drawMap(cv) {
   const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight; if (!W) return;
   if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
   const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
   if (M.follow && S.pos) { M.lat += (S.pos.lat - M.lat) * 0.15; M.lon += (S.pos.lon - M.lon) * 0.15; }
-  g.fillStyle = '#040a14'; g.fillRect(0, 0, W, H);
-  const steps = [0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]; const step = steps.find(s => s * M.z >= 70) || 10000; const px = step * M.z;
-  const mx = M.lon * 111320 * Math.cos(M.lat * RAD), my = M.lat * 110540;
-  const offX = ((-mx * M.z) % px + px) % px, offY = ((my * M.z) % px + px) % px;
-  g.strokeStyle = 'rgba(63,216,239,.07)'; g.lineWidth = 1; g.beginPath();
-  for (let x = (W / 2 + offX) % px; x < W; x += px) { g.moveTo(x, 0); g.lineTo(x, H); }
-  for (let y = (H / 2 + offY) % px; y < H; y += px) { g.moveTo(0, y); g.lineTo(W, y); }
-  g.stroke();
+  const layer = S.set.mapLayer || 'karte', light = layer === 'karte';
+  g.fillStyle = light ? '#e8ecef' : '#040a14'; g.fillRect(0, 0, W, H);
+  const steps = [0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000]; const step = steps.find(s => s * M.z >= 70) || 100000; const px = step * M.z;
+  if (layer !== 'raster' && navigator.onLine !== false) drawTiles(g, layer, M.lat, M.lon, mapK(), W, H);
+  else {
+    const k = mapK(), mx = mX(M.lon) * k, my = mY(M.lat) * k, pk = step * k;
+    g.strokeStyle = 'rgba(63,216,239,.07)'; g.lineWidth = 1; g.beginPath();
+    for (let x = ((W / 2 - mx) % pk + pk) % pk; x < W; x += pk) { g.moveTo(x, 0); g.lineTo(x, H); }
+    for (let y = ((H / 2 + my) % pk + pk) % pk; y < H; y += pk) { g.moveTo(0, y); g.lineTo(W, y); }
+    g.stroke();
+  }
+  const ink = light ? '#0a1830' : '#e2f6ff', halo = light ? 'rgba(255,255,255,.92)' : 'rgba(4,10,20,.85)';
+  const label = (txt, x, y, col) => { g.lineWidth = 3.5; g.strokeStyle = halo; g.lineJoin = 'round'; g.strokeText(txt, x, y); g.fillStyle = col; g.fillText(txt, x, y); };
   const t = performance.now() / 1000;
   // Baustellen
   for (const s of S.sites) {
     const [x, y] = mproj(s.lat, s.lon, W, H), r = Math.max(6, s.radius * M.z), pr = progress(s);
-    const col = s.archived ? 'rgba(137,169,189,.5)' : pr.missing.length ? '#ffa040' : '#48e59a';
-    g.fillStyle = s.archived ? 'rgba(137,169,189,.04)' : pr.missing.length ? 'rgba(255,160,64,.07)' : 'rgba(72,229,154,.07)';
+    if (x < -r - 80 || y < -r - 80 || x > W + r + 80 || y > H + r + 80) continue;
+    const col = s.archived ? 'rgba(110,130,150,.8)' : pr.missing.length ? '#f08a1c' : '#1fb877';
+    g.fillStyle = s.archived ? 'rgba(137,169,189,.06)' : pr.missing.length ? 'rgba(255,160,64,.12)' : 'rgba(72,229,154,.12)';
     g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
-    g.setLineDash([6, 5]); g.lineDashOffset = -t * 8; g.strokeStyle = col; g.lineWidth = M.siteSel === s.id ? 2.2 : 1.3; g.stroke(); g.setLineDash([]);
-    g.font = '600 11px "JetBrains Mono", monospace'; g.fillStyle = col; g.textAlign = 'center';
-    g.fillText(short(s.name).toUpperCase(), x, y - r - 16); g.fillStyle = 'rgba(226,246,255,.8)'; g.fillText(`${pr.done}/${pr.must}`, x, y - r - 4); g.textAlign = 'left';
+    g.setLineDash([6, 5]); g.lineDashOffset = -t * 8; g.strokeStyle = col; g.lineWidth = M.siteSel === s.id ? 2.6 : 1.8; g.stroke(); g.setLineDash([]);
+    g.font = '700 11px "JetBrains Mono", monospace'; g.textAlign = 'center';
+    label(short(s.name).toUpperCase(), x, y - r - 16, col); label(`${pr.done}/${pr.must}`, x, y - r - 4, ink); g.textAlign = 'left';
   }
   // Trassen
   for (const tr of S.trassen) {
     if (!tr.points.length) continue; const rec = tr.id === S.rec;
-    g.strokeStyle = rec ? '#ffa040' : '#d6f6ff'; g.lineWidth = rec ? 3.2 : 2.6; g.lineJoin = 'round'; g.shadowColor = g.strokeStyle; g.shadowBlur = 8;
-    g.beginPath(); tr.points.forEach((p, i) => { const [x, y] = mproj(p.lat, p.lon, W, H); i ? g.lineTo(x, y) : g.moveTo(x, y); }); g.stroke(); g.shadowBlur = 0;
+    g.strokeStyle = rec ? '#ff8a1c' : light ? '#0a5f7a' : '#d6f6ff'; g.lineWidth = rec ? 3.6 : 3; g.lineJoin = 'round';
+    g.beginPath(); tr.points.forEach((p, i) => { const [x, y] = mproj(p.lat, p.lon, W, H); i ? g.lineTo(x, y) : g.moveTo(x, y); }); g.stroke();
     g.font = '600 10px "JetBrains Mono", monospace';
-    tr.marks.forEach(m => { const [x, y] = mproj(m.lat, m.lon, W, H); g.fillStyle = '#ffa040'; g.fillRect(x - 4, y - 4, 8, 8); g.strokeStyle = '#040a14'; g.lineWidth = 1; g.strokeRect(x - 4, y - 4, 8, 8); g.fillStyle = '#e2f6ff'; g.fillText(`${m.n} ${m.type}${m.depthCm ? ' ' + m.depthCm + 'cm' : ''}`, x + 7, y - 6); });
+    tr.marks.forEach(m => { const [x, y] = mproj(m.lat, m.lon, W, H); g.fillStyle = '#ff8a1c'; g.fillRect(x - 4, y - 4, 8, 8); g.strokeStyle = '#fff'; g.lineWidth = 1; g.strokeRect(x - 4, y - 4, 8, 8); label(`${m.n} ${m.type}${m.depthCm ? ' ' + m.depthCm + 'cm' : ''}`, x + 7, y - 6, ink); });
   }
-  // Fotos mit Blickrichtung
-  M.pts = [];
-  for (const p of S.photos) {
-    if (p.lat == null) continue; const [x, y] = mproj(p.lat, p.lon, W, H); if (x < -40 || y < -40 || x > W + 40 || y > H + 40) continue;
-    const c = PH[p.phase].c; M.pts.push({ x, y, id: p.id });
-    if (p.heading != null) {
-      const a = (p.heading - 90) * RAD, L = 30, sp = 22 * RAD;
-      const gr = g.createRadialGradient(x, y, 0, x, y, L); gr.addColorStop(0, c + '88'); gr.addColorStop(1, c + '00');
-      g.fillStyle = gr; g.beginPath(); g.moveTo(x, y); g.arc(x, y, L, a - sp, a + sp); g.closePath(); g.fill();
+  // Fotos: Bündel, Vorschaubilder oder Punkte
+  M.pts = []; M.cl = [];
+  const vis = [];
+  for (const p of mapPhotos()) { const [x, y] = mproj(p.lat, p.lon, W, H); if (x > -60 && y > -60 && x < W + 60 && y < H + 60) vis.push({ p, x, y }); }
+  const prev = S.set.mapThumbs !== false, cell = prev ? 50 : 44;
+  const cluster = vis.length > 1 && (M.z < 0.35 || vis.length > (prev ? 140 : 400));
+  if (cluster) {
+    const b = new Map();
+    for (const v of vis) { const k = Math.floor(v.x / cell) + ':' + Math.floor(v.y / cell); let c = b.get(k); if (!c) b.set(k, c = { n: 0, x: 0, y: 0, ids: [] }); c.n++; c.x += v.x; c.y += v.y; c.ids.push(v.p.id); }
+    for (const c of b.values()) {
+      const x = c.x / c.n, y = c.y / c.n;
+      if (c.n === 1) { vis.find(v => v.p.id === c.ids[0]).solo = true; continue; }
+      const r = 15 + Math.min(14, Math.log2(c.n) * 3), w = Math.max(r * 2, String(c.n).length * 9 + 18);
+      g.fillStyle = '#0d3150'; g.strokeStyle = '#fff'; g.lineWidth = 2;
+      g.beginPath(); g.moveTo(x, y + r + 8); g.arc(x, y, r, Math.PI * 0.72, Math.PI * 2.28); g.closePath(); g.fill(); g.stroke();
+      g.fillStyle = '#fff'; g.font = '700 13px "JetBrains Mono", monospace'; g.textAlign = 'center'; g.fillText(String(c.n), x, y + 4.5); g.textAlign = 'left';
+      M.cl.push({ x, y, n: c.n, ids: c.ids, w });
     }
-    g.fillStyle = c; g.beginPath(); g.arc(x, y, M.sel === p.id ? 6 : 3.6, 0, 7); g.fill();
-    if (M.sel === p.id) { g.strokeStyle = '#fff'; g.lineWidth = 1.5; g.stroke(); }
   }
+  const singles = cluster ? vis.filter(v => v.solo) : vis;
+  const showThumbs = prev && M.z >= 1.2 && singles.length <= 160;
+  // Blickrichtungen zuerst, damit die Punkte darüber liegen
+  if (!showThumbs) for (const { p, x, y } of singles) if (p.heading != null) {
+    const c = PH[p.phase].c, a = (p.heading - 90) * RAD, L = 30, sp = 22 * RAD;
+    const gr = g.createRadialGradient(x, y, 0, x, y, L); gr.addColorStop(0, c + 'aa'); gr.addColorStop(1, c + '00');
+    g.fillStyle = gr; g.beginPath(); g.moveTo(x, y); g.arc(x, y, L, a - sp, a + sp); g.closePath(); g.fill();
+  }
+  for (const { p, x, y } of singles) {
+    M.pts.push({ x, y, id: p.id });
+    const c = PH[p.phase].c, sel = M.sel === p.id;
+    if (showThumbs) {
+      const r = sel ? 25 : 21, im = thumbImg(p);
+      g.save(); g.beginPath(); g.arc(x, y, r, 0, 7); g.closePath(); g.fillStyle = c; g.fill(); g.clip();
+      if (im) { const s = Math.max(2 * r / im.naturalWidth, 2 * r / im.naturalHeight); g.drawImage(im, x - im.naturalWidth * s / 2, y - im.naturalHeight * s / 2, im.naturalWidth * s, im.naturalHeight * s); }
+      g.restore(); g.strokeStyle = sel ? '#ffa040' : '#fff'; g.lineWidth = sel ? 3 : 2.2; g.beginPath(); g.arc(x, y, r, 0, 7); g.stroke();
+      g.fillStyle = c; g.beginPath(); g.arc(x + r * 0.72, y + r * 0.72, 4.5, 0, 7); g.fill(); g.strokeStyle = '#fff'; g.lineWidth = 1.2; g.stroke();
+    } else {
+      g.fillStyle = c; g.strokeStyle = '#fff'; g.lineWidth = 1.6; g.beginPath(); g.arc(x, y, sel ? 7 : 5, 0, 7); g.fill(); g.stroke();
+    }
+  }
+  // Angeheftete Position
+  if (S.anchor) { const [x, y] = mproj(S.anchor.lat, S.anchor.lon, W, H); g.font = '20px sans-serif'; g.textAlign = 'center'; g.fillText('📌', x, y - 4); g.textAlign = 'left'; }
   // eigene Position
   if (S.pos) {
     const [x, y] = mproj(S.pos.lat, S.pos.lon, W, H);
-    g.fillStyle = 'rgba(63,216,239,.1)'; g.beginPath(); g.arc(x, y, Math.max(8, S.pos.acc * M.z), 0, 7); g.fill();
-    g.strokeStyle = 'rgba(63,216,239,.35)'; g.lineWidth = 1; g.stroke();
-    for (let i = 1; i <= 3; i++) { g.strokeStyle = `rgba(63,216,239,${0.18 / i})`; g.beginPath(); g.arc(x, y, i * px, 0, 7); g.stroke(); }
-    if (S.heading != null) { const a = (S.heading - 90) * RAD; g.fillStyle = 'rgba(63,216,239,.35)'; g.beginPath(); g.moveTo(x, y); g.arc(x, y, 44, a - 0.35, a + 0.35); g.closePath(); g.fill(); }
-    const pul = (t % 1.6) / 1.6; g.strokeStyle = `rgba(63,216,239,${1 - pul})`; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 7 + pul * 18, 0, 7); g.stroke();
-    g.fillStyle = '#fff'; g.beginPath(); g.arc(x, y, 6, 0, 7); g.fill(); g.fillStyle = '#3fd8ef'; g.beginPath(); g.arc(x, y, 3.6, 0, 7); g.fill();
+    g.fillStyle = 'rgba(63,216,239,.16)'; g.beginPath(); g.arc(x, y, Math.max(8, S.pos.acc * M.z), 0, 7); g.fill();
+    g.strokeStyle = 'rgba(20,150,190,.5)'; g.lineWidth = 1; g.stroke();
+    if (S.heading != null) { const a = (S.heading - 90) * RAD; g.fillStyle = 'rgba(30,170,220,.4)'; g.beginPath(); g.moveTo(x, y); g.arc(x, y, 44, a - 0.35, a + 0.35); g.closePath(); g.fill(); }
+    const pul = (t % 1.6) / 1.6; g.strokeStyle = `rgba(30,170,220,${1 - pul})`; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 7 + pul * 18, 0, 7); g.stroke();
+    g.fillStyle = '#fff'; g.beginPath(); g.arc(x, y, 7, 0, 7); g.fill(); g.fillStyle = '#1aa6d6'; g.beginPath(); g.arc(x, y, 4.4, 0, 7); g.fill();
   }
-  // Maßstab + Nordpfeil
-  g.strokeStyle = '#e2f6ff'; g.lineWidth = 2; g.beginPath(); g.moveTo(14, H - 18); g.lineTo(14 + px, H - 18); g.moveTo(14, H - 23); g.lineTo(14, H - 13); g.moveTo(14 + px, H - 23); g.lineTo(14 + px, H - 13); g.stroke();
-  g.fillStyle = '#e2f6ff'; g.font = '600 11px "JetBrains Mono", monospace'; g.fillText(step < 1 ? '0,5 m' : fmtDist(step), 18, H - 26);
-  g.fillStyle = '#3fd8ef'; g.textAlign = 'center'; g.fillText('N', W - 30, H - 42); g.beginPath(); g.moveTo(W - 30, H - 36); g.lineTo(W - 36, H - 18); g.lineTo(W - 30, H - 22); g.lineTo(W - 24, H - 18); g.closePath(); g.fill(); g.textAlign = 'left';
+  // Maßstab, Nordpfeil, Quelle
+  g.fillStyle = light ? 'rgba(255,255,255,.8)' : 'rgba(4,10,20,.7)'; g.fillRect(8, H - 44, Math.max(70, px + 20), 36);
+  g.strokeStyle = ink; g.lineWidth = 2; g.beginPath(); g.moveTo(14, H - 18); g.lineTo(14 + px, H - 18); g.moveTo(14, H - 23); g.lineTo(14, H - 13); g.moveTo(14 + px, H - 23); g.lineTo(14 + px, H - 13); g.stroke();
+  g.fillStyle = ink; g.font = '600 11px "JetBrains Mono", monospace'; g.fillText(step < 1 ? '0,5 m' : fmtDist(step), 18, H - 28);
+  g.fillStyle = '#1aa6d6'; g.textAlign = 'center'; label('N', W - 30, H - 42, '#1aa6d6'); g.fillStyle = '#1aa6d6'; g.beginPath(); g.moveTo(W - 30, H - 36); g.lineTo(W - 36, H - 18); g.lineTo(W - 30, H - 22); g.lineTo(W - 24, H - 18); g.closePath(); g.fill(); g.textAlign = 'left';
+  if (TILES[layer]) { g.font = '9px system-ui, sans-serif'; const a = TILES[layer].attr, w = g.measureText(a).width + 8; g.fillStyle = 'rgba(255,255,255,.75)'; g.fillRect(W - w, H - 13, w, 13); g.fillStyle = '#333'; g.fillText(a, W - w + 4, H - 3.5); }
+}
+function renderMapBar() {
+  const b = $('#mapBar'); if (!b) return; const lay = S.set.mapLayer || 'karte';
+  b.innerHTML = `<div class="mseg"><button data-ml="karte" class="${lay === 'karte' ? 'on' : ''}">Karte</button><button data-ml="satellit" class="${lay === 'satellit' ? 'on' : ''}">Satellit</button><button data-ml="raster" class="${lay === 'raster' ? 'on' : ''}" title="Ohne Kartenbild (offline)">Raster</button></div>
+    <button class="mbtn${S.set.mapThumbs !== false ? ' on' : ''}" data-mb="thumbs" aria-label="Fotovorschau an/aus">▣ Fotovorschau</button>
+    <button class="mbtn${mapFilterOn() ? ' on' : ''}" data-mb="filter" aria-label="Fotos filtern">⚲ Filter${mapFilterOn() ? ' •' : ''}</button>
+    <button class="mbtn${S.set.mapView ? ' on' : ''}" data-mb="view" aria-label="Kartenansicht speichern">${S.set.mapView ? '★ Ansicht' : '☆ Ansicht'}</button>`;
+}
+function mapViewSheet() {
+  const v = S.set.mapView;
+  const el = sheet(`<h3>Kartenansicht</h3><p class="sub">Die Karte öffnet sich dann immer genau an dieser Stelle und in diesem Maßstab – praktisch für die laufende Baustelle.</p>
+    <div class="stack" style="gap:8px"><button class="btn pri wide" data-v="save">Aktuelle Ansicht speichern</button>${v ? '<button class="btn wide" data-v="go">Zur gespeicherten Ansicht</button><button class="btn wide" data-v="del">Gespeicherte Ansicht entfernen</button>' : ''}</div>`);
+  el.addEventListener('click', e => {
+    const a = e.target.closest('[data-v]')?.dataset.v; if (!a) return;
+    if (a === 'save') { S.set.mapView = { lat: M.lat, lon: M.lon, z: M.z }; toast('Kartenansicht gespeichert.'); }
+    if (a === 'go' && v) { M.lat = v.lat; M.lon = v.lon; M.z = v.z; M.follow = false; $('#mFollow').classList.remove('on'); }
+    if (a === 'del') { S.set.mapView = null; toast('Gespeicherte Ansicht entfernt.'); }
+    saveSet(); closeSheet(); renderMapBar();
+  });
+}
+function mapFilterSheet() {
+  const f = S.mapF ||= {};
+  const seg = (k, opts) => `<div class="segs" data-fk="${k}">${opts.map(([v, n]) => `<button type="button" data-fv="${v}" class="${String(f[k] ?? '') === String(v) ? 'on' : ''}">${n}</button>`).join('')}</div>`;
+  const el = sheet(`<h3>Fotos auf der Karte filtern</h3>
+    <div class="fld"><label class="lbl" for="mfSite">Baustelle</label><select id="mfSite"><option value="all">Alle Baustellen</option>${S.sites.map(s => `<option value="${s.id}"${f.site === s.id ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}<option value="none"${f.site === 'none' ? ' selected' : ''}>Ohne Baustelle</option></select></div>
+    <div class="fld"><span class="lbl">Phase</span>${seg('phase', [['', 'Alle'], ['V', 'Vorher'], ['W', 'Während'], ['N', 'Nachher']])}</div>
+    <div class="fld"><span class="lbl">Zeitraum</span>${seg('days', [['', 'Alles'], [1, 'Heute'], [7, '7 Tage'], [30, '30 Tage']])}</div>
+    <label class="tog"><span>Nur ungesicherte Fotos</span><input type="checkbox" class="sw" id="mfOpen"${f.open ? ' checked' : ''}></label>
+    <div class="row" style="margin-top:14px"><button class="btn" data-x="reset">Zurücksetzen</button><button class="btn pri" data-x="ok">Anwenden (<span id="mfN">${mapPhotos().length}</span>)</button></div>`);
+  const upd = () => { $('#mfN', el).textContent = mapPhotos().length; };
+  el.addEventListener('click', e => {
+    const b = e.target.closest('[data-fv]'); if (b) { const k = b.parentElement.dataset.fk, v = b.dataset.fv; f[k] = v === '' ? null : k === 'days' ? +v : v; $$('button', b.parentElement).forEach(x => x.classList.toggle('on', x === b)); upd(); return; }
+    const x = e.target.closest('[data-x]')?.dataset.x; if (x === 'reset') { S.mapF = {}; closeSheet(); renderMapBar(); } if (x === 'ok') { closeSheet(); renderMapBar(); }
+  });
+  $('#mfSite', el).onchange = e => { f.site = e.target.value; upd(); };
+  $('#mfOpen', el).onchange = e => { f.open = e.target.checked; upd(); };
 }
 function renderMapSide() {
   renderTrassPanel();
@@ -1922,34 +2100,39 @@ function renderMapSide() {
     const pr = progress(s);
     info.innerHTML = `<div class="ph"><h2>${esc(s.name)}</h2><span class="lbl">${pr.done}/${pr.must}</span></div><p class="note" style="margin:0 0 12px">${S.pos ? fmtDist(dist(S.pos, s)) + ' entfernt · ' : ''}${S.photos.filter(p => p.siteId === s.id).length} Fotos${pr.next ? ` · als Nächstes: <b>${esc(pr.next.label)}</b>` : ' · komplett'}</p>
       <div class="row"><button class="btn" data-ms="route">Route</button><button class="btn" data-ms="open">Checkliste</button></div>`;
-  } else info.innerHTML = `<p class="note" style="margin:0">Tipp auf einen Punkt, um das Foto zu öffnen, oder auf einen Kreis für die Baustelle. Jeder Kegel zeigt, in welche Richtung fotografiert wurde.</p>`;
+  } else info.innerHTML = `<p class="note" style="margin:0">Tipp auf ein Foto, um es zu öffnen, oder auf eine Zahl, um hineinzuzoomen. Ein Tipp auf einen Kreis zeigt die Baustelle.</p>`;
 }
 function mapInput() {
   const cv = $('#map');
   const zoom = (f, cx, cy) => {
-    const W = cv.clientWidth, H = cv.clientHeight, before = M.z; M.z = Math.max(0.02, Math.min(60, M.z * f));
-    if (cx != null) { const dx = cx - W / 2, dy = cy - H / 2, k = 1 / before - 1 / M.z; M.lon += dx * k / (111320 * Math.cos(M.lat * RAD)); M.lat -= dy * k / 110540; }
+    const W = cv.clientWidth, H = cv.clientHeight;
+    const at = cx != null ? munproj(cx, cy, W, H) : null;
+    M.z = Math.max(0.0004, Math.min(60, M.z * f));
+    if (at) { const k = mapK(); M.lon = (mX(at.lon) - (cx - W / 2) / k) / (ER * RAD); M.lat = mLat(mY(at.lat) + (cy - H / 2) / k); }
   };
+  M.zoom = zoom;
   cv.addEventListener('wheel', e => { e.preventDefault(); const r = cv.getBoundingClientRect(); zoom(e.deltaY < 0 ? 1.18 : 1 / 1.18, e.clientX - r.left, e.clientY - r.top); }, { passive: false });
-  cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); M.ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); M.moved = 0; if (M.ptrs.size === 2) { const [a, b] = [...M.ptrs.values()]; M.pinch = Math.hypot(a.x - b.x, a.y - b.y); } });
+  cv.addEventListener('pointerdown', e => { try { cv.setPointerCapture(e.pointerId); } catch (er) {} M.ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); M.moved = 0; if (M.ptrs.size === 2) { const [a, b] = [...M.ptrs.values()]; M.pinch = Math.hypot(a.x - b.x, a.y - b.y); } });
   cv.addEventListener('pointermove', e => {
     const p = M.ptrs.get(e.pointerId); if (!p) return; const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
-    if (M.ptrs.size === 2) { const [a, b] = [...M.ptrs.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y); if (M.pinch) zoom(d / M.pinch); M.pinch = d; M.moved += 10; return; }
+    if (M.ptrs.size === 2) { const [a, b] = [...M.ptrs.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y), r = cv.getBoundingClientRect(); if (M.pinch) zoom(d / M.pinch, (a.x + b.x) / 2 - r.left, (a.y + b.y) / 2 - r.top); M.pinch = d; M.moved += 10; return; }
     M.moved += Math.abs(dx) + Math.abs(dy); if (M.moved > 6) { M.follow = false; $('#mFollow').classList.remove('on'); }
-    M.lon -= dx / (111320 * Math.cos(M.lat * RAD) * M.z); M.lat += dy / (110540 * M.z);
+    const k = mapK(); M.lon -= dx / k / (ER * RAD); M.lat = mLat(mY(M.lat) + dy / k);
   });
   const up = e => {
     const wasTap = M.ptrs.size === 1 && M.moved < 6; M.ptrs.delete(e.pointerId); if (M.ptrs.size < 2) M.pinch = null;
-    if (!wasTap) return; const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
-    const hit = (M.pts || []).map(p => ({ ...p, d: Math.hypot(p.x - x, p.y - y) })).filter(p => p.d < 18).sort((a, b) => a.d - b.d)[0];
+    if (!wasTap) return; const r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, W = cv.clientWidth, H = cv.clientHeight;
+    const thumbs = S.set.mapThumbs !== false && M.z >= 1.2;
+    const hit = (M.pts || []).map(p => ({ ...p, d: Math.hypot(p.x - x, p.y - y) })).filter(p => p.d < (thumbs ? 24 : 18)).sort((a, b) => a.d - b.d)[0];
     if (hit) { M.sel = hit.id; openPhoto(hit.id); return; }
-    const W = cv.clientWidth, H = cv.clientHeight;
+    const c = (M.cl || []).find(c => Math.hypot(c.x - x, c.y - y) < c.w / 2 + 6);
+    if (c) { M.follow = false; $('#mFollow').classList.remove('on'); zoom(2.6, c.x, c.y); const k = mapK(); M.lon += (c.x - W / 2) / k / (ER * RAD); M.lat = mLat(mY(M.lat) - (c.y - H / 2) / k); return; }
     const s = S.sites.find(s => { const [sx, sy] = mproj(s.lat, s.lon, W, H); return Math.hypot(sx - x, sy - y) <= Math.max(14, s.radius * M.z); });
     M.siteSel = s ? s.id : null; renderMapSide();
   };
   cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', e => { M.ptrs.delete(e.pointerId); M.pinch = null; });
   $('#mzIn').onclick = () => zoom(1.5); $('#mzOut').onclick = () => zoom(1 / 1.5);
-  $('#mFollow').onclick = () => { M.follow = true; $('#mFollow').classList.add('on'); if (S.pos) { M.lat = S.pos.lat; M.lon = S.pos.lon; } };
+  $('#mFollow').onclick = () => { M.follow = true; $('#mFollow').classList.add('on'); if (S.pos) { M.lat = S.pos.lat; M.lon = S.pos.lon; if (M.z < 0.6) M.z = 1.6; } };
   $('#mapSites').onclick = e => {
     const b = e.target.closest('[data-mp]'); if (!b) return;
     if (b.dataset.mp === 'me') { $('#mFollow').click(); M.siteSel = null; }
@@ -1957,21 +2140,74 @@ function mapInput() {
     renderMapSide();
   };
   $('#mapInfo').onclick = e => { const x = e.target.closest('[data-ms]')?.dataset.ms, s = S.sites.find(z => z.id === M.siteSel); if (!x || !s) return; if (x === 'route') openRoute(s); else openSite(s.id); };
+  $('#mapBar').onclick = e => {
+    const l = e.target.closest('[data-ml]'); if (l) { S.set.mapLayer = l.dataset.ml; saveSet(); renderMapBar(); return; }
+    const b = e.target.closest('[data-mb]')?.dataset.mb;
+    if (b === 'thumbs') { S.set.mapThumbs = S.set.mapThumbs === false; saveSet(); renderMapBar(); }
+    if (b === 'filter') mapFilterSheet();
+    if (b === 'view') mapViewSheet();
+  };
+}
+/* Kartenhintergrund für den PDF-Lageplan (Straßenkarte, aufgehellt). null, wenn offline */
+async function basemapData(lat, lon, pxPerM, W, H) {
+  if (!navigator.onLine || S.set.mapLayer === 'raster') return null;
+  const c = document.createElement('canvas'); c.width = W; c.height = H; const g = c.getContext('2d');
+  g.fillStyle = '#fff'; g.fillRect(0, 0, W, H);
+  const kM = pxPerM * Math.cos(lat * RAD);
+  const t0 = Date.now();
+  while (!drawTiles(g, 'karte', lat, lon, kM, W, H)) { if (Date.now() - t0 > 7000) return null; await new Promise(r => setTimeout(r, 200)); g.fillStyle = '#fff'; g.fillRect(0, 0, W, H); }
+  g.fillStyle = 'rgba(255,255,255,.28)'; g.fillRect(0, 0, W, H);
+  try { return c.toDataURL('image/jpeg', 0.82); } catch (e) { return null; }
 }
 
 /* ---------------- Galerie ---------------- */
+const GAL_IDX = new WeakMap();
+function galList() {
+  const q = (S.gal.q || '').trim().toLowerCase(); let list = S.photos.slice();
+  if (S.gal.mode === 'open') list = list.filter(p => !p.exported);
+  if (S.gal.site === 'none') list = list.filter(p => !p.siteId); else if (S.gal.site !== 'all') list = list.filter(p => p.siteId === S.gal.site);
+  const sn = new Map(S.sites.map(x => [x.id, x]));
+  const lab = p => { const s = sn.get(p.siteId), it = s?.items.find(i => i.id === p.itemId); return it ? it.label : catName(p.cat); };
+  if (q) {
+    const dn = new Map(); S.defects.forEach(d => (d.photoIds || []).forEach(id => dn.set(id, 'm' + d.no)));
+    const z = n => String(n).padStart(2, '0');
+    list = list.filter(p => {
+      const k = p.siteId + '|' + p.itemId + '|' + p.desc + '|' + p.labels + '|' + p.address + '|' + (sn.get(p.siteId)?.name || '');
+      let c = GAL_IDX.get(p);
+      if (!c || c.k !== k) { const d = new Date(p.ts); c = { k, t: [sn.get(p.siteId)?.name, sn.get(p.siteId)?.order, lab(p), p.desc, p.labels, p.address, `${z(d.getDate())}.${z(d.getMonth() + 1)}.${d.getFullYear()} ${z(d.getHours())}:${z(d.getMinutes())}`].join(' ').toLowerCase() }; GAL_IDX.set(p, c); }
+      return c.t.includes(q) || (dn.get(p.id) || '') === q;
+    });
+  }
+  const so = S.gal.sort || 'new';
+  list.sort(so === 'old' ? (a, b) => a.ts - b.ts : so === 'site' ? (a, b) => (sn.get(a.siteId)?.name || '~').localeCompare(sn.get(b.siteId)?.name || '~') || b.ts - a.ts : (a, b) => b.ts - a.ts);
+  return { list, sn, lab };
+}
 function renderGallery() {
   const open = S.photos.filter(p => !p.exported).length;
   $('#galSeg').innerHTML = `<button data-g="open" class="${S.gal.mode === 'open' ? 'on' : ''}">Ungesichert (${open})</button><button data-g="all" class="${S.gal.mode === 'all' ? 'on' : ''}">Alle (${S.photos.length})</button>`;
   $('#galSites').innerHTML = `<button class="chip${S.gal.site === 'all' ? ' on' : ''}" data-gs="all">Alle Baustellen</button>` + S.sites.map(s => `<button class="chip${S.gal.site === s.id ? ' on' : ''}" data-gs="${s.id}">${esc(short(s.name))}</button>`).join('') + `<button class="chip${S.gal.site === 'none' ? ' on' : ''}" data-gs="none">Ohne Baustelle</button>`;
-  let list = S.photos.slice().sort((a, b) => b.ts - a.ts);
-  if (S.gal.mode === 'open') list = list.filter(p => !p.exported);
-  if (S.gal.site === 'none') list = list.filter(p => !p.siteId); else if (S.gal.site !== 'all') list = list.filter(p => p.siteId === S.gal.site);
-  if (!list.length) { $('#galList').innerHTML = `<p class="empty">${S.gal.mode === 'open' ? 'Alles gesichert – keine offenen Fotos.' : 'Noch keine Fotos. Tipp unten auf die Kamera.'}</p>`; return; }
-  const days = new Map(); list.forEach(p => { const k = dayKey(p.ts); if (!days.has(k)) days.set(k, []); days.get(k).push(p); });
-  $('#galList').innerHTML = [...days.values()].map(ps => `<section class="day"><div class="ph" style="margin:0"><span class="lbl">${fmtDay(ps[0].ts)}</span><span class="lbl">${ps.length} Foto${ps.length > 1 ? 's' : ''}</span></div>
-    <div class="grid">${ps.map(p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId);
-      return `<button class="th" data-photo="${p.id}" aria-label="${esc(it ? it.label : catName(p.cat))}"><img src="${p.thumb}" alt="" loading="lazy"><span class="pb" style="background:${PH[p.phase].c}">${p.phase}</span><span class="sy${p.exported ? ' ok' : ''}"></span>${p.kind === 'video' ? `<span class="vb">▶ ${fmtDur(p.dur || 0)}</span>` : p.kind === 'pano' ? '<span class="vb">360°</span>' : ''}<span class="tl">${esc(it ? it.label : catName(p.cat))}</span></button>`; }).join('')}</div></section>`).join('');
+  const qi = $('#galQ'); if (qi && document.activeElement !== qi) qi.value = S.gal.q || '';
+  $$('#galView button').forEach(b => b.classList.toggle('on', b.dataset.gv === (S.gal.view || 'list')));
+  const ss = $('#galSort'); if (ss) ss.value = S.gal.sort || 'new';
+  const { list, sn, lab } = galList(), lim = S.gal.limit || 60;
+  $('#galCount').textContent = `${list.length} Foto${list.length === 1 ? '' : 's'}${S.gal.q ? ' gefunden' : ''}`;
+  if (!list.length) { $('#galList').innerHTML = `<p class="empty">${S.gal.q ? 'Nichts gefunden. Anderes Suchwort?' : S.gal.mode === 'open' ? 'Alles gesichert – keine offenen Fotos.' : 'Noch keine Fotos. Tipp unten auf die Kamera.'}</p>`; return; }
+  const shown = list.slice(0, lim), more = list.length - shown.length;
+  const badge = p => p.kind === 'video' ? `<span class="vb">▶ ${fmtDur(p.dur || 0)}</span>` : p.kind === 'pano' ? '<span class="vb">360°</span>' : '';
+  let html;
+  if ((S.gal.view || 'list') === 'list') {
+    html = `<div class="plist">${shown.map(p => { const s = sn.get(p.siteId);
+      return `<button class="prow" data-photo="${p.id}"><span class="pth"><img src="${p.thumb}" alt="" loading="lazy">${badge(p)}</span>
+        <span class="pmid"><b class="num">${fmtDate(p.ts)} ${fmtTime(p.ts)}</b><span class="pl">${esc(lab(p))}</span><span class="ps">${s ? esc(short(s.name)) : 'ohne Baustelle'}</span></span>
+        <span class="pend"><span class="pb" style="background:${PH[p.phase].c}">${p.phase}</span><span class="sync ${p.exported ? 'ok' : 'no'}" title="${p.exported ? 'gesichert' : 'noch nicht gesichert'}">${p.exported ? '✓' : '✕'}</span></span></button>`; }).join('')}</div>`;
+  } else {
+    const days = new Map(); shown.forEach(p => { const k = dayKey(p.ts); if (!days.has(k)) days.set(k, []); days.get(k).push(p); });
+    html = [...days.values()].map(ps => `<section class="day"><div class="ph" style="margin:0"><span class="lbl">${fmtDay(ps[0].ts)}</span><span class="lbl">${ps.length} Foto${ps.length > 1 ? 's' : ''}</span></div>
+      <div class="grid">${ps.map(p => `<button class="th" data-photo="${p.id}" aria-label="${esc(lab(p))}"><img src="${p.thumb}" alt="" loading="lazy"><span class="pb" style="background:${PH[p.phase].c}">${p.phase}</span><span class="sy${p.exported ? ' ok' : ''}"></span>${badge(p)}<span class="tl">${esc(lab(p))}</span></button>`).join('')}</div></section>`).join('');
+  }
+  $('#galList').innerHTML = html + (more ? `<button class="btn wide" id="galMore" style="margin-top:12px">Weitere ${Math.min(more, 60)} von ${more} laden</button>` : '');
+  const gm = $('#galMore');
+  if (gm && 'IntersectionObserver' in window) { const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); S.gal.limit = lim + 60; renderGallery(); } }, { rootMargin: '400px' }); io.observe(gm); }
 }
 
 /* ---------------- Bericht & Export ---------------- */
@@ -2108,16 +2344,21 @@ async function buildPDF(l, title, daily) {
       const geo = g.ps.filter(p => p.lat != null), mh = Math.min(86, 262 - y);
       if (mh > 45) {
         label(m, y, 'Lageplan der Aufnahmen'); y += 4;
-        doc.setFillColor(244, 248, 251); doc.rect(m, y, cw, mh, 'F'); doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.rect(m, y, cw, mh, 'S');
+        doc.setFillColor(244, 248, 251); doc.rect(m, y, cw, mh, 'F');
         const ox = m + cw / 2, oy = y + mh / 2, cosL = Math.cos(s.lat * RAD);
         const xy = p => [(p.lon - s.lon) * 111320 * cosL, (p.lat - s.lat) * 110540];
         const trs = S.trassen.filter(t => t.siteId === s.id && t.points.length > 1);
         let ext = s.radius * 1.15; [...geo, ...trs.flatMap(t => t.points)].forEach(p => { const [a, b] = xy(p); ext = Math.max(ext, Math.hypot(a, b) * 1.15); });
         const sc = (mh / 2 - 6) / ext;
         const grid = [5, 10, 20, 50, 100, 200, 500, 1000].find(v => v * sc >= 12) || 1000;
-        doc.setDrawColor(226, 233, 239); doc.setLineWidth(0.1);
-        for (let gx = ox % (grid * sc); gx < m + cw; gx += grid * sc) if (gx > m) doc.line(gx, y, gx, y + mh);
-        for (let gy = oy - Math.floor((oy - y) / (grid * sc)) * grid * sc; gy < y + mh; gy += grid * sc) if (gy > y) doc.line(m, gy, m + cw, gy);
+        const bm = await basemapData(s.lat, s.lon, sc * 7, Math.round(cw * 7), Math.round(mh * 7)).catch(() => null);
+        if (bm) doc.addImage(bm, 'JPEG', m, y, cw, mh);
+        else {
+          doc.setDrawColor(226, 233, 239); doc.setLineWidth(0.1);
+          for (let gx = ox % (grid * sc); gx < m + cw; gx += grid * sc) if (gx > m) doc.line(gx, y, gx, y + mh);
+          for (let gy = oy - Math.floor((oy - y) / (grid * sc)) * grid * sc; gy < y + mh; gy += grid * sc) if (gy > y) doc.line(m, gy, m + cw, gy);
+        }
+        doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.rect(m, y, cw, mh, 'S');
         doc.setDrawColor(24, 150, 180); doc.setLineWidth(0.35); doc.setLineDashPattern([1.6, 1.2], 0); doc.circle(ox, oy, s.radius * sc, 'S'); doc.setLineDashPattern([], 0);
         doc.setFillColor(24, 150, 180); doc.circle(ox, oy, 0.8, 'F');
         trs.forEach(t => {
@@ -2140,7 +2381,7 @@ async function buildPDF(l, title, daily) {
         doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.text(fmtDist(grid), m + 5, y + mh - 7.5);
         y += mh + 4.5;
         doc.setFontSize(7.4); doc.setTextColor(...GREY);
-        doc.text(`Gestrichelter Kreis = Baustellenbereich (r = ${s.radius} m)  ·  Kegel = Blickrichtung  ·  Farbe: Vorher / Während / Nachher${trs.length ? '  ·  Linie = Trasse' : ''}`, m, y);
+        doc.text(`Gestrichelter Kreis = Baustellenbereich (r = ${s.radius} m)  ·  Kegel = Blickrichtung  ·  Farbe: Vorher / Während / Nachher${trs.length ? '  ·  Linie = Trasse' : ''}${bm ? '  ·  Karte: © OpenStreetMap-Mitwirkende' : ''}`, m, y);
         if (trs.length) { y += 4.2; doc.text(pdfSafe(trs.map(t => `${t.name}: ${tLen(t).toFixed(1).replace('.', ',')} m, ${t.marks.length} Markierungen, ${accSummary(t)}`).join('   ·   ')), m, y); }
       }
     }
@@ -3520,11 +3761,16 @@ async function openSettings() {
   const hasEx = S.sites.some(s => s.example) || S.photos.some(p => p.example) || S.defects.some(d => d.example) || S.plans.some(p => p.example);
   const el = sheet(`<h3>Einstellungen</h3><p class="sub">SEF-KI Baudoku · Smolens·KI</p>
     <button class="btn pri wide" id="stTour" style="margin-bottom:14px">▶ Rundgang: Jeden Knopf erklären lassen</button>
+    <div class="fld" id="stModeF"><span class="lbl">Modus</span><div class="segs" id="stMode"><button type="button" data-md="simple" class="${S.set.mode === 'simple' ? 'on' : ''}">Einfach · Bediener</button><button type="button" data-md="full" class="${S.set.mode !== 'simple' ? 'on' : ''}">Komplett · Supervisor</button></div>
+      <p class="note" style="margin:6px 0 0">Einfach zeigt nur das Wesentliche: Foto, Checkliste, Karte, Fotoliste, Sichern. Komplett schaltet Pläne, Mängel, Abnahme, Bautagebuch, Trassen und alle Einstellungen frei.${S.set.modePin ? ' Der Wechsel zu Komplett ist mit PIN gesperrt.' : ''}</p></div>
+    <div class="fld pro-only"><label class="lbl" for="stPin">PIN für den Komplett-Modus (optional, 4–8 Ziffern)</label><div class="inrow"><input type="password" inputmode="numeric" id="stPin" placeholder="${S.set.modePin ? '•••• (gesetzt)' : 'keine PIN'}" autocomplete="off"><button class="btn" id="stPinSave">${S.set.modePin ? 'Ändern' : 'Setzen'}</button></div></div>
     <div class="fld"><label class="lbl" for="stName">Dein Name (für Begrüßung und Bericht)</label><input type="text" id="stName" value="${esc(S.set.name)}"></div>
     <label class="tog"><span>Sprachausgabe<small>SEF-KI sagt dir die nächsten Schritte an – praktisch mit Handschuhen.</small></span><input type="checkbox" class="sw" id="stVoice"${S.set.voice ? ' checked' : ''}></label>
+    <div class="fld"><label class="lbl" for="stRes">Fotoauflösung</label><select id="stRes"><option value="hoch"${S.set.res === 'hoch' ? ' selected' : ''}>Hoch – bis 4000 Pixel (beste Details, mehr Speicher)</option><option value="mittel"${!S.set.res || S.set.res === 'mittel' ? ' selected' : ''}>Mittel – bis 2560 Pixel (empfohlen)</option><option value="klein"${S.set.res === 'klein' ? ' selected' : ''}>Klein – bis 1600 Pixel (spart Speicher)</option></select></div>
     <label class="tog"><span>Stempel im Foto<small>Baustelle, Zeit, Koordinaten und Blickrichtung fest ins Bild.</small></span><input type="checkbox" class="sw" id="stWm"${S.set.watermark ? ' checked' : ''}></label>
     <label class="tog"><span>Serienmodus<small>Speichert sofort ohne Nachfrage, wenn Schärfe, Licht und GPS passen.</small></span><input type="checkbox" class="sw" id="stSeries"${S.set.series ? ' checked' : ''}></label>
-    <label class="tog"><span>Demo-Position<small>Simuliert GPS auf den Baustellen – zum Ausprobieren.</small></span><input type="checkbox" class="sw" id="stDemo"${S.set.demo ? ' checked' : ''}></label>
+    <label class="tog pro-only"><span>Demo-Position<small>Simuliert GPS auf den Baustellen – zum Ausprobieren.</small></span><input type="checkbox" class="sw" id="stDemo"${S.set.demo ? ' checked' : ''}></label>
+    <div class="pro-only">
     <div class="ph" style="margin-top:18px"><h2>SEF-KI Intelligenz</h2><span class="lbl" id="aiState">prüfe …</span></div>
     ${inFrame ? '<p class="note" style="margin:0 0 8px">In dieser Vorschau nutzt SEF-KI dein Claude-Konto. Beim ersten Mal fragt Claude einmal um Erlaubnis.</p>' : `
     <div class="fld"><label class="lbl" for="stKey">Anthropic-API-Schlüssel</label><div class="inrow"><input type="password" id="stKey" value="${S.set.aiKey ? '••••••••••••' : ''}" placeholder="sk-ant-…" autocomplete="off"><button class="btn" id="stKeyTest">Testen</button></div></div>
@@ -3549,23 +3795,27 @@ async function openSettings() {
     <div class="fld"><label class="lbl" for="stHook">Webhook-Adresse (Make, Zapier, n8n, Power Automate …)</label><div class="inrow"><input type="text" id="stHook" value="${esc(S.set.hookUrl || '')}" placeholder="https://hook.eu1.make.com/…" inputmode="url"><button class="btn" id="stHookT">Test</button></div></div>
     <p class="note" style="margin:0 0 8px">Bei jedem Foto, Mangel, Tagesbericht und jeder Abnahme schicke ich die Daten (ohne Bilder) an diese Adresse. So landen sie automatisch in Excel, SharePoint, Outlook oder eurer Büro-Software.</p>
     <div class="row"><button class="btn" id="stJson">Projekt-Export (JSON)</button><button class="btn" id="stIcs">Mängelfristen (.ics)</button></div>
+    </div>
     <div class="ph" style="margin-top:18px"><h2>Rundgang-Stimme</h2></div>
     <div class="fld"><label class="lbl" for="stTv">Stimme für Rundgang und Ansagen</label><div class="inrow"><select id="stTv">${Tour.voiceOptions()}</select><button class="btn" id="stTvTest">▶ Probe</button></div></div>
     <p class="note" style="margin:0 0 8px">★ = natürlich klingende Stimme. <b>Premium-Stimme</b> (klingt wie ein echter Sprecher): Konto bei elevenlabs.io anlegen → Profil → API-Schlüssel kopieren und hier einfügen. Die Ansagen werden einmal geladen und laufen danach ohne Internet.</p>
-    ${inFrame ? '<p class="note" style="margin:0 0 8px">Die Premium-Stimme richtest du in der installierten App ein.</p>' : `<div class="fld"><label class="lbl" for="stElKey">ElevenLabs-API-Schlüssel</label><div class="inrow"><input type="password" id="stElKey" value="${S.set.elKey ? '••••••••••••' : ''}" placeholder="sk_…" autocomplete="off"><button class="btn" id="stElLoad">Stimmen laden</button></div></div>
+    ${inFrame ? '<p class="note pro-only" style="margin:0 0 8px">Die Premium-Stimme richtest du in der installierten App ein.</p>' : `<div class="pro-only"><div class="fld"><label class="lbl" for="stElKey">ElevenLabs-API-Schlüssel</label><div class="inrow"><input type="password" id="stElKey" value="${S.set.elKey ? '••••••••••••' : ''}" placeholder="sk_…" autocomplete="off"><button class="btn" id="stElLoad">Stimmen laden</button></div></div>
     <div class="fld" id="stElVF"${S.set.elVoice ? '' : ' hidden'}><label class="lbl" for="stElVoice">Premium-Stimme</label><div class="inrow"><select id="stElVoice">${S.set.elVoice ? `<option value="${esc(S.set.elVoice)}">${esc(S.set.elVoiceName || S.set.elVoice)}</option>` : ''}</select></div></div>
-    <button class="btn wide" id="stElPre"${S.set.elKey && S.set.elVoice ? '' : ' hidden'}>Alle Ansagen jetzt laden (einmalig, danach offline)</button>`}
+    <button class="btn wide" id="stElPre"${S.set.elKey && S.set.elVoice ? '' : ' hidden'}>Alle Ansagen jetzt laden (einmalig, danach offline)</button></div>`}
     <div class="ph" style="margin-top:18px"><h2>Speicher</h2></div>
     <p class="note" style="margin:0 0 10px">${S.photos.length} Fotos · ${mb.toFixed(1).replace('.', ',')} MB auf diesem Gerät${est?.quota ? ` · frei ca. ${((est.quota - est.usage) / 1073741824).toFixed(1).replace('.', ',')} GB` : ''}.<br>
       ${!DB.db ? '<b style="color:var(--bad)">Achtung: Der Gerätespeicher ist nicht verfügbar. Fotos gehen beim Schließen verloren – sofort exportieren.</b>' : S.persisted ? 'Dauerhafter Speicher ist <b style="color:var(--ok)">aktiv</b> – der Browser löscht die Fotos nicht von selbst.' : 'Dauerhafter Speicher ist <b style="color:var(--amber)">nicht bestätigt</b>. Installier die App auf dem Startbildschirm, dann ist er sicherer.'}</p>
     <div class="row"><button class="btn" id="stBackup">Komplett-Backup</button><button class="btn" id="stRestore">Backup einspielen</button></div>
-    ${hasEx ? '<div class="row" style="margin-top:8px"><button class="btn danger" id="stEx">Beispieldaten entfernen</button></div>' : ''}
+    ${hasEx ? '<div class="row pro-only" style="margin-top:8px"><button class="btn danger" id="stEx">Beispieldaten entfernen</button></div>' : ''}
     <div class="ph" style="margin-top:18px"><h2>Als App installieren</h2></div>
     ${installEvt ? '<button class="btn pri wide" id="stInstall">Jetzt installieren</button>' : ''}
     <p class="note"><b>Android (Chrome):</b> Menü ⋮ → „App installieren“ bzw. „Zum Startbildschirm“.<br><b>iPhone (Safari):</b> Teilen-Symbol → „Zum Home-Bildschirm“.<br>Danach läuft SEF-KI wie eine normale App, auch ohne Netz.</p>
     <button class="btn wide" style="margin-top:14px" data-x="close">Fertig</button>
     <p class="copy" style="margin-top:16px">SEF-KI Baudoku · © 2026 Lukas Smolenski · Smolens·KI<br>Alle Rechte vorbehalten. Weitergabe oder Kopie nur mit Erlaubnis.</p>`);
   $('#stTour', el).onclick = () => Tour.menu();
+  $('#stMode', el).onclick = e => { const b = e.target.closest('[data-md]'); if (!b || (b.dataset.md === 'simple') === (S.set.mode === 'simple')) return; setMode(b.dataset.md); };
+  $('#stPinSave', el)?.addEventListener('click', async () => { const v = $('#stPin', el).value.trim(); if (v && !/^\d{4,8}$/.test(v)) return toast('Bitte 4 bis 8 Ziffern.'); S.set.modePin = v ? await sha256('sefki-pin|' + v) : ''; saveSet(); toast(v ? 'PIN gesetzt. Der Wechsel zu Komplett braucht jetzt die PIN.' : 'PIN entfernt.'); openSettings(); });
+  $('#stRes', el).onchange = e => { S.set.res = e.target.value; saveSet(); toast('Neue Fotos werden in dieser Auflösung gespeichert.'); };
   $('#stTv', el).onchange = e => { S.set.tourVoice = e.target.value; saveSet(); };
   $('#stTvTest', el).onclick = () => { TV.unlock(); TV.stop(); TV.say(`Hallo ${S.set.name || 'Sefkan'}, so klinge ich im Rundgang.`, () => true); };
   $('#stElKey', el)?.addEventListener('change', e => { const v = e.target.value.trim(); if (/^•+$/.test(v)) return; S.set.elKey = v; if (!v) { S.set.elVoice = ''; if (S.set.tourVoice === 'eleven') S.set.tourVoice = 'auto'; } saveSet(); });
@@ -3771,7 +4021,7 @@ const TOUR_CTX = {
 function tourSteps() {
   const n = S.set.name || 'Sefkan';
   const C = (c, ctx, list) => list.map(([el, t, o]) => ({ c, ctx, el, t, ...(o || {}) }));
-  return [
+  const all = [
     ...C('Willkommen', 'cockpit', [
       [null, `Hallo ${n}! Ich bin SEF-KI. Ich zeige dir jetzt jeden Knopf dieser App, einen nach dem anderen, und mache dir vieles direkt vor. Keine Sorge: Ich arbeite dabei mit Beispieldaten. Deine echten Daten bleiben unverändert.`, { title: 'Willkommen' }],
       ['.brand', 'Oben links steht der Name: SEF-KI Baudoku. Das ist deine Foto-Dokumentation für die Baustelle, mit GPS.', { title: 'SEF-KI Baudoku' }],
@@ -3783,6 +4033,9 @@ function tourSteps() {
       ['.tab[data-v=cockpit]', 'Unten ist die Leiste mit allen Bereichen. Wir starten im Cockpit, deiner Startseite.'],
       ['.lotse .lhead', 'Das hier bin ich. Ich sage dir immer, wo du bist und was als Nächstes zu tun ist. Wenn du willst, auch laut.', { title: 'SEF-KI' }],
       ['#cards', 'SEF-KI schlägt vor: Hier stehen bis zu drei Vorschläge. Der oberste ist der wichtigste. Ein Tipp darauf, und ich erledige den Rest, zum Beispiel öffne ich die Kamera für das richtige Pflichtfoto.', { title: 'Vorschläge' }],
+      ['#simpleHero .bigcam', 'Der große Knopf in der Mitte: Foto aufnehmen. Ich sage dir dann genau, welches Foto ich brauche.', { title: 'Foto aufnehmen' }],
+      ['#simpleHero .cnts', 'Hier siehst du, wie viele Fotos schon gesichert sind und wie viele noch nicht. Ein Tipp auf Nicht gesichert bringt dich direkt zum Sichern.', { title: 'Gesichert und nicht gesichert' }],
+      ['#simpleHero [data-sh=anchor]', 'Anheften: für Orte ohne GPS, zum Beispiel im Keller oder in der Tiefgarage. Du wählst ein Foto, und alle neuen Fotos bekommen dessen Ort.', { title: 'Anheften' }],
       ['#btnTour', 'Mit diesem Knopf startest du den Rundgang jederzeit wieder.'],
       [() => $('#sitePanel .site-hero') || $('#sitePanel'), 'Aktuelle Baustelle: Ich erkenne per GPS, auf welcher Baustelle du stehst. Der Ring zeigt, wie viele Pflichtfotos schon fertig sind.', { title: 'Aktuelle Baustelle' }],
       ['#sitePanel .check', 'Das ist die Checkliste. Jede Zeile ist ein Pflichtfoto, sortiert nach Vorher, Während und Nachher. Das orange JETZT markiert das nächste Foto. Tipp auf eine Zeile, dann öffnet sich die Kamera genau dafür.', { title: 'Checkliste' }],
@@ -3838,6 +4091,10 @@ function tourSteps() {
     ...C('Karte', 'karte', [
       ['.tab[data-v=karte]', 'Weiter zur Karte.'],
       ['#map', 'Die Karte zeigt alle Baustellen und Fotos. Die kleinen Fächer zeigen, in welche Richtung fotografiert wurde.', { title: 'Karte' }],
+      ['#mapBar .mseg', 'Oben wählst du das Kartenbild: Straßenkarte, Satellit, oder Raster – das geht auch ganz ohne Internet. Ich schalte mal auf Satellit.', { title: 'Karte oder Satellit', act: async () => { await tClick('#mapBar [data-ml=satellit]'); await tWait(1800); await tClick('#mapBar [data-ml=karte]'); }, fx: '#map' }],
+      ['#mapBar [data-mb=thumbs]', 'Fotovorschau zeigt die Fotos als kleine Bilder direkt auf der Karte. Weit herausgezoomt fasse ich sie zu Zahlen zusammen. Tipp auf eine Zahl, dann zoome ich hinein.', { title: 'Fotovorschau' }],
+      ['#mapBar [data-mb=filter]', 'Filter: nur eine Baustelle, eine Phase, einen Zeitraum oder nur ungesicherte Fotos zeigen.', { title: 'Filter' }],
+      ['#mapBar [data-mb=view]', 'Ansicht speichern: Die Karte öffnet sich dann immer genau an dieser Stelle.', { title: 'Ansicht speichern' }],
       ['.maplegend', 'Die Farben: Türkis heißt vorher, Orange während, Grün nachher.', { title: 'Farben' }],
       ['#mzIn', 'Plus vergrößert die Karte.', { title: 'Hineinzoomen', act: async () => { await tClick('#mzIn'); await tClick('#mzIn'); }, fx: '#map' }],
       ['#mzOut', 'Minus verkleinert sie.', { title: 'Herauszoomen', act: async () => { await tClick('#mzOut'); await tClick('#mzOut'); }, fx: '#map' }],
@@ -3888,9 +4145,12 @@ function tourSteps() {
       ['.tab[data-v=galerie]', 'Weiter zur Galerie.'],
       ['#galSeg', 'Ungesichert zeigt nur Fotos, die noch nicht exportiert sind. Alle zeigt alles.', { title: 'Filter', act: async () => { await tClick('#galSeg [data-g=open]'); await tWait(900); await tClick('#galSeg [data-g=all]'); }, fx: '#galList' }],
       ['#galSites', 'Hier filterst du nach Baustelle.', { title: 'Baustelle' }],
+      ['#galQ', 'Die Suche findet Fotos nach Baustelle, Pflichtfoto, Notiz oder Datum. Ich suche mal nach Kopfloch.', { title: 'Suchen', act: () => tType('#galQ', 'Kopfloch'), fx: '#galList' }],
+      ['#galView', 'Hier schaltest du zwischen Liste und Bildraster um.', { title: 'Liste oder Raster', act: async () => { const q = $('#galQ'); q.value = ''; q.dispatchEvent(new Event('input', { bubbles: true })); await tWait(500); await tClick('#galView [data-gv=grid]'); await tWait(1400); await tClick('#galView [data-gv=list]'); }, fx: '#galList' }],
+      ['#galSort', 'Und hier sortierst du: neueste zuerst, älteste zuerst oder nach Baustelle.', { title: 'Sortieren' }],
       ['#btnImport', 'Fotos importieren holt Bilder aus der Handy-Galerie. Ort und Zeit lese ich aus dem Foto aus.'],
       ['#btnVerify', 'Echtheit prüfen: Gib mir ein Foto zurück, und ich beweise per Fingerabdruck, dass es nicht verändert wurde.'],
-      ['#galList .th', 'Auf jedem Bild: Der Buchstabe ist die Phase, der Punkt zeigt, ob es gesichert ist. Videos und 360-Grad-Fotos sind extra markiert.', { title: 'Foto-Kachel' }]
+      [() => $('#galList .prow') || $('#galList .th'), 'Jede Zeile zeigt Datum, Uhrzeit, Pflichtfoto und Baustelle. Rechts steht der Buchstabe für die Phase und ob das Foto gesichert ist: grüner Haken gesichert, rotes Kreuz noch nicht.', { title: 'Foto in der Liste' }]
     ]),
     ...C('Foto-Detail', 'photo', [
       [() => $('#scrim .sheet .seal')?.closest('dl') || $('#scrim .sheet dl'), 'Zu jedem Foto speichere ich Ort, Zeit, Blickrichtung und ein Siegel. Das Siegel beweist, dass das Foto unverändert ist.', { title: 'Daten und Siegel' }],
@@ -3899,6 +4159,7 @@ function tourSteps() {
       [tSh('[data-x=defect]'), 'Als Mangel erfassen macht aus dem Foto sofort einen Mangel.'],
       [tSh('[data-x=plan]'), 'Auf Plan verorten setzt das Foto an die richtige Stelle im Grundriss.'],
       [tSh('[data-x=map]'), 'Auf Karte zeigt, wo das Foto entstanden ist.'],
+      [tSh('[data-x=anchor]'), 'Ort anheften: Alle neuen Fotos bekommen den Ort dieses Fotos. Praktisch dort, wo es kein GPS gibt.'],
       [tSh('[data-x=del]'), 'Löschen entfernt das Foto, nach einer Rückfrage.']
     ]),
     ...C('Bericht', 'bericht', [
@@ -3927,7 +4188,9 @@ function tourSteps() {
     ]),
     ...C('Einstellungen', 'settings', [
       [tRow('#stName'), 'In den Einstellungen trägst du zuerst deinen Namen ein. Er steht im Bericht.', { title: 'Dein Name' }],
+      [() => $('#scrim #stModeF'), 'Hier schaltest du zwischen Einfach und Komplett um. Einfach ist für die Kollegen auf der Baustelle, Komplett für den Supervisor. Mit einer PIN kann nur der Supervisor auf Komplett wechseln.', { title: 'Modus' }],
       [tRow('#stVoice'), 'Sprachausgabe: Ich sage dir die nächsten Schritte laut an.', { title: 'Sprachausgabe' }],
+      [tRow('#stRes'), 'Fotoauflösung: Hoch für die besten Details, Klein spart Speicher auf dem Handy.', { title: 'Fotoauflösung' }],
       [tRow('#stWm'), 'Stempel im Foto: Baustelle, Zeit, Koordinaten und Blickrichtung kommen fest ins Bild.', { title: 'Stempel im Foto' }],
       [tRow('#stSeries'), 'Serienmodus, wie in der Kamera.', { title: 'Serienmodus' }],
       [tRow('#stDemo'), 'Demo-Position zum Ausprobieren ohne echtes GPS.', { title: 'Demo-Position' }],
@@ -3953,6 +4216,7 @@ function tourSteps() {
       [null, `Das war der Rundgang, ${n}. Den Rundgang startest du jederzeit wieder über den Knopf im Cockpit. Oder sag einfach Rundgang. Viel Erfolg auf der Baustelle!`, { title: 'Fertig' }]
     ])
   ];
+  return S.set.mode === 'simple' ? all.filter(s => !['Abnahme', 'Pläne', 'Mängel', 'Mangel-Detail'].includes(s.c)) : all;
 }
 
 let tourLock = null;
@@ -4134,6 +4398,48 @@ addEventListener('keydown', e => { if (!Tour.on) return; if (e.key === 'Escape')
 /* Eingaben sperren, solange der Rundgang läuft (die Demo-Handgriffe klicken selbst) */
 ['pointerdown', 'click', 'touchstart'].forEach(t => document.addEventListener(t, e => { if (Tour.on && e.isTrusted && !e.target.closest('#tour .tcap')) { e.stopPropagation(); if (t !== 'touchstart') e.preventDefault(); } }, true));
 
+/* =====================================================================
+   MODUS (Einfach / Komplett) · ANHEFTEN · EINFACHE STARTSEITE
+   ===================================================================== */
+function applyMode() {
+  const simple = S.set.mode === 'simple'; document.body.classList.toggle('simple', simple);
+  if (simple && ['plaene', 'maengel'].includes(S.view)) go('cockpit');
+}
+async function setMode(m) {
+  if (m === 'full' && S.set.modePin) {
+    const ok = await new Promise(res => {
+      const el = sheet(`<h3>Komplett-Modus</h3><p class="sub">Bitte die Supervisor-PIN eingeben.</p><div class="inrow"><input type="password" inputmode="numeric" id="pinIn" autocomplete="off" style="padding:12px;font-size:20px;letter-spacing:.3em;border:1px solid var(--line);border-radius:var(--r);background:rgba(4,14,30,.8)"><button class="btn pri" id="pinOk">OK</button></div>`);
+      const go2 = async () => { const v = $('#pinIn', el).value.trim(); res(!!v && await sha256('sefki-pin|' + v) === S.set.modePin); };
+      $('#pinOk', el).onclick = go2; $('#pinIn', el).addEventListener('keydown', e => { if (e.key === 'Enter') go2(); }); setTimeout(() => $('#pinIn', el)?.focus(), 100);
+      $('#scrim').addEventListener('click', e => { if (e.target.id === 'scrim') res(false); });
+    });
+    closeSheet(); if (!ok) return toast('PIN falsch – Modus bleibt Einfach.');
+  }
+  S.set.mode = m; saveSet(); applyMode(); S.lotseKey = ''; refresh(true); closeSheet();
+  toast(m === 'simple' ? 'Einfach-Modus: Nur das Wesentliche.' : 'Komplett-Modus: Alle Funktionen frei.');
+}
+function renderSimpleHero() {
+  const h = $('#simpleHero'); if (!h) return;
+  const ok = S.photos.filter(p => p.exported).length, open = S.photos.length - ok, A = S.set.anchor;
+  h.innerHTML = `<button class="bigcam" data-sh="cam" aria-label="Foto aufnehmen"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg></span><b>Foto aufnehmen</b></button>
+    <div class="cnts"><button class="cnt" data-sh="ok"><span class="ring ok"><i>✓</i>${ok}</span><span>Gesichert</span></button><button class="cnt" data-sh="open"><span class="ring no"><i>✕</i>${open}</span><span>Nicht gesichert</span></button></div>
+    <button class="btn wide${A ? ' amb' : ''}" data-sh="anchor">${A ? `📌 Angeheftet: ${esc(A.label)} – lösen` : '📌 Anheften – für Orte ohne GPS'}</button>`;
+}
+function openAnchor() {
+  const A = S.set.anchor, ps = S.photos.filter(p => p.lat != null && p.kind !== 'video').sort((a, b) => b.ts - a.ts).slice(0, 36);
+  const el = sheet(`<h3>📌 Anheften</h3><p class="sub">Für Orte ohne GPS, zum Beispiel im Keller oder in der Tiefgarage: Wähle ein Foto. Alle Fotos, die du danach aufnimmst, bekommen dessen Ort und Baustelle – bis du wieder löst.</p>
+    ${A ? `<div class="warnbox" style="margin-bottom:12px"><b>Angeheftet:</b> ${esc(A.label)}<br><button class="btn wide" data-an="off" style="margin-top:8px">Anheften lösen</button></div>` : ''}
+    ${ps.length ? `<div class="grid">${ps.map(p => { const s = S.sites.find(x => x.id === p.siteId); return `<button class="th${A?.from === p.id ? ' on' : ''}" data-an="${p.id}"><img src="${p.thumb}" alt=""><span class="tl">${esc(s ? short(s.name) : fmtTime(p.ts))}</span></button>`; }).join('')}</div>` : '<p class="note">Noch kein Foto mit Ort vorhanden.</p>'}`);
+  el.addEventListener('click', e => { const b = e.target.closest('[data-an]'); if (!b) return; if (b.dataset.an === 'off') unpinAnchor(); else pinAnchor(S.photos.find(p => p.id === b.dataset.an)); closeSheet(); });
+}
+function pinAnchor(p) {
+  if (!p || p.lat == null) return; const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId);
+  S.set.anchor = { lat: p.lat, lon: p.lon, acc: p.acc ?? null, siteId: p.siteId || null, from: p.id, label: `${s ? short(s.name) + ' · ' : ''}${it ? it.label : fmtDate(p.ts) + ' ' + fmtTime(p.ts)}` };
+  saveSet(); S.lotseKey = ''; refresh(true); if (!$('#cam').hidden) renderCamHud();
+  toast('Angeheftet. Neue Fotos bekommen diesen Ort.'); speak('Ort angeheftet.');
+}
+function unpinAnchor() { S.set.anchor = null; saveSet(); S.lotseKey = ''; refresh(true); if (!$('#cam').hidden) renderCamHud(); toast('Anheften gelöst. Wieder mit GPS.'); }
+
 /* ---------------- Ereignisse ---------------- */
 function bind() {
   $('#logo').innerHTML = logoSVG();
@@ -4141,6 +4447,7 @@ function bind() {
   $('#fab').onclick = () => openCamera();
   $('#btnSettings').onclick = openSettings;
   $('#btnNewSite').onclick = newSite;
+  $('#simpleHero').onclick = e => { const a = e.target.closest('[data-sh]')?.dataset.sh; if (a === 'cam') openCamera(); if (a === 'anchor') S.set.anchor ? unpinAnchor() : openAnchor(); if (a === 'open') { S.rep.range = 'open'; S.rep.site = 'all'; go('bericht'); } if (a === 'ok') { S.gal.mode = 'all'; go('galerie'); } };
   $('#btnTour').onclick = () => Tour.menu();
   if (S.set.tourSeen) $('#btnTour').classList.remove('new');
   $('#cards').onclick = e => { const b = e.target.closest('.card'); if (b) S.cards[+b.dataset.i]?.a(); };
@@ -4189,9 +4496,12 @@ function bind() {
   $('#defList').onclick = e => { const b = e.target.closest('[data-def]'); if (b) openDefect(b.dataset.def); };
   $('#btnNewDefect').onclick = () => openDefect(null, { siteId: S.def.site !== 'all' ? S.def.site : undefined });
   $('#btnDefExport').onclick = defectExportSheet;
-  $('#galSeg').onclick = e => { const b = e.target.closest('[data-g]'); if (b) { S.gal.mode = b.dataset.g; renderGallery(); } };
-  $('#galSites').onclick = e => { const b = e.target.closest('[data-gs]'); if (b) { S.gal.site = b.dataset.gs; renderGallery(); } };
-  $('#galList').onclick = e => { const b = e.target.closest('[data-photo]'); if (b) openPhoto(b.dataset.photo); };
+  $('#galSeg').onclick = e => { const b = e.target.closest('[data-g]'); if (b) { S.gal.mode = b.dataset.g; S.gal.limit = 60; renderGallery(); } };
+  $('#galSites').onclick = e => { const b = e.target.closest('[data-gs]'); if (b) { S.gal.site = b.dataset.gs; S.gal.limit = 60; renderGallery(); } };
+  $('#galList').onclick = e => { if (e.target.id === 'galMore') { S.gal.limit = (S.gal.limit || 60) + 60; renderGallery(); return; } const b = e.target.closest('[data-photo]'); if (b) openPhoto(b.dataset.photo); };
+  $('#galQ').addEventListener('input', e => { S.gal.q = e.target.value; S.gal.limit = 60; clearTimeout(S.gqT); S.gqT = setTimeout(renderGallery, 180); });
+  $('#galView').onclick = e => { const b = e.target.closest('[data-gv]'); if (b) { S.gal.view = b.dataset.gv; S.set.galView = b.dataset.gv; saveSet(); renderGallery(); } };
+  $('#galSort').onchange = e => { S.gal.sort = e.target.value; S.gal.limit = 60; renderGallery(); };
   $('#repRange').onclick = e => { const b = e.target.closest('[data-rr]'); if (b) { S.rep.range = b.dataset.rr; renderReport(); } };
   $('#repSites').onclick = e => { const b = e.target.closest('[data-rs]'); if (b) { S.rep.site = b.dataset.rs; renderReport(); } };
   $('#repSum').onclick = e => { const b = e.target.closest('[data-ex]'); if (!b) return; b.dataset.ex === 'pdf' ? exportPDF(b) : exportZIP(b); };
@@ -4225,6 +4535,7 @@ function bind() {
   if (!S.set.seeded2 && S.sites.some(s => s.example)) { try { await seedExamples2(); } catch (e) { console.warn(e); } }
   try { S.persisted = await navigator.storage?.persisted?.(); if (!S.persisted && navigator.storage?.persist) S.persisted = await navigator.storage.persist(); } catch (e) {}
   initHeading();
+  S.gal.view = S.set.galView || 'list'; applyMode();
   const h = location.hash.slice(1); go(['cockpit', 'karte', 'plaene', 'maengel', 'galerie', 'bericht'].includes(h) ? h : 'cockpit');
   startGPS();
   if (S.set.demo) toast('Demo-Position aktiv – in den Einstellungen abschaltbar.', 3000);
