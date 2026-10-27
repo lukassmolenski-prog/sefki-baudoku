@@ -464,6 +464,9 @@ body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
 .segs{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px}
 .segs button{padding:10px 4px;border:1px solid var(--line);border-radius:var(--r);font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
 .segs button.on{background:var(--cyan);color:var(--void);border-color:var(--cyan);font-weight:600}
+.langs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.langs button{padding:10px 4px;border:1px solid var(--line);border-radius:var(--r);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.langs button.on{background:var(--cyan);color:var(--void);border-color:var(--cyan);font-weight:600}
 .hist{font-family:var(--f-mono);font-size:11px;color:var(--mute);display:flex;flex-direction:column;gap:3px;margin-top:6px}
 .thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .thumbs img{width:64px;height:48px;object-fit:cover;border:1px solid var(--line);border-radius:2px}
@@ -507,7 +510,7 @@ body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
     <div class="brand">
       <svg id="logo" viewBox="0 0 100 100" aria-hidden="true"></svg>
       <div style="min-width:0">
-        <div class="word">Smolens<span style="color:var(--cyan)">·</span><b>KI</b></div>
+        <div class="word" data-noi18n>Smolens<span style="color:var(--cyan)">·</span><b>KI</b></div>
         <div class="module">SEF-KI · <em>BAUDOKU GPS</em></div>
       </div>
     </div>
@@ -525,7 +528,7 @@ body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
         <canvas id="avatar" aria-hidden="true"></canvas>
         <div style="min-width:0;flex:1">
           <div class="lrow"><div class="lbl">SEF-KI · <span id="lotseState">bereit</span></div><button class="chip tourchip new" id="btnTour" aria-label="Rundgang: App erklären lassen">▶ Rundgang</button></div>
-          <p class="say" id="say" aria-live="polite"></p>
+          <p class="say" id="say" aria-live="polite" data-noi18n></p>
         </div>
       </div>
       <div class="lbl sug-lbl">SEF-KI schlägt vor</div>
@@ -690,7 +693,8 @@ function dist(a, b) {
   return 2 * 6371008.8 * Math.asin(Math.sqrt(s));
 }
 const DIRS = ['N', 'NO', 'O', 'SO', 'S', 'SW', 'W', 'NW'];
-const dirName = h => DIRS[Math.round((((h % 360) + 360) % 360) / 45) % 8];
+const DIRS_L = { en: 'N NE E SE S SW W NW', pl: 'N NE E SE S SW W NW', es: 'N NE E SE S SO O NO', fr: 'N NE E SE S SO O NO', nl: 'N NO O ZO Z ZW W NW', hr: 'S SI I JI J JZ Z SZ', tr: 'K KD D GD G GB B KB', sq: 'V VL L JL J JP P VP' };
+const dirName = (h, de) => { const L = !de && typeof I18N !== 'undefined' && DIRS_L[I18N.lang] ? DIRS_L[I18N.lang].split(' ') : DIRS; return L[Math.round((((h % 360) + 360) % 360) / 45) % 8]; };
 const fmtDist = m => m < 1000 ? Math.round(m) + ' m' : (m / 1000).toFixed(m < 10000 ? 1 : 0).replace('.', ',') + ' km';
 const pad = n => String(n).padStart(2, '0');
 const dayKey = ts => { const d = new Date(ts); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
@@ -803,6 +807,137 @@ const S = {
 };
 const saveSet = () => DB.put('kv', S.set).catch(() => {});
 
+/* ---------------- Sprachen (I18N) ----------------
+   Deutsch ist die Quelle. Für andere Sprachen übersetze ich alles, was auf dem Bildschirm erscheint,
+   über ein Wörterbuch (i18n/xx.json). Berichte, PDFs und der Stempel im Foto bleiben Deutsch. */
+const I18N = {
+  LANGS: [['de', 'Deutsch', 'de-DE'], ['en', 'English', 'en-GB'], ['pl', 'Polski', 'pl-PL'], ['es', 'Español', 'es-ES'], ['hr', 'Hrvatski', 'hr-HR'],
+    ['fr', 'Français', 'fr-FR'], ['nl', 'Nederlands', 'nl-NL'], ['tr', 'Türkçe', 'tr-TR'], ['sq', 'Shqip', 'sq-AL']],
+  lang: 'de', d: null, pats: [], cache: new Map(), obs: null,
+  loc() { return (this.LANGS.find(l => l[0] === this.lang) || this.LANGS[0])[2]; },
+  name(l = this.lang) { return (this.LANGS.find(x => x[0] === l) || this.LANGS[0])[1]; },
+  guess() { for (const n of (navigator.languages || [navigator.language || 'de'])) { const p = String(n).slice(0, 2).toLowerCase(); if (this.LANGS.some(l => l[0] === p)) return p; } return 'de'; },
+  boot() { // synchron beim Start: letzte Sprache + Wörterbuch aus dem Gerät
+    try { const l = localStorage.getItem('sefki-lang'); if (l && l !== 'de') { const d = JSON.parse(localStorage.getItem('sefki-i18n-' + l) || 'null'); if (d) this.use(l, d); } } catch (e) {}
+  },
+  async load(l) {
+    if (!l || l === 'de') { this.lang = 'de'; this.d = null; try { localStorage.setItem('sefki-lang', 'de'); } catch (e) {} document.documentElement.lang = 'de'; return true; }
+    let d = null;
+    try { const r = await fetch('i18n/' + l + '.json', { cache: 'no-cache' }); if (r.ok) d = await r.json(); } catch (e) {}
+    if (d) { try { localStorage.setItem('sefki-i18n-' + l, JSON.stringify(d)); } catch (e) {} }
+    else { try { d = JSON.parse(localStorage.getItem('sefki-i18n-' + l) || 'null'); } catch (e) {} }
+    if (!d) return false;
+    try { localStorage.setItem('sefki-lang', l); } catch (e) {}
+    if (this.lang !== l || !this.d) this.use(l, d); return true;
+  },
+  use(l, raw) {
+    const d = Object.create(null);
+    for (const k in raw) d[k.replace(/\s+/g, ' ').trim()] = raw[k];
+    for (const k in raw) { const k2 = k.replace(/\s+/g, ' ').trim(), c = k2.replace(/^[·•–\-]\s+/, '').replace(/:$/, ''); if (c !== k2 && c && !(c in d)) d[c] = raw[k].replace(/^[·•–\-]\s*/, '').replace(/\s*:$/, ''); }
+    this.lang = l; this.d = d; this.cache.clear(); this.build();
+    document.documentElement.lang = l;
+    if (!this.obs) {
+      this.obs = new MutationObserver(recs => {
+        for (const r of recs) {
+          if (r.type === 'childList') r.addedNodes.forEach(n => { const p = n.parentElement; if (!p || !this.skipUp(p)) this.walk(n); });
+          else if (r.type === 'characterData') { const p = r.target.parentElement; if (p && !this.skipUp(p)) this.tn(r.target); }
+          else if (r.type === 'attributes' && !r.target.closest('[data-noi18n]')) this.attr(r.target, r.attributeName);
+        }
+        this.obs.takeRecords(); // eigene Änderungen nicht nochmal anfassen
+      });
+      const go = () => { this.walk(document.body); this.obs.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['placeholder', 'aria-label', 'title'] }); };
+      document.body ? go() : document.addEventListener('DOMContentLoaded', go);
+    } else this.walk(document.body);
+  },
+  build() {
+    const P = [], RX = /[.*+?^${}()|[\]\\]/g;
+    for (const k in this.d) {
+      if (!/\{\d+\}/.test(k)) continue;
+      const v = this.d[k], lit = k.replace(/\{\d+\}/g, '');
+      if ((lit.match(/\p{L}/gu) || []).length < 3) continue;
+      const tk = k.split(/(\{\d+\})/); let re = '^', gi = 0, ok = true; const map = {};
+      for (let i = 0; i < tk.length; i++) {
+        const t = tk[i]; if (t === '') continue; const ph = /^\{(\d+)\}$/.exec(t);
+        if (!ph) { re += t.replace(RX, '\\$&').replace(/ /g, '\\s+'); continue; }
+        map[ph[1]] = ++gi;
+        const prevPh = i >= 2 && tk[i - 1] === '' && /^\{\d+\}$/.test(tk[i - 2]);
+        if (prevPh) { re += '()'; continue; }
+        // eine Reihe direkt aneinanderhängender Platzhalter muss auch in der Übersetzung zusammenstehen
+        let run = t, j = i; while (tk[j + 1] === '' && /^\{\d+\}$/.test(tk[j + 2] || '')) { run += tk[j + 2]; j += 2; }
+        if (run !== t && !v.includes(run)) { ok = false; break; }
+        const prev = tk[i - 1] || '', next = tk[j + 1] || '';
+        re += (/\p{L}$/u.test(prev) || /^\p{L}/u.test(next)) ? '(\\p{L}{0,8}|[\\s\\S]*?)' : '([\\s\\S]*?)';
+      }
+      if (!ok) continue;
+      try { P.push({ re: new RegExp(re + '$', 'u'), out: v, map, n: lit.length }); } catch (e) {}
+    }
+    this.pats = P.sort((a, b) => b.n - a.n);
+  },
+  x(n, dep) {
+    let r = this.d[n]; if (r != null) return r;
+    if (dep < 3 && n.length < 600) for (const p of this.pats) {
+      if (n.length < p.n) continue;
+      const g = p.re.exec(n); if (!g) continue;
+      return p.out.replace(/\{(\d+)\}/g, (_, k) => {
+        const v = g[p.map[k]] ?? ''; const tv = v.trim();
+        if (dep < 2 && /\p{L}{2}/u.test(tv)) { const q = this.x(tv.replace(/\s+/g, ' '), dep + 1); if (q != null) return v.replace(tv, q); }
+        return v;
+      });
+    }
+    if (dep < 3) { // Satzzeichen am Rand abschneiden und nochmal
+      const m = /^([\s·•–\-:,.]*)([\s\S]*?)([\s.,:;!?…]*)$/u.exec(n);
+      if (m[2] && m[2] !== n) { const q = this.x(m[2], 3); if (q != null) return m[1] + q + (/[.,:;!?…]$/.test(q) ? m[3].replace(/^[.,:;!?…]/, '') : m[3]); }
+    }
+    if (dep < 2) {
+      let parts = n.split(/(\s[·–]\s)/);
+      if (parts.length < 2) parts = n.split(/(?<=[.!?…:])(\s+)(?=[\p{Lu}„"(0-9📌⚠✓])/u);
+      if (parts.length > 1) { let any = false; const o = parts.map((p, i) => { if (i % 2) return p; const q = this.x(p, 2); if (q != null) { any = true; return q; } return p; }); if (any) return o.join(''); }
+      const lp = n.split(/(, |: )/); // Aufzählungen wie „Baustelle: Foto A, Foto B“
+      if (lp.length > 2) { let ok = 0; const o = lp.map((p, i) => { if (i % 2) return p; const q = this.x(p, 2); if (q != null) { ok++; return q; } return p; }); if (ok * 2 >= (lp.length + 1) / 2) return o.join(''); }
+    }
+    return null;
+  },
+  t(s) {
+    if (!this.d || typeof s !== 'string' || !s) return s;
+    const c = this.cache.get(s); if (c !== undefined) return c;
+    let out = s;
+    if (/\p{L}/u.test(s)) {
+      const m = /^(\s*)([\s\S]*?)(\s*)$/.exec(s), r = this.x(m[2].replace(/\s+/g, ' '), 0);
+      if (r != null) out = m[1] + r + m[3];
+    }
+    if (this.cache.size > 8000) this.cache.clear();
+    this.cache.set(s, out); if (out !== s) this.cache.set(out, out);
+    return out;
+  },
+  skip(el) { const t = el.tagName; return t === 'SCRIPT' || t === 'STYLE' || t === 'TEXTAREA' || el.hasAttribute('data-noi18n') || el.isContentEditable; },
+  skipUp(el) { return !!el.closest?.('[data-noi18n],textarea,script,style,[contenteditable="true"]'); },
+  tn(node) { const v = node.nodeValue; if (!v || v.length < 2) return; const t = this.t(v); if (t !== v) node.nodeValue = t; },
+  attr(el, a) { const v = el.getAttribute(a); if (!v) return; const t = this.t(v); if (t !== v) el.setAttribute(a, t); },
+  walk(root) {
+    if (!this.d || !root) return;
+    if (root.nodeType === 3) return this.tn(root);
+    if (root.nodeType !== 1 || root.closest('[data-noi18n]')) return;
+    const one = el => { if (el.hasAttribute('placeholder')) this.attr(el, 'placeholder'); if (el.hasAttribute('aria-label')) this.attr(el, 'aria-label'); if (el.hasAttribute('title')) this.attr(el, 'title'); };
+    one(root); if (this.skip(root)) return;
+    const w = document.createTreeWalker(root, 5, { acceptNode: n => { if (n.nodeType !== 1) return 1; if (n.hasAttribute('data-noi18n') || n.isContentEditable) return 2; if (this.skip(n)) { one(n); return 2; } return 1; } });
+    let n; while ((n = w.nextNode())) n.nodeType === 1 ? one(n) : this.tn(n);
+  },
+  // Sprachbefehle der anderen Sprachen auf die deutschen Schlüsselwörter abbilden
+  CMD: {
+    en: [[/what'?s missing|what is missing/, 'was fehlt'], [/start (the )?route/, 'trasse start'], [/(finish|end) (the )?route|route (done|finished)/, 'trasse fertig'], [/\b(photo|picture|shoot)\b/, 'foto'], [/\b(save|okay)\b/, 'speichern'], [/\b(again|retake)\b/, 'nochmal'], [/\b(next|skip)\b/, 'nächst'], [/^note\b/, 'notiz'], [/\b(close|back)\b/, 'schließ'], [/\bcamera\b/, 'kamera'], [/\b(tour|tutorial)\b/, 'rundgang'], [/\bhelp\b/, 'hilfe'], [/\b(point|mark)\b/, 'punkt']],
+    pl: [[/czego brakuje/, 'was fehlt'], [/start trasy|rozpocznij trasę/, 'trasse start'], [/koniec trasy|zakończ trasę/, 'trasse fertig'], [/zdjęci|fotk/, 'foto'], [/zapisz/, 'speichern'], [/jeszcze raz|ponów/, 'nochmal'], [/następn|dalej/, 'nächst'], [/^notatk\S*/, 'notiz'], [/zamknij/, 'schließ'], [/aparat/, 'kamera'], [/przewodnik/, 'rundgang'], [/pomoc/, 'hilfe']],
+    es: [[/qué falta|que falta/, 'was fehlt'], [/iniciar trazado/, 'trasse start'], [/trazado listo|terminar trazado/, 'trasse fertig'], [/\bfoto\b/, 'foto'], [/guarda/, 'speichern'], [/repetir|otra vez/, 'nochmal'], [/siguiente/, 'nächst'], [/^nota\b/, 'notiz'], [/cerrar/, 'schließ'], [/cámara|camara/, 'kamera'], [/recorrido/, 'rundgang'], [/ayuda/, 'hilfe'], [/\bpunto\b/, 'punkt']],
+    hr: [[/što nedostaje|sto nedostaje/, 'was fehlt'], [/pokreni trasu/, 'trasse start'], [/trasa gotova|završi trasu/, 'trasse fertig'], [/fotografij|slikaj|fotk/, 'foto'], [/spremi/, 'speichern'], [/ponovno|ponovi/, 'nochmal'], [/sljedeć|dalje/, 'nächst'], [/^bilješk\S*/, 'notiz'], [/zatvori/, 'schließ'], [/obilazak/, 'rundgang'], [/pomoć/, 'hilfe'], [/točk/, 'punkt']],
+    fr: [[/qu'?est-ce qui manque|ce qui manque/, 'was fehlt'], [/démarrer le tracé/, 'trasse start'], [/tracé terminé|terminer le tracé/, 'trasse fertig'], [/\bphoto\b/, 'foto'], [/enregistre/, 'speichern'], [/refaire|encore/, 'nochmal'], [/suivant/, 'nächst'], [/^note\b/, 'notiz'], [/fermer/, 'schließ'], [/appareil|caméra/, 'kamera'], [/visite/, 'rundgang'], [/\baide\b/, 'hilfe'], [/\bpoint\b/, 'punkt']],
+    nl: [[/wat ontbreekt/, 'was fehlt'], [/tracé starten/, 'trasse start'], [/tracé klaar/, 'trasse fertig'], [/opslaan/, 'speichern'], [/opnieuw/, 'nochmal'], [/volgende/, 'nächst'], [/^notitie\b/, 'notiz'], [/sluiten/, 'schließ'], [/camera/, 'kamera'], [/rondleiding/, 'rundgang'], [/\bhelp\b/, 'hilfe'], [/\bpunt\b/, 'punkt']],
+    tr: [[/ne eksik/, 'was fehlt'], [/güzergahı başlat/, 'trasse start'], [/güzergah bitti/, 'trasse fertig'], [/fotoğraf|\bçek\b/, 'foto'], [/kaydet/, 'speichern'], [/tekrar/, 'nochmal'], [/sıradaki|sonraki|ileri/, 'nächst'], [/^not\b/, 'notiz'], [/kapat/, 'schließ'], [/\btur\b/, 'rundgang'], [/yardım/, 'hilfe'], [/nokta/, 'punkt']],
+    sq: [[/çfarë mungon/, 'was fehlt'], [/nis trasenë/, 'trasse start'], [/trase gati/, 'trasse fertig'], [/\bfoto\b/, 'foto'], [/\bruaj\b/, 'speichern'], [/sërish|përsëri/, 'nochmal'], [/tjetr/, 'nächst'], [/^shënim\S*/, 'notiz'], [/\bmbyll\b/, 'schließ'], [/\bturi?\b/, 'rundgang'], [/ndihm/, 'hilfe'], [/\bpikë\b/, 'punkt']]
+  },
+  cmd(t) { const L = this.CMD[this.lang]; if (L) for (const [re, de] of L) t = t.replace(re, de); return t; }
+};
+const T = s => I18N.t(s);
+I18N.boot();
+
 /* ---------------- kleine UI-Helfer ---------------- */
 let toastT;
 function toast(msg, ms = 3200) {
@@ -894,8 +1029,8 @@ function speak(text, force) {
   if (!(S.set.voice || (force && handsFree) || handsFree) || !('speechSynthesis' in window)) return;
   try {
     speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text); u.lang = 'de-DE'; u.rate = 1.04;
-    const v = speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('de')); if (v) u.voice = v;
+    text = T(text); const u = new SpeechSynthesisUtterance(text); u.lang = I18N.loc(); u.rate = 1.04;
+    const v = TV.pick(); if (v) u.voice = v;
     if (handsFree) Voice.mute = Date.now() + 600 + text.length * 70;
     u.onstart = () => speaking = true; u.onend = () => { speaking = false; if (handsFree) Voice.mute = Date.now() + 500; };
     speechSynthesis.speak(u);
@@ -1069,6 +1204,7 @@ function lotse() {
     key += '|fa';
     cards.splice(1, 0, { t: 'Feierabend-Check', x: `${open} Foto${open > 1 ? 's sind' : ' ist'} noch nicht gesichert. Ein ZIP, und alles ist sicher.`, tag: 'SICHERN', a: () => { S.rep.range = 'open'; S.rep.site = 'all'; go('bericht'); } });
   }
+  say = T(say); hl = hl.map(T);
   let html = esc(say); hl.forEach(w => { html = html.replace(esc(w), `<span class="hl">${esc(w)}</span>`); });
   if (S.set.anchor) { key += '|anc'; cards.unshift({ t: '📌 Ort angeheftet', x: `Neue Fotos bekommen den Ort von „${S.set.anchor.label}“. Tippen zum Lösen.`, tag: 'ANGEHEFTET', a: () => openAnchor(), hot: true }); }
   if (S.set.mode === 'simple') { const keep = cards.filter(c => !['ABNAHME', 'PLAN', 'MÄNGEL', 'TEST'].includes(c.tag)); cards.splice(0, cards.length, ...keep); }
@@ -1527,7 +1663,7 @@ function drawWatermark(c, p) {
   g.font = `700 ${23 * s}px "JetBrains Mono", Consolas, monospace`; g.fillStyle = '#e6f8ff';
   g.fillText(fitText(g, `${site ? site.name : 'Ohne Baustelle'} · ${item ? item.label : catName(p.cat)}${p.depthCm ? ' · Tiefe ' + p.depthCm + ' cm' : ''}`, W - badgeW - padX * 2), padX, H - bh + 14 * s);
   g.font = `400 ${17 * s}px "JetBrains Mono", Consolas, monospace`; g.fillStyle = '#a6d6e6';
-  const l2 = `${fmtDate(p.ts)} ${new Date(p.ts).toLocaleTimeString('de-DE')} · ${p.lat != null ? coord(p.lat, p.lon) + ' ±' + fmtAcc(p.acc) + (p.fix && /RTK/.test(p.fix) ? ' ' + p.fix : '') : 'ohne GPS'}${p.heading != null ? ' · Blick ' + p.heading + '° ' + dirName(p.heading) : ''}`;
+  const l2 = `${fmtDate(p.ts)} ${new Date(p.ts).toLocaleTimeString('de-DE')} · ${p.lat != null ? coord(p.lat, p.lon) + ' ±' + fmtAcc(p.acc) + (p.fix && /RTK/.test(p.fix) ? ' ' + p.fix : '') : 'ohne GPS'}${p.heading != null ? ' · Blick ' + p.heading + '° ' + dirName(p.heading, 1) : ''}`;
   g.fillText(fitText(g, l2, W - badgeW - padX * 2), padX, H - bh + 48 * s);
   const bx = W - badgeW - padX + 10 * s, by = H - bh + 16 * s;
   g.fillStyle = PH[p.phase].c; g.fillRect(bx, by, 34 * s, 34 * s);
@@ -2482,7 +2618,7 @@ async function buildPDF(l, title, daily) {
       doc.setTextColor(...INK); doc.setFontSize(11.5); doc.text(doc.splitTextToSize(pdfSafe(`${PH[p.phase].n} – ${p.kind === 'video' ? 'Video ' + fmtDur(p.dur || 0) + ': ' : p.kind === 'pano' ? '360°: ' : ''}${it ? it.label : catName(p.cat)}${p.depthCm ? '  ·  Tiefe ' + p.depthCm + ' cm' : ''}`), cw - 48)[0], m + 11, y);
       chip(m + cw - 26, y - 0.6, it?.must ? 'PFLICHTFOTO' : 'ZUSATZFOTO', it?.must ? NAVY : [150, 160, 170], 26);
       y += 6; doc.setFont('helvetica', 'normal'); doc.setFontSize(8.4); doc.setTextColor(...GREY);
-      doc.text(`${fmtDay(p.ts)}, ${fmtTime(p.ts)} Uhr   ·   ${p.lat != null ? coord(p.lat, p.lon) + '  ±' + fmtAcc(p.acc) + (p.fix && /RTK/.test(p.fix) ? ' ' + p.fix : '') : 'ohne GPS'}${p.heading != null ? '   ·   Blick ' + p.heading + '° ' + dirName(p.heading) : ''}`, m + 11, y);
+      doc.text(`${fmtDay(p.ts)}, ${fmtTime(p.ts)} Uhr   ·   ${p.lat != null ? coord(p.lat, p.lon) + '  ±' + fmtAcc(p.acc) + (p.fix && /RTK/.test(p.fix) ? ' ' + p.fix : '') : 'ohne GPS'}${p.heading != null ? '   ·   Blick ' + p.heading + '° ' + dirName(p.heading, 1) : ''}`, m + 11, y);
       const extra = pdfSafe([p.address, catName(p.cat), (p.labels || []).length ? 'Stichworte: ' + p.labels.join(', ') : '', p.aiOk != null ? (p.aiOk ? 'KI-Prüfung: Pflichtinhalte erkannt' : 'KI-Prüfung: unvollständig') : '', p.privacy?.length ? p.privacy.length + ' Bereich(e) unkenntlich' : ''].filter(Boolean).join('   ·   '));
       if (extra) { y += 4.4; doc.text(doc.splitTextToSize(extra, cw - 11)[0], m + 11, y); }
       if (p.desc) { y += 5; doc.setTextColor(...INK); doc.setFontSize(9); doc.text(doc.splitTextToSize(pdfSafe(p.desc), cw - 11).slice(0, 2), m + 11, y); y += doc.splitTextToSize(pdfSafe(p.desc), cw - 11).length > 1 ? 3.7 : 0; }
@@ -3011,7 +3147,7 @@ const Voice = {
   start() {
     if (!this.supported()) { toast(inFrame ? 'Sprachbefehle gehen in der installierten App, nicht in dieser Vorschau.' : 'Dieser Browser kann keine Sprachbefehle. Bitte Chrome nutzen.'); return; }
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition, r = new SR();
-    r.lang = 'de-DE'; r.continuous = true; r.interimResults = false; r.maxAlternatives = 1;
+    r.lang = I18N.loc(); r.continuous = true; r.interimResults = false; r.maxAlternatives = 1;
     r.onresult = e => { for (let i = e.resultIndex; i < e.results.length; i++) if (e.results[i].isFinal) this.cmd(e.results[i][0].transcript); };
     r.onend = () => { if (this.on) setTimeout(() => { try { r.start(); } catch (e) {} }, 300); };
     r.onerror = e => { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { this.on = false; this.ui(); toast('Mikrofon ist nicht erlaubt.'); } };
@@ -3022,7 +3158,7 @@ const Voice = {
   ui() { $$('.micbtn').forEach(b => { b.classList.toggle('on', this.on); b.setAttribute('aria-pressed', this.on); }); },
   cmd(raw) {
     if (window.speechSynthesis?.speaking || Date.now() < this.mute) return;
-    const t = raw.toLowerCase().trim(); if (!t) return;
+    const t = I18N.cmd(raw.toLowerCase().trim()); if (!t) return;
     const camOpen = !$('#cam').hidden, revOpen = camOpen && !$('#review').hidden;
     const has = re => re.test(t);
     let m;
@@ -3820,7 +3956,10 @@ async function openSettings() {
   let est = null; try { est = await navigator.storage?.estimate(); } catch (e) {}
   const mb = S.photos.reduce((a, p) => a + (p.blob?.size || 0), 0) / 1048576;
   const hasEx = S.sites.some(s => s.example) || S.photos.some(p => p.example) || S.defects.some(d => d.example) || S.plans.some(p => p.example);
+  const hasV = c => { try { return speechSynthesis.getVoices().some(v => (v.lang || '').toLowerCase().startsWith(c)); } catch (e) { return false; } };
   const el = sheet(`<h3>Einstellungen</h3><p class="sub">SEF-KI Baudoku · Smolens·KI</p>
+    <div class="fld" id="stLangF"><span class="lbl" data-noi18n>${esc(T('Sprache'))}${I18N.lang === 'en' ? '' : ' · Language'}</span><div class="langs" id="stLang" data-noi18n>${I18N.LANGS.map(([c, n]) => `<button type="button" data-lg="${c}" class="${I18N.lang === c ? 'on' : ''}">${hasV(c) ? '🔊' : '📖'} ${n}</button>`).join('')}</div>
+      <p class="note" style="margin:6px 0 0"><span>🔊 = Stimme auf diesem Gerät vorhanden · 📖 = nur Lesetext.</span> <span>Berichte, PDF-Dateien und der Stempel im Foto bleiben auf Deutsch.</span></p></div>
     <button class="btn pri wide" id="stTour" style="margin-bottom:14px">▶ Rundgang: Jeden Knopf erklären lassen</button>
     <div class="fld" id="stModeF"><span class="lbl">Modus</span><div class="segs" id="stMode"><button type="button" data-md="simple" class="${S.set.mode === 'simple' ? 'on' : ''}">Einfach · Bediener</button><button type="button" data-md="full" class="${S.set.mode !== 'simple' ? 'on' : ''}">Komplett · Supervisor</button></div>
       <p class="note" style="margin:6px 0 0">Einfach zeigt nur das Wesentliche: Foto, Checkliste, Karte, Fotoliste, Sichern. Komplett schaltet Pläne, Mängel, Abnahme, Bautagebuch, Trassen und alle Einstellungen frei.${S.set.modePin ? ' Der Wechsel zu Komplett ist mit PIN gesperrt.' : ''}</p></div>
@@ -3878,6 +4017,14 @@ async function openSettings() {
   $('#stPinSave', el)?.addEventListener('click', async () => { const v = $('#stPin', el).value.trim(); if (v && !/^\d{4,8}$/.test(v)) return toast('Bitte 4 bis 8 Ziffern.'); S.set.modePin = v ? await sha256('sefki-pin|' + v) : ''; saveSet(); toast(v ? 'PIN gesetzt. Der Wechsel zu Komplett braucht jetzt die PIN.' : 'PIN entfernt.'); openSettings(); });
   $('#stRes', el).onchange = e => { S.set.res = e.target.value; saveSet(); toast('Neue Fotos werden in dieser Auflösung gespeichert.'); };
   $('#stTv', el).onchange = e => { S.set.tourVoice = e.target.value; saveSet(); };
+  $('#stLang', el).onclick = async e => {
+    const b = e.target.closest('[data-lg]'); if (!b || b.dataset.lg === I18N.lang) return;
+    const l = b.dataset.lg; $$('#stLang button', el).forEach(x => x.disabled = true); b.textContent = '…';
+    const ok = await I18N.load(l);
+    if (!ok) { toast(T('Übersetzung konnte nicht geladen werden – Deutsch bleibt aktiv.'), 4000); closeSheet(); return; }
+    S.set.lang = l; await DB.put('kv', S.set).catch(() => {});
+    toast(T('Die App startet in der neuen Sprache neu …'), 2000); setTimeout(() => location.reload(), 600);
+  };
   $('#stTvTest', el).onclick = () => { TV.unlock(); TV.stop(); TV.say(`Hallo ${S.set.name || 'Sefkan'}, so klinge ich im Rundgang.`, () => true); };
   $('#stElKey', el)?.addEventListener('change', e => { const v = e.target.value.trim(); if (/^•+$/.test(v)) return; S.set.elKey = v; if (!v) { S.set.elVoice = ''; if (S.set.tourVoice === 'eleven') S.set.tourVoice = 'auto'; } saveSet(); });
   $('#stElLoad', el)?.addEventListener('click', async e => {
@@ -3946,19 +4093,20 @@ const TV = {
     if (/seraphina|florian|conrad|amala|killian|katja online|anna|petra|helena|yannick|markus|viktoria/.test(n)) s += 10;
     if (/microsoft (hedda|stefan|katja) -|espeak|compact|samsung/.test(n)) s -= 30;
     if (v.localService === false) s += 5;
-    if (/de[-_]de/i.test(v.lang)) s += 3;
+    if (v.lang && v.lang.replace('_', '-').toLowerCase() === I18N.loc().toLowerCase()) s += 3;
     return s;
   },
-  list() { try { return speechSynthesis.getVoices().filter(v => /^de/i.test(v.lang)).sort((a, b) => this.score(b) - this.score(a)); } catch (e) { return []; } },
+  list() { try { const re = new RegExp('^' + I18N.lang, 'i'); return speechSynthesis.getVoices().filter(v => re.test(v.lang)).sort((a, b) => this.score(b) - this.score(a)); } catch (e) { return []; } },
   pick() { const l = this.list(), w = S.set.tourVoice; return (w && w !== 'auto' && w !== 'eleven' && l.find(v => v.voiceURI === w)) || l[0] || null; },
   natural() { const v = this.pick(); return !!v && this.score(v) >= 30; },
-  premium() { return S.set.tourVoice === 'eleven' && !!S.set.elKey && !!S.set.elVoice; },
+  premium() { return S.set.tourVoice === 'eleven' && !!S.set.elKey && !!S.set.elVoice && I18N.lang !== 'sq'; },
+  canSpeak() { return this.premium() || this.list().length > 0; },
   unlock() { // im Tipp aufrufen – iPhone gibt Ton sonst nicht frei
     try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } catch (e) {}
     try { this.audio ||= new Audio(); this.audio.src = silentWav(); this.audio.play().catch(() => {}); } catch (e) {}
   },
   stop() { try { speechSynthesis.cancel(); } catch (e) {} try { this.audio?.pause(); } catch (e) {} },
-  spoken: t => t.replace(/SEF-KI/g, 'Seff-KI').replace(/\bz\. ?B\./g, 'zum Beispiel').replace(/\bca\./g, 'circa'),
+  spoken: t => I18N.lang === 'de' ? t.replace(/SEF-KI/g, 'Seff-KI').replace(/\bz\. ?B\./g, 'zum Beispiel').replace(/\bca\./g, 'circa') : T(t).replace(/SEF-KI/g, 'Seff-KI'),
   async say(text, alive) {
     text = this.spoken(text);
     if (this.premium()) {
@@ -3974,7 +4122,7 @@ const TV = {
       const nx = () => {
         clearTimeout(guard); if (!alive()) return res(false); if (i >= parts.length) return res(true);
         const p = parts[i++].trim(); if (!p) return nx();
-        const u = new SpeechSynthesisUtterance(p); if (v) { u.voice = v; u.lang = v.lang; } else u.lang = 'de-DE';
+        const u = new SpeechSynthesisUtterance(p); if (v) { u.voice = v; u.lang = v.lang; } else u.lang = I18N.loc();
         u.rate = S.set.tourRate || 1; u.pitch = 1;
         u.onstart = () => { speaking = true; Tour.ov?.classList.add('talk'); };
         u.onend = () => setTimeout(nx, /[:]$/.test(p) ? 120 : 220); u.onerror = () => setTimeout(nx, 50);
@@ -4053,7 +4201,7 @@ const tWait = async ms => { const r = Tour.run; await new Promise(x => setTimeou
 async function tClick(sel) { const el = tRes(sel); if (!el) return; Tour.focus(el); await tWait(380); el.classList.add('tut-press'); await tWait(480); el.classList.remove('tut-press'); el.click(); await tWait(350); }
 async function tType(sel, val) {
   const el = tRes(sel); if (!el) return; Tour.focus(el); await tWait(300); el.classList.add('tut-typing'); el.value = '';
-  for (const ch of String(val)) { el.value += ch; el.dispatchEvent(new Event('input', { bubbles: true })); await tWait(ch === ' ' ? 45 : 75); }
+  for (const ch of String(T(val))) { el.value += ch; el.dispatchEvent(new Event('input', { bubbles: true })); await tWait(ch === ' ' ? 45 : 75); }
   el.dispatchEvent(new Event('change', { bubbles: true })); await tWait(250); el.classList.remove('tut-typing');
 }
 function tPtr(cv, type, x, y) { const r = cv.getBoundingClientRect(); cv.dispatchEvent(new PointerEvent(type, { bubbles: true, cancelable: true, pointerId: 71, isPrimary: true, pointerType: 'touch', clientX: r.left + x * r.width, clientY: r.top + y * r.height })); }
@@ -4065,7 +4213,7 @@ const lastOf = sel => () => { const l = $$(sel); return l[l.length - 1] || null;
 /* Karten-Hilfen für den Rundgang */
 function tKv(label) {
   return () => {
-    const dt = [...$$('#scrim .sheet dl.kv dt')].find(d => d.textContent.trim() === label), dd = dt?.nextElementSibling; if (!dt || !dd) return null;
+    const dt = [...$$('#scrim .sheet dl.kv dt')].find(d => { const x = d.textContent.trim(); return x === label || x === T(label); }), dd = dt?.nextElementSibling; if (!dt || !dd) return null;
     return { get isConnected() { return dd.isConnected; }, getClientRects: () => dd.getClientRects(), getBoundingClientRect() { const a = dt.getBoundingClientRect(), b = dd.getBoundingClientRect(); return { left: Math.min(a.left, b.left), top: Math.min(a.top, b.top), right: Math.max(a.right, b.right), bottom: Math.max(a.bottom, b.bottom), width: 0, height: 0 }; },
       scrollIntoView: o => dd.scrollIntoView(o), getAttribute: () => null, matches: () => false, querySelector: () => null, closest: () => null, textContent: label };
   };
@@ -4109,7 +4257,7 @@ const TOUR_CTX = {
 
 function tourSteps() {
   const n = S.set.name || 'Sefkan';
-  const C = (c, ctx, list) => list.map(([el, t, o]) => ({ c, ctx, el, t, ...(o || {}) }));
+  const C = (c, ctx, list) => list.map(([el, t, o]) => ({ c, ctx, el, t: T(t), ...(o || {}), ...(o?.title ? { title: T(o.title) } : {}) }));
   const all = [
     ...C('Willkommen', 'cockpit', [
       [null, `Hallo ${n}! Ich bin SEF-KI. Ich zeige dir jetzt jeden Knopf dieser App, einen nach dem anderen, und mache dir vieles direkt vor. Keine Sorge: Ich arbeite dabei mit Beispieldaten. Deine echten Daten bleiben unverändert.`, { title: 'Willkommen' }],
@@ -4229,7 +4377,7 @@ function tourSteps() {
       ['#defSites', 'Und hier nach Baustelle.', { title: 'Baustelle' }],
       ['#btnNewDefect', 'Mangel erfassen. Ich zeige es dir: Was ist los, wer ist zuständig, Frist eine Woche, speichern. Schon steht der Mangel in der Liste.', {
         act: async () => { await tClick('#btnNewDefect'); await tWait(400); await tType('#scrim #dfTitle', 'Bordstein lose vor Haus 14'); await tType('#scrim #dfAss', 'Pflasterbau Meier'); await tClick('#scrim [data-due="7"]'); await tClick('#scrim [data-x=save]'); await tWait(500); },
-        fx: () => [...$$('#defList .dcard')].find(c => c.textContent.includes('Bordstein lose')) }],
+        fx: () => [...$$('#defList .dcard')].find(c => c.textContent.toLowerCase().includes(T('Bordstein lose').toLowerCase())) }],
       ['#btnDefExport', 'Liste exportieren: als PDF für den Nachunternehmer, als Tabelle für Excel oder als Kalender mit allen Fristen.'],
       ['#defList .dcard', 'Jeder Mangel ist eine Karte: Nummer, Status, Zuständiger und Frist. Rot umrandet heißt überfällig. Ein Tipp öffnet den Mangel.', { title: 'Mangel-Karte' }]
     ]),
@@ -4335,11 +4483,14 @@ const Tour = {
   voiceHint() {
     if (TV.premium() || TV.natural()) return '';
     const ios = /iphone|ipad|ipod/i.test(navigator.userAgent), andr = /android/i.test(navigator.userAgent);
+    if (I18N.lang !== 'de') return `<div class="warnbox" style="margin-top:10px"><b>${TV.canSpeak() ? 'Die Stimme klingt noch nach Computer?' : 'Für diese Sprache ist auf diesem Gerät keine Stimme installiert – der Rundgang läuft als Lesetext.'}</b><br>${ios ? 'iPhone: Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → deine Sprache → eine Stimme mit (Premium) oder (Erweitert) laden.'
+      : andr ? 'Android: Einstellungen → System → Sprache → Text-in-Sprache → Google Sprachausgabe → deine Sprache → Stimme laden.' : 'Am PC: Microsoft Edge öffnen – dort gibt es natürliche Stimmen für viele Sprachen.'}</div>`;
     return `<div class="warnbox" style="margin-top:10px"><b>Die Stimme klingt noch nach Computer?</b><br>${ios ? 'iPhone: Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Deutsch → <b>Anna (Premium)</b> oder <b>Helena (Premium)</b> laden.'
       : andr ? 'Android: Einstellungen → Allgemeine Verwaltung (oder System) → Sprache → Text-in-Sprache → <b>Google Sprachausgabe</b> wählen → Deutsch → Stimme mit hoher Qualität laden.'
       : 'Am PC: Im Browser <b>Microsoft Edge</b> öffnen – dort gibt es die natürlichen Stimmen „Katja“, „Seraphina“ und „Florian“.'}<br>Am natürlichsten klingt die <b>Premium-Stimme</b> (Einstellungen → Rundgang-Stimme).</div>`;
   },
   menu() {
+    if (!TV.canSpeak()) this.mode = 'read';
     this.steps = tourSteps(); const ch = this.chapters(), all = ch.reduce((a, c) => a + c.ms, 0);
     const el = sheet(`<h3>Rundgang mit SEF-KI</h3><p class="sub">Ich erkläre dir jeden Knopf und mache vieles live vor – mit Beispieldaten, deine echten Daten bleiben unverändert. Lautstärke aufdrehen.</p>
       <div class="fld"><label class="lbl" for="tvSel">Stimme</label><div class="inrow"><select id="tvSel">${this.voiceOptions()}</select><button class="btn" id="tvTest" type="button">▶ Probe</button></div></div>
@@ -4630,6 +4781,9 @@ function bind() {
     S.plans = await DB.all('plans'); S.defects = await DB.all('defects'); S.protocols = await DB.all('protocols');
     S.customTpl = kv.find(x => x.id === 'tpls')?.map || {}; applyCustomTpl();
   } catch (e) {}
+  if (!S.set.lang) { let l = null; try { l = localStorage.getItem('sefki-lang'); } catch (e) {} S.set.lang = l || I18N.guess(); saveSet(); }
+  if (S.set.lang === 'de' && I18N.d) { try { localStorage.setItem('sefki-lang', 'de'); } catch (e) {} location.reload(); return; }
+  if (S.set.lang !== I18N.lang || (S.set.lang !== 'de' && !I18N.d)) { const okL = await I18N.load(S.set.lang); if (!okL) { S.set.lang = 'de'; await I18N.load('de'); } }
   if (!ok) toast('Gerätespeicher nicht verfügbar – Fotos bitte sofort exportieren.', 6000);
   if (!S.set.seeded) {
     try { await Promise.race([document.fonts?.ready, new Promise(r => setTimeout(r, 2500))]); } catch (e) {}
