@@ -1,0 +1,11 @@
+Erkennungsmodelle für den Datenschutz-Filter von EnerWeser Baudoku
+Diese Dateien laufen ausschließlich im Browser des Geräts. Kein Foto wird dafür an einen Server gesendet.
+
+tf.min.js               TensorFlow.js 4.22.0 – © Google LLC – Apache License 2.0
+coco-ssd.min.js         @tensorflow-models/coco-ssd 2.2.3 – © Google LLC – Apache License 2.0
+../coco/*               COCO-SSD (SSDLite MobileNet v2), Gewichte von storage.googleapis.com/tfjs-models – Apache License 2.0
+face-api.esm.js         @vladmandic/face-api 1.7.15 (ohne eingebautes TensorFlow) – © Vladimir Mandic – MIT License (siehe LICENSE-face-api.txt)
+../face/*               Tiny Face Detector (aus @vladmandic/face-api) – MIT License
+tf-shim.js, empty.js      Brücke, damit face-api das bereits geladene TensorFlow.js nutzt (Smolens·KI)
+
+Apache License 2.0: https://www.apache.org/licenses/LICENSE-2.0
