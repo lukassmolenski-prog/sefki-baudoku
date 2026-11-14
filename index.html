@@ -451,6 +451,22 @@ input[type=range]{width:100%;accent-color:var(--amber-fill)}
 /* ---------- Zeichnen ---------- */
 body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
 .mk{position:fixed;inset:0;z-index:90;background:#120d3a;display:flex;flex-direction:column}
+.itool{position:fixed;inset:0;z-index:91;background:#120d3a;display:flex;flex-direction:column;color:#fff}
+.itbar{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 10px max(12px,env(safe-area-inset-left,0px));font-family:var(--f-display);font-size:18px;letter-spacing:.02em;text-transform:uppercase}
+.itbar .iconbtn{color:#fff;border-color:rgba(255,255,255,.3);background:transparent}
+.itbar .itst{margin-left:auto;font-family:var(--f-mono);font-size:12.5px;letter-spacing:.1em;color:#ffb35c}
+.itwrap{flex:1;min-height:0;position:relative;overflow:hidden}
+.itwrap canvas{position:absolute;touch-action:none}
+.itwrap .loupe{width:132px;height:132px;border-radius:50%;border:3px solid #ff8a00;box-shadow:0 6px 18px rgba(0,0,0,.5);pointer-events:none;z-index:2}
+.itfoot{padding:10px max(14px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));background:#fff;color:var(--ink)}
+.itfoot .ithint{margin:0 0 8px;font-size:14.5px;line-height:1.35}
+.itfoot .itres{font-family:var(--f-display);font-size:22px;margin:4px 0 8px;color:var(--orange)}
+.itfoot .itres b{font-size:30px}
+.aibox.local{border-left-color:var(--orange)}
+.aibox.local .h{color:var(--orange-ink,var(--orange))}
+.needck{display:flex;flex-direction:column;gap:6px}
+.needck label{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.3;cursor:pointer}
+.needck input{width:20px;height:20px;flex:none;accent-color:var(--orange);margin:0}
 .mk canvas{flex:1;min-height:0;width:100%;touch-action:none}
 .mkbar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:10px max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));border-top:1px solid var(--line);background:var(--indigo-deep)}
 .mkbar .btn{min-height:40px;padding:8px 12px}
@@ -1200,7 +1216,7 @@ const S = {
   am: { site: 'all' }, ms: { site: 'all', kind: 'all' }, ak: { scope: 'site', site: 'all' },
   def: { status: 'open', site: 'all' }, planSite: null,
   set: { id: 'settings', name: 'Sefkan', voice: false, watermark: true, series: false, demo: false, demoAt: null, pin: null, seeded: false, lastLabels: [],
-    aiKey: '', aiModel: 'claude-sonnet-5-5', aiCheck: true, privacy: true, ghost: true, ghostOpacity: 0.42, ots: true, chainHead: '', trassMaxAcc: 10,
+    aiKey: '', aiModel: 'claude-sonnet-5-5', aiCheck: true, localCheck: true, privacy: true, ghost: true, ghostOpacity: 0.42, ots: true, chainHead: '', trassMaxAcc: 10,
     wmF: null, fnParts: null, req: null },
   pos: null, heading: null, realHeading: false, tilt: null, gps: 'idle',
   view: 'cockpit', lastInside: null, lotseKey: '', cards: [], persisted: null, layers: [], statSel: null, collections: [], master: null, statRange: 'w10', camFacing: 'environment',
@@ -1920,7 +1936,7 @@ async function handleCapture(src, meta) {
   };
   const SK = stickNow(); if (SK) { if (!tg.item) { f.phase = SK.phase || f.phase; f.cat = SK.cat || f.cat; } f.labels = SK.labels || f.labels; f.desc = SK.desc || ''; }
   if (camCtx.mark) { f.itemId = ''; f.cat = 'graben'; f.phase = 'W'; }
-  const dets = S.set.privacy ? await Det.detect(c) : [];
+  const dets = S.set.privacy ? await Det.full(c) : [];
   const R = reqF(), reqAuto = (!R.desc || f.desc) && (!R.labels || f.labels) && (!R.site || f.siteId);
   if (S.set.series && q.ok && meta.lat != null && reqAuto) {
     const raw = fitCanvas(c, 1280), rects = S.set.privacy ? privacyRects(dets, null, c.width, c.height) : [];
@@ -1959,17 +1975,18 @@ async function runReviewAI() {
   try {
     const r = await aiCheck(pd.c, site, item); if (pending !== pd) return;
     pd.ai = r; pd.aiState = 'done';
-    if (S.set.privacy) pd.rects = privacyRects(pd.dets, r, pd.c.width, pd.c.height);
-    const d = $('#rvDesc'); if (d && !d.value.trim() && r.beschreibung) d.value = r.beschreibung;
+    if (S.set.privacy) pd.rects = mergeRects(pd, privacyRects(pd.dets, r, pd.c.width, pd.c.height));
+    const d = $('#rvDesc'); if (d && (!d.value.trim() || d.value === pd.autoText) && r.beschreibung) { d.value = r.beschreibung; pd.autoText = null; }
     const lb = $('#rvLabels'); if (lb && Array.isArray(r.stichworte)) { const cur = lb.value.split(',').map(x => x.trim()).filter(Boolean); r.stichworte.slice(0, 4).forEach(s => { if (s && !cur.includes(s)) cur.push(s); }); lb.value = cur.join(', '); }
     if (r.tiefe_cm) { $('#rvDepthF').hidden = false; const dp = $('#rvDepth'); if (!dp.value) dp.value = Math.round(r.tiefe_cm); }
     speak(r.passt === false ? 'Achtung. ' + (r.hinweis || 'Es fehlt etwas auf dem Foto.') : r.tiefe_cm ? `Passt. Tiefe ${Math.round(r.tiefe_cm)} Zentimeter.` : 'Passt.');
   } catch (e) { if (pending !== pd) return; pd.aiState = 'err'; pd.aiErr = aiErr(e); }
-  renderAIBox(); renderPreview();
+  renderAIBox(); renderPreview(); renderLocal();
 }
 function renderAIBox() {
   const pd = pending, el = $('#rvAI'); if (!pd || !el) return;
   if (pd.aiState === 'disabled') { el.innerHTML = ''; return; }
+  if (pd.aiState === 'off' && S.set.localCheck && !inFrame) { el.innerHTML = ''; return; }
   if (pd.aiState === 'off') { el.innerHTML = `<div class="aibox"><div class="h"><span>SEF-KI BILDPRÜFUNG</span><span>AUS</span></div><p class="note" style="margin:0">${inFrame ? 'In dieser Vorschau nicht verfügbar.' : 'Noch nicht eingerichtet: Einstellungen → „SEF-KI Intelligenz“. Dann prüfe ich jedes Foto auf die Pflichtinhalte, lese Tiefen ab und finde Gesichter und Kennzeichen.'}</p></div>`; return; }
   if (pd.aiState === 'busy' || pd.aiState === 'idle') { el.innerHTML = `<div class="aibox"><div class="h"><span>SEF-KI BILDPRÜFUNG</span></div><div class="busy"><span class="spin"></span>Ich prüfe das Foto … du kannst trotzdem schon speichern.</div></div>`; return; }
   if (pd.aiState === 'err') { el.innerHTML = `<div class="aibox"><div class="h"><span>SEF-KI BILDPRÜFUNG</span><button class="chip" id="rvAIre">Nochmal prüfen</button></div><p class="note" style="margin:0">${esc(pd.aiErr)}</p></div>`; $('#rvAIre').onclick = runReviewAI; return; }
@@ -2011,9 +2028,9 @@ function showReview(f) {
     <div class="ph"><h2>${isVid ? 'Video prüfen' : 'Foto prüfen'}</h2><span class="lbl">${fmtTime(meta.ts)}${isVid ? ' · ' + fmtDur(pending.dur) : ''}</span></div>
     ${isVid ? `<video class="big" src="${pending.vurl}" controls playsinline></video>` : '<img class="big" id="rvImg" alt="Aufgenommenes Foto">'}
     <div class="qual">${isVid ? `<span class="q g">VIDEO ${fmtDur(pending.dur)}</span>${meta.lat != null ? `<span class="q g">GPS ±${fmtAcc(meta.acc)}</span>` : '<span class="q b">KEIN GPS</span>'}` : qualHTML(q, meta)}</div><div class="qual" id="rvPriv"></div>${isVid ? '' : warn}
-    <div id="rvAI"></div>
+    <div id="rvAI"></div><div id="rvLocal"></div>
     ${!isVid && !camCtx.defect && !camCtx.mark ? '<label class="tog pro-only" style="padding:8px 0"><span>Als Mangel erfassen<small>Nach dem Speichern öffne ich die Mangel-Erfassung mit diesem Foto.</small></span><input type="checkbox" class="sw" id="rvAsDef"></label>' : ''}
-    <div class="fld" id="rvDepthF"${needDepth ? '' : ' hidden'}><label class="lbl" for="rvDepth">Tiefe (cm)</label><input type="text" inputmode="decimal" id="rvDepth" placeholder="wird von der KI abgelesen – oder selbst eintragen"></div>
+    <div class="fld" id="rvDepthF"${needDepth ? '' : ' hidden'}><label class="lbl" for="rvDepth">Tiefe (cm)</label><input type="text" inputmode="decimal" id="rvDepth" placeholder="selbst eintragen – oder 📏 am Meterstab messen"></div>
     <div class="fld" style="margin-top:14px"><label class="lbl" for="rvSite">Baustelle${reqF().site ? ' <b style="color:var(--amber)">*</b>' : ''}</label>
       <select id="rvSite"><option value="">Ohne Baustelle</option>${activeSites().map(s => `<option value="${s.id}"${s.id === f.siteId ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</select></div>
     <div class="fld"><label class="lbl" for="rvItem">Pflichtfoto</label><select id="rvItem">${itemOptions(f.siteId, f.itemId)}</select></div>
@@ -2037,6 +2054,12 @@ function showReview(f) {
   $('#rvTexts').addEventListener('click', e => { const b = e.target.closest('[data-tx]'); if (!b) return; const d = $('#rvDesc'); d.value = d.value.trim() ? d.value.trim() + ' ' + b.dataset.tx : b.dataset.tx; });
   $('#rvLabChips')?.addEventListener('click', e => { const b = e.target.closest('[data-l]'); if (!b) return; const inp = $('#rvLabels'); const cur = inp.value.split(',').map(x => x.trim()).filter(Boolean); if (!cur.includes(b.dataset.l)) cur.push(b.dataset.l); inp.value = cur.join(', '); });
   $('#rvMic')?.addEventListener('click', () => dictate($('#rvDesc'), $('#rvMic')));
+  $('#rvSite').addEventListener('change', () => { renderLocal(); refreshAutoDesc(); });
+  $('#rvItem').addEventListener('change', () => { pending && (pending.needOk = null); renderLocal(); refreshAutoDesc(); });
+  $('#rvPh').addEventListener('click', () => setTimeout(refreshAutoDesc));
+  $('#rvCat').addEventListener('click', () => setTimeout(refreshAutoDesc));
+  $('#rvDepth').addEventListener('input', refreshAutoDesc);
+  localReview(pending);
   $('#rvRetake').onclick = () => { pending = null; rv.hidden = true; updateGhost(); };
   $('#rvSave').onclick = async () => {
     const btn = $('#rvSave'); if (btn.disabled) return;
@@ -2063,7 +2086,7 @@ function showReview(f) {
         toast(`Video gespeichert (${fmtDur(p.dur)}).`); return;
       }
       if (ctxDef || ctxPin || asDefect) {
-        const p = await savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: 'KI/manuell' });
+        const p = await savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, needCheck: needCheckOut(pd), sig: pd.sig, depthMeas: pd.depthMeas?.cm === Math.round(depth) ? pd.depthMeas : null, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: pd.depthMeas?.cm === Math.round(depth) ? 'am Meterstab gemessen' : 'KI/manuell' });
         pending = null; rv.hidden = true; closeCamera();
         if (asDefect && !ctxDef) openDefect(null, { siteId: ff.siteId || null, photoId: p.id, plan: p.plan || null, title: (pd.ai?.beschreibung || '').replace(/\.$/, '').slice(0, 70), desc: ff.desc || pd.ai?.beschreibung || '' });
         else if (ctxDef) { toast('Foto am Mangel gespeichert.'); openDefect(ctxDef); }
@@ -2071,10 +2094,10 @@ function showReview(f) {
         return;
       }
       if (wasMark) {
-        await savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: 'KI/manuell' });
+        await savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, needCheck: needCheckOut(pd), sig: pd.sig, depthMeas: pd.depthMeas?.cm === Math.round(depth) ? pd.depthMeas : null, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: pd.depthMeas?.cm === Math.round(depth) ? 'am Meterstab gemessen' : 'KI/manuell' });
         pending = null; rv.hidden = true; closeCamera(); toast('Foto am Trassenpunkt gespeichert.'); speak('Foto am Trassenpunkt gespeichert.'); return;
       }
-      const job = savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: pd.ai?.tiefe_cm && Math.round(pd.ai.tiefe_cm) === Math.round(depth) ? 'KI' : 'manuell' });
+      const job = savePhoto(pd.c, pd.meta, ff, pd.q, { rects: pd.blurOn ? pd.rects : [], ai: pd.ai, needCheck: needCheckOut(pd), sig: pd.sig, depthMeas: pd.depthMeas?.cm === Math.round(depth) ? pd.depthMeas : null, depthCm: isFinite(depth) ? Math.round(depth) : null, depthSrc: pd.depthMeas?.cm === Math.round(depth) ? 'am Meterstab gemessen' : pd.ai?.tiefe_cm && Math.round(pd.ai.tiefe_cm) === Math.round(depth) ? 'KI' : 'manuell' });
       job.catch(err => { toast('Speichern fehlgeschlagen: ' + (err.message || err) + ' – bitte nochmal.', 6000); });
       pending = null; rv.hidden = true; camCtx = { siteId: ff.siteId || undefined, itemId: undefined, mark: null };
       const { item, site } = camTarget(); renderCamHud();
@@ -2141,8 +2164,10 @@ async function savePhoto(c, meta, f, q, x = {}) {
     q: { sharp: q.sharp, bright: q.bright, flags: q.flags }, exported: false, w: c.width, h: c.height, imported: !!meta.imported,
     depthCm: x.depthCm ?? null, depthSrc: x.depthCm != null ? x.depthSrc || 'manuell' : null,
     aiOk: x.ai ? x.ai.passt !== false : null, aiDesc: x.ai?.beschreibung || '', aiCheck: x.ai?.pruefung || null,
+    ...(x.needCheck ? { needCheck: x.needCheck } : {}), ...(x.depthMeas ? { depthMeas: x.depthMeas } : {}),
     privacy: (x.rects || []).map(r => r.kind), user: S.set.name || '', weather: Wx.peek(meta.lat, meta.lon, meta.ts), ...(S.set.clientDefault === 'gesperrt' ? { client: false } : {}) };
   if (!p.weather) delete p.weather;
+  if (p.kind === 'photo') { try { p.sig = x.sig || imgSig(c); } catch (e) {} }   // Bild-Fingerabdruck für die Doppelfoto-Warnung
   (x.rects || []).forEach(r => pixelate(c, r));                    // 1. Datenschutz
   if (S.set.watermark) drawWatermark(c, p);                          // 2. Stempel
   p.thumb = thumbOf(c); p.blob = null;                               // 3. Vorschau sofort
@@ -2824,7 +2849,7 @@ const ISSUES = {
   nosite: ['Ohne Baustelle', p => !p.siteId],
   noitem: ['Keinem Pflichtfoto zugeordnet', p => !!p.siteId && !p.itemId],
   nodesc: ['Ohne Beschreibung', p => !p.desc && !p.aiDesc],
-  aibad: ['KI-Prüfung: unvollständig', p => p.aiOk === false]
+  aibad: ['Prüfung: unvollständig', p => p.aiOk === false || !!p.needCheck?.some(n => !n.ok)]
 };
 const isIncomplete = p => ISSUES.nogps[1](p) || ISSUES.nosite[1](p);
 const issueTags = p => (p.lat == null ? '<span class="iss">KEIN GPS</span>' : p.acc > 35 ? '<span class="iss w">GPS ±' + Math.round(p.acc) + ' m</span>' : '') + (!p.siteId ? '<span class="iss w">OHNE BAUSTELLE</span>' : '') + (p.aiOk === false ? '<span class="iss w">KI: UNVOLLST.</span>' : '') + (p.client === false ? '<span class="iss w">GESPERRT</span>' : '') + (p.archived ? '<span class="iss w">ARCHIV</span>' : '');
@@ -4462,6 +4487,7 @@ async function buildPDF(l, title, daily) {
         ['Kategorie', [catName(p.cat), ...(p.labels || [])].filter(Boolean).join(' · ')],
         ['Bearbeiter', p.user || ''],
         ['KI-Prüfung', p.aiOk != null ? (p.aiOk ? 'Pflichtinhalte erkannt' : 'unvollständig') : ''],
+        ['Pflichtinhalte', p.needCheck?.length ? `${p.needCheck.filter(n => n.ok).length} von ${p.needCheck.length} vom Fotografen bestätigt` : ''],
         ['Datenschutz', p.privacy?.length ? p.privacy.length + ' Bereich(e) unkenntlich gemacht' : '']
       ].filter(r => r[1]);
       for (const [a, b] of rows) {
@@ -4735,19 +4761,28 @@ Regeln:
 /* ---------------- Datenschutz: Personen & Kennzeichen unkenntlich ---------------- */
 const loadScript = src => new Promise((res, rej) => { if ([...document.scripts].some(s => s.src === src && s.dataset.ok)) return res(); const s = document.createElement('script'); s.src = src; s.onload = () => { s.dataset.ok = '1'; res(); }; s.onerror = () => rej(new Error('Laden fehlgeschlagen')); document.head.appendChild(s); });
 const Det = {
-  model: null, p: null, live: [], busy: false,
+  model: null, fa: null, p: null, live: [], busy: false,
   load() {
     if (inFrame || !S.set.privacy) return Promise.resolve(null);
     this.p ??= (async () => {
-      await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js');
-      await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js');
-      this.model = await window.cocoSsd.load({ base: 'lite_mobilenet_v2' }); return this.model;
+      // alles vom eigenen Server – nach dem ersten Laden auch ohne Netz verfügbar
+      await loadScript(absUrl('models/lib/tf.min.js'));
+      await loadScript(absUrl('models/lib/coco-ssd.min.js'));
+      this.model = await window.cocoSsd.load({ base: 'lite_mobilenet_v2', modelUrl: absUrl('models/coco/model.json') });
+      this.fa = await loadFaceModel(); return this.model;
     })().catch(e => { console.warn('Erkennung nicht verfügbar', e); this.p = null; return null; });
     return this.p;
   },
   async detect(src) {
     if (!this.model) return [];
     try { return (await this.model.detect(src, 12, 0.45)).filter(d => ['person', 'car', 'truck', 'bus', 'motorcycle'].includes(d.class)); } catch (e) { return []; }
+  },
+  /* fürs fertige Foto: zusätzlich Gesichter genau finden und Kennzeichen suchen */
+  async full(c) {
+    const d = await this.detect(c); if (!c) return d;
+    if (this.fa) { try { (await detectFaces(this.fa, c, d)).forEach(b => d.push({ class: 'face', bbox: b, score: 1 })); } catch (e) { console.warn(e); } }
+    for (const v of d.filter(x => ['car', 'truck', 'bus', 'motorcycle'].includes(x.class))) { try { const pl = findPlate(c, v.bbox); if (pl) v.plate = pl; } catch (e) {} }
+    return d;
   }
 };
 function privacyRects(dets, ai, W, H) {
@@ -4755,12 +4790,18 @@ function privacyRects(dets, ai, W, H) {
   const nb = (b, kind) => { if (!Array.isArray(b) || b.length < 4 || !b.every(v => typeof v === 'number' && isFinite(v))) return; const [x, y, w, h] = b;
     const px = Math.max(0, (x - w * 0.15) * W), py = Math.max(0, (y - h * 0.15) * H); out.push({ x: px, y: py, w: Math.min(W - px, w * 1.3 * W), h: Math.min(H - py, h * 1.3 * H), kind }); };
   if (ai) { (ai.personen || []).forEach(b => nb(b, 'Gesicht')); (ai.kennzeichen || []).forEach(b => nb(b, 'Kennzeichen')); }
-  else for (const d of dets) {
-    const [x, y, w, h] = d.bbox;
-    if (d.class === 'person') out.push({ x: x + w * 0.1, y, w: w * 0.8, h: h > w * 1.2 ? h * 0.3 : h * 0.45, kind: 'Person' });
-    else out.push({ x: x + w * 0.16, y: y + h * 0.52, w: w * 0.68, h: h * 0.44, kind: 'Kennzeichen-Bereich' });
+  else {
+    const faces = dets.filter(d => d.class === 'face').map(d => d.bbox);
+    for (const [x, y, w, h] of faces) out.push({ x: x - w * 0.3, y: y - h * 0.4, w: w * 1.6, h: h * 1.7, kind: 'Gesicht' });
+    for (const d of dets) {
+      const [x, y, w, h] = d.bbox;
+      if (d.class === 'face') continue;
+      if (d.class === 'person') { if (!faces.some(f => cIn(f, [x, y, w, h * 0.6]))) out.push({ x: x + w * 0.1, y, w: w * 0.8, h: h > w * 1.2 ? h * 0.3 : h * 0.45, kind: 'Person' }); }
+      else if (d.plate) { const [px, py, pw, ph] = d.plate; out.push({ x: px - pw * 0.12, y: py - ph * 0.35, w: pw * 1.24, h: ph * 1.7, kind: 'Kennzeichen' }); }
+      else out.push({ x: x + w * 0.16, y: y + h * 0.52, w: w * 0.68, h: h * 0.44, kind: 'Kennzeichen-Bereich' });
+    }
   }
-  return out.filter(r => r.w > 4 && r.h > 4);
+  return out.map(r => { const x = Math.max(0, r.x), y = Math.max(0, r.y); return { ...r, x, y, w: Math.min(W - x, r.w - (x - r.x)), h: Math.min(H - y, r.h - (y - r.y)) }; }).filter(r => r.w > 4 && r.h > 4);
 }
 function pixelate(c, r) {
   const g = c.getContext('2d'), bs = Math.max(10, Math.round(Math.max(r.w, r.h) / 9));
@@ -4780,6 +4821,354 @@ function drawDet() {
     const t = d.class === 'person' ? 'PERSON → GESICHT WIRD UNKENNTLICH' : 'FAHRZEUG → KENNZEICHEN WIRD UNKENNTLICH';
     g.fillStyle = 'rgba(20,12,4,.8)'; g.fillRect(X, Y - 16, g.measureText(t).width + 10, 16); g.fillStyle = '#ffa040'; g.fillText(t, X + 5, Y - 4);
   }
+}
+
+/* ---------------- Auf dem Gerät: Erkennungsmodelle (offline, ohne fremde Server) ---------------- */
+const absUrl = p => new URL(p, location.href).href;
+const MODEL_CACHE = 'ew-modelle-v1';
+const MODEL_FILES = ['models/lib/tf.min.js', 'models/lib/coco-ssd.min.js', 'models/lib/face-api.esm.js', 'models/lib/tf-shim.js', 'models/lib/empty.js',
+  'models/coco/model.json', ...Array.from({ length: 10 }, (_, i) => `models/coco/group1-shard${i + 1}of10`),
+  'models/face/tiny_face_detector_model-weights_manifest.json', 'models/face/tiny_face_detector_model.bin'];
+async function modelsCached() {
+  if (!('caches' in window)) return 0;
+  try { const c = await caches.open(MODEL_CACHE); let n = 0; for (const f of MODEL_FILES) if (await c.match(absUrl(f))) n++; return n; } catch (e) { return 0; }
+}
+async function cacheModels(onStep) {
+  const c = await caches.open(MODEL_CACHE); let i = 0;
+  for (const f of MODEL_FILES) {
+    const u = absUrl(f);
+    if (!(await c.match(u))) { const r = await fetch(u, { cache: 'no-cache' }); if (!r.ok) throw new Error(f + ': ' + r.status); await c.put(u, r); }
+    onStep?.(++i, MODEL_FILES.length);
+  }
+}
+/* Gesichter: kleines Modell (Tiny Face Detector, ca. 190 KB), läuft komplett im Browser */
+async function loadFaceModel() {
+  try {
+    const fa = await import(absUrl('models/lib/face-api.esm.js'));
+    await fa.nets.tinyFaceDetector.loadFromUri(absUrl('models/face'));
+    return fa;
+  } catch (e) { console.warn('Gesichtserkennung nicht verfügbar', e); return null; }
+}
+const cIn = (b, r) => { const cx = b[0] + b[2] / 2, cy = b[1] + b[3] / 2; return cx >= r[0] && cx <= r[0] + r[2] && cy >= r[1] && cy <= r[1] + r[3]; };
+async function detectFaces(fa, c, d) {
+  const opt = s => new fa.TinyFaceDetectorOptions({ inputSize: s, scoreThreshold: 0.42 });
+  let faces = (await fa.detectAllFaces(c, opt(416))).map(f => [f.box.x, f.box.y, f.box.width, f.box.height]);
+  // Kleine Personen im Weitwinkel: Kopfbereich vergrößert noch einmal prüfen
+  for (const p of d.filter(x => x.class === 'person').slice(0, 4)) {
+    const [x, y, w, h] = p.bbox; if (faces.some(f => cIn(f, [x, y, w, h * 0.6]))) continue;
+    const side = Math.min(Math.max(w, h * 0.45) * 1.1, c.width, c.height); if (side > 700 || side < 24) continue;
+    const sx = Math.max(0, Math.min(c.width - side, x + w / 2 - side / 2)), sy = Math.max(0, Math.min(c.height - side, y - side * 0.08));
+    const t = document.createElement('canvas'); t.width = t.height = 320; t.getContext('2d').drawImage(c, sx, sy, side, side, 0, 0, 320, 320);
+    const k = side / 320;
+    (await fa.detectAllFaces(t, opt(320))).forEach(f => faces.push([sx + f.box.x * k, sy + f.box.y * k, f.box.width * k, f.box.height * k]));
+  }
+  return faces;
+}
+/* Kennzeichen: sucht im unteren Fahrzeugbereich ein helles Rechteck im Kennzeichen-Format mit vielen senkrechten Kanten (Schrift) */
+function findPlate(src, bb) {
+  const [bx, by, bw, bh] = bb; if (bw < 40 || bh < 30) return null;
+  const sx = Math.max(0, bx), sy = Math.max(0, by + bh * 0.3), sw = Math.min(bw, (src.width || src.videoWidth) - sx), sh = Math.min(bh * 0.7, (src.height || src.videoHeight) - sy);
+  if (sw < 30 || sh < 15) return null;
+  const W = Math.max(60, Math.min(320, Math.round(sw))), k = W / sw, H = Math.max(20, Math.round(sh * k));
+  const t = document.createElement('canvas'); t.width = W; t.height = H;
+  const g = t.getContext('2d', { willReadFrequently: true }); g.drawImage(src, sx, sy, sw, sh, 0, 0, W, H);
+  const d = g.getImageData(0, 0, W, H).data, gray = new Float32Array(W * H);
+  for (let i = 0, j = 0; i < d.length; i += 4, j++) gray[j] = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+  const W1 = W + 1, IE = new Float64Array(W1 * (H + 1)), IG = new Float64Array(W1 * (H + 1)), IG2 = new Float64Array(W1 * (H + 1));
+  for (let y = 0; y < H; y++) {
+    let rE = 0, rG = 0, rG2 = 0;
+    for (let x = 0; x < W; x++) {
+      const v = gray[y * W + x], e = x > 0 && x < W - 1 && Math.abs(gray[y * W + x + 1] - gray[y * W + x - 1]) > 48 ? 1 : 0;
+      rE += e; rG += v; rG2 += v * v; const o = (y + 1) * W1 + x + 1;
+      IE[o] = IE[o - W1] + rE; IG[o] = IG[o - W1] + rG; IG2[o] = IG2[o - W1] + rG2;
+    }
+  }
+  const S4 = (I, x, y, w, h) => I[(y + h) * W1 + x + w] - I[y * W1 + x + w] - I[(y + h) * W1 + x] + I[y * W1 + x];
+  let best = null;
+  for (let pw = Math.round(W * 0.14); pw <= Math.round(W * 0.62); pw += Math.max(2, Math.round(W * 0.03))) {
+    for (const ar of [4.6, 3.5]) {
+      const ph = Math.max(5, Math.round(pw / ar)); if (ph >= H) continue;
+      const bandH = Math.max(2, Math.round(ph * 0.5));
+      for (let y = 0; y + ph <= H; y += 2) for (let x = 0; x + pw <= W; x += 2) {
+        const a = pw * ph, e = S4(IE, x, y, pw, ph) / a; if (e < 0.1 || e > 0.6) continue;
+        const m = S4(IG, x, y, pw, ph) / a, v = S4(IG2, x, y, pw, ph) / a - m * m; if (m < 80 || v < 900) continue;
+        const eo = y >= bandH ? S4(IE, x, y - bandH, pw, bandH) / (pw * bandH) : 0, eu = y + ph + bandH <= H ? S4(IE, x, y + ph, pw, bandH) / (pw * bandH) : 0;
+        const sc = e * Math.sqrt(v) * Math.sqrt(pw / W) * Math.max(0.1, 1 - (eo + eu) * 1.2);
+        if (!best || sc > best.sc) best = { sc, x, y, pw, ph };
+      }
+    }
+  }
+  if (!best || best.sc < 2.5) return null;
+  // Auf die ganze helle Schildfläche erweitern (Treffer liegt oft nur auf der Schrift)
+  let { x, y, pw, ph } = best; const m0 = S4(IG, x, y, pw, ph) / (pw * ph);
+  let bg = 0; for (let yy = y; yy < y + ph; yy++) for (let xx = x; xx < x + pw; xx++) bg = Math.max(bg, gray[yy * W + xx]);
+  const thr = Math.max(m0, bg * 0.72);                                   // Schildgrund ist das Hellste im Treffer
+  const colF = cx => { let n = 0; for (let yy = y; yy < y + ph; yy++) if (gray[yy * W + cx] > thr) n++; return n / ph; };
+  const rowF = cy => { let n = 0; for (let xx = x; xx < x + pw; xx++) if (gray[cy * W + xx] > thr) n++; return n / pw; };
+  const capV = Math.max(2, Math.round(best.ph * 0.8)), capH = Math.max(3, Math.round(best.pw * 0.6)), y0 = best.y, y1 = best.y + best.ph;
+  const vert = () => { while (y > 0 && y0 - y < capV && rowF(y - 1) >= 0.35) { y--; ph++; }
+    while (y + ph < H && y + ph - y1 < capV && rowF(y + ph) >= 0.35) ph++; };
+  vert();
+  let n = 0; while (x > 0 && (colF(x - 1) >= 0.25 || (x > 2 && (colF(x - 2) >= 0.25 || colF(x - 3) >= 0.25))) && n++ < capH) { x--; pw++; }
+  n = 0; while (x + pw < W && (colF(x + pw) >= 0.25 || (x + pw + 2 < W && (colF(x + pw + 1) >= 0.25 || colF(x + pw + 2) >= 0.25))) && n++ < capH) pw++;
+  vert();
+  if (pw > W * 0.8 || ph > pw) return null;
+  return [sx + x / k, sy + y / k, pw / k, ph / k];
+}
+const rectIoU = (a, b) => { const x1 = Math.max(a.x, b.x), y1 = Math.max(a.y, b.y), x2 = Math.min(a.x + a.w, b.x + b.w), y2 = Math.min(a.y + a.h, b.y + b.h); const i = Math.max(0, x2 - x1) * Math.max(0, y2 - y1); return i / (a.w * a.h + b.w * b.h - i || 1); };
+/* automatische Bereiche + von Hand ergänzte, ohne die von Hand entfernten */
+function mergeRects(pd, auto) {
+  return auto.filter(r => !(pd.removed || []).some(z => rectIoU(r, z) > 0.3)).concat(pd.manual || []);
+}
+
+/* ---------------- Bildwerkzeug (Vollbild): Bereiche unkenntlich machen · Tiefe am Meterstab messen ---------------- */
+function imgTool(src, title, cfg) {
+  const ov = document.createElement('div'); ov.className = 'itool'; ov.id = 'itool';
+  ov.innerHTML = `<div class="itbar"><button class="iconbtn" data-it="x" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button><b>${esc(title)}</b><span class="itst" id="itSt"></span></div>
+    <div class="itwrap" id="itWrap"><canvas id="itCv"></canvas><canvas class="loupe" id="itLp" width="132" height="132" hidden></canvas></div>
+    <div class="itfoot" id="itFoot"></div>`;
+  document.body.appendChild(ov);
+  const cv = $('#itCv', ov), wrap = $('#itWrap', ov), lp = $('#itLp', ov);
+  const base = fitCanvas(src, 1600), W = base.width, H = base.height, scale = (src.width || src.videoWidth) / W;
+  let k = 1, ox = 0, oy = 0;
+  const T = {
+    ov, base, W, H, scale, dpr: 1,
+    layout() {
+      const r = wrap.getBoundingClientRect(), dpr = T.dpr = Math.max(1, Math.min(2, devicePixelRatio || 1));
+      k = Math.min(r.width / W, r.height / H); const w = W * k, h = H * k; ox = (r.width - w) / 2; oy = (r.height - h) / 2;
+      cv.style.width = w + 'px'; cv.style.height = h + 'px'; cv.style.left = ox + 'px'; cv.style.top = oy + 'px';
+      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); T.draw();
+    },
+    draw() { const g = cv.getContext('2d'), s = cv.width / W; g.setTransform(1, 0, 0, 1, 0, 0); g.drawImage(T.img || base, 0, 0, cv.width, cv.height); g.setTransform(s, 0, 0, s, 0, 0); cfg.draw?.(g, T.dpr / s); },
+    toImg(e) { const r = cv.getBoundingClientRect(); return { x: Math.max(0, Math.min(W, (e.clientX - r.left) / r.width * W)), y: Math.max(0, Math.min(H, (e.clientY - r.top) / r.height * H)) }; },
+    loupe(e, pt) {
+      if (!pt) { lp.hidden = true; return; }
+      lp.hidden = false; const r = wrap.getBoundingClientRect(), Z = 3, S = 132, g = lp.getContext('2d');
+      g.fillStyle = '#000'; g.fillRect(0, 0, S, S);
+      g.drawImage(T.img || base, pt.x - S / (2 * Z), pt.y - S / (2 * Z), S / Z, S / Z, 0, 0, S, S);
+      g.strokeStyle = '#ff8a00'; g.lineWidth = 1.5; g.beginPath(); g.moveTo(S / 2, 0); g.lineTo(S / 2, S); g.moveTo(0, S / 2); g.lineTo(S, S / 2); g.stroke();
+      const lx = e.clientX - r.left - S / 2, ly = e.clientY - r.top - S - 40;
+      lp.style.left = Math.max(4, Math.min(r.width - S - 4, lx)) + 'px'; lp.style.top = (ly < 4 ? e.clientY - r.top + 40 : ly) + 'px';
+    },
+    status(t) { $('#itSt', ov).textContent = t; },
+    foot(html) { $('#itFoot', ov).innerHTML = html; },
+    close() { removeEventListener('resize', T.layout); ov.remove(); cfg.onClose?.(); }
+  };
+  let down = null;
+  cv.addEventListener('pointerdown', e => { e.preventDefault(); cv.setPointerCapture(e.pointerId); down = T.toImg(e); cfg.down?.(down, e); if (cfg.loupe) T.loupe(e, down); });
+  cv.addEventListener('pointermove', e => { if (!down) return; const p = T.toImg(e); cfg.move?.(down, p, e); if (cfg.loupe) T.loupe(e, p); });
+  const up = e => { if (!down) return; const p = T.toImg(e); T.loupe(e, null); const d0 = down; down = null; cfg.up?.(d0, p, e); };
+  cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', () => { down = null; T.loupe(null, null); });
+  $('[data-it=x]', ov).onclick = () => { T.close(); cfg.onCancel?.(); };
+  addEventListener('resize', T.layout);
+  requestAnimationFrame(() => T.layout());
+  return T;
+}
+
+let lastBlurEd = null;
+/* Bereiche unkenntlich machen: Finger ziehen = neuer Bereich, Antippen = Bereich entfernen */
+function openBlurEditor(src, rects, onDone, opt = {}) {
+  let list = rects.map(r => ({ ...r })), cur = null, hist = [];
+  const T = imgTool(src, 'Unkenntlich machen', {
+    onCancel: opt.onCancel,
+    draw(g, lw) {
+      for (const r of list) {
+        const R = { x: r.x / T.scale, y: r.y / T.scale, w: r.w / T.scale, h: r.h / T.scale };
+        g.strokeStyle = r.kind === 'Von Hand' ? '#ff8a00' : '#ffd166'; g.lineWidth = 2 * lw; g.setLineDash([6 * lw, 4 * lw]); g.strokeRect(R.x, R.y, R.w, R.h); g.setLineDash([]);
+        g.font = `600 ${12 * lw}px "Barlow Condensed", sans-serif`; const t = r.kind.toUpperCase(), tw = g.measureText(t).width;
+        g.fillStyle = 'rgba(20,12,4,.78)'; g.fillRect(R.x, Math.max(0, R.y - 16 * lw), tw + 10 * lw, 16 * lw); g.fillStyle = '#ffd166'; g.fillText(t, R.x + 5 * lw, Math.max(12 * lw, R.y - 4 * lw));
+      }
+      if (cur) { g.strokeStyle = '#ff8a00'; g.lineWidth = 2.5 * lw; g.strokeRect(cur.x, cur.y, cur.w, cur.h); g.fillStyle = 'rgba(255,138,0,.18)'; g.fillRect(cur.x, cur.y, cur.w, cur.h); }
+    },
+    move(a, b) { cur = { x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), w: Math.abs(b.x - a.x), h: Math.abs(b.y - a.y) }; T.draw(); },
+    up(a, b) {
+      const w = Math.abs(b.x - a.x), h = Math.abs(b.y - a.y); cur = null;
+      if (w > 10 && h > 10) { hist.push(list.slice()); list.push({ x: Math.min(a.x, b.x) * T.scale, y: Math.min(a.y, b.y) * T.scale, w: w * T.scale, h: h * T.scale, kind: 'Von Hand' }); }
+      else { const i = list.findLastIndex(r => b.x * T.scale >= r.x && b.x * T.scale <= r.x + r.w && b.y * T.scale >= r.y && b.y * T.scale <= r.y + r.h); if (i >= 0) { hist.push(list.slice()); list.splice(i, 1); toast('Bereich entfernt.', 1400); } }
+      render();
+    }
+  });
+  const render = () => {
+    const pv = T.base, c = document.createElement('canvas'); c.width = pv.width; c.height = pv.height; c.getContext('2d').drawImage(pv, 0, 0);
+    list.forEach(r => pixelate(c, { x: r.x / T.scale, y: r.y / T.scale, w: r.w / T.scale, h: r.h / T.scale })); T.img = c; T.draw();
+    T.status(list.length ? `${list.length} Bereich${list.length > 1 ? 'e' : ''}` : 'keine Bereiche');
+  };
+  T.foot(`<p class="ithint">Mit dem Finger einen Rahmen ziehen – dieser Bereich wird verpixelt. Einen Bereich antippen, um ihn zu entfernen.</p>
+    <div class="row"><button class="btn" data-it="undo">Rückgängig</button><button class="btn pri" data-it="ok">${opt.okText || 'Fertig'}</button></div>`);
+  $('[data-it=undo]', T.ov).onclick = () => { if (hist.length) { list = hist.pop(); render(); } };
+  $('[data-it=ok]', T.ov).onclick = () => { const out = list; T.close(); onDone(out); };
+  render();
+  return lastBlurEd = { T, add: r => { hist.push(list.slice()); list.push(r); render(); }, ok: () => $('[data-it=ok]', T.ov).click() };
+}
+
+/* Tiefe am Meterstab messen: zwei Zahlen am Meterstab als Maßstab, dann Geländeoberkante und Sohle antippen */
+const DEPTH_STEPS = [
+  { k: 'a', t: 'Tippe auf eine gut lesbare Zahl am Meterstab.', v: 1 },
+  { k: 'b', t: 'Tippe auf eine zweite Zahl, möglichst weit entfernt.', v: 1 },
+  { k: 'o', t: 'Tippe auf die Geländeoberkante am Meterstab.' },
+  { k: 'u', t: 'Tippe auf die Sohle (Grubenboden).' }
+];
+function depthCalc(M) {
+  if (!M.a || !M.b || !M.o || !M.u || !isFinite(M.va) || !isFinite(M.vb) || M.va === M.vb) return null;
+  const dx = M.b.x - M.a.x, dy = M.b.y - M.a.y, L = Math.hypot(dx, dy); if (L < 4) return null;
+  const ux = dx / L, uy = dy / L, cmPx = Math.abs(M.vb - M.va) / L;
+  return Math.abs((M.o.x - M.u.x) * ux + (M.o.y - M.u.y) * uy) * cmPx;
+}
+function openDepthTool(src, onDone, init, opt = {}) {
+  const M = { a: null, b: null, o: null, u: null, va: NaN, vb: NaN };
+  let step = 0;
+  const T = imgTool(src, 'Tiefe messen', {
+    loupe: true, onCancel: opt.onCancel,
+    draw(g, lw) {
+      const dot = (p, col, lab) => { if (!p) return; g.fillStyle = col; g.strokeStyle = '#fff'; g.lineWidth = 2 * lw; g.beginPath(); g.arc(p.x, p.y, 7 * lw, 0, 7); g.fill(); g.stroke();
+        if (lab) { g.font = `700 ${14 * lw}px "Barlow Condensed", sans-serif`; const tw = g.measureText(lab).width; g.fillStyle = 'rgba(20,12,4,.8)'; g.fillRect(p.x + 10 * lw, p.y - 10 * lw, tw + 10 * lw, 20 * lw); g.fillStyle = '#fff'; g.fillText(lab, p.x + 15 * lw, p.y + 5 * lw); } };
+      const line = (p, q, col) => { if (!p || !q) return; g.strokeStyle = col; g.lineWidth = 3 * lw; g.beginPath(); g.moveTo(p.x, p.y); g.lineTo(q.x, q.y); g.stroke(); };
+      line(M.a, M.b, '#4f8cff'); line(M.o, M.u, '#ff8a00');
+      dot(M.a, '#4f8cff', isFinite(M.va) ? fmtN(M.va) + ' cm' : '?'); dot(M.b, '#4f8cff', isFinite(M.vb) ? fmtN(M.vb) + ' cm' : '?');
+      dot(M.o, '#ff8a00', 'Oberkante'); const d = depthCalc(M); dot(M.u, '#ff8a00', d ? 'Sohle · ' + Math.round(d) + ' cm' : 'Sohle');
+    },
+    up(a, p) { const s = DEPTH_STEPS[step]; M[s.k] = p; T.draw(); render(); if (s.v) setTimeout(() => $('#itVal', T.ov)?.focus(), 30); else if (step < 3) { step++; render(); } }
+  });
+  const render = () => {
+    const s = DEPTH_STEPS[step], d = depthCalc(M);
+    T.status(`Schritt ${step + 1} von 4`);
+    T.foot(`<p class="ithint"><b>${esc(s.t)}</b>${step < 2 ? ' Die Lupe hilft beim genauen Treffen.' : ''}</p>
+      ${s.v && M[s.k] ? `<div class="inrow" style="margin:6px 0"><input type="text" inputmode="decimal" id="itVal" placeholder="Welche Zahl steht dort? (cm)" value="${isFinite(M['v' + s.k]) ? fmtN(M['v' + s.k]) : ''}"><button class="btn pri" data-it="nx">Weiter</button></div>` : ''}
+      ${d ? `<div class="itres">Tiefe: <b>${Math.round(d)} cm</b></div>` : ''}
+      <div class="row"><button class="btn" data-it="bk"${step ? '' : ' disabled'}>Zurück</button><button class="btn pri" data-it="ok"${d ? '' : ' disabled'}>Tiefe übernehmen</button></div>`);
+    const vi = $('#itVal', T.ov), nx = () => { const v = num2(vi.value); if (v == null) { toast('Bitte die Zahl am Meterstab eintragen.'); return; } M['v' + s.k] = v; if (step < 3) step++; T.draw(); render(); };
+    if (vi) { $('[data-it=nx]', T.ov).onclick = nx; vi.onkeydown = e => { if (e.key === 'Enter') nx(); }; }
+    $('[data-it=bk]', T.ov).onclick = () => { if (step) { step--; render(); } };
+    $('[data-it=ok]', T.ov).onclick = () => { const cm = Math.round(depthCalc(M)); const sc = T.scale, P = q => q && { x: Math.round(q.x * sc), y: Math.round(q.y * sc) };
+      T.close(); onDone({ cm, va: M.va, vb: M.vb, a: P(M.a), b: P(M.b), o: P(M.o), u: P(M.u), ts: Date.now() }); };
+  };
+  if (init) { for (const q of ['a', 'b', 'o', 'u']) M[q] = init[q] ? { x: init[q].x / T.scale, y: init[q].y / T.scale } : null; M.va = init.va; M.vb = init.vb; step = 3; }
+  render();
+  return { T, M, set(k, p, v) { M[k] = p; if (v != null) M['v' + k] = v; step = Math.min(3, DEPTH_STEPS.findIndex(s => !M[s.k] || (s.v && !isFinite(M['v' + s.k]))) < 0 ? 3 : DEPTH_STEPS.findIndex(s => !M[s.k] || (s.v && !isFinite(M['v' + s.k])))); T.draw(); render(); } };
+}
+/* Beispielbild für den Rundgang: Grube mit Meterstab */
+function demoRulerCanvas() {
+  const c = document.createElement('canvas'); c.width = 1200; c.height = 900; const g = c.getContext('2d');
+  let gr = g.createLinearGradient(0, 0, 0, 900); gr.addColorStop(0, '#9fb6c9'); gr.addColorStop(0.22, '#c9d3d8'); gr.addColorStop(0.23, '#7b6a55'); gr.addColorStop(1, '#5c4a37');
+  g.fillStyle = gr; g.fillRect(0, 0, 1200, 900);
+  g.fillStyle = '#8f8a83'; g.fillRect(0, 190, 1200, 40);                                 // Gehweg-Kante = Geländeoberkante
+  g.fillStyle = '#3d2f22'; g.beginPath(); g.moveTo(330, 230); g.lineTo(870, 230); g.lineTo(820, 820); g.lineTo(380, 820); g.closePath(); g.fill();
+  g.fillStyle = '#2b2118'; g.fillRect(380, 800, 440, 30);                                // Sohle
+  for (let i = 0; i < 500; i++) { g.fillStyle = `rgba(${120 + Math.random() * 60},${95 + Math.random() * 40},${70 + Math.random() * 30},.35)`; g.fillRect(Math.random() * 1200, 240 + Math.random() * 660, 4, 3); }
+  // Meterstab: steht auf der Sohle, 0 unten
+  const x = 590, y0 = 815, px = 6.2;                                                    // 6,2 px je cm
+  g.fillStyle = '#f2c600'; g.fillRect(x, y0 - 110 * px, 34, 110 * px);
+  g.fillStyle = '#111'; g.font = '700 22px Arial';
+  for (let cm = 0; cm <= 110; cm++) { const y = y0 - cm * px; const L = cm % 10 === 0 ? 16 : cm % 5 === 0 ? 10 : 5; g.fillRect(x, y - 1, L, 2); if (cm % 10 === 0 && cm) g.fillText(String(cm), x + 4, y + 8); }
+  for (let j = 1; j < 6; j++) { g.fillStyle = '#9b8a00'; g.fillRect(x, y0 - j * 20 * px - 1, 34, 2); }
+  return c;
+}
+
+/* ---------------- Prüfung auf dem Gerät: Pflichtinhalte, Beschreibung, Doppelfotos ---------------- */
+/* Bild-Fingerabdruck: 16 × 12 Graustufen der oberen 78 % (ohne Stempel), stufenweise verkleinert */
+function imgSig(c) {
+  let sw = c.width || c.naturalWidth, sh = Math.round((c.height || c.naturalHeight) * 0.78), cur = c;
+  while (sw > 64) { const t = document.createElement('canvas'); t.width = Math.max(64, Math.round(sw / 2)); t.height = Math.max(12, Math.round(sh / 2)); t.getContext('2d').drawImage(cur, 0, 0, sw, sh, 0, 0, t.width, t.height); cur = t; sw = t.width; sh = t.height; }
+  const t = document.createElement('canvas'); t.width = 16; t.height = 12; const g = t.getContext('2d', { willReadFrequently: true }); g.drawImage(cur, 0, 0, sw, sh, 0, 0, 16, 12);
+  const d = g.getImageData(0, 0, 16, 12).data; let s = '';
+  for (let i = 0; i < d.length; i += 4) s += Math.round(d[i] * 0.3 + d[i + 1] * 0.59 + d[i + 2] * 0.11).toString(16).padStart(2, '0');
+  return s;
+}
+/* mittlere Abweichung nach Helligkeitsausgleich (0 = gleich) */
+function sigDist(a, b) {
+  if (!a || !b || a.length !== b.length) return 999;
+  const n = a.length / 2, A = [], B = []; let ma = 0, mb = 0;
+  for (let i = 0; i < n; i++) { const x = parseInt(a.substr(i * 2, 2), 16), y = parseInt(b.substr(i * 2, 2), 16); A.push(x); B.push(y); ma += x; mb += y; }
+  ma /= n; mb /= n; let d = 0; for (let i = 0; i < n; i++) d += Math.abs((A[i] - ma) - (B[i] - mb));
+  return d / n;
+}
+const sigMem = new Map();
+async function photoSig(p) {
+  if (p.sig) return p.sig; if (sigMem.has(p.id)) return sigMem.get(p.id); if (!p.thumb) return null;
+  try { const im = new Image(); im.src = p.thumb; await im.decode(); const h = imgSig(im); sigMem.set(p.id, h); return h; } catch (e) { return null; }
+}
+async function findDuplicate(c, siteId, phase, itemId) {
+  const h = imgSig(c), now = Date.now();
+  const pool = S.photos.filter(p => (!p.kind || p.kind === 'photo') && p.phase === phase && (siteId ? p.siteId === siteId : now - p.ts < 2 * 86400000) && (!itemId || !p.itemId || p.itemId === itemId)).slice(-150);
+  let best = null;
+  for (const p of pool) { const o = await photoSig(p); if (!o) continue; const d = sigDist(h, o); if (d <= 6 && (!best || d < best.d)) best = { p, d }; }
+  return { h, dup: best?.p || null };
+}
+function autoDesc(site, item, phase, cat, depth, dets) {
+  let s = (item ? item.label : catName(cat)) + (site ? ' – ' + site.name : '') + ` (${PH[phase]?.n || ''})`;
+  if (depth) s += `, Tiefe ${Math.round(depth)} cm`;
+  const np = (dets || []).filter(d => d.class === 'person').length, nv = (dets || []).filter(d => ['car', 'truck', 'bus', 'motorcycle'].includes(d.class)).length;
+  const extra = [np ? (np === 1 ? 'eine Person' : np + ' Personen') + ' im Bild' : '', nv ? (nv === 1 ? 'ein Fahrzeug' : nv + ' Fahrzeuge') + ' im Bild' : ''].filter(Boolean);
+  return s + (extra.length ? ', ' + extra.join(', ') : '') + '.';
+}
+function autoTags(site, item, cat) {
+  return [...new Set([TPL[site?.tpl]?.n, catName(cat), item?.phase ? PH[item.phase].n : ''].filter(Boolean))].slice(0, 3);
+}
+function needList(pd) {
+  const site = S.sites.find(s => s.id === $('#rvSite')?.value) || null, item = site?.items.find(i => i.id === $('#rvItem')?.value) || null;
+  const need = item ? itemMeta(site, item).need || [] : [];
+  return need.map((n, i) => ({ punkt: n, ok: pd.needOk?.[n] ?? (pd.ai?.pruefung?.[i]?.ok === true) }));
+}
+function renderLocal() {
+  const pd = pending, el = $('#rvLocal'); if (!pd || !el) return;
+  if (!S.set.localCheck || pd.video) { el.innerHTML = ''; return; }
+  const need = needList(pd);
+  el.innerHTML = `<div class="aibox local"><div class="h"><span>PRÜFUNG AUF DEM GERÄT</span><span class="lbl" style="color:var(--mute)">OHNE INTERNET</span></div>
+    ${pd.dup ? `<div class="warnbox" style="margin:0 0 8px">Fast gleiches Foto wie „${esc(pd.dup.itemId ? (S.sites.find(s => s.id === pd.dup.siteId)?.items.find(i => i.id === pd.dup.itemId)?.label || catName(pd.dup.cat)) : catName(pd.dup.cat))}“ von ${fmtTime(pd.dup.ts)} Uhr${dayKey(pd.dup.ts) !== dayKey(Date.now()) ? ' (' + fmtDate(pd.dup.ts) + ')' : ''}. Doppelt aufgenommen?</div>` : ''}
+    ${need.length ? `<p class="lbl" style="margin:0 0 4px">Pflichtinhalte – ist alles zu sehen?</p><div class="needck">${need.map((n, i) => `<label><input type="checkbox" data-nd="${i}"${n.ok ? ' checked' : ''}><span>${esc(n.punkt)}</span></label>`).join('')}</div>` : ''}
+    <div class="chips" style="flex-wrap:wrap;margin-top:8px"><button type="button" class="chip" id="rvMeasure">📏 Tiefe messen</button><button type="button" class="chip" id="rvBlurEd">▢ Unkenntlich machen</button><button type="button" class="chip" id="rvSuggest">✨ Beschreibung</button></div></div>`;
+  $$('[data-nd]', el).forEach(cb => cb.onchange = () => { pd.needOk = { ...(pd.needOk || {}) }; pd.needOk[need[+cb.dataset.nd].punkt] = cb.checked; });
+  $('#rvMeasure', el).onclick = async () => { if (!pd.c) await pd.cP; openDepthTool(pd.c, r => { pd.depthMeas = r; $('#rvDepthF').hidden = false; $('#rvDepth').value = r.cm; toast(`Tiefe ${r.cm} cm übernommen.`); refreshAutoDesc(); }, pd.depthMeas); };
+  $('#rvBlurEd', el).onclick = async () => { if (!pd.c) await pd.cP; openBlurEditor(pd.c, pd.rects, list => {
+    pd.removed = [...(pd.removed || []), ...pd.rects.filter(r => r.kind !== 'Von Hand' && !list.includes(r) && !list.some(z => z.x === r.x && z.y === r.y && z.w === r.w))];
+    pd.manual = list.filter(r => r.kind === 'Von Hand'); pd.rects = list; pd.blurOn = true; renderPreview(); }); };
+  $('#rvSuggest', el).onclick = () => { const d = $('#rvDesc'); d.value = pd.autoText = currentAutoDesc(pd); addAutoTags(pd); toast('Beschreibung vorgeschlagen – du kannst sie ändern.'); };
+}
+function currentAutoDesc(pd) {
+  const site = S.sites.find(s => s.id === $('#rvSite')?.value) || null, item = site?.items.find(i => i.id === $('#rvItem')?.value) || null;
+  const ph = $('#rvPh .on')?.dataset.p || item?.phase || 'W', cat = $('#rvCat .cat.on')?.dataset.c || item?.cat || 'uebersicht';
+  return autoDesc(site, item, ph, cat, num2($('#rvDepth')?.value), pd.dets);
+}
+function addAutoTags(pd) {
+  const lb = $('#rvLabels'); if (!lb) return;
+  const site = S.sites.find(s => s.id === $('#rvSite')?.value) || null, item = site?.items.find(i => i.id === $('#rvItem')?.value) || null;
+  const cur = lb.value.split(',').map(x => x.trim()).filter(Boolean); autoTags(site, item, $('#rvCat .cat.on')?.dataset.c || item?.cat).forEach(t => { if (!cur.includes(t)) cur.push(t); }); lb.value = cur.join(', ');
+}
+/* Vorschlag aktuell halten, solange niemand die Beschreibung selbst geändert hat */
+function refreshAutoDesc() {
+  const pd = pending, d = $('#rvDesc'); if (!pd || !d || !S.set.localCheck || pd.video) return;
+  if (d.value.trim() && d.value !== pd.autoText) return;
+  if (reqF().desc && !d.value.trim()) return;                       // Pflicht-Beschreibung: nur auf Knopfdruck
+  d.value = pd.autoText = currentAutoDesc(pd);
+}
+async function localReview(pd) {
+  if (!S.set.localCheck || pd.video) return;
+  renderLocal(); refreshAutoDesc();
+  try {
+    const { h, dup } = await findDuplicate(pd.pv, $('#rvSite')?.value || '', $('#rvPh .on')?.dataset.p || 'W', $('#rvItem')?.value || '');
+    if (pending !== pd) return; pd.sig = h; pd.dup = dup; if (dup) { renderLocal(); buzz([40, 30, 40]); }
+  } catch (e) {}
+}
+function needCheckOut(pd) { if (!S.set.localCheck || pd.video) return null; const n = needList(pd); return n.length ? n.map(x => ({ punkt: x.punkt, ok: !!x.ok })) : null; }
+
+async function measureSavedPhoto(p) {
+  const img = await loadImage(p.blob), c = document.createElement('canvas'); c.width = img.width; c.height = img.height; c.getContext('2d').drawImage(img, 0, 0);
+  closeSheet();
+  openDepthTool(c, async r => { p.depthCm = r.cm; p.depthSrc = 'am Meterstab gemessen'; p.depthMeas = r; p.exported = false; await DB.put('photos', p); toast(`Tiefe ${r.cm} cm gespeichert.`); openPhoto(p.id); refresh(); }, p.depthMeas, { onCancel: () => openPhoto(p.id) });
+}
+
+/* Rundgang: Tiefe messen und von Hand unkenntlich machen vorführen */
+async function tourDepthDemo() {
+  const D = openDepthTool(demoRulerCanvas(), () => {}); await tWait(900);
+  D.set('a', { x: 612, y: 753 }, 10); await tWait(900);
+  D.set('b', { x: 612, y: 195 }, 100); await tWait(900);
+  D.set('o', { x: 560, y: 210 }); await tWait(800);
+  D.set('u', { x: 560, y: 815 }); await tWait(400);
+}
+async function tourBlurDemo() {
+  await tClick('#rvBlurEd'); await tWait(900);
+  const E = lastBlurEd, pd = pending; if (!E || !pd?.c) return;
+  const W = pd.c.width, H = pd.c.height; E.add({ x: W * 0.58, y: H * 0.5, w: W * 0.22, h: H * 0.16, kind: 'Von Hand' }); await tWait(600);
 }
 
 /* ---------------- Geisterbild ---------------- */
@@ -4911,7 +5300,7 @@ function markPoint(type, quick) {
   let ty = MTYPES[0];
   const el = sheet(`<h3>Punkt ${t.marks.length + 1} markieren</h3><p class="sub">Position ±${fmtAcc(S.pos.acc)}${S.pos.fix ? ' · ' + S.pos.fix : ''}</p>
     <div class="fld"><span class="lbl">Art</span><div class="chips" id="mkTy" style="flex-wrap:wrap">${MTYPES.map((x, i) => `<button type="button" class="chip${i ? '' : ' on'}" data-t="${x}">${x}</button>`).join('')}</div></div>
-    <div class="fld"><label class="lbl" for="mkDepth">Tiefe (cm)${recent ? ' – zuletzt per KI abgelesen' : ''}</label><input type="text" inputmode="decimal" id="mkDepth" value="${recent ? recent.depthCm : ''}" placeholder="z. B. 60"></div>
+    <div class="fld"><label class="lbl" for="mkDepth">Tiefe (cm)${recent ? ' – vom letzten Foto (' + esc(recent.depthSrc || 'manuell') + ')' : ''}</label><input type="text" inputmode="decimal" id="mkDepth" value="${recent ? recent.depthCm : ''}" placeholder="z. B. 60"></div>
     <div class="fld"><label class="lbl" for="mkNote">Notiz</label><input type="text" id="mkNote" placeholder="optional"></div>
     <div class="row"><button class="btn" id="mkPhoto">Mit Foto</button><button class="btn pri" id="mkSave">Punkt speichern</button></div>`);
   $('#mkTy', el).onclick = e => { const b = e.target.closest('[data-t]'); if (!b) return; ty = b.dataset.t; $$('#mkTy .chip', el).forEach(x => x.classList.toggle('on', x === b)); };
@@ -5185,7 +5574,7 @@ async function aiReport(D, weather, onText) {
     personal: diaryOf(D.day, D.siteF).crew.filter(c => c.name), geraete: diaryOf(D.day, D.siteF).equip.filter(c => c.name), behinderungen: diaryOf(D.day, D.siteF).hind || null,
     maengel_heute: S.defects.filter(d => dayKey(d.created) === D.day || (d.history || []).some(h => dayKey(h.ts) === D.day)).map(defJSON),
     baustellen: D.sites.map(s => { const pr = progress(s); return { name: s.name, art: TPL[s.tpl]?.n, auftrag: s.order || null, pflichtfotos: `${pr.done}/${pr.must}`, fehlend: pr.missing.map(i => i.label) }; }),
-    fotos: D.ph.map(p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId); return { zeit: fmtTime(p.ts), baustelle: s?.name || null, pflichtfoto: it?.label || null, phase: PH[p.phase].n, kategorie: catName(p.cat), tiefe_cm: p.depthCm ?? null, beschreibung: p.desc || p.aiDesc || null, ki_pruefung: p.aiOk == null ? null : p.aiOk ? 'passt' : 'unvollständig', stichworte: p.labels }; }),
+    fotos: D.ph.map(p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId); return { zeit: fmtTime(p.ts), baustelle: s?.name || null, pflichtfoto: it?.label || null, phase: PH[p.phase].n, kategorie: catName(p.cat), tiefe_cm: p.depthCm ?? null, tiefe_quelle: p.depthCm != null ? p.depthSrc || null : null, pflichtinhalte: p.needCheck || null, beschreibung: p.desc || p.aiDesc || null, ki_pruefung: p.aiOk == null ? null : p.aiOk ? 'passt' : 'unvollständig', stichworte: p.labels }; }),
     sprachnotizen: D.notes.map(n => ({ zeit: fmtTime(n.ts), baustelle: S.sites.find(s => s.id === n.siteId)?.name || null, text: n.text })),
     trassen: D.tr.map(t => ({ name: t.name, art: t.kind, laenge_m: +tLen(t).toFixed(1), markierungen: t.marks.map(m => ({ nr: m.n, typ: m.type, tiefe_cm: m.depthCm, notiz: m.note || null })), genauigkeit: accSummary(t) }))
   };
@@ -5879,7 +6268,7 @@ async function panoViewer(host, blob) {
 /* =====================================================================
    SCHNITTSTELLEN: Webhook, Projekt-JSON
    ===================================================================== */
-const photoJSON = p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId); return { id: p.id, art: p.kind || 'foto', zeit: new Date(p.ts).toISOString(), baustelle: s?.name || null, pflichtfoto: it?.label || null, phase: PH[p.phase]?.n, kategorie: catName(p.cat), breite: p.lat, laenge: p.lon, genauigkeit_m: p.acc, blick_grad: p.heading, tiefe_cm: p.depthCm ?? null, beschreibung: p.desc || null, stichworte: p.labels, bearbeiter: p.user || null, wetter: p.weather || null, sha256: p.hash || null, siegel: p.seq || null }; };
+const photoJSON = p => { const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId); return { id: p.id, art: p.kind || 'foto', zeit: new Date(p.ts).toISOString(), baustelle: s?.name || null, pflichtfoto: it?.label || null, phase: PH[p.phase]?.n, kategorie: catName(p.cat), breite: p.lat, laenge: p.lon, genauigkeit_m: p.acc, blick_grad: p.heading, tiefe_cm: p.depthCm ?? null, tiefe_quelle: p.depthCm != null ? p.depthSrc || null : null, pflichtinhalte: p.needCheck || null, beschreibung: p.desc || null, stichworte: p.labels, bearbeiter: p.user || null, wetter: p.weather || null, sha256: p.hash || null, siegel: p.seq || null }; };
 function hook(event, data) {
   if (!S.set.hookUrl || inFrame) return;
   try { fetch(S.set.hookUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify({ app: 'SEF-KI Baudoku', ereignis: event, zeit: new Date().toISOString(), bearbeiter: S.set.name, firma: S.set.coName || null, daten: data }) }).catch(() => {}); } catch (e) {}
@@ -5937,15 +6326,17 @@ async function openSettings() {
       <p class="note" style="margin:6px 0 0">Gilt für ZIP-Export, Teilen und GIS-Dateien. Die Kurz-ID am Ende hält jeden Namen eindeutig.</p></div>
     <div class="fld"><span class="lbl">Stempel mit Lageplan-Ausschnitt – Kartenausschnitt</span><div class="segs" id="stExtZoom">${[['nah', 'Nah'], ['mittel', 'Mittel'], ['weit', 'Weit']].map(([k, n]) => `<button type="button" data-ez="${k}" class="${(S.set.extZoom || 'mittel') === k ? 'on' : ''}">${n}</button>`).join('')}</div>
       <p class="note" style="margin:6px 0 0">Den Lageplan-Stempel schaltest du beim Export ein. Die versiegelten Originale bleiben unverändert.</p></div>`)}
-    ${G('SEF-KI Intelligenz', 'KI-Bildprüfung, Datenschutz, Geisterbild', `
+    ${G('SEF-KI Intelligenz', 'Bildprüfung, Datenschutz, Geisterbild – vieles ohne Internet', `
     <div class="ph" style="margin-top:4px"><h2>SEF-KI Intelligenz</h2><span class="lbl" id="aiState">prüfe …</span></div>
     ${inFrame ? '<p class="note" style="margin:0 0 8px">In dieser Vorschau nutzt SEF-KI dein Claude-Konto. Beim ersten Mal fragt Claude einmal um Erlaubnis.</p>' : `
     <div class="fld"><label class="lbl" for="stKey">Anthropic-API-Schlüssel</label><div class="inrow"><input type="password" id="stKey" value="${S.set.aiKey ? '••••••••••••' : ''}" placeholder="sk-ant-…" autocomplete="off"><button class="btn" id="stKeyTest">Testen</button></div></div>
     <div class="fld"><label class="lbl" for="stModel">Modell für die Bildprüfung</label><select id="stModel"><option value="claude-sonnet-5-5"${S.set.aiModel !== 'claude-haiku-5-5' ? ' selected' : ''}>Claude Sonnet 5.5 – genauer (empfohlen)</option><option value="claude-haiku-5-5"${S.set.aiModel === 'claude-haiku-5-5' ? ' selected' : ''}>Claude Haiku 5.5 – schneller und günstiger</option></select></div>
     <p class="note" style="margin:0 0 8px">Der Schlüssel bleibt nur auf diesem Gerät und kommt nie ins Backup. Zur Prüfung wird jedes Foto verkleinert an Anthropic gesendet. Einen Schlüssel gibt es unter console.anthropic.com.</p>`}
     <label class="tog"><span>KI-Bildprüfung<small>Prüft Pflichtinhalte, liest die Tiefe vom Meterstab, schlägt Beschreibung und Stichworte vor.</small></span><input type="checkbox" class="sw" id="stAI"${S.set.aiCheck ? ' checked' : ''}></label>
-    <label class="tog"><span>Personen & Kennzeichen unkenntlich<small>Automatisch vor dem Speichern – mit Vorschau, abschaltbar pro Foto.</small></span><input type="checkbox" class="sw" id="stPriv"${S.set.privacy ? ' checked' : ''}></label>
-    <label class="tog"><span>Geisterbild<small>Blendet bei Nachher-Fotos das Vorher-Foto halbtransparent ein und lotst zum gleichen Standpunkt.</small></span><input type="checkbox" class="sw" id="stGhost"${S.set.ghost ? ' checked' : ''}></label>`, { pro: 1 })}
+    <label class="tog"><span>Personen & Kennzeichen unkenntlich<small>Findet Gesichter, Personen und Kennzeichen direkt auf dem Gerät und verpixelt sie vor dem Speichern – mit Vorschau, von Hand nachbesserbar. Kein Foto verlässt das Handy.</small></span><input type="checkbox" class="sw" id="stPriv"${S.set.privacy ? ' checked' : ''}></label>
+    <label class="tog"><span>Geisterbild<small>Blendet bei Nachher-Fotos das Vorher-Foto halbtransparent ein und lotst zum gleichen Standpunkt.</small></span><input type="checkbox" class="sw" id="stGhost"${S.set.ghost ? ' checked' : ''}></label>
+    <label class="tog"><span>Prüfung auf dem Gerät<small>Ohne Internet und ohne Schlüssel: Pflichtinhalte abhaken, Tiefe am Meterstab messen, Beschreibung vorschlagen, Doppelfotos erkennen.</small></span><input type="checkbox" class="sw" id="stLocal"${S.set.localCheck ? ' checked' : ''}></label>
+    ${inFrame ? '' : `<div class="fld" style="margin-top:10px"><span class="lbl">Erkennung offline bereithalten</span><p class="note" style="margin:0 0 6px" id="stModSt">prüfe …</p><button class="btn wide" id="stModels">Erkennung auf diesem Gerät speichern (ca. 20 MB)</button></div>`}`, { pro: 1 })}
     ${G('Beweissicherung', 'Siegel, Prüfkette, Zeitstempel', `
     <p class="note" style="margin:0 0 8px"><b>${S.ledger.length}</b> Einträge in der Prüfkette${S.set.chainHead ? ` · Stand <span class="num">${S.set.chainHead.slice(0, 16)}…</span>` : ''}. Jedes Foto bekommt beim Speichern einen SHA-256-Fingerabdruck.</p>
     <label class="tog"><span>Zeitstempel (OpenTimestamps)<small>Reicht jeden Fingerabdruck kostenlos bei OpenTimestamps ein – unabhängiger Beweis, dass das Foto zu diesem Zeitpunkt existierte.</small></span><input type="checkbox" class="sw" id="stOts"${S.set.ots ? ' checked' : ''}></label>`, { pro: 1 })}
@@ -6038,6 +6429,14 @@ async function openSettings() {
   $('#stAI', el).onchange = e => { S.set.aiCheck = e.target.checked; saveSet(); };
   $('#stPriv', el).onchange = e => { S.set.privacy = e.target.checked; saveSet(); if (S.set.privacy) Det.load(); };
   $('#stGhost', el).onchange = e => { S.set.ghost = e.target.checked; saveSet(); };
+  $('#stLocal', el).onchange = e => { S.set.localCheck = e.target.checked; saveSet(); };
+  const modSt = async () => { const n = await modelsCached(), st = $('#stModSt', el), b = $('#stModels', el); if (!st) return;
+    st.innerHTML = n === MODEL_FILES.length ? '<b style="color:var(--ok)">✓ Gespeichert</b> – Gesichter, Personen und Kennzeichen werden auch ohne Netz erkannt.' : 'Noch nicht auf dem Gerät. Wird sonst beim ersten Foto mit Datenschutz automatisch geladen – am besten einmal im WLAN speichern.';
+    if (b) b.hidden = n === MODEL_FILES.length; };
+  modSt();
+  $('#stModels', el)?.addEventListener('click', async e => { const b = e.currentTarget; b.disabled = true;
+    try { await cacheModels((i, n) => { b.textContent = `Speichere … ${Math.round(i / n * 100)} %`; }); toast('Erkennung gespeichert – funktioniert jetzt auch ohne Internet.'); if (S.set.privacy) Det.load(); }
+    catch (err) { toast('Speichern nicht möglich: ' + (err.message || err)); b.disabled = false; b.textContent = 'Erneut versuchen'; } modSt(); });
   $('#stOts', el).onchange = e => { S.set.ots = e.target.checked; saveSet(); otsQueue(); };
   $('#stGnss', el)?.addEventListener('click', () => { closeSheet(); GNSS.connect(); });
   $('#stGnssOff', el)?.addEventListener('click', () => { GNSS.disconnect(); closeSheet(); });
@@ -6324,6 +6723,13 @@ function tourSteps() {
       ['#camMode', 'Hier wählst du Foto oder Video. Bei Video wird der Auslöser rot.', { title: 'Foto oder Video', act: async () => { await tClick('#camMode [data-m=video]'); await tWait(900); await tClick('#camMode [data-m=foto]'); } }],
       ['#shutter', 'Das ist der Auslöser. Ich mache mal ein Foto.', { title: 'Auslöser', act: async () => { await tClick('#shutter'); await tWait(200); const { item } = camTarget(); await handleCapture(demoCanvas(item ? item.label : 'Freies Foto', item?.phase || 'W', 17), snapMeta()); }, fx: '#review .qual', keep: true }],
       ['#review .qual', 'Sofort prüfe ich das Foto: Schärfe, Licht und GPS. Ist etwas nicht in Ordnung, sage ich es dir, bevor du gehst.', { title: 'Foto-Prüfung', keep: true }],
+      ['#rvLocal', 'Die Prüfung auf dem Gerät läuft ganz ohne Internet und ohne KI-Schlüssel: Pflichtinhalte abhaken, Tiefe messen, Bereiche unkenntlich machen, Beschreibung vorschlagen. Und machst du ein Foto aus Versehen doppelt, warne ich dich.', { title: 'Prüfung auf dem Gerät', keep: true }],
+      [() => $('#rvLocal .needck'), 'Hier hakst du ab, was auf dem Foto zu sehen sein muss. Im Bericht steht dann, was der Fotograf bestätigt hat. Fehlt etwas, findest du das Foto in der Galerie unter „Prüfung unvollständig“.', { title: 'Pflichtinhalte', keep: true }],
+      ['#rvMeasure', 'Tiefe messen: Du tippst zwei Zahlen am Meterstab an, dann die Geländeoberkante und die Sohle. Ich rechne die Tiefe aus, auch wenn die Zahl an der Kante schlecht lesbar ist. Ich zeige es dir an einem Beispiel.', { title: 'Tiefe messen', keep: true, act: tourDepthDemo, fx: '#itool .itres' }],
+      ['#itool .itfoot', 'Mit „Tiefe übernehmen“ steht der Wert im Foto und im Bericht, mit dem Vermerk „am Meterstab gemessen“. Beim Antippen zeigt dir eine Lupe genau, wo dein Finger ist.', { title: 'Tiefe übernehmen', keep: true, itool: 1, act: async () => { await tWait(1400); $('#itool')?.remove(); } }],
+      ['#rvBlurEd', 'Gesichter und Kennzeichen finde ich selbst, direkt auf dem Handy. Habe ich etwas übersehen, ziehst du mit dem Finger einen Rahmen, und der Bereich wird verpixelt. Antippen entfernt einen Bereich wieder.', { title: 'Von Hand unkenntlich', keep: true, act: tourBlurDemo, fx: '#itool .itwrap' }],
+      ['#itool .itfoot', 'Mit „Fertig“ übernehme ich die Bereiche ins Foto. Ein schon gespeichertes Foto machst du über „Markieren“ nachträglich unkenntlich. Das Original bleibt versiegelt.', { title: 'Fertig', keep: true, itool: 1, act: async () => { await tWait(1200); $('#itool [data-it=ok]')?.click(); } }],
+      ['#rvSuggest', 'Ein Tipp, und ich schlage die Beschreibung vor: Pflichtfoto, Baustelle, Phase und Tiefe. Ist die Beschreibung keine Pflichtangabe, trage ich den Vorschlag sogar gleich selbst ein.', { title: 'Beschreibung vorschlagen', keep: true, act: () => tClick('#rvSuggest'), fx: tOf('#rvDesc', '.fld') }],
       [() => $('#rvAsDef')?.closest('.tog'), 'Als Mangel erfassen: Nach dem Speichern öffne ich direkt die Mangel-Erfassung mit diesem Foto.', { pro: 1, title: 'Als Mangel erfassen', keep: true }],
       [tOf('#rvItem', '.fld'), 'Baustelle und Pflichtfoto ordne ich automatisch zu. Du musst nur ändern, wenn es nicht passt.', { title: 'Zuordnung', keep: true }],
       [tOf('#rvCat', '.fld'), 'Phase und Kategorie sind schon passend vorgewählt.', { pro: 1, title: 'Kategorie', keep: true }],
@@ -6578,8 +6984,10 @@ function tourSteps() {
       [tRow('#stDemo'), 'Demo-Position zum Ausprobieren ohne echtes GPS.', { pro: 1, title: 'Demo-Position' }],
       [() => $('#scrim #stKey')?.closest('.fld') || $('#scrim #aiState')?.closest('.ph'), 'SEF-KI Intelligenz: Hier wird die KI eingerichtet, die Fotos prüft und Berichte schreibt.', { pro: 1, title: 'KI einrichten' }],
       [tRow('#stAI'), 'KI-Bildprüfung: Ich prüfe, ob alles Wichtige drauf ist, und lese die Tiefe vom Meterstab ab.', { pro: 1, title: 'KI-Bildprüfung' }],
-      [tRow('#stPriv'), 'Personen und Kennzeichen mache ich automatisch unkenntlich, bevor das Foto gespeichert wird.', { pro: 1, title: 'Datenschutz' }],
+      [tRow('#stPriv'), 'Gesichter, Personen und Kennzeichen erkenne ich direkt auf dem Gerät und mache sie unkenntlich, bevor das Foto gespeichert wird. Kein Foto verlässt dafür das Handy.', { pro: 1, title: 'Datenschutz' }],
       [tRow('#stGhost'), 'Geisterbild: Beim Nachher-Foto blende ich das Vorher-Foto ein, damit du vom gleichen Standpunkt fotografierst.', { pro: 1, title: 'Geisterbild' }],
+      [tRow('#stLocal'), 'Prüfung auf dem Gerät: Pflichtinhalte abhaken, Tiefe messen, Beschreibung vorschlagen und Doppelfotos erkennen. Das alles geht ohne Internet und ohne KI-Schlüssel.', { pro: 1, title: 'Prüfung auf dem Gerät' }],
+      [() => $('#scrim .sheet #stModSt')?.closest('.fld'), 'Einmal im WLAN antippen, dann erkenne ich Gesichter und Kennzeichen auch im Funkloch. Updates der App laden das nicht neu.', { pro: 1, title: 'Erkennung offline' }],
       [tRow('#stOts'), 'Zeitstempel: Ein unabhängiger Beweis, dass das Foto zu dieser Zeit existiert hat.', { pro: 1, title: 'Zeitstempel' }],
       [() => $('#scrim #stGnss') || $('#scrim #stGnssOff') || $('#scrim #stTrAcc')?.closest('.fld'), 'Hier verbindest du einen RTK-Empfänger für zentimetergenaue Trassen und legst fest, wie genau Trassenpunkte sein müssen.', { pro: 1, title: 'RTK-Empfänger' }],
       [tRow('#stCo'), 'Firmenname und Firmenlogo erscheinen im Kopf jedes Berichts.', { pro: 1, title: 'Firma' }],
@@ -6684,7 +7092,7 @@ const Tour = {
   pause() { this.paused = true; this.run++; TV.stop(); speaking = false; this.ov.classList.add('paused'); this.ov.classList.remove('talk'); },
   resume() { this.paused = false; this.ov.classList.remove('paused'); this.dir = 1; this.show(this.i); },
   teardown() {
-    closeSheet(); if (PV) closePlan();
+    closeSheet(); if (PV) closePlan(); $('#itool')?.remove();
     if (!$('#review').hidden) { pending = null; $('#review').hidden = true; }
     if (!$('#cam').hidden) { if ($('#cam').classList.contains('tourcam')) tourCamClose(); else closeCamera(); }
   },
@@ -6704,6 +7112,7 @@ const Tour = {
     if (i >= this.steps.length) return this.end(true);
     if (i < 0) i = 0;
     const s = this.steps[i]; this.i = i; this.fx = false; this.fxSel = null; this.ov.classList.remove('fx');
+    if (!s.itool) $('#itool')?.remove();
     if (s.ctx !== this.ctx) {
       this.teardown(); this.ctx = s.ctx; this.ctxOk = true;
       try { const r = await TOUR_CTX[s.ctx]?.(); if (r === false) this.ctxOk = false; } catch (e) { this.ctxOk = false; }
@@ -7317,12 +7726,14 @@ function openPhoto(id) {
       <dt>Stichworte</dt><dd>${(p.labels || []).map(l => `<span style="white-space:nowrap">${labelColor(l) ? `<i class="ldot" style="background:${labelColor(l)}"></i>` : ''}${esc(l)}</span>`).join(', ') || '–'}</dd>
       ${p.depthCm ? `<dt>Tiefe</dt><dd class="num">${p.depthCm} cm <span class="note">(${esc(p.depthSrc || 'manuell')})</span></dd>` : ''}
       ${p.aiOk != null ? `<dt>KI-Prüfung</dt><dd style="color:${p.aiOk ? 'var(--ok)' : 'var(--amber)'}">${p.aiOk ? 'Pflichtinhalte erkannt' : 'Unvollständig'}${p.aiDesc ? `<br><span class="note">${esc(p.aiDesc)}</span>` : ''}</dd>` : ''}
+      ${p.needCheck?.length ? `<dt>Pflichtinhalte</dt><dd style="color:${p.needCheck.every(n => n.ok) ? 'var(--ok)' : 'var(--amber)'}">${p.needCheck.filter(n => n.ok).length} von ${p.needCheck.length} bestätigt<br><span class="note">${p.needCheck.map(n => (n.ok ? '✓ ' : '✗ ') + esc(n.punkt)).join(' · ')}</span></dd>` : ''}
       ${p.privacy?.length ? `<dt>Datenschutz</dt><dd>${p.privacy.length} Bereich${p.privacy.length > 1 ? 'e' : ''} unkenntlich gemacht</dd>` : ''}
       ${p.docs?.length ? `<dt>Anhänge</dt><dd>${p.docs.map(d => `<div style="display:flex;gap:6px;align-items:center;margin-bottom:4px"><button class="chip" data-doc="${d.id}">📎 ${esc(d.name)}</button><span class="note">${fmtSize(d.size || 0)}</span><button class="chip" data-docrm="${d.id}" aria-label="Anhang entfernen">✕</button></div>`).join('')}</dd>` : ''}
       ${p.posLog?.length ? `<dt>Protokoll</dt><dd class="hist">${p.posLog.map(l => `<span>${fmtDate(l.ts)} ${fmtTime(l.ts)} · Position korrigiert${l.by ? ' (' + esc(l.by) + ')' : ''}</span>`).join('')}</dd>` : ''}
       <dt>Siegel</dt><dd><div class="seal">${p.hash ? `<b>#${p.seq} · SHA-256</b> ${p.hash}<br>${otsTxt(p)}${p.origHash ? '<br>Bearbeitet – Original versiegelt: ' + p.origHash.slice(0, 16) + '…' : ''}` : 'nicht versiegelt (älteres Foto)'}</div></dd></dl>
     <div class="fld"><label class="lbl" for="pdDesc">Beschreibung</label><textarea id="pdDesc">${esc(p.desc)}</textarea></div>
     <div class="row">${isV ? '' : A('edit', 'Markieren / Zeichnen', 'pro-only')}${isV || isP ? '' : A('rot', '↻ Drehen')}${A('share', 'Teilen')}</div>
+    ${isV || isP || !p.blob ? '' : `<div class="row" style="margin-top:8px">${A('measure', '📏 Tiefe am Meterstab messen')}</div>`}
     <div class="row pro-only" style="margin-top:8px">${A('defect', 'Als Mangel erfassen', 'amb')}${A('plan', p.plan ? 'Auf Plan ansehen' : 'Auf Plan verorten')}</div>
     <div class="row" style="margin-top:8px">${p.lat == null ? A('place', 'Auf Karte setzen', 'amb') : A('map', 'Auf Karte') + A('move', 'Position korrigieren', 'pro-only')}</div>
     ${p.lat != null ? `<div class="row" style="margin-top:8px">${A('gmaps', 'Google Maps')}${A('bing', 'Bing Karten')}${A('anchor', S.set.anchor?.from === p.id ? '📌 Anheften lösen' : '📌 Ort anheften')}</div>` : ''}
@@ -7340,6 +7751,7 @@ function openPhoto(id) {
     const b = e.target.closest('[data-x]'); if (!b) return; const x = b.dataset.x;
     if (x === 'edit') { closeSheet(); openMarkup(p); }
     if (x === 'rot') { b.disabled = true; await rotatePhoto(p); openPhoto(p.id); }
+    if (x === 'measure') { await measureSavedPhoto(p); return; }
     if (x === 'defect') openDefect(null, { siteId: p.siteId, photoId: p.id, plan: p.plan || null, desc: p.desc || p.aiDesc || '' });
     if (x === 'plan') { closeSheet(); if (p.plan) openPlan(p.plan.planId); else choosePlan(p.siteId, { t: 'p', id: p.id }); }
     if (x === 'share') { const ext = S.set.expOpts?.ext && p.lat != null && !isV && !isP; saveFile(fileName(p), ext ? await deriveImage(p, { res: 'orig', ext: true }) : p.blob, true); }
