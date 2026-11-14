@@ -4790,7 +4790,7 @@ function privacyRects(dets, ai, W, H) {
   const nb = (b, kind) => { if (!Array.isArray(b) || b.length < 4 || !b.every(v => typeof v === 'number' && isFinite(v))) return; const [x, y, w, h] = b;
     const px = Math.max(0, (x - w * 0.15) * W), py = Math.max(0, (y - h * 0.15) * H); out.push({ x: px, y: py, w: Math.min(W - px, w * 1.3 * W), h: Math.min(H - py, h * 1.3 * H), kind }); };
   if (ai) { (ai.personen || []).forEach(b => nb(b, 'Gesicht')); (ai.kennzeichen || []).forEach(b => nb(b, 'Kennzeichen')); }
-  else {
+  {                                                                  // Erkennung auf dem Gerät gilt immer – die KI ergänzt nur
     const faces = dets.filter(d => d.class === 'face').map(d => d.bbox);
     for (const [x, y, w, h] of faces) out.push({ x: x - w * 0.3, y: y - h * 0.4, w: w * 1.6, h: h * 1.7, kind: 'Gesicht' });
     for (const d of dets) {
