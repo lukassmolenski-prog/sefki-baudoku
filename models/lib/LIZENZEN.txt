@@ -9,3 +9,7 @@ face-api.esm.js         @vladmandic/face-api 1.7.15 (ohne eingebautes TensorFlow
 tf-shim.js, empty.js      Brücke, damit face-api das bereits geladene TensorFlow.js nutzt (Smolens·KI)
 
 Apache License 2.0: https://www.apache.org/licenses/LICENSE-2.0
+
+3D-Zwilling:
+three.module.min.js     three.js r170 – © three.js authors – MIT License (siehe LICENSE-three.txt)
+OrbitControls.js        three.js Beispiel-Steuerung (Import auf die lokale Datei umgestellt) – MIT License
