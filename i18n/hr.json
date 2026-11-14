@@ -884,7 +884,7 @@
 "Beispielplan": "Primjer tlocrta",
 "Willkommen": "Dobrodošli",
 "Hallo {1}! Ich bin SEF-KI. Ich zeige dir jetzt jeden Knopf dieser App, einen nach dem anderen, und mache dir vieles direkt vor. Keine Sorge: Ich arbeite dabei mit Beispieldaten. Deine echten Daten bleiben unverändert.": "Bok {1}! Ja sam SEF-KI. Sad ću ti pokazati svaki gumb ove aplikacije, jedan za drugim, i mnogo toga odmah demonstrirati. Bez brige: radim s primjerima podataka. Tvoji stvarni podaci ostaju nepromijenjeni.",
-"Oben links steht der Name: SEF-KI Baudoku. Das ist deine Foto-Dokumentation für die Baustelle, mit GPS.": "Gore lijevo je naziv: SEF-KI Baudoku. To je tvoja foto-dokumentacija gradilišta, s GPS-om.",
+"Oben links steht das EnerWeser-Logo. Das ist eure Baudoku: die Foto-Dokumentation für die Baustelle, mit GPS.": "Gore lijevo je logo tvrtke EnerWeser. To je vaša dokumentacija gradilišta: foto-dokumentacija gradilišta s GPS-om.",
 "Diese Anzeige zeigt dein GPS. Die Zahl ist die Genauigkeit in Metern. Grün heißt: genau genug. Orange heißt: Ich suche noch.": "Ovaj prikaz pokazuje tvoj GPS. Broj je točnost u metrima. Zeleno znači: dovoljno točno. Narančasto znači: još tražim.",
 "GPS-Anzeige": "GPS prikaz",
 "Das Mikrofon schaltet Freihändig ein. Dann sagst du einfach Foto, Speichern, Nochmal, Nächstes oder Notiz. Das geht ohne Tippen, auch mit Handschuhen.": "Mikrofon uključuje rad bez ruku. Tada jednostavno kažeš Fotografija, Spremi, Ponovno, Sljedeće ili Bilješka. Bez dodirivanja, i s rukavicama.",
@@ -1171,7 +1171,9 @@
 "▶ Rundgang": "▶ Obilazak",
 "SEF-KI schlägt vor": "SEF-KI predlaže",
 "+ Baustelle hier anlegen": "+ Stvori gradilište ovdje",
-"© 2026 Lukas Smolenski · Smolens·KI · Alle Rechte vorbehalten": "© 2026 Lukas Smolenski · Smolens·KI · Sva prava pridržana",
+"Entwickelt von Smolens·KI": "Razvio Smolens·KI",
+"EnerWeser Baudoku · Entwickelt von Smolens·KI": "EnerWeser Baudoku · Razvio Smolens·KI",
+"© 2026 Lukas Smolenski · Alle Rechte vorbehalten": "© 2026 Lukas Smolenski · Sva prava pridržana",
 "Baupläne": "Građevinski tlocrti",
 "Für Innenräume und überall, wo GPS nicht reicht: Plan hochladen, antippen, Foto oder Mangel genau dort verorten.": "Za unutarnje prostore i svugdje gdje GPS nije dovoljan: učitaj tlocrt, dodirni, smjesti fotografiju ili nedostatak točno tamo.",
 "+ Plan hinzufügen (Bild oder PDF)": "+ Dodaj tlocrt (slika ili PDF)",
@@ -1408,7 +1410,7 @@
 "Keine Baustellen.": "Nema gradilišta.",
 "Noch keine Fotos.": "Još nema fotografija.",
 "Alle Pflichtfotos sind da.": "Sve obavezne fotografije su tu.",
-"SEF-KI Baudoku · Smolens·KI · nach Themen sortiert – Thema antippen zum Aufklappen.": "SEF-KI Baudoku · Smolens·KI · po temama – dodirni temu za otvaranje.",
+"EnerWeser Baudoku · nach Themen sortiert – Thema antippen zum Aufklappen.": "EnerWeser Baudoku · po temama – dodirni temu za otvaranje.",
 "Kamera & Foto": "Kamera i fotografija",
 "Auflösung, Serienmodus, Pflichtangaben": "Rezolucija, serijski način, obavezna polja",
 "Pflichtangaben beim Speichern": "Obavezna polja pri spremanju",
@@ -1831,5 +1833,6 @@
 "✓ Nachher": "✓ Poslije",
 "Tipp auf die Stelle, an der das Foto entstanden ist. (danach noch {1})": "Dodirni mjesto na kojem je fotografija snimljena. (zatim još {1})",
 "Tipp auf die richtige Position des Fotos. (danach noch {1})": "Dodirni ispravan položaj fotografije. (zatim još {1})",
-"ZIP mit {1} Fotos gesichert.": "ZIP s {1} fotografija spremljen."
+"ZIP mit {1} Fotos gesichert.": "ZIP s {1} fotografija spremljen.",
+"EnerWeser Baudoku": "EnerWeser Baudoku"
 }

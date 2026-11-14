@@ -886,7 +886,7 @@
 "Beispielplan": "Plano de ejemplo",
 "Willkommen": "Bienvenido",
 "Hallo {1}! Ich bin SEF-KI. Ich zeige dir jetzt jeden Knopf dieser App, einen nach dem anderen, und mache dir vieles direkt vor. Keine Sorge: Ich arbeite dabei mit Beispieldaten. Deine echten Daten bleiben unverändert.": "¡Hola {1}! Soy SEF-KI. Ahora te enseño cada botón de esta app, uno tras otro, y te hago muchas demostraciones. Tranquilo: trabajo con datos de ejemplo. Tus datos reales no cambian.",
-"Oben links steht der Name: SEF-KI Baudoku. Das ist deine Foto-Dokumentation für die Baustelle, mit GPS.": "Arriba a la izquierda está el nombre: SEF-KI Baudoku. Es tu documentación fotográfica de obra, con GPS.",
+"Oben links steht das EnerWeser-Logo. Das ist eure Baudoku: die Foto-Dokumentation für die Baustelle, mit GPS.": "Arriba a la izquierda está el logotipo de EnerWeser. Es vuestra documentación de obra: la documentación fotográfica de la obra, con GPS.",
 "Diese Anzeige zeigt dein GPS. Die Zahl ist die Genauigkeit in Metern. Grün heißt: genau genug. Orange heißt: Ich suche noch.": "Este indicador muestra tu GPS. El número es la precisión en metros. Verde significa: suficientemente preciso. Naranja: todavía estoy buscando.",
 "GPS-Anzeige": "Indicador GPS",
 "Das Mikrofon schaltet Freihändig ein. Dann sagst du einfach Foto, Speichern, Nochmal, Nächstes oder Notiz. Das geht ohne Tippen, auch mit Handschuhen.": "El micrófono activa el manos libres. Luego simplemente dices Foto, Guardar, Otra vez, Siguiente o Nota. Sin tocar, incluso con guantes.",
@@ -1174,7 +1174,9 @@
 "▶ Rundgang": "▶ Recorrido",
 "SEF-KI schlägt vor": "SEF-KI sugiere",
 "+ Baustelle hier anlegen": "+ Crear obra aquí",
-"© 2026 Lukas Smolenski · Smolens·KI · Alle Rechte vorbehalten": "© 2026 Lukas Smolenski · Smolens·KI · Todos los derechos reservados",
+"Entwickelt von Smolens·KI": "Desarrollado por Smolens·KI",
+"EnerWeser Baudoku · Entwickelt von Smolens·KI": "EnerWeser Baudoku · Desarrollado por Smolens·KI",
+"© 2026 Lukas Smolenski · Alle Rechte vorbehalten": "© 2026 Lukas Smolenski · Todos los derechos reservados",
 "Baupläne": "Planos de obra",
 "Für Innenräume und überall, wo GPS nicht reicht: Plan hochladen, antippen, Foto oder Mangel genau dort verorten.": "Para interiores y donde el GPS no llega: sube un plano, tócalo y ubica una foto o un defecto justo ahí.",
 "+ Plan hinzufügen (Bild oder PDF)": "+ Añadir plano (imagen o PDF)",
@@ -1411,7 +1413,7 @@
 "Keine Baustellen.": "No hay obras.",
 "Noch keine Fotos.": "Aún no hay fotos.",
 "Alle Pflichtfotos sind da.": "Están todas las fotos obligatorias.",
-"SEF-KI Baudoku · Smolens·KI · nach Themen sortiert – Thema antippen zum Aufklappen.": "SEF-KI Baudoku · Smolens·KI · por temas: toca un tema para abrirlo.",
+"EnerWeser Baudoku · nach Themen sortiert – Thema antippen zum Aufklappen.": "EnerWeser Baudoku · por temas: toca un tema para abrirlo.",
 "Kamera & Foto": "Cámara y foto",
 "Auflösung, Serienmodus, Pflichtangaben": "Resolución, modo serie, campos obligatorios",
 "Pflichtangaben beim Speichern": "Campos obligatorios al guardar",
@@ -1831,5 +1833,6 @@
 "✓ Nachher": "✓ Después",
 "Tipp auf die Stelle, an der das Foto entstanden ist. (danach noch {1})": "Toca el lugar donde se tomó la foto. (después quedan {1})",
 "Tipp auf die richtige Position des Fotos. (danach noch {1})": "Toca la posición correcta de la foto. (después quedan {1})",
-"ZIP mit {1} Fotos gesichert.": "ZIP con {1} fotos guardado."
+"ZIP mit {1} Fotos gesichert.": "ZIP con {1} fotos guardado.",
+"EnerWeser Baudoku": "EnerWeser Baudoku"
 }

@@ -879,7 +879,7 @@
 "Beispielplan": "Planimetri shembull",
 "Willkommen": "Mirë se vjen",
 "Hallo {1}! Ich bin SEF-KI. Ich zeige dir jetzt jeden Knopf dieser App, einen nach dem anderen, und mache dir vieles direkt vor. Keine Sorge: Ich arbeite dabei mit Beispieldaten. Deine echten Daten bleiben unverändert.": "Përshëndetje {1}! Unë jam SEF-KI. Tani do të të tregoj çdo buton të këtij aplikacioni, njërin pas tjetrit, dhe shumë gjëra do t'i demonstroj drejtpërdrejt. Mos u shqetëso: punoj me të dhëna shembull. Të dhënat e tua reale mbeten të pandryshuara.",
-"Oben links steht der Name: SEF-KI Baudoku. Das ist deine Foto-Dokumentation für die Baustelle, mit GPS.": "Lart majtas është emri: SEF-KI Baudoku. Ky është dokumentimi yt fotografik për kantierin, me GPS.",
+"Oben links steht das EnerWeser-Logo. Das ist eure Baudoku: die Foto-Dokumentation für die Baustelle, mit GPS.": "Lart majtas është logoja e EnerWeser. Ky është dokumentimi juaj i kantierit: dokumentimi me foto i kantierit, me GPS.",
 "Diese Anzeige zeigt dein GPS. Die Zahl ist die Genauigkeit in Metern. Grün heißt: genau genug. Orange heißt: Ich suche noch.": "Ky tregues tregon GPS-in tënd. Numri është saktësia në metra. E gjelbër do të thotë: mjaft e saktë. Portokalli: ende po kërkoj.",
 "GPS-Anzeige": "Treguesi GPS",
 "Das Mikrofon schaltet Freihändig ein. Dann sagst du einfach Foto, Speichern, Nochmal, Nächstes oder Notiz. Das geht ohne Tippen, auch mit Handschuhen.": "Mikrofoni ndez modalitetin pa duar. Pastaj thjesht thua Foto, Ruaj, Përsëri, Tjetra ose Shënim. Pa prekur, edhe me doreza.",
@@ -1167,7 +1167,9 @@
 "▶ Rundgang": "▶ Turi",
 "SEF-KI schlägt vor": "SEF-KI sugjeron",
 "+ Baustelle hier anlegen": "+ Krijo kantier këtu",
-"© 2026 Lukas Smolenski · Smolens·KI · Alle Rechte vorbehalten": "© 2026 Lukas Smolenski · Smolens·KI · Të gjitha të drejtat të rezervuara",
+"Entwickelt von Smolens·KI": "Zhvilluar nga Smolens·KI",
+"EnerWeser Baudoku · Entwickelt von Smolens·KI": "EnerWeser Baudoku · Zhvilluar nga Smolens·KI",
+"© 2026 Lukas Smolenski · Alle Rechte vorbehalten": "© 2026 Lukas Smolenski · Të gjitha të drejtat të rezervuara",
 "Baupläne": "Planimetritë e ndërtimit",
 "Für Innenräume und überall, wo GPS nicht reicht: Plan hochladen, antippen, Foto oder Mangel genau dort verorten.": "Për ambiente të brendshme dhe kudo ku GPS nuk mjafton: ngarko planimetrinë, preke, vendos foton ose defektin pikërisht atje.",
 "+ Plan hinzufügen (Bild oder PDF)": "+ Shto planimetri (imazh ose PDF)",
@@ -1402,7 +1404,7 @@
 "Keine Baustellen.": "Asnjë kantier.",
 "Noch keine Fotos.": "Ende pa foto.",
 "Alle Pflichtfotos sind da.": "Të gjitha fotot e detyrueshme janë gati.",
-"SEF-KI Baudoku · Smolens·KI · nach Themen sortiert – Thema antippen zum Aufklappen.": "SEF-KI Baudoku · Smolens·KI · sipas temave – prek një temë për ta hapur.",
+"EnerWeser Baudoku · nach Themen sortiert – Thema antippen zum Aufklappen.": "EnerWeser Baudoku · sipas temave – prek një temë për ta hapur.",
 "Kamera & Foto": "Kamera & foto",
 "Auflösung, Serienmodus, Pflichtangaben": "Rezolucioni, modaliteti seri, fushat e detyrueshme",
 "Pflichtangaben beim Speichern": "Fushat e detyrueshme gjatë ruajtjes",
@@ -1826,5 +1828,6 @@
 "✓ Nachher": "✓ Pas",
 "Tipp auf die Stelle, an der das Foto entstanden ist. (danach noch {1})": "Prek vendin ku është bërë fotoja. (pastaj edhe {1})",
 "Tipp auf die richtige Position des Fotos. (danach noch {1})": "Prek pozicionin e saktë të fotos. (pastaj edhe {1})",
-"ZIP mit {1} Fotos gesichert.": "ZIP me {1} foto u ruajt."
+"ZIP mit {1} Fotos gesichert.": "ZIP me {1} foto u ruajt.",
+"EnerWeser Baudoku": "EnerWeser Baudoku"
 }

@@ -889,7 +889,7 @@
 "Beispielplan": "Örnek plan",
 "Willkommen": "Hoş geldin",
 "Hallo {1}! Ich bin SEF-KI. Ich zeige dir jetzt jeden Knopf dieser App, einen nach dem anderen, und mache dir vieles direkt vor. Keine Sorge: Ich arbeite dabei mit Beispieldaten. Deine echten Daten bleiben unverändert.": "Merhaba {1}! Ben SEF-KI. Şimdi bu uygulamadaki her düğmeyi sırayla göstereceğim ve birçok şeyi doğrudan uygulayarak anlatacağım. Merak etme: örnek verilerle çalışıyorum. Gerçek verilerin değişmez.",
-"Oben links steht der Name: SEF-KI Baudoku. Das ist deine Foto-Dokumentation für die Baustelle, mit GPS.": "Sol üstte ad yazıyor: SEF-KI Baudoku. Bu, GPS'li şantiye fotoğraf belgelemen.",
+"Oben links steht das EnerWeser-Logo. Das ist eure Baudoku: die Foto-Dokumentation für die Baustelle, mit GPS.": "Sol üstte EnerWeser logosu var. Bu sizin şantiye belgelemeniz: GPS'li şantiye fotoğraf belgelemesi.",
 "Diese Anzeige zeigt dein GPS. Die Zahl ist die Genauigkeit in Metern. Grün heißt: genau genug. Orange heißt: Ich suche noch.": "Bu gösterge GPS'ini gösterir. Sayı metre cinsinden hassasiyettir. Yeşil: yeterince hassas. Turuncu: hâlâ arıyorum.",
 "GPS-Anzeige": "GPS göstergesi",
 "Das Mikrofon schaltet Freihändig ein. Dann sagst du einfach Foto, Speichern, Nochmal, Nächstes oder Notiz. Das geht ohne Tippen, auch mit Handschuhen.": "Mikrofon eller serbest modu açar. Sonra sadece Fotoğraf, Kaydet, Tekrar, Sonraki veya Not dersin. Dokunmadan, eldivenle de olur.",
@@ -1177,7 +1177,9 @@
 "▶ Rundgang": "▶ Tur",
 "SEF-KI schlägt vor": "SEF-KI öneriyor",
 "+ Baustelle hier anlegen": "+ Şantiyeyi burada oluştur",
-"© 2026 Lukas Smolenski · Smolens·KI · Alle Rechte vorbehalten": "© 2026 Lukas Smolenski · Smolens·KI · Tüm hakları saklıdır",
+"Entwickelt von Smolens·KI": "Smolens·KI tarafından geliştirildi",
+"EnerWeser Baudoku · Entwickelt von Smolens·KI": "EnerWeser Baudoku · Smolens·KI tarafından geliştirildi",
+"© 2026 Lukas Smolenski · Alle Rechte vorbehalten": "© 2026 Lukas Smolenski · Tüm hakları saklıdır",
 "Baupläne": "Yapı planları",
 "Für Innenräume und überall, wo GPS nicht reicht: Plan hochladen, antippen, Foto oder Mangel genau dort verorten.": "İç mekânlar ve GPS'in yetmediği her yer için: plan yükle, dokun, fotoğrafı veya kusuru tam oraya yerleştir.",
 "+ Plan hinzufügen (Bild oder PDF)": "+ Plan ekle (resim veya PDF)",
@@ -1412,7 +1414,7 @@
 "Keine Baustellen.": "Şantiye yok.",
 "Noch keine Fotos.": "Henüz fotoğraf yok.",
 "Alle Pflichtfotos sind da.": "Tüm zorunlu fotoğraflar tamam.",
-"SEF-KI Baudoku · Smolens·KI · nach Themen sortiert – Thema antippen zum Aufklappen.": "SEF-KI Baudoku · Smolens·KI · konulara göre – açmak için konuya dokun.",
+"EnerWeser Baudoku · nach Themen sortiert – Thema antippen zum Aufklappen.": "EnerWeser Baudoku · konulara göre – açmak için konuya dokun.",
 "Kamera & Foto": "Kamera ve fotoğraf",
 "Auflösung, Serienmodus, Pflichtangaben": "Çözünürlük, seri mod, zorunlu alanlar",
 "Pflichtangaben beim Speichern": "Kaydederken zorunlu alanlar",
@@ -1834,5 +1836,6 @@
 "✓ Nachher": "✓ Sonra",
 "Tipp auf die Stelle, an der das Foto entstanden ist. (danach noch {1})": "Fotoğrafın çekildiği yere dokun. (sonra {1} tane daha)",
 "Tipp auf die richtige Position des Fotos. (danach noch {1})": "Fotoğrafın doğru konumuna dokun. (sonra {1} tane daha)",
-"ZIP mit {1} Fotos gesichert.": "{1} fotoğraflı ZIP kaydedildi."
+"ZIP mit {1} Fotos gesichert.": "{1} fotoğraflı ZIP kaydedildi.",
+"EnerWeser Baudoku": "EnerWeser Baudoku"
 }

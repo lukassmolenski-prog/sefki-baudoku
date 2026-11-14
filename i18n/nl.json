@@ -865,7 +865,7 @@
 "Beispielplan": "Voorbeeldplattegrond",
 "Willkommen": "Welkom",
 "Hallo {1}! Ich bin SEF-KI. Ich zeige dir jetzt jeden Knopf dieser App, einen nach dem anderen, und mache dir vieles direkt vor. Keine Sorge: Ich arbeite dabei mit Beispieldaten. Deine echten Daten bleiben unverändert.": "Hallo {1}! Ik ben SEF-KI. Ik laat je nu elke knop van deze app zien, de een na de ander, en doe veel direct voor. Geen zorgen: ik werk met voorbeeldgegevens. Je echte gegevens blijven ongewijzigd.",
-"Oben links steht der Name: SEF-KI Baudoku. Das ist deine Foto-Dokumentation für die Baustelle, mit GPS.": "Linksboven staat de naam: SEF-KI Baudoku. Dat is je fotodocumentatie voor de bouwplaats, met GPS.",
+"Oben links steht das EnerWeser-Logo. Das ist eure Baudoku: die Foto-Dokumentation für die Baustelle, mit GPS.": "Linksboven staat het EnerWeser-logo. Dit is jullie bouwdocumentatie: de fotodocumentatie voor de bouwplaats, met gps.",
 "Diese Anzeige zeigt dein GPS. Die Zahl ist die Genauigkeit in Metern. Grün heißt: genau genug. Orange heißt: Ich suche noch.": "Deze weergave toont je GPS. Het getal is de nauwkeurigheid in meters. Groen betekent: nauwkeurig genoeg. Oranje betekent: ik zoek nog.",
 "GPS-Anzeige": "GPS-weergave",
 "Das Mikrofon schaltet Freihändig ein. Dann sagst du einfach Foto, Speichern, Nochmal, Nächstes oder Notiz. Das geht ohne Tippen, auch mit Handschuhen.": "De microfoon zet handsfree aan. Dan zeg je gewoon Foto, Opslaan, Opnieuw, Volgende of Notitie. Zonder tikken, ook met handschoenen.",
@@ -1149,7 +1149,9 @@
 "▶ Rundgang": "▶ Rondleiding",
 "SEF-KI schlägt vor": "SEF-KI stelt voor",
 "+ Baustelle hier anlegen": "+ Bouwplaats hier aanmaken",
-"© 2026 Lukas Smolenski · Smolens·KI · Alle Rechte vorbehalten": "© 2026 Lukas Smolenski · Smolens·KI · Alle rechten voorbehouden",
+"Entwickelt von Smolens·KI": "Ontwikkeld door Smolens·KI",
+"EnerWeser Baudoku · Entwickelt von Smolens·KI": "EnerWeser Baudoku · Ontwikkeld door Smolens·KI",
+"© 2026 Lukas Smolenski · Alle Rechte vorbehalten": "© 2026 Lukas Smolenski · Alle rechten voorbehouden",
 "Baupläne": "Bouwtekeningen",
 "Für Innenräume und überall, wo GPS nicht reicht: Plan hochladen, antippen, Foto oder Mangel genau dort verorten.": "Voor binnen en overal waar GPS niet volstaat: plattegrond uploaden, aantikken, foto of gebrek precies daar plaatsen.",
 "+ Plan hinzufügen (Bild oder PDF)": "+ Plattegrond toevoegen (afbeelding of PDF)",
@@ -1386,7 +1388,7 @@
 "Keine Baustellen.": "Geen bouwplaatsen.",
 "Noch keine Fotos.": "Nog geen foto’s.",
 "Alle Pflichtfotos sind da.": "Alle verplichte foto’s zijn er.",
-"SEF-KI Baudoku · Smolens·KI · nach Themen sortiert – Thema antippen zum Aufklappen.": "SEF-KI Baudoku · Smolens·KI · per onderwerp – tik op een onderwerp om het te openen.",
+"EnerWeser Baudoku · nach Themen sortiert – Thema antippen zum Aufklappen.": "EnerWeser Baudoku · per onderwerp – tik op een onderwerp om het te openen.",
 "Kamera & Foto": "Camera & foto",
 "Auflösung, Serienmodus, Pflichtangaben": "Resolutie, seriemodus, verplichte velden",
 "Pflichtangaben beim Speichern": "Verplichte velden bij opslaan",
@@ -1810,5 +1812,6 @@
 "✓ Nachher": "✓ Na",
 "Tipp auf die Stelle, an der das Foto entstanden ist. (danach noch {1})": "Tik op de plek waar de foto is gemaakt. (daarna nog {1})",
 "Tipp auf die richtige Position des Fotos. (danach noch {1})": "Tik op de juiste positie van de foto. (daarna nog {1})",
-"ZIP mit {1} Fotos gesichert.": "ZIP met {1} foto’s opgeslagen."
+"ZIP mit {1} Fotos gesichert.": "ZIP met {1} foto’s opgeslagen.",
+"EnerWeser Baudoku": "EnerWeser Baudoku"
 }
