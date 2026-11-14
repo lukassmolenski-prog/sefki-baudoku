@@ -1,6 +1,6 @@
 // © 2026 Lukas Smolenski · Smolens·KI · Alle Rechte vorbehalten.
 // SEF-KI Baudoku – Offline-Cache
-const C = 'sefki-v19';
+const C = 'sefki-v20';
 const MC = 'ew-modelle-v1'; // Erkennungsmodelle: bleiben über Updates hinweg erhalten (ca. 20 MB)
 const TC = 'sefki-kacheln';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './fonts/Barlow-Regular.ttf', './fonts/Barlow-Medium.ttf', './fonts/Barlow-SemiBold.ttf', './fonts/Barlow-Bold.ttf', './fonts/BarlowCondensed-SemiBold.ttf', './fonts/BarlowCondensed-Bold.ttf'];
