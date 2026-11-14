@@ -774,6 +774,60 @@ body.mapfull .app{z-index:auto}
 .ot-res{font-family:var(--f-mono);font-weight:600;font-size:14px}
 .ms-files{display:flex;flex-wrap:wrap;gap:6px}
 #msSt{color:#fff}
+/* Unterlagen */
+.ak-card{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:center;width:100%;text-align:left;padding:10px 4px;border-bottom:1px solid var(--hair)}
+.ak-card:last-of-type{border-bottom:0}
+.ak-ic{width:42px;height:42px;border-radius:6px;display:grid;place-items:center;color:#fff;font-family:var(--f-display);font-weight:700;font-size:13px}
+.ak-warn{margin:0 0 10px;border-color:var(--bad);background:var(--bad-tint)}
+.banner-bad{background:var(--bad);color:#fff;border-bottom-color:var(--indigo-deep)}
+.banner-bad b,.banner-bad p{color:#fff}
+.banner-bad .btn.pri{background:#fff;color:var(--bad);border-color:#fff}
+.banner-bad .btn{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+/* Profile */
+.prof-box{margin-top:14px;padding:10px 12px;border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:var(--r);background:var(--void)}
+.prof-chk{margin:6px 0 0;padding-left:18px;font-size:13.5px;color:var(--ink)}
+.prof-chk li{margin:2px 0}
+.pf-it{display:grid;grid-template-columns:100px 1fr auto;gap:6px;margin-bottom:6px}
+.pf-it input,.pf-it select{min-width:0;padding:9px 8px;border:1.5px solid var(--line);border-radius:var(--r);background:var(--field)}
+.ms-card.sel{border-color:var(--ok);box-shadow:0 0 0 2px var(--ok-tint)}
+/* Verkehrssicherung */
+.vs-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--hair);font-size:14px}
+.vs-b{display:flex;gap:4px}
+.vs-b button{padding:7px 9px;border:1.5px solid var(--line);border-radius:var(--r);font-family:var(--f-display);font-weight:700;font-size:13px;background:var(--field);color:var(--mute)}
+.vs-b button.on{color:#fff;background:var(--mute);border-color:var(--mute)}
+.vs-b button.on.ok{background:var(--ok);border-color:var(--ok)}
+.vs-b button.on.no{background:var(--bad);border-color:var(--bad)}
+img.sig{object-fit:contain}
+/* Bohrung */
+.rod-h,.rod-r{display:grid;grid-template-columns:44px 1fr 1fr 70px;gap:6px;align-items:center}
+.rod-h{font-family:var(--f-mono);font-weight:600;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan-dim);margin-bottom:4px}
+.rod-r{margin-bottom:5px}
+.rod-r b{font-family:var(--f-display);font-size:16px;color:var(--cyan)}
+.rod-r input{min-width:0;padding:8px;border:1.5px solid var(--line);border-radius:var(--r);background:var(--field);font-family:var(--f-mono);font-weight:600;font-size:15px}
+.rod-r span{font-family:var(--f-mono);font-size:13px;color:var(--mute);text-align:right}
+.rod-prof{width:100%;height:auto;margin-top:8px;background:var(--void);border-radius:var(--r)}
+/* Aufmaß-Vorschlag und Sprache */
+.sg-row{display:grid;grid-template-columns:auto 1fr 96px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--hair)}
+.sg-m{display:flex;flex-direction:column;min-width:0}
+.sg-m b{font-size:14px;line-height:1.25}
+.sg-m small{font-size:12px;color:var(--mute)}
+.sg-q{display:flex;align-items:center;gap:4px}
+.sg-q input{width:100%;min-width:0;padding:8px;border:1.5px solid var(--line);border-radius:var(--r);font-family:var(--f-mono);font-weight:700;font-size:15px;text-align:right}
+.sg-q small{font-size:12px;color:var(--mute);width:22px}
+.bigmic{display:flex;flex-direction:column;align-items:center;gap:8px;margin:4px auto 14px;color:var(--cyan)}
+.bigmic span{width:88px;height:88px;border-radius:50%;display:grid;place-items:center;background:var(--orange);color:var(--indigo-deep);box-shadow:0 0 0 10px rgba(241,136,11,.12)}
+.bigmic span svg{width:40px;height:40px}
+.bigmic.on span{animation:pulse 1.2s infinite;box-shadow:0 0 0 14px rgba(241,136,11,.25)}
+.bigmic b{font-family:var(--f-display);text-transform:uppercase;letter-spacing:.06em}
+/* QR */
+.qr-fib{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:8px 0}
+.qr-fib span{display:flex;align-items:center;gap:5px;font-family:var(--f-mono);font-size:13px;padding:4px;border:1px solid var(--hair);border-radius:3px}
+.qr-fib i{width:10px;height:10px;border-radius:50%;border:1px solid rgba(30,22,89,.3)}
+.qr-fib b{margin-left:auto}.qr-fib b.ok{color:var(--ok)}.qr-fib b.no{color:var(--bad)}
+.qr-scan{position:relative;border-radius:8px;overflow:hidden;background:#000;aspect-ratio:1}
+.qr-scan video{width:100%;height:100%;object-fit:cover}
+.qr-scan i{position:absolute;inset:18%;border:3px solid var(--orange);border-radius:12px}
+.ms-new .btn{font-size:15px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -869,19 +923,31 @@ body.mapfull .app{z-index:auto}
     <section class="stats" id="amStats"></section>
     <div class="chips" id="amSites"></div>
     <div class="row"><button class="btn pri" id="btnAmNew">+ Aufmaß erfassen</button></div>
+    <div class="row"><button class="btn amb" id="btnAmSug">Vorschlag für heute</button><button class="btn" id="btnAmVoice">Per Sprache</button></div>
     <div class="row"><button class="btn" id="btnAmPdf">Aufmaßblatt (PDF)</button><button class="btn" id="btnAmCsv">Excel / CSV</button></div>
     <div id="amList" class="stack"></div>
   </main>
 
   <!-- SPLEISS & MESSUNG -->
   <main class="view stack" id="v-messung" hidden>
-    <div class="vhead"><button class="back" data-back aria-label="Zurück zu Mehr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>Mehr</button><h1>Spleiß &amp; Messung</h1></div>
+    <div class="vhead"><button class="back" data-back aria-label="Zurück zu Mehr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>Mehr</button><h1>Protokolle</h1></div>
     <section class="stats" id="msStats"></section>
     <div class="row ms-new"><button class="btn pri" id="btnMsSpl">+ Spleiß</button><button class="btn pri" id="btnMsOtdr">+ OTDR</button><button class="btn pri" id="btnMsEin">+ Einblasen</button></div>
+    <div class="row ms-new"><button class="btn pri" id="btnMsBohr">+ Spülbohrung</button><button class="btn pri" id="btnMsVs">+ Verkehrssicherung</button></div>
     <div class="seg" id="msSeg"></div>
     <div class="chips" id="msSites"></div>
     <div id="msList"></div>
     <div class="row"><button class="btn" id="btnMsPdf">Alle als PDF</button><button class="btn" id="btnMsLim">Grenzwerte</button></div>
+    <div class="row"><button class="btn" id="btnMsQr">QR-Etiketten drucken</button><button class="btn" id="btnMsScan">QR scannen</button></div>
+  </main>
+
+  <!-- UNTERLAGEN -->
+  <main class="view stack" id="v-akten" hidden>
+    <div class="vhead"><button class="back" data-back aria-label="Zurück zu Mehr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>Mehr</button><h1>Unterlagen</h1></div>
+    <section class="stats" id="akStats"></section>
+    <div class="seg" id="akSeg"></div>
+    <div class="chips" id="akSites"></div>
+    <div id="akList" class="stack"></div>
   </main>
 
   <!-- GALERIE -->
@@ -995,6 +1061,7 @@ body.mapfull .app{z-index:auto}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" async></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js" async></script>
 <script>
 'use strict';
 /* =========================================================
@@ -1075,6 +1142,12 @@ const TPL = {
     ['V', 'Detail mit Maßstab', 'Zollstock oder Meterstab direkt daneben legen.', 'mangel', true, { need: ['Schaden im Detail', 'Maßstab daneben'] }],
     ['W', 'Ursache / Umfeld', 'Was hat den Schaden verursacht?', 'mangel', false, { need: ['Mögliche Ursache'] }],
     ['N', 'Nach Behebung', 'Gleicher Blickwinkel wie die Übersicht.', 'uebersicht', true, { need: ['Behobene Schadstelle'], ref: 0 }]] },
+  bohrung: { n: 'Grabenlos / Spülbohrung', r: 80, items: [
+    ['V', 'Startgrube mit Maßstab', 'Grube mit Meterstab, Lage gut erkennbar.', 'graben', true, { need: ['Startgrube', 'Meterstab'] }],
+    ['V', 'Zielgrube mit Maßstab', 'Grube mit Meterstab, Lage gut erkennbar.', 'graben', true, { need: ['Zielgrube', 'Meterstab'] }],
+    ['W', 'Bohrgerät aufgebaut / Ortung', 'Gerät und Ortungsgerät im Bild.', 'uebersicht', true, { need: ['Bohrgerät'] }],
+    ['W', 'Rohreinzug', 'Das eingezogene Rohr am Austritt.', 'leitung', true, { need: ['Rohr am Austritt'] }],
+    ['N', 'Gruben verfüllt, Oberfläche hergestellt', 'Gleicher Standort wie die Grubenfotos.', 'oberflaeche', true, { need: ['Verfüllte Grube'], ref: 0 }]] },
   frei: { n: 'Allgemein', r: 80, items: [
     ['V', 'Übersicht vorher', 'Gesamtansicht, bevor es losgeht.', 'uebersicht', true, { need: ['Gesamtansicht'] }],
     ['W', 'Arbeit läuft', 'Der wichtigste Zwischenstand.', 'sonstiges', true, { need: ['Laufende Arbeit'] }],
@@ -1091,12 +1164,12 @@ const itemMeta = (site, it) => {
 
 /* ---------------- Speicher (IndexedDB, Fallback im Arbeitsspeicher) ---------------- */
 const DB = {
-  db: null, mem: { sites: new Map(), photos: new Map(), kv: new Map(), notes: new Map(), trassen: new Map(), ledger: new Map(), plans: new Map(), defects: new Map(), protocols: new Map(), aufmass: new Map(), messungen: new Map() },
+  db: null, mem: { sites: new Map(), photos: new Map(), kv: new Map(), notes: new Map(), trassen: new Map(), ledger: new Map(), plans: new Map(), defects: new Map(), protocols: new Map(), aufmass: new Map(), messungen: new Map(), akten: new Map() },
   async open() {
     try {
       this.db = await new Promise((res, rej) => {
-        const r = indexedDB.open('sefki-baudoku', 4);
-        r.onupgradeneeded = () => { const d = r.result; ['sites', 'photos', 'kv', 'notes', 'trassen', 'ledger', 'plans', 'defects', 'protocols', 'aufmass', 'messungen'].forEach(s => { if (!d.objectStoreNames.contains(s)) d.createObjectStore(s, { keyPath: 'id' }); }); };
+        const r = indexedDB.open('sefki-baudoku', 5);
+        r.onupgradeneeded = () => { const d = r.result; ['sites', 'photos', 'kv', 'notes', 'trassen', 'ledger', 'plans', 'defects', 'protocols', 'aufmass', 'messungen', 'akten'].forEach(s => { if (!d.objectStoreNames.contains(s)) d.createObjectStore(s, { keyPath: 'id' }); }); };
         let blocked = false;
         r.onblocked = () => { blocked = true; try { toast('Bitte andere offene Fenster der App schließen – ich aktualisiere den Speicher.', 8000); } catch (e) {} };
         r.onsuccess = () => { const db = r.result; db.onversionchange = () => { try { db.close(); } catch (e) {} }; res(db); }; r.onerror = () => rej(r.error);
@@ -1123,8 +1196,8 @@ const DB = {
 
 /* ---------------- Zustand ---------------- */
 const S = {
-  sites: [], photos: [], notes: [], trassen: [], ledger: [], daily: {}, rec: null, plans: [], defects: [], protocols: [], aufmass: [], messungen: [], customTpl: {},
-  am: { site: 'all' }, ms: { site: 'all', kind: 'all' },
+  sites: [], photos: [], notes: [], trassen: [], ledger: [], daily: {}, rec: null, plans: [], defects: [], protocols: [], aufmass: [], messungen: [], akten: [], customTpl: {},
+  am: { site: 'all' }, ms: { site: 'all', kind: 'all' }, ak: { scope: 'site', site: 'all' },
   def: { status: 'open', site: 'all' }, planSite: null,
   set: { id: 'settings', name: 'Sefkan', voice: false, watermark: true, series: false, demo: false, demoAt: null, pin: null, seeded: false, lastLabels: [],
     aiKey: '', aiModel: 'claude-sonnet-5-5', aiCheck: true, privacy: true, ghost: true, ghostOpacity: 0.42, ots: true, chainHead: '', trassMaxAcc: 10,
@@ -1535,6 +1608,11 @@ function lotse() {
   if (!tr && over.length) { key += '|ov' + over.length; cards.splice(1, 0, { t: `${over.length} Mangel${over.length > 1 ? 'fristen' : 'frist'} überschritten`, x: over.slice(0, 2).map(d => `M${d.no} ${d.title}`).join(' · ') + (over.length > 2 ? ' …' : '') + ' – nachhaken oder Status setzen.', tag: 'MÄNGEL', a: () => { S.def.status = 'over'; S.def.site = 'all'; go('maengel'); } }); }
   if (!tr && !S.set.tourSeen) { key += '|tour'; cards.splice(1, 0, { t: 'Rundgang: Ich erkläre dir die App', x: 'Jeder Knopf kurz erklärt – automatisch und mit Sprache. Lehn dich zurück.', tag: 'NEU HIER?', a: () => Tour.menu() }); }
   const h = new Date().getHours();
+  if (!tr && st.state === 'in' && leitungStatus(st.site).missing) { key += '|la'; cards.unshift({ t: 'Achtung: keine Leitungsauskunft', x: 'Nicht graben, bevor die Spartenpläne aller Netzbetreiber vorliegen. Jetzt ablegen.', tag: 'SICHERHEIT', a: () => { S.ak.scope = 'site'; S.ak.site = st.site.id; go('akten'); openAkte(null, { type: 'leitung', siteId: st.site.id, scope: 'site' }); }, hot: true }); cards.forEach((c, i) => { if (i) c.hot = false; }); }
+  const vsSite = st.state === 'in' ? st.site : null;
+  if (!tr && vsSite && vsDue(vsSite) && h >= 5 && h < 14) { key += '|vs'; cards.splice(1, 0, { t: 'Verkehrssicherung prüfen', x: 'Tägliche Kontrolle: Absperrung, Beschilderung, Beleuchtung, Wege – mit Foto und Unterschrift.', tag: 'MORGEN-CHECK', a: () => openMess(null, 'vs', { siteId: vsSite.id }) }); }
+  const akw = akWarn(); if (!tr && akw.length) { key += '|ak' + akw.length; cards.push({ t: `${akw.length} Unterlage${akw.length > 1 ? 'n laufen' : ' läuft'} ab`, x: akw.slice(0, 2).map(d => akName(d) + ' – ' + akState(d)[0]).join(' · '), tag: 'UNTERLAGEN', a: () => { S.ak.scope = 'firma'; go('akten'); } }); }
+  if (!tr && h >= 15 && S.set.amSugDay !== today()) { const sg = amSuggest(); if (sg.length) { key += '|sg' + sg.length; cards.splice(1, 0, { t: 'Aufmaß-Vorschlag für heute', x: sg.slice(0, 3).map(e => `${fmtN(amQty(e), 2)} ${e.unit} ${e.text.split(/[,/]/)[0]}`).join(' · ') + (sg.length > 3 ? ' …' : ''), tag: 'AUFMASS', a: () => openAmSuggest() }); } }
   if (!tr && open > 0 && (h >= 15 || open >= 25)) {
     key += '|fa';
     cards.splice(1, 0, { t: 'Feierabend-Check', x: `${open} Foto${open > 1 ? 's sind' : ' ist'} noch nicht gesichert. Ein ZIP, und alles ist sicher.`, tag: 'SICHERN', a: () => { S.rep.range = 'open'; S.rep.site = 'all'; go('bericht'); } });
@@ -1672,14 +1750,15 @@ function refresh(force) {
   if (S.view === 'maengel') renderDefects();
   if (S.view === 'aufmass') renderAufmass();
   if (S.view === 'messung') renderMessung();
+  if (S.view === 'akten') renderAkten();
   if (S.view === 'mehr') renderHub();
   if (S.view === 'statistik') renderStats();
   updDefBadge(); updGalBadge(); PV?.draw?.();
 }
-const HUB_VIEWS = ['mehr', 'plaene', 'maengel', 'statistik', 'bericht', 'aufmass', 'messung'];
+const HUB_VIEWS = ['mehr', 'plaene', 'maengel', 'statistik', 'bericht', 'aufmass', 'messung', 'akten'];
 function go(v) {
   const simple = S.set.mode === 'simple';
-  if (simple && ['plaene', 'maengel', 'mehr', 'statistik', 'aufmass', 'messung'].includes(v) && !window.TOUR_ON) v = 'cockpit';
+  if (simple && ['plaene', 'maengel', 'mehr', 'statistik', 'aufmass', 'messung', 'akten'].includes(v) && !window.TOUR_ON) v = 'cockpit';
   if (v !== 'galerie' && S.gal.sel) S.gal.sel = null;
   S.view = v; document.body.dataset.view = v;
   $$('.view').forEach(x => x.hidden = x.id !== 'v-' + v);
@@ -1694,7 +1773,7 @@ function go(v) {
 function checkLeave() {
   if (!S.pos) return;
   const st = siteStatus();
-  if (st.state === 'in') { S.lastInside = { id: st.site.id, n: 0 }; return; }
+  if (st.state === 'in') { S.lastInside = { id: st.site.id, n: 0 }; leitungWarn(st.site); return; }
   if (!S.lastInside || st.state !== 'out' && st.state !== 'none') return;
   const s = S.sites.find(x => x.id === S.lastInside.id); if (!s) { S.lastInside = null; return; }
   if (siteOut(S.pos, s) > Math.max(25, S.pos.acc)) S.lastInside.n++;
@@ -2238,6 +2317,8 @@ async function removeExamples() {
   for (const e of S.aufmass.filter(e => e.example)) await DB.del('aufmass', e.id);
   for (const r of S.messungen.filter(r => r.example)) await DB.del('messungen', r.id);
   S.aufmass = S.aufmass.filter(e => !e.example); S.messungen = S.messungen.filter(r => !r.example);
+  for (const d of S.akten.filter(d => d.example)) await DB.del('akten', d.id);
+  S.akten = S.akten.filter(d => !d.example); if (Array.isArray(S.set.profiles)) S.set.profiles = S.set.profiles.filter(p => !p.example || S.sites.some(x => x.profile === p.id));
   for (const p of S.photos.filter(p => p.example)) await DB.del('photos', p.id);
   for (const s of S.sites.filter(s => s.example)) await DB.del('sites', s.id);
   S.photos = S.photos.filter(p => !p.example); S.sites = S.sites.filter(s => !s.example);
@@ -2277,6 +2358,9 @@ function openSite(id) {
     <div style="display:flex;gap:14px;align-items:center">${ringSVG(s)}<div class="note"><b>${pr.done} von ${pr.must}</b> Pflichtfotos erledigt.${pr.next ? `<br>Als Nächstes: <b style="color:var(--amber)">${esc(pr.next.label)}</b>` : '<br>Alles komplett.'}<br>${S.photos.filter(p => p.siteId === s.id).length} Fotos insgesamt.</div></div>
     ${checklistHTML(s)}
     <div class="row pro-only" style="margin-top:16px"><button class="btn" data-x="plans">Pläne (${plansOf(s.id).length})</button><button class="btn" data-x="defs">Mängel (${S.defects.filter(d => d.siteId === s.id && (d.status === 'open' || d.status === 'work')).length} offen)</button></div>
+    ${(() => { const ls = leitungStatus(s), pc = profCheck(s), pf0 = profileOf(s); return `${ls.missing ? `<div class="warnbox ak-warn" style="margin-top:14px"><b>Keine gültige Leitungsauskunft.</b> Vor dem ersten Spatenstich die Spartenpläne ablegen.</div>` : ''}
+      <div class="prof-box pro-only"><div class="lrow"><span class="lbl">Doku-Profil</span><button class="chip" data-x="prof">${esc(pf0 ? pf0.name : 'kein Profil')}</button></div>${pc.length ? `<ul class="prof-chk">${pc.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : '<p class="note" style="margin:6px 0 0;color:var(--ok)">Vollständig nach Profil.</p>'}</div>`; })()}
+    <div class="row pro-only" style="margin-top:8px"><button class="btn" data-x="akten">Unterlagen (${S.akten.filter(d => d.siteId === s.id).length})</button><button class="btn" data-x="anw">Anwohner-Info</button></div>
     <div class="row pro-only" style="margin-top:8px"><button class="btn amb" data-x="abn">Abnahme mit Unterschrift</button></div>
     <div class="row pro-only" style="margin-top:8px"><button class="btn" data-x="tpl">Checkliste bearbeiten</button><button class="btn" data-x="client">Auftraggeber & Logo</button></div>
     <div class="row" style="margin-top:8px"><button class="btn" data-x="route">Route</button><button class="btn" data-x="report">Bericht</button></div>
@@ -2292,6 +2376,9 @@ function openSite(id) {
     if (x === 'plans') { closeSheet(); S.planSite = s.id; go('plaene'); }
     if (x === 'defs') { closeSheet(); S.def.site = s.id; S.def.status = 'open'; go('maengel'); }
     if (x === 'abn') openAbnahme(s.id);
+    if (x === 'prof') chooseProfile(s);
+    if (x === 'akten') { closeSheet(); S.ak.scope = 'site'; S.ak.site = s.id; go('akten'); }
+    if (x === 'anw') openAnwohner(s);
     if (x === 'tpl') openTplEditor({ siteId: s.id });
     if (x === 'client') openClient(s);
     if (x === 'center') { if (!S.pos) return toast('Noch keine Position.'); s.lat = S.pos.lat; s.lon = S.pos.lon; await DB.put('sites', s); toast('Mittelpunkt aktualisiert.'); closeSheet(); refresh(true); }
@@ -3014,6 +3101,8 @@ const HICON = {
   maengel: '<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.6"/>',
   aufmass: '<path d="M3 17l14-14 4 4L7 21H3z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/>',
   messung: '<path d="M3 12h4l2-6 4 12 2-6h6"/><circle cx="20" cy="12" r="1.4"/>',
+  akten: '<path d="M4 4h6l2 3h8v13H4z"/><path d="M9 13l2 2 4-4"/>',
+  profil: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/><circle cx="17" cy="17" r="3"/>',
   plaene: '<rect x="3" y="3" width="18" height="18"/><path d="M3 10h8v11M11 14h10M15 3v7"/>',
   stat: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
   trasse: '<path d="M3 18c4 0 4-12 9-12s5 12 9 12"/><circle cx="12" cy="6" r="2"/>',
@@ -3036,7 +3125,9 @@ function renderHub() {
     t('bericht', 'bericht', 'Bericht & Sichern', 'PDF-Fotobericht, ZIP mit Karte und Echtheitsnachweis', open ? open + ' offen' : '✓', open ? 'warn' : '') +
     t('maengel', 'maengel', 'Mängel', ov ? `${ov} Frist${ov > 1 ? 'en' : ''} überschritten` : 'Erfassen, Frist setzen, weiterleiten', od, ov ? 'bad' : od ? 'warn' : '') +
     t('aufmass', 'aufmass', 'Aufmaß', S.aufmass.length ? `${new Set(S.aufmass.map(e => e.pos)).size} Positionen · PDF und Excel` : 'Mengen mit Rechenansatz, ablaufen, Excel', S.aufmass.filter(e => e.date === dayKey(Date.now())).length || null) +
-    t('messung', 'messung', 'Spleiß & Messung', (() => { const b = S.messungen.filter(r => { const e = msEval(r); return e.bad || e.over; }).length; return b ? `${b} Protokoll${b > 1 ? 'e' : ''} über Grenzwert` : 'Spleiß-, OTDR- und Einblasprotokolle'; })(), (() => { const b = S.messungen.filter(r => { const e = msEval(r); return e.bad || e.over; }).length; return b || S.messungen.length || null; })(), S.messungen.some(r => { const e = msEval(r); return e.bad || e.over; }) ? 'bad' : '') +
+    t('akten', 'akten', 'Unterlagen', (() => { const lm = S.sites.filter(s => leitungStatus(s).missing).length, w = akWarn().length; return lm ? `${lm} Baustelle${lm > 1 ? 'n' : ''} ohne Leitungsauskunft` : w ? `${w} Unterlage${w > 1 ? 'n laufen' : ' läuft'} ab` : 'Leitungsauskünfte, Anordnungen, Nachunternehmer'; })(), (S.sites.filter(s => leitungStatus(s).missing).length + akWarn().length) || null, S.sites.some(s => leitungStatus(s).missing) ? 'bad' : akWarn().length ? 'warn' : '') +
+    t('profil', 'profil', 'Doku-Profile', `${(S.set.profiles || []).length} Profile je Netzbetreiber · Export im Schema`) +
+    t('messung', 'messung', 'Protokolle', (() => { const b = S.messungen.filter(r => { const e = msEval(r); return e.bad || e.over; }).length; return b ? `${b} Protokoll${b > 1 ? 'e' : ''} nicht in Ordnung` : 'Spleiß, OTDR, Einblasen, Bohrung, Verkehrssicherung'; })(), (() => { const b = S.messungen.filter(r => { const e = msEval(r); return e.bad || e.over; }).length; return b || S.messungen.length || null; })(), S.messungen.some(r => { const e = msEval(r); return e.bad || e.over; }) ? 'bad' : '') +
     t('plaene', 'plaene', 'Pläne', 'Fotos und Mängel im Grundriss verorten', S.plans.length) +
     t('statistik', 'stat', 'Statistik', `${wk} Fotos in 7 Tagen · Kategorien · Datenqualität`) +
     t('trassen', 'trasse', 'Trassen', 'Leitungsverlauf ablaufen, Export als Shapefile, DXF, KML', S.trassen.length || null) +
@@ -3051,7 +3142,8 @@ function renderHub() {
 function hubAction(e) {
   const k = e.target.closest('[data-hub]')?.dataset.hub; if (!k) return;
   if (k === 'qual') { S.gal.mode = 'issue'; S.gal.f = {}; S.gal.site = 'all'; go('galerie'); }
-  if (k === 'bericht' || k === 'maengel' || k === 'plaene' || k === 'aufmass' || k === 'messung') go(k);
+  if (k === 'bericht' || k === 'maengel' || k === 'plaene' || k === 'aufmass' || k === 'messung' || k === 'akten') go(k);
+  if (k === 'profil') openProfiles();
   if (k === 'statistik') { S.statSel = null; go('statistik'); }
   if (k === 'trassen') { go('karte'); setTimeout(() => $('#trassPanel')?.scrollIntoView({ block: 'start', behavior: 'smooth' }), 60); }
   if (k === 'ebenen') openLayers();
@@ -3271,8 +3363,8 @@ function renderAufmass() {
 function openAm(id, preset = {}) {
   const e0 = id ? S.aufmass.find(x => x.id === id) : null; if (id && !e0) return;
   const st = siteStatus(), last = S.aufmass.slice().sort((a, b) => b.ts - a.ts)[0];
-  const f = e0 ? { ...e0, calc: { ...(e0.calc || {}) }, photoIds: [...(e0.photoIds || [])] } : { id: uid(), siteId: preset.siteId ?? (S.am.site !== 'all' ? S.am.site : st.state === 'in' ? st.site.id : activeSites()[0]?.id || null), pos: last?.pos || '01.02', text: last?.text || '', unit: last?.unit || 'm', mode: 'calc', calc: {}, qty: '', src: '', loc: '', note: '', photoIds: [] };
-  if (!f.text) { const lv = lvAll().find(x => x.pos === f.pos); if (lv) { f.text = lv.text; f.unit = lv.unit; } }
+  const f = e0 ? { ...e0, calc: { ...(e0.calc || {}) }, photoIds: [...(e0.photoIds || [])] } : { id: uid(), siteId: preset.siteId ?? (S.am.site !== 'all' ? S.am.site : st.state === 'in' ? st.site.id : activeSites()[0]?.id || null), pos: preset.pos || last?.pos || '01.02', text: preset.pos ? '' : last?.text || '', unit: last?.unit || 'm', mode: 'calc', calc: { ...(preset.calc || {}) }, qty: '', src: preset.src || '', loc: preset.loc || '', note: '', photoIds: [] };
+  if (!f.text || preset.pos) { const lv = lvAll().find(x => x.pos === f.pos); if (lv) { f.text = lv.text; f.unit = lv.unit; } }
   let walk = null;
   const trs = () => S.trassen.filter(t => t.points.length > 1 && (!f.siteId || t.siteId === f.siteId));
   const el = sheet(`<h3>${e0 ? 'Aufmaß ' + esc(f.pos) : 'Aufmaß erfassen'}</h3><p class="sub">${e0 ? 'Erfasst ' + fmtDay(e0.ts) + ', ' + fmtTime(e0.ts) + (e0.user ? ' · ' + esc(e0.user) : '') : 'Position wählen, Maße eingeben oder ablaufen – die Menge rechne ich mit nachvollziehbarem Rechenansatz.'}</p>
@@ -3386,7 +3478,9 @@ async function buildAmPDF(l) {
    ===================================================================== */
 const FIBER_COL = [['rt', '#E53935'], ['gn', '#43A047'], ['bl', '#1E63D6'], ['ge', '#FDD835'], ['ws', '#FFFFFF'], ['gr', '#9E9E9E'], ['br', '#795548'], ['vi', '#8E24AA'], ['tk', '#00ACC1'], ['sw', '#212121'], ['or', '#FB8C00'], ['rs', '#F48FB1']];
 const fiberOf = n => { const i = (n - 1) % 12; return { tube: Math.floor((n - 1) / 12) + 1, c: FIBER_COL[i][0], hex: FIBER_COL[i][1] }; };
-const MS_KIND = { spleiss: 'Spleißprotokoll', otdr: 'OTDR-Messung', einblas: 'Einblasprotokoll' };
+const MS_KIND = { spleiss: 'Spleißprotokoll', otdr: 'OTDR-Messung', einblas: 'Einblasprotokoll', vs: 'Verkehrssicherung', bohr: 'Bohrprotokoll' };
+const MS_SHORT = { spleiss: 'SPL', otdr: 'OTDR', einblas: 'EIN', vs: 'VS', bohr: 'HDD' };
+const MS_LONG = { spleiss: 'SPLEISS', otdr: 'OTDR', einblas: 'EINBLASEN', vs: 'VERKEHRSSICH.', bohr: 'BOHRUNG' };
 const MS_LOC = ['Muffe', 'NVt', 'HÜP / Gf-AP', 'POP / PoP', 'Gf-TA', 'Sonstige'];
 const lim = () => ({ splice: 0.10, att1310: 0.35, att1550: 0.25, att1625: 0.25, conn: 0.50, ...(S.set.lim || {}) });
 function msEval(r) {
@@ -3395,7 +3489,17 @@ function msEval(r) {
     return { n: v.length, of: (r.fibers || []).length, max: v.length ? Math.max(...v) : null, avg: v.length ? v.reduce((a, b) => a + b, 0) / v.length : null, over, ok: v.length > 0 && !over && v.length === (r.fibers || []).length, part: v.length > 0 && v.length < (r.fibers || []).length }; }
   if (r.kind === 'otdr') { const rows = (r.rows || []).map(x => { const len = num2(x.len), loss = num2(x.loss), att = L['att' + x.wl] ?? 0.35; const soll = len == null ? null : len / 1000 * att + (num2(r.splices) || 0) * L.splice + (num2(r.conns) || 0) * L.conn; return { ...x, soll, ok: soll != null && loss != null ? loss <= soll : null }; });
     return { rows, ok: rows.length > 0 && rows.every(x => x.ok === true), bad: rows.some(x => x.ok === false) }; }
+  if (r.kind === 'vs') { const c = r.checks || [], ans = c.filter(Boolean).length, mg = c.filter(x => x === 'mangel').length; return { ans, of: VS_CHECKS.length, mg, ok: ans === VS_CHECKS.length && !mg && !!r.sig, bad: mg > 0 }; }
+  if (r.kind === 'bohr') { const rods = (r.rods || []).filter(x => num2(x.len) != null || num2(x.depth) != null), dep = rods.map(x => num2(x.depth)).filter(x => x != null), sum = rods.reduce((a, x) => a + (num2(x.len) || 0), 0), len = num2(r.len) ?? (sum || null);
+    return { rods: rods.length, len, sum, maxD: dep.length ? Math.max(...dep) : null, minD: dep.length ? Math.min(...dep) : null, ok: r.result === 'ok' && rods.length > 0 && len != null, bad: r.result === 'abbruch' }; }
   const len = num2(r.len), dur = num2(r.dur); return { speed: len && dur ? len / dur : null, ok: r.result === 'ok' && len != null, bad: r.result === 'abbruch' };
+}
+function msKv(r, e = msEval(r), long = true) {
+  if (r.kind === 'spleiss') return `${e.n}/${e.of} Fasern · max ${fmtN(e.max, 3)} dB${long ? ' · Ø ' + fmtN(e.avg, 3) + ' dB' : ''}`;
+  if (r.kind === 'otdr') return e.rows.map(x => `${x.wl}${long ? ' nm' : ''}: ${fmtN(num2(x.loss), 2)} dB${long ? ' / Soll ' + fmtN(x.soll, 2) + ' dB' : ''}`).join(' · ');
+  if (r.kind === 'vs') return `${e.ans}/${e.of} Punkte geprüft${e.mg ? ' · ' + e.mg + ' Mangel' : ''}${r.sig ? ' · unterschrieben' : ''}`;
+  if (r.kind === 'bohr') return `${fmtN(e.len, 1)} m · ${e.rods} Stangen${e.maxD != null ? ' · max ' + fmtN(e.maxD, 2) + ' m tief' : ''}`;
+  return `${fmtN(num2(r.len), 1)} m in ${fmtN(num2(r.dur), 1)} min${e.speed ? ' · ' + fmtN(e.speed, 1) + ' m/min' : ''}`;
 }
 function msStatus(r) { const e = msEval(r); return e.ok ? ['IO', 'var(--ok)', 'in Ordnung'] : e.bad || e.over ? ['NIO', 'var(--bad)', 'nicht in Ordnung'] : ['OFFEN', 'var(--amber-fill)', 'unvollständig']; }
 function renderMessung() {
@@ -3405,14 +3509,14 @@ function renderMessung() {
   $('#msStats').innerHTML = `<div class="stat"><div class="lbl">Protokolle</div><div class="v">${l.length}</div><div class="s">${l.filter(r => r.kind === 'spleiss').length} Spleiß · ${l.filter(r => r.kind === 'otdr').length} OTDR</div></div>
     <div class="stat"><div class="lbl">In Ordnung</div><div class="v good">${ok}</div><div class="s">Grenzwerte eingehalten</div></div>
     <div class="stat"><div class="lbl">Prüfen</div><div class="v ${bad ? '' : 'good'}" style="${bad ? 'color:var(--bad)' : ''}">${bad}</div><div class="s">über Grenzwert</div></div>`;
-  $('#msSeg').innerHTML = [['all', 'Alle'], ['spleiss', 'Spleiß'], ['otdr', 'OTDR'], ['einblas', 'Einblasen']].map(([k, n]) => `<button data-mseg="${k}" class="${S.ms.kind === k ? 'on' : ''}">${n}</button>`).join('');
+  $('#msSeg').innerHTML = [['all', 'Alle'], ['spleiss', 'Spleiß'], ['otdr', 'OTDR'], ['einblas', 'Einblas.'], ['bohr', 'Bohrung'], ['vs', 'VS']].map(([k, n]) => `<button data-mseg="${k}" class="${S.ms.kind === k ? 'on' : ''}">${n}</button>`).join('');
   $('#msSites').innerHTML = `<button class="chip${S.ms.site === 'all' ? ' on' : ''}" data-mssite="all">Alle Baustellen</button>` + S.sites.filter(s => !s.archived).map(s => `<button class="chip${S.ms.site === s.id ? ' on' : ''}" data-mssite="${s.id}">${esc(short(s.name))}</button>`).join('');
   if (S.ms.kind !== 'all') l = l.filter(r => r.kind === S.ms.kind);
   l.sort((a, b) => b.ts - a.ts);
   $('#msList').innerHTML = l.length ? l.map(r => { const [t, col] = msStatus(r), e = msEval(r), s = S.sites.find(x => x.id === r.siteId);
-    const kv = r.kind === 'spleiss' ? `${e.n}/${e.of} Fasern · max ${fmtN(e.max, 3)} dB · Ø ${fmtN(e.avg, 3)} dB` : r.kind === 'otdr' ? e.rows.map(x => `${x.wl} nm: ${fmtN(num2(x.loss), 2)} dB / Soll ${fmtN(x.soll, 2)} dB`).join(' · ') : `${fmtN(num2(r.len), 1)} m in ${fmtN(num2(r.dur), 1)} min${e.speed ? ' · ' + fmtN(e.speed, 1) + ' m/min' : ''}`;
-    return `<button class="ms-card" data-ms="${r.id}"><span class="ms-k">${r.kind === 'spleiss' ? 'SPL' : r.kind === 'otdr' ? 'OTDR' : 'EIN'}</span><span class="ms-m"><b>${esc(r.name || MS_KIND[r.kind])}</b><small>${esc(MS_KIND[r.kind])}${s ? ' · ' + esc(short(s.name)) : ''} · ${fmtDate(r.ts)}${r.hash ? ' · versiegelt' : ''}</small><small>${esc(kv)}</small></span><span class="ms-st" style="background:${col}">${t}</span></button>`; }).join('')
-    : `<p class="empty">Noch keine Protokolle. Lege oben ein Spleißprotokoll, eine OTDR-Messung oder ein Einblasprotokoll an.</p>`;
+    const kv = msKv(r, e);
+    return `<button class="ms-card" data-ms="${r.id}"><span class="ms-k">${MS_SHORT[r.kind]}</span><span class="ms-m"><b>${esc(r.name || MS_KIND[r.kind])}</b><small>${esc(MS_KIND[r.kind])}${s ? ' · ' + esc(short(s.name)) : ''} · ${fmtDate(r.ts)}${r.hash ? ' · versiegelt' : ''}</small><small>${esc(kv)}</small></span><span class="ms-st" style="background:${col}">${t}</span></button>`; }).join('')
+    : `<p class="empty">Noch keine Protokolle. Lege oben ein Spleiß-, OTDR-, Einblas-, Bohr- oder Verkehrssicherungsprotokoll an.</p>`;
 }
 function openMess(id, kind, preset = {}) {
   const r0 = id ? S.messungen.find(x => x.id === id) : null; if (id && !r0) return; kind = r0?.kind || kind;
@@ -3420,7 +3524,9 @@ function openMess(id, kind, preset = {}) {
   const f = r0 ? JSON.parse(JSON.stringify({ ...r0, files: undefined })) : { id: uid(), kind, siteId: preset.siteId ?? (S.ms.site !== 'all' ? S.ms.site : st.state === 'in' ? st.site.id : activeSites()[0]?.id || null), name: '', loc: kind === 'spleiss' ? 'Muffe' : '', note: '', photoIds: [],
     ...(kind === 'spleiss' ? { count: 12, fibers: Array.from({ length: 12 }, (_, i) => ({ n: i + 1, loss: '' })), cableIn: '', cableOut: '', device: S.set.lastSpliceDev || '' } : {}),
     ...(kind === 'otdr' ? { link: '', fiber: '', splices: '', conns: '2', device: S.set.lastOtdrDev || '', rows: [{ wl: 1310, len: '', loss: '', events: '' }, { wl: 1550, len: '', loss: '', events: '' }] } : {}),
-    ...(kind === 'einblas' ? { from: '', to: '', pipe: '10 × 1,0 mm', cable: '', len: '', dur: '', bar: '', temp: '', machine: S.set.lastBlowDev || '', result: 'ok' } : {}) };
+    ...(kind === 'einblas' ? { from: '', to: '', pipe: '10 × 1,0 mm', cable: '', len: '', dur: '', bar: '', temp: '', machine: S.set.lastBlowDev || '', result: 'ok' } : {}),
+    ...(kind === 'vs' ? { name: 'Kontrolle ' + fmtDate(Date.now()), anordnung: (() => { const sid = preset.siteId ?? (st.state === 'in' ? st.site.id : null), d = S.akten.find(x => x.siteId === sid && x.type === 'vrao'); return d ? [d.nr, d.issuer].filter(Boolean).join(' · ') : ''; })(), regelplan: '', checks: VS_CHECKS.map(() => ''), sig: '' } : {}),
+    ...(kind === 'bohr' ? { partner: S.set.lastBohrPartner || '', machine: '', verfahren: 'Spülbohrung (HDD)', start: '', ziel: '', len: '', pilot: '', aufw: '', pipe: '', rods: [{ n: 1, len: '3', depth: '' }], result: 'ok' } : {}) };
   const files = [...(r0?.files || [])];
   const dis = locked ? ' disabled' : '';
   const fiberRows = () => f.fibers.map(x => { const fo = fiberOf(x.n), v = num2(x.loss); return `<div class="fb-row"><span class="fb-c" style="background:${fo.hex}"></span><span class="fb-n">${x.n}<small>${fo.c}${f.count > 12 ? ' · BA ' + fo.tube : ''}</small></span><input type="text" inputmode="decimal" data-fb="${x.n - 1}" value="${esc(x.loss ?? '')}" placeholder="dB"${dis}><span class="fb-ok ${v == null ? '' : v <= L.splice ? 'ok' : 'no'}">${v == null ? '' : v <= L.splice ? '✓' : '✗'}</span></div>`; }).join('');
@@ -3437,39 +3543,63 @@ function openMess(id, kind, preset = {}) {
       ${f.rows.map((x, i) => `<select data-ot="${i}" data-k="wl"${dis}>${[1310, 1383, 1490, 1550, 1625].map(w => `<option${w === +x.wl ? ' selected' : ''}>${w}</option>`).join('')}</select><input type="text" inputmode="decimal" data-ot="${i}" data-k="len" value="${esc(x.len)}"${dis}><input type="text" inputmode="decimal" data-ot="${i}" data-k="loss" value="${esc(x.loss)}"${dis}><input type="text" inputmode="numeric" data-ot="${i}" data-k="events" value="${esc(x.events)}"${dis}><span class="ot-res" data-otres="${i}"></span>`).join('')}</div>
       <p class="note" style="margin:6px 0 0">Soll = Länge × ${fmtN(L.att1310, 2)} dB/km (1310) bzw. ${fmtN(L.att1550, 2)} dB/km (1550) + Spleiße × ${fmtN(L.splice, 2)} dB + Stecker × ${fmtN(L.conn, 2)} dB. Grenzwerte in den Einstellungen dieses Moduls anpassbar.</p></div>
     <div class="fld"><span class="lbl">Messdatei (.sor, PDF, Bild)</span><div class="ms-files">${files.map(x => `<span class="chip">${esc(x.name)} · ${Math.round(x.size / 1024)} KB</span>`).join('') || '<span class="note">Noch keine Datei angehängt.</span>'}</div>${locked ? '' : '<button type="button" class="btn" data-x="file" style="margin-top:6px">+ Messdatei anhängen</button>'}</div>`
-  : `
+  : kind === 'einblas' ? `
     <div class="fld"><label class="lbl" for="msName">Strecke</label><input type="text" id="msName" value="${esc(f.name)}" placeholder="z. B. NVt 12 → Hausnr. 14"${dis}></div>
     <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="msPipe">Speedpipe / Rohr</label><input type="text" id="msPipe" value="${esc(f.pipe)}" placeholder="z. B. 10 × 1,0 mm, Farbe rt"${dis}></div><div class="fld"><label class="lbl" for="msCab">Kabel</label><input type="text" id="msCab" value="${esc(f.cable)}" placeholder="z. B. Micro 24F 6,1 mm"${dis}></div></div>
     <div class="ot-grid ein"><label><span class="lbl">Länge m</span><input type="text" inputmode="decimal" id="msLen" value="${esc(f.len)}"${dis}></label><label><span class="lbl">Dauer min</span><input type="text" inputmode="decimal" id="msDur" value="${esc(f.dur)}"${dis}></label><label><span class="lbl">Druck bar</span><input type="text" inputmode="decimal" id="msBar" value="${esc(f.bar)}"${dis}></label><label><span class="lbl">Temp. °C</span><input type="text" inputmode="decimal" id="msTmp" value="${esc(f.temp)}"${dis}></label></div>
     <div class="fld" style="margin-top:12px"><label class="lbl" for="msDev">Einblasmaschine / Kompressor</label><input type="text" id="msDev" value="${esc(f.machine)}" placeholder="Typ, Ser.-Nr."${dis}></div>
-    <div class="fld"><span class="lbl">Ergebnis</span><div class="segs" id="msRes"><button type="button" data-res="ok" class="${f.result === 'ok' ? 'on' : ''}"${dis}>Eingeblasen</button><button type="button" data-res="abbruch" class="${f.result === 'abbruch' ? 'on' : ''}"${dis}>Abgebrochen</button></div></div>`;
-  const el = sheet(`<span class="dst" id="msSt"></span><h3>${esc(MS_KIND[kind])}</h3><p class="sub">${r0 ? 'Erfasst ' + fmtDay(r0.ts) + ', ' + fmtTime(r0.ts) + (r0.user ? ' · ' + esc(r0.user) : '') + (locked ? ' · versiegelt, nicht mehr änderbar' : '') : kind === 'spleiss' ? 'Je Faser die Spleißdämpfung vom Gerät abtippen – ich prüfe jeden Wert gegen den Grenzwert.' : kind === 'otdr' ? 'Länge und Gesamtdämpfung je Wellenlänge eintragen – den Sollwert rechne ich aus.' : 'Länge, Dauer und Druck eintragen – Geschwindigkeit und Ergebnis kommen ins Protokoll.'}</p>
+    <div class="fld"><span class="lbl">Ergebnis</span><div class="segs" id="msRes"><button type="button" data-res="ok" class="${f.result === 'ok' ? 'on' : ''}"${dis}>Eingeblasen</button><button type="button" data-res="abbruch" class="${f.result === 'abbruch' ? 'on' : ''}"${dis}>Abgebrochen</button></div></div>`
+  : kind === 'vs' ? `
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="msAo">Verkehrsrechtliche Anordnung</label><input type="text" id="msAo" value="${esc(f.anordnung)}" placeholder="Nr. · Behörde"${dis}></div><div class="fld" style="max-width:110px"><label class="lbl" for="msRp">Regelplan</label><input type="text" id="msRp" value="${esc(f.regelplan)}" placeholder="z. B. B I/3"${dis}></div></div>
+    <div class="fld"><span class="lbl">Kontrolle · ${fmtTime(r0?.ts || Date.now())} Uhr</span><div id="vsList">${VS_CHECKS.map((t, i) => `<div class="vs-row"><span>${esc(t)}</span><div class="vs-b"><button type="button" data-vc="${i}" data-v="ok" class="${f.checks[i] === 'ok' ? 'on ok' : ''}"${dis}>OK</button><button type="button" data-vc="${i}" data-v="mangel" class="${f.checks[i] === 'mangel' ? 'on no' : ''}"${dis}>Mangel</button><button type="button" data-vc="${i}" data-v="na" class="${f.checks[i] === 'na' ? 'on' : ''}"${dis}>entf.</button></div></div>`).join('')}</div>
+      ${locked ? '' : '<button type="button" class="chip" data-x="allok" style="margin-top:6px">Alle Punkte OK</button>'}</div>
+    <div class="fld"><span class="lbl">Unterschrift Kontrolleur</span>${f.sig && locked ? `<img src="${f.sig}" class="sig" alt="Unterschrift">` : `<canvas class="sig" id="vsSig"></canvas><div class="sigrow"><span class="note">${f.sig ? 'Unterschrift vorhanden – neu zeichnen ersetzt sie.' : ''}</span><button type="button" class="chip" data-x="sigclr">Löschen</button></div>`}</div>`
+  : `
+    <div class="fld"><label class="lbl" for="msName">Bezeichnung</label><input type="text" id="msName" value="${esc(f.name)}" placeholder="z. B. Querung Einfahrt Nr. 8"${dis}></div>
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="msPart">Partnerfirma</label><input type="text" id="msPart" value="${esc(f.partner)}" placeholder="Bohrunternehmen"${dis}></div><div class="fld"><label class="lbl" for="msVf">Verfahren</label><select id="msVf"${dis}>${['Spülbohrung (HDD)', 'Erdrakete', 'Pressbohrung', 'Sonstiges'].map(x => `<option${x === f.verfahren ? ' selected' : ''}>${x}</option>`).join('')}</select></div></div>
+    <div class="fld"><label class="lbl" for="msDev">Bohrgerät</label><input type="text" id="msDev" value="${esc(f.machine)}" placeholder="Typ, Ser.-Nr."${dis}></div>
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="msSt0">Startgrube</label><input type="text" id="msSt0" value="${esc(f.start)}" placeholder="Lage"${dis}></div><div class="fld"><label class="lbl" for="msZi">Zielgrube</label><input type="text" id="msZi" value="${esc(f.ziel)}" placeholder="Lage"${dis}></div></div>
+    ${locked ? '' : '<div class="row am-help" style="margin-top:-6px"><button type="button" class="chip" data-x="gpsS">⌖ Start = hier</button><button type="button" class="chip" data-x="gpsZ">⌖ Ziel = hier</button></div>'}
+    <div class="ot-grid ein" style="margin-top:8px"><label><span class="lbl">Pilot Ø mm</span><input type="text" inputmode="decimal" id="msPil" value="${esc(f.pilot)}"${dis}></label><label><span class="lbl">Aufweit. Ø mm</span><input type="text" inputmode="decimal" id="msAuf" value="${esc(f.aufw)}"${dis}></label><label style="grid-column:span 2"><span class="lbl">Eingezogenes Rohr</span><input type="text" id="msPipe" value="${esc(f.pipe)}" placeholder="z. B. PE 110"${dis}></label></div>
+    <div class="fld" style="margin-top:12px"><span class="lbl">Bohrprotokoll · Tiefe je Stange</span><div class="rod-h"><span>Stange</span><span>Länge m</span><span>Tiefe m</span><span>Station</span></div><div id="msRods"></div>${locked ? '' : '<button type="button" class="chip" data-x="addrod" style="margin-top:6px">+ Stange</button>'}<div id="msProf"></div></div>
+    <div class="fld"><label class="lbl" for="msLen">Bohrlänge gesamt m (leer = Summe der Stangen)</label><input type="text" inputmode="decimal" id="msLen" value="${esc(f.len)}"${dis}></div>
+    <div class="fld"><span class="lbl">Ergebnis</span><div class="segs" id="msRes"><button type="button" data-res="ok" class="${f.result === 'ok' ? 'on' : ''}"${dis}>Rohr eingezogen</button><button type="button" data-res="abbruch" class="${f.result === 'abbruch' ? 'on' : ''}"${dis}>Abgebrochen</button></div></div>`;
+  const el = sheet(`<span class="dst" id="msSt"></span><h3>${esc(MS_KIND[kind])}</h3><p class="sub">${r0 ? 'Erfasst ' + fmtDay(r0.ts) + ', ' + fmtTime(r0.ts) + (r0.user ? ' · ' + esc(r0.user) : '') + (locked ? ' · versiegelt, nicht mehr änderbar' : '') : kind === 'spleiss' ? 'Je Faser die Spleißdämpfung vom Gerät abtippen – ich prüfe jeden Wert gegen den Grenzwert.' : kind === 'otdr' ? 'Länge und Gesamtdämpfung je Wellenlänge eintragen – den Sollwert rechne ich aus.' : kind === 'einblas' ? 'Länge, Dauer und Druck eintragen – Geschwindigkeit und Ergebnis kommen ins Protokoll.' : kind === 'vs' ? 'Tägliche Kontrolle: jeden Punkt prüfen, Foto machen, unterschreiben. Landet im Bautagebuch und im Bericht.' : 'Partnerfirma, Start- und Zielgrube, Tiefe je Stange – die Pflichtfotos der Bohrung kommen automatisch auf die Checkliste.'}</p>
     <div class="fld"><label class="lbl" for="msSite">Baustelle</label><select id="msSite"${dis}><option value="">Ohne Baustelle</option>${S.sites.map(s => `<option value="${s.id}"${s.id === f.siteId ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</select></div>
     ${body}
     <div class="fld"><label class="lbl" for="msNote">Bemerkung</label><textarea id="msNote" placeholder="Auffälligkeiten, Nacharbeit, Abstimmung"${dis}>${esc(f.note)}</textarea></div>
     <div class="fld"><span class="lbl">Fotos (${f.photoIds.length})</span><div class="thumbs">${f.photoIds.map(pid => { const p = S.photos.find(x => x.id === pid); return p ? `<img src="${p.thumb}" data-photo="${p.id}" alt="">` : ''; }).join('')}</div></div>
     ${r0?.hash ? `<p class="seal"><b>Versiegelt #${r0.seq}</b> · SHA-256 ${r0.hash}</p>` : ''}
     <div class="row">${locked ? '' : '<button class="btn" data-x="photo">+ Foto</button><button class="btn pri" data-x="save">Speichern</button>'}</div>
-    <div class="row" style="margin-top:8px"><button class="btn" data-x="pdf">Protokoll als PDF</button>${locked ? '' : '<button class="btn" data-x="seal">Abschließen & versiegeln</button>'}</div>
+    <div class="row" style="margin-top:8px"><button class="btn" data-x="pdf">Protokoll als PDF</button><button class="btn" data-x="qr">QR-Etikett</button></div>${locked ? '' : '<div class="row" style="margin-top:8px"><button class="btn" data-x="seal">Abschließen & versiegeln</button></div>'}
     ${r0 && !locked ? '<div class="row" style="margin-top:8px"><button class="btn danger" data-x="del">Löschen</button></div>' : ''}`);
-  const collect = () => {
+  const collect = (full) => {
     const g = s => $(s, el)?.value?.trim() ?? '';
     const r = { ...f, siteId: g('#msSite') || null, name: g('#msName'), note: g('#msNote') };
     if (kind === 'spleiss') Object.assign(r, { loc: g('#msLoc'), cableIn: g('#msCi'), cableOut: g('#msCo'), device: g('#msDev') });
     if (kind === 'otdr') Object.assign(r, { fiber: g('#msFi'), device: g('#msDev'), splices: g('#msSp'), conns: g('#msCn') });
     if (kind === 'einblas') Object.assign(r, { pipe: g('#msPipe'), cable: g('#msCab'), len: g('#msLen'), dur: g('#msDur'), bar: g('#msBar'), temp: g('#msTmp'), machine: g('#msDev'), result: $('#msRes .on', el)?.dataset.res || 'ok' });
+    if (kind === 'vs') Object.assign(r, { anordnung: g('#msAo'), regelplan: g('#msRp'), checks: [...f.checks], sig: vsPad && !vsPad.empty() ? (full ? vsPad.data() : 'x') : f.sig });
+    if (kind === 'bohr') Object.assign(r, { partner: g('#msPart'), verfahren: g('#msVf'), machine: g('#msDev'), start: g('#msSt0'), ziel: g('#msZi'), pilot: g('#msPil'), aufw: g('#msAuf'), pipe: g('#msPipe'), len: g('#msLen'), rods: f.rods.map(x => ({ ...x })), result: $('#msRes .on', el)?.dataset.res || 'ok' });
     return r;
   };
   const status = () => { const [t, col, n] = msStatus(collect()); const b = $('#msSt', el); b.textContent = t + ' · ' + n.toUpperCase(); b.style.background = col; if (kind === 'otdr') msEval(collect()).rows.forEach((x, i) => { const c = $(`[data-otres="${i}"]`, el); if (c) c.innerHTML = x.soll == null ? '–' : `${fmtN(x.soll, 2)} <b class="${x.ok === false ? 'no' : x.ok ? 'ok' : ''}">${x.ok == null ? '' : x.ok ? '✓' : '✗'}</b>`; }); };
   const save = async (seal) => {
-    const r = collect(), now = Date.now();
+    const r = collect(true), now = Date.now();
     Object.assign(r, { ts: r0?.ts || now, date: r0?.date || dayKey(now), updated: now, user: r0?.user || S.set.name || '', lat: r0?.lat ?? S.pos?.lat ?? null, lon: r0?.lon ?? S.pos?.lon ?? null, files });
-    if (kind === 'spleiss' && r.device) S.set.lastSpliceDev = r.device; if (kind === 'otdr' && r.device) S.set.lastOtdrDev = r.device; if (kind === 'einblas' && r.machine) S.set.lastBlowDev = r.machine; saveSet();
+    if (kind === 'spleiss' && r.device) S.set.lastSpliceDev = r.device; if (kind === 'otdr' && r.device) S.set.lastOtdrDev = r.device; if (kind === 'einblas' && r.machine) S.set.lastBlowDev = r.machine; if (kind === 'bohr' && r.partner) S.set.lastBohrPartner = r.partner; saveSet();
+    if (kind === 'bohr' && r.siteId) { const n = await ensureBohrItems(r.siteId); if (n) toast(`${n} Pflichtfotos der Bohrung zur Checkliste der Baustelle hinzugefügt.`, 4000); }
     if (seal) { const { files: fl, hash, seq, chain, ots, ...core } = r; r.hash = await sha256(JSON.stringify(core) + '|' + fl.map(x => x.hash || '').join(',')); await sealDoc(r, 'messung'); }
     await DB.put('messungen', r); const i = S.messungen.findIndex(x => x.id === r.id); if (i >= 0) S.messungen[i] = r; else S.messungen.push(r);
     const e = msEval(r); hook(r0 ? 'messung_geaendert' : 'messung_neu', { art: MS_KIND[kind], baustelle: S.sites.find(s => s.id === r.siteId)?.name || null, bezeichnung: r.name, ergebnis: msStatus(r)[2], max_dB: e.max ?? null });
     return r;
   };
+  let vsPad = null; if (kind === 'vs' && !locked) vsPad = sigPad($('#vsSig', el));
+  const rodRows = () => { let st = 0; $('#msRods', el).innerHTML = f.rods.map((x, i) => { st += num2(x.len) || 0; return `<div class="rod-r"><b>${x.n}</b><input type="text" inputmode="decimal" data-rod="${i}" data-k="len" value="${esc(x.len)}"${dis}><input type="text" inputmode="decimal" data-rod="${i}" data-k="depth" value="${esc(x.depth)}" placeholder="m"${dis}><span>${fmtN(st, 1)} m</span></div>`; }).join(''); rodProf(); };
+  const rodProf = () => { const pts = []; let st = 0; f.rods.forEach(x => { st += num2(x.len) || 0; const d = num2(x.depth); if (d != null) pts.push([st, d]); }); const box = $('#msProf', el); if (!box) return; if (pts.length < 2) { box.innerHTML = ''; return; }
+    const W = 320, H = 90, mxS = Math.max(...pts.map(p => p[0])), mxD = Math.max(...pts.map(p => p[1]), 1), X = v => 8 + v / mxS * (W - 16), Y = v => 10 + v / mxD * (H - 22);
+    box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" class="rod-prof"><line x1="8" y1="10" x2="${W - 8}" y2="10" stroke="#B85F00" stroke-dasharray="4 3"/><text x="8" y="7" font-size="8" fill="#5D5A78">Geländeoberkante</text><polyline fill="none" stroke="#2F2382" stroke-width="2.4" points="${[[0, 0], ...pts].map(p => X(p[0]).toFixed(1) + ',' + Y(p[1]).toFixed(1)).join(' ')}"/>${pts.map(p => `<circle cx="${X(p[0]).toFixed(1)}" cy="${Y(p[1]).toFixed(1)}" r="2.6" fill="#F1880B"/>`).join('')}<text x="${W - 8}" y="${H - 2}" font-size="8" text-anchor="end" fill="#5D5A78">${fmtN(mxS, 1)} m · max ${fmtN(mxD, 2)} m tief</text></svg>`; };
+  if (kind === 'bohr') rodRows();
   if (kind === 'spleiss') {
     $('#msCnt', el)?.addEventListener('change', e => { const n = +e.target.value, old = f.fibers; f.count = n; f.fibers = Array.from({ length: n }, (_, i) => old[i] || { n: i + 1, loss: '' }); $('#msFb', el).innerHTML = fiberRows(); status(); });
     el.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset.fb) { e.preventDefault(); $(`[data-fb="${+e.target.dataset.fb + 1}"]`, el)?.focus(); } });
@@ -3477,22 +3607,30 @@ function openMess(id, kind, preset = {}) {
   el.addEventListener('input', e => {
     const fb = e.target.dataset.fb; if (fb != null) { f.fibers[+fb].loss = e.target.value.trim(); const v = num2(e.target.value), m = e.target.nextElementSibling; m.className = 'fb-ok ' + (v == null ? '' : v <= L.splice ? 'ok' : 'no'); m.textContent = v == null ? '' : v <= L.splice ? '✓' : '✗'; }
     const ot = e.target.dataset.ot; if (ot != null) f.rows[+ot][e.target.dataset.k] = e.target.value.trim();
+    const rd = e.target.dataset.rod; if (rd != null) { f.rods[+rd][e.target.dataset.k] = e.target.value.trim(); let st = 0; $$('.rod-r span', el).forEach((sp, i) => { st += num2(f.rods[i].len) || 0; sp.textContent = fmtN(st, 1) + ' m'; }); rodProf(); }
     status();
   });
   el.addEventListener('change', e => { const ot = e.target.dataset.ot; if (ot != null) { f.rows[+ot][e.target.dataset.k] = e.target.dataset.k === 'wl' ? +e.target.value : e.target.value.trim(); status(); } });
   el.addEventListener('click', async e => {
     const rs = e.target.closest('[data-res]'); if (rs && !locked) { $$('#msRes button', el).forEach(b => b.classList.toggle('on', b === rs)); status(); return; }
+    const vc = e.target.closest('[data-vc]'); if (vc && !locked) { const i = +vc.dataset.vc; f.checks[i] = vc.dataset.v; $$(`[data-vc="${i}"]`, el).forEach(b => b.className = b === vc ? 'on ' + (vc.dataset.v === 'ok' ? 'ok' : vc.dataset.v === 'mangel' ? 'no' : '') : ''); status(); return; }
     const ph = e.target.closest('[data-photo]'); if (ph) { openPhoto(ph.dataset.photo); return; }
     const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
-    if (x === 'save') { await save(); closeSheet(); toast(`${MS_KIND[kind]} gespeichert – ${msStatus(collect())[2]}.`); refresh(); }
+    if (x === 'save') { const r = await save(); closeSheet(); toast(`${MS_KIND[kind]} gespeichert – ${msStatus(r)[2]}.`); refresh(); }
+    if (x === 'allok') { f.checks = VS_CHECKS.map(() => 'ok'); $$('[data-vc]', el).forEach(b => b.className = b.dataset.v === 'ok' ? 'on ok' : ''); status(); }
+    if (x === 'sigclr') { vsPad?.clear(); f.sig = ''; status(); }
+    if (x === 'addrod') { const lst = f.rods[f.rods.length - 1]; f.rods.push({ n: f.rods.length + 1, len: lst?.len || '3', depth: '' }); rodRows(); $$('#msRods [data-k=depth]', el).pop()?.focus(); }
+    if (x === 'gpsS' || x === 'gpsZ') { if (!S.pos) return toast('Noch kein GPS.'); const t = coord(S.pos.lat, S.pos.lon) + ' (±' + fmtAcc(S.pos.acc) + ')'; const inp = $(x === 'gpsS' ? '#msSt0' : '#msZi', el); inp.value = (inp.value ? inp.value.replace(/\s*\[.*\]$/, '') + ' ' : '') + '[' + t + ']'; }
+    if (x === 'qr') { const r = locked ? r0 : await save(); await qrLabels([r]); }
     if (x === 'photo') { const r = await save(); closeSheet(); openCamera(r.siteId || null, null, null, { attach: { store: 'messungen', id: r.id, title: `${MS_KIND[kind]} · ${r.name || ''}` } }); }
     if (x === 'file') { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.sor,.SOR,.pdf,application/pdf,image/*,.trc,.msor'; inp.onchange = async () => { const fl = inp.files[0]; if (!fl) return; if (fl.size > 25e6) return toast('Datei zu groß (max. 25 MB).'); files.push({ id: uid(), name: fl.name, type: fl.type || 'application/octet-stream', size: fl.size, blob: fl, hash: await sha256(fl) }); const r = await save(); closeSheet(); openMess(r.id); toast('Messdatei angehängt.'); }; inp.click(); }
     if (x === 'pdf') { const r = locked ? r0 : await save(); await msPDF([r], r.name || MS_KIND[kind]); }
-    if (x === 'seal') { const r = collect(); const ev = msEval(r); if (kind === 'spleiss' && !ev.n) return toast('Erst Messwerte eintragen.'); if (kind === 'otdr' && !ev.rows.some(z => num2(z.loss) != null)) return toast('Erst Messwerte eintragen.');
+    if (x === 'seal') { const r = collect(); const ev = msEval(r); if (kind === 'spleiss' && !ev.n) return toast('Erst Messwerte eintragen.'); if (kind === 'otdr' && !ev.rows.some(z => num2(z.loss) != null)) return toast('Erst Messwerte eintragen.'); if (kind === 'vs' && (ev.ans < ev.of || (!vsPad || vsPad.empty()) && !f.sig)) return toast('Erst alle Punkte prüfen und unterschreiben.'); if (kind === 'bohr' && !ev.rods) return toast('Erst die Stangen eintragen.');
       const b = e.target.closest('[data-x]'); if (!b.dataset.sure) { b.dataset.sure = '1'; b.textContent = 'Versiegeln – danach nicht mehr änderbar?'; return; }
       const nr = await save(true); closeSheet(); toast('Protokoll versiegelt.'); refresh(); openMess(nr.id); }
     if (x === 'del') { const b = e.target.closest('[data-x]'); if (b.dataset.sure) { await DB.del('messungen', r0.id); S.messungen = S.messungen.filter(z => z.id !== r0.id); closeSheet(); toast('Protokoll gelöscht.'); refresh(); } else { b.dataset.sure = '1'; b.textContent = 'Wirklich löschen?'; } }
   });
+  if (vsPad) $('#vsSig', el).addEventListener('pointerup', () => setTimeout(status, 30));
   status();
 }
 function openMsLimits() {
@@ -3548,6 +3686,34 @@ async function msPDF(recs, title) {
           K.hair(y + rh); y += rh; });
         y += 5; pf(doc, 'r', 7.6); doc.setTextColor(...C.GREY);
         doc.text(doc.splitTextToSize(`Sollwert = Länge × Faserdämpfung (${fmtN(L.att1310, 2)} dB/km bei 1310 nm, ${fmtN(L.att1550, 2)} dB/km bei 1550/1625 nm) + Spleiße × ${fmtN(L.splice, 2)} dB + Steckverbinder × ${fmtN(L.conn, 2)} dB.${(r.files || []).length ? ' Messdatei(en): ' + r.files.map(x => x.name).join(', ') + ' (im ZIP-Export enthalten).' : ''}`, cw), m, y); y += 12;
+      } else if (r.kind === 'vs') {
+        y = K.box(y, [['Anordnung', r.anordnung || '–'], ['Regelplan', r.regelplan || '–'], ...base]);
+        K.label(m, y, 'Tägliche Kontrolle der Verkehrssicherung'); y += 2.5;
+        y = K.head(y, [['PRÜFPUNKT', m + 2], ['ERGEBNIS', m + cw - 2, 'right']]);
+        VS_CHECKS.forEach((t, i) => { const v = (r.checks || [])[i], rh = 7.4; if (i % 2) { doc.setFillColor(...C.PAPER); doc.rect(m, y, cw, rh, 'F'); }
+          pf(doc, 'sb', 9); doc.setTextColor(...C.INK); doc.text(K.safe(t), m + 2, y + 5);
+          if (v) K.chip(m + cw - 24, y + 5, v === 'ok' ? 'I. O.' : v === 'mangel' ? 'MANGEL' : 'ENTFÄLLT', v === 'ok' ? C.OK : v === 'mangel' ? C.BAD : [150, 146, 175], 22); else { pf(doc, 'r', 8.4); doc.setTextColor(...C.GREY); doc.text('nicht geprüft', m + cw - 2, y + 5, { align: 'right' }); }
+          K.hair(y + rh); y += rh; });
+        y += 6;
+        if (r.sig) { K.label(m, y, 'Unterschrift Kontrolleur'); try { doc.addImage(r.sig, 'PNG', m, y + 2, 60, 18); } catch (e) {} pf(doc, 'r', 8.4); doc.setTextColor(...C.GREY); doc.text(`${r.user || S.set.name || ''} · ${fmtDay(r.ts)}, ${fmtTime(r.ts)} Uhr`, m, y + 24); y += 30; }
+      } else if (r.kind === 'bohr') {
+        y = K.box(y, [['Partnerfirma', r.partner || '–'], ['Verfahren', r.verfahren || '–'], ['Bohrgerät', r.machine || '–'], ['Eingezogenes Rohr', r.pipe || '–'], ['Startgrube', r.start || '–'], ['Zielgrube', r.ziel || '–'], ['Pilot / Aufweitung', `${r.pilot ? r.pilot + ' mm' : '–'} / ${r.aufw ? r.aufw + ' mm' : '–'}`], ...base], 3);
+        const kp = [['Bohrlänge', ev.len != null ? fmtN(ev.len, 1) + ' m' : '–'], ['Stangen', String(ev.rods)], ['Max. Tiefe', ev.maxD != null ? fmtN(ev.maxD, 2) + ' m' : '–'], ['Min. Tiefe', ev.minD != null ? fmtN(ev.minD, 2) + ' m' : '–']], kw = (cw - 9) / 4;
+        kp.forEach(([a, b], i) => { const x = m + i * (kw + 3); doc.setFillColor(...C.PAPER); doc.rect(x, y, kw, 16, 'F'); doc.setFillColor(...C.ORANGE); doc.rect(x, y, kw, 0.8, 'F'); K.label(x + 4, y + 5.5, a); pf(doc, 'c', 15); doc.setTextColor(...C.NAVY); doc.text(b, x + 4, y + 13); });
+        y += 22;
+        const pts = []; let st = 0; (r.rods || []).forEach(x => { st += num2(x.len) || 0; const d = num2(x.depth); if (d != null) pts.push([st, d]); });
+        if (pts.length > 1) { K.label(m, y, 'Bohrprofil'); y += 3; const ph = 34, mxS = Math.max(...pts.map(p => p[0])), mxD = Math.max(...pts.map(p => p[1]), 1), X = v => m + 4 + v / mxS * (cw - 8), Y = v => y + 4 + v / mxD * (ph - 10);
+          doc.setFillColor(...C.PAPER); doc.rect(m, y, cw, ph, 'F'); doc.setDrawColor(...C.OINK); doc.setLineWidth(0.3); doc.setLineDashPattern([1.5, 1], 0); doc.line(m + 4, y + 4, m + cw - 4, y + 4); doc.setLineDashPattern([], 0);
+          doc.setDrawColor(...C.NAVY); doc.setLineWidth(0.7); let px = X(0), py = Y(0); pts.forEach(p => { doc.line(px, py, X(p[0]), Y(p[1])); px = X(p[0]); py = Y(p[1]); });
+          pts.forEach(p => { doc.setFillColor(...C.ORANGE); doc.circle(X(p[0]), Y(p[1]), 0.9, 'F'); pf(doc, 'r', 6); doc.setTextColor(...C.GREY); doc.text(fmtN(p[1], 2), X(p[0]), Y(p[1]) + 3.6, { align: 'center' }); });
+          pf(doc, 'r', 6.6); doc.text('Geländeoberkante', m + 5, y + 3); y += ph + 5; }
+        K.label(m, y, 'Stangenprotokoll'); y += 2.5;
+        const rods = r.rods || [], cols = rods.length > 6 ? 2 : 1, per = Math.ceil(rods.length / cols), w = cols === 2 ? (cw - 6) / 2 : cw, yT = y; let yE = y, run = 0;
+        for (let c = 0; c < cols; c++) { let yy = yT; const x0 = m + c * (w + 6);
+          doc.setFillColor(...C.NAVY); doc.rect(x0, yy, w, 6.2, 'F'); pf(doc, 'cs', 7); doc.setTextColor(255, 255, 255); [['STANGE', 2], ['LÄNGE', w * 0.4], ['TIEFE', w * 0.65], ['STATION', w - 2]].forEach(([t, dx], i) => doc.text(t, x0 + dx, yy + 4.2, { align: i ? 'right' : 'left' })); yy += 6.2;
+          rods.slice(c * per, (c + 1) * per).forEach((x, i) => { if (yy > 262) return; run += num2(x.len) || 0; if (i % 2) { doc.setFillColor(...C.PAPER); doc.rect(x0, yy, w, 5.2, 'F'); } pf(doc, 'sb', 8); doc.setTextColor(...C.INK); doc.text(String(x.n), x0 + 2, yy + 3.7); pf(doc, 'r', 8); doc.text(num2(x.len) != null ? fmtN(num2(x.len), 2) + ' m' : '–', x0 + w * 0.4, yy + 3.7, { align: 'right' }); doc.text(num2(x.depth) != null ? fmtN(num2(x.depth), 2) + ' m' : '–', x0 + w * 0.65, yy + 3.7, { align: 'right' }); doc.text(fmtN(run, 1) + ' m', x0 + w - 2, yy + 3.7, { align: 'right' }); K.hair(yy + 5.2, x0, x0 + w); yy += 5.2; });
+          yE = Math.max(yE, yy); }
+        y = yE + 6;
       } else {
         y = K.box(y, [['Speedpipe / Rohr', r.pipe || '–'], ['Kabel', r.cable || '–'], ['Maschine', r.machine || '–'], ['Ergebnis', r.result === 'ok' ? 'eingeblasen' : 'abgebrochen'], ...base]);
         const kp = [['Länge', num2(r.len) != null ? fmtN(num2(r.len), 1) + ' m' : '–'], ['Dauer', num2(r.dur) != null ? fmtN(num2(r.dur), 1) + ' min' : '–'], ['Geschwindigkeit', ev.speed ? fmtN(ev.speed, 1) + ' m/min' : '–'], ['Druck / Temp.', `${r.bar ? r.bar + ' bar' : '–'} · ${r.temp ? r.temp + ' °C' : '–'}`]], kw = (cw - 9) / 4;
@@ -3560,7 +3726,7 @@ async function msPDF(recs, title) {
       if (phs.length && y < 200) { K.label(m, y, 'Fotos'); y += 3; const pw = (cw - 8) / 3; for (let i = 0; i < phs.length; i++) { const im = await pdfImg(phs[i].blob), kk = Math.min(pw / im.w, 40 / im.h); doc.setFillColor(...C.PAPER); doc.rect(m + i * (pw + 4), y, pw, 40, 'F'); doc.addImage(im.d, 'JPEG', m + i * (pw + 4) + (pw - im.w * kk) / 2, y + (40 - im.h * kk) / 2, im.w * kk, im.h * kk); } y += 46; }
       if (r.hash) { pf(doc, 'cs', 6.8); doc.setTextColor(...C.OK); doc.text('VERSIEGELT', m, y); doc.setFont('courier', 'normal'); doc.setFontSize(6.4); doc.setTextColor(120, 116, 148); doc.text(`#${r.seq}  SHA-256 ${r.hash}`, m + 20, y); y += 6; }
       if (y > 234) { doc.addPage(); titles[doc.getNumberOfPages()] = MS_KIND[r.kind]; pdfHeader(doc, r.name || '', MS_KIND[r.kind].toUpperCase()); y = 32; }
-      K.sign(Math.max(y + 2, 232), [coName(), r.user || S.set.name || ''], ['Auftraggeber / Netzbetreiber' + (s?.client ? ': ' + s.client : ''), '']);
+      if (r.kind !== 'vs') K.sign(Math.max(y + 2, 232), [coName(), r.user || S.set.name || ''], ['Auftraggeber / Netzbetreiber' + (s?.client ? ': ' + s.client : ''), '']);
     }
     pdfFooter(doc, i => titles[i] || 'Messprotokoll');
     await saveFile(`${recs.length > 1 ? 'Messprotokolle' : MS_KIND[recs[0].kind].replace(/[^\wäöüÄÖÜß-]/g, '')}_${slug(title)}_${stamp(Date.now()).slice(0, 8)}.pdf`, doc.output('blob'));
@@ -3582,6 +3748,410 @@ async function seedExamples3() {
   for (const e of A) { await DB.put('aufmass', e); S.aufmass.push(e); }
   for (const r of M) { await DB.put('messungen', r); S.messungen.push(r); }
   S.set.seeded3 = true; saveSet();
+}
+
+
+/* =====================================================================
+   UNTERLAGEN: Nachunternehmer-Unterlagen (Firma) und Baustellen-Unterlagen
+   (Leitungsauskünfte, verkehrsrechtliche Anordnung, Genehmigungen) mit Ablaufdatum
+   ===================================================================== */
+const AK_FIRMA = { freist: 'Freistellungsbescheinigung § 48b EStG', ub_fa: 'Unbedenklichkeitsbescheinigung Finanzamt', ub_soka: 'Unbedenklichkeitsbescheinigung SOKA-BAU', ub_bg: 'Unbedenklichkeitsbescheinigung BG BAU', haft: 'Betriebshaftpflicht-Nachweis', iso: 'ISO-9001-Zertifikat', hwk: 'Eintragung Handwerksrolle', f_sonst: 'Sonstige Firmenunterlage' };
+const AK_SITE = { leitung: 'Leitungsauskunft (Spartenauskunft)', vrao: 'Verkehrsrechtliche Anordnung (VRAO)', aufbruch: 'Aufbruchgenehmigung', s_sonst: 'Sonstige Baustellenunterlage' };
+const SPARTEN = ['Strom', 'Gas', 'Wasser', 'Abwasser', 'Telekommunikation', 'Fernwärme', 'Straßenbeleuchtung', 'Sonstige'];
+const akName = d => AK_FIRMA[d.type] || AK_SITE[d.type] || 'Unterlage';
+const today = () => dayKey(Date.now());
+const daysTo = d => d ? Math.round((new Date(d + 'T12:00') - new Date(today() + 'T12:00')) / 864e5) : null;
+function akState(d) { const n = daysTo(d.until); if (n == null) return ['ohne Ablauf', 'var(--mute)', 'none']; if (n < 0) return [`abgelaufen seit ${fmtDate(new Date(d.until + 'T12:00'))}`, 'var(--bad)', 'bad']; if (n <= 14) return [n === 0 ? 'läuft heute ab' : `läuft in ${n} Tag${n > 1 ? 'en' : ''} ab`, 'var(--amber-fill)', 'soon']; return [`gültig bis ${fmtDate(new Date(d.until + 'T12:00'))}`, 'var(--ok)', 'ok']; }
+const profileOf = s => s?.profile ? (S.set.profiles || []).find(p => p.id === s.profile) || null : null;
+function leitungReq(s) { if (!s || s.archived) return false; const p = profileOf(s); if (p) return !!p.docs?.leitung; return s.tpl === 'tiefbau' || s.tpl === 'glasfaser' || s.tpl === 'bohrung'; }
+function leitungStatus(s) {
+  const ds = S.akten.filter(d => d.siteId === s?.id && d.type === 'leitung'), valid = ds.filter(d => (daysTo(d.until) ?? 1) >= 0);
+  return { req: leitungReq(s), docs: ds, valid, missing: leitungReq(s) && !valid.length, soon: valid.filter(d => daysTo(d.until) != null && daysTo(d.until) <= 7), sparten: [...new Set(valid.map(d => d.sparte).filter(Boolean))] };
+}
+const akWarn = () => S.akten.filter(d => d.scope === 'firma' && akState(d)[2] !== 'ok' && akState(d)[2] !== 'none');
+function renderAkten() {
+  if (S.ak.site !== 'all' && !S.sites.find(s => s.id === S.ak.site)) S.ak.site = 'all';
+  const fi = S.akten.filter(d => d.scope === 'firma'), ws = akWarn(), lm = S.sites.filter(s => leitungStatus(s).missing);
+  $('#akStats').innerHTML = `<div class="stat"><div class="lbl">Firma</div><div class="v ${ws.length ? 'warn' : 'good'}">${fi.length - ws.length}/${fi.length}</div><div class="s">gültig</div></div>
+    <div class="stat"><div class="lbl">Läuft ab</div><div class="v ${ws.length ? 'warn' : 'good'}">${ws.length}</div><div class="s">bald oder abgelaufen</div></div>
+    <div class="stat"><div class="lbl">Leitungsauskunft</div><div class="v" style="color:${lm.length ? 'var(--bad)' : 'var(--ok)'}">${lm.length}</div><div class="s">Baustellen ohne</div></div>`;
+  $('#akSeg').innerHTML = [['site', 'Baustelle'], ['firma', 'Firma (Nachunternehmer)']].map(([k, n]) => `<button data-aks="${k}" class="${S.ak.scope === k ? 'on' : ''}">${n}</button>`).join('');
+  $('#akSites').hidden = S.ak.scope !== 'site';
+  $('#akSites').innerHTML = `<button class="chip${S.ak.site === 'all' ? ' on' : ''}" data-aksite="all">Alle Baustellen</button>` + S.sites.filter(s => !s.archived).map(s => `<button class="chip${S.ak.site === s.id ? ' on' : ''}" data-aksite="${s.id}">${esc(short(s.name))}</button>`).join('');
+  const card = d => { const [t, col] = akState(d), s = S.sites.find(x => x.id === d.siteId);
+    return `<button class="ak-card" data-ak="${d.id}"><span class="ak-ic" style="background:${col}">${d.type === 'leitung' ? 'LA' : d.type === 'vrao' ? 'VA' : d.scope === 'firma' ? 'NU' : 'DOK'}</span><span class="ms-m"><b>${esc(d.type === 'leitung' ? 'Leitungsauskunft ' + (d.sparte || '') : akName(d))}</b><small>${esc([d.issuer, d.nr, s && S.ak.site === 'all' ? short(s.name) : ''].filter(Boolean).join(' · ') || 'ohne Angaben')}</small><small style="color:${col};font-weight:600">${esc(t)}${d.file ? ' · Datei' : ''}${d.attach ? ' · liegt dem Bericht bei' : ''}</small></span></button>`; };
+  let html = '';
+  if (S.ak.scope === 'site') {
+    const sites = S.sites.filter(s => !s.archived && (S.ak.site === 'all' || s.id === S.ak.site));
+    html = sites.map(s => { const ls = leitungStatus(s), ds = S.akten.filter(d => d.siteId === s.id).sort((a, b) => (a.until || '9') < (b.until || '9') ? -1 : 1);
+      return `<section class="panel"><div class="ph"><h2>${esc(short(s.name))}</h2>${ls.req ? `<span class="badge" style="color:${ls.missing ? 'var(--bad)' : ls.soon.length ? 'var(--amber)' : 'var(--ok)'}">${ls.missing ? 'Leitungsauskunft fehlt' : ls.soon.length ? 'Auskunft läuft ab' : 'Auskunft gültig'}</span>` : ''}</div>
+        ${ls.missing ? `<div class="warnbox ak-warn"><b>Vor dem ersten Spatenstich:</b> Für diese Baustelle liegt keine gültige Leitungsauskunft vor. Erst bei allen Netzbetreibern (Strom, Gas, Wasser, Telekommunikation …) anfragen und die Pläne hier ablegen.</div>` : ''}
+        ${ds.map(card).join('') || '<p class="note" style="margin:0">Noch keine Unterlagen.</p>'}
+        <div class="row" style="margin-top:10px"><button class="btn" data-aknew="leitung" data-site="${s.id}">+ Leitungsauskunft</button><button class="btn" data-aknew="vrao" data-site="${s.id}">+ Anordnung / Genehmigung</button></div></section>`; }).join('') || '<p class="empty">Keine aktive Baustelle.</p>';
+  } else {
+    html = `<section class="panel"><div class="ph"><h2>Nachunternehmer-Unterlagen</h2><span class="lbl">${fi.length} abgelegt</span></div>
+      <p class="note" style="margin:0 0 8px">Für die Nachunternehmerprüfung des Auftraggebers: Ich warne 14 Tage vor Ablauf und lege die Unterlagen auf Wunsch dem Bericht und dem ZIP bei.</p>
+      ${fi.sort((a, b) => (a.until || '9') < (b.until || '9') ? -1 : 1).map(card).join('') || '<p class="note">Noch keine Unterlagen.</p>'}
+      <div class="row" style="margin-top:10px"><button class="btn pri" data-aknew="firma">+ Unterlage ablegen</button></div></section>`;
+  }
+  $('#akList').innerHTML = html;
+}
+function openAkte(id, preset = {}) {
+  const d0 = id ? S.akten.find(x => x.id === id) : null; if (id && !d0) return;
+  const scope = d0?.scope || preset.scope || (preset.type && AK_SITE[preset.type] ? 'site' : 'firma');
+  const f = d0 ? { ...d0 } : { id: uid(), scope, type: preset.type || (scope === 'firma' ? 'freist' : 'leitung'), siteId: preset.siteId || null, sparte: 'Strom', issuer: '', nr: '', from: today(), until: dayKey(Date.now() + (scope === 'firma' ? 365 : 28) * 864e5), note: '', attach: scope === 'firma', file: null };
+  let file = f.file;
+  const types = scope === 'firma' ? AK_FIRMA : AK_SITE;
+  const el = sheet(`<h3>${d0 ? esc(akName(f)) : scope === 'firma' ? 'Unterlage ablegen' : 'Baustellen-Unterlage'}</h3><p class="sub">${scope === 'firma' ? 'Für die Nachunternehmerprüfung – mit Ablaufdatum, damit nichts verfällt.' : 'Leitungsauskünfte, Anordnungen und Genehmigungen dieser Baustelle – mit Ablaufdatum.'}</p>
+    <div class="fld"><label class="lbl" for="akType">Art</label><select id="akType">${Object.entries(types).map(([k, n]) => `<option value="${k}"${k === f.type ? ' selected' : ''}>${n}</option>`).join('')}</select></div>
+    ${scope === 'site' ? `<div class="fld"><label class="lbl" for="akSite">Baustelle</label><select id="akSite">${S.sites.map(s => `<option value="${s.id}"${s.id === f.siteId ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</select></div>` : ''}
+    <div class="fld" id="akSpW"${f.type === 'leitung' ? '' : ' hidden'}><label class="lbl" for="akSp">Sparte</label><select id="akSp">${SPARTEN.map(x => `<option${x === f.sparte ? ' selected' : ''}>${x}</option>`).join('')}</select></div>
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="akIss">${f.type === 'leitung' ? 'Netzbetreiber' : 'Aussteller'}</label><input type="text" id="akIss" value="${esc(f.issuer)}" placeholder="${scope === 'firma' ? 'z. B. Finanzamt Verden' : 'z. B. Stadtwerke, Straßenverkehrsamt'}"></div><div class="fld" style="max-width:140px"><label class="lbl" for="akNr">Nr. / Az.</label><input type="text" id="akNr" value="${esc(f.nr)}"></div></div>
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="akFrom">Gültig ab</label><input type="date" id="akFrom" value="${f.from || ''}"></div><div class="fld"><label class="lbl" for="akUntil">Gültig bis</label><input type="date" id="akUntil" value="${f.until || ''}"></div></div>
+    <div class="row am-help" style="margin-top:-6px"><button type="button" class="chip" data-plus="28">+4 Wochen</button><button type="button" class="chip" data-plus="91">+3 Monate</button><button type="button" class="chip" data-plus="365">+1 Jahr</button></div>
+    <div class="fld" style="margin-top:10px"><span class="lbl">Datei (PDF oder Foto)</span><div class="ms-files" id="akFile">${file ? `<span class="chip">${esc(file.name)} · ${Math.round(file.size / 1024)} KB</span>` : '<span class="note">Noch keine Datei.</span>'}</div>
+      <div class="row" style="margin-top:6px"><button type="button" class="btn" data-x="file">${file ? 'Datei ersetzen' : '+ Datei / Foto'}</button>${file ? '<button type="button" class="btn" data-x="open">Öffnen</button>' : ''}</div></div>
+    <label class="tog"><span>Dem Bericht und ZIP beilegen<small>Liste im PDF-Bericht, Datei im ZIP-Ordner „unterlagen“.</small></span><input type="checkbox" class="sw" id="akAtt"${f.attach ? ' checked' : ''}></label>
+    <div class="fld" style="margin-top:12px"><label class="lbl" for="akNote">Bemerkung</label><textarea id="akNote" placeholder="z. B. Auflagen, Ansprechpartner">${esc(f.note)}</textarea></div>
+    <div class="row"><button class="btn pri" data-x="save">Speichern</button>${d0 ? '<button class="btn danger" data-x="del">Löschen</button>' : ''}</div>`);
+  $('#akType', el).onchange = e => { $('#akSpW', el).hidden = e.target.value !== 'leitung'; };
+  el.addEventListener('click', async e => {
+    const pl = e.target.closest('[data-plus]'); if (pl) { const base = $('#akFrom', el).value || today(); $('#akUntil', el).value = dayKey(new Date(base + 'T12:00').getTime() + pl.dataset.plus * 864e5); return; }
+    const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
+    if (x === 'file') { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'application/pdf,.pdf,image/*'; inp.onchange = async () => { const fl = inp.files[0]; if (!fl) return; if (fl.size > 25e6) return toast('Datei zu groß (max. 25 MB).'); file = { name: fl.name, type: fl.type || 'application/octet-stream', size: fl.size, blob: fl, hash: await sha256(fl) }; $('#akFile', el).innerHTML = `<span class="chip">${esc(fl.name)} · ${Math.round(fl.size / 1024)} KB</span>`; }; inp.click(); }
+    if (x === 'open' && file?.blob) { const u = URL.createObjectURL(file.blob); window.open(u, '_blank'); setTimeout(() => URL.revokeObjectURL(u), 60000); }
+    if (x === 'save') {
+      const r = { ...f, type: $('#akType', el).value, siteId: scope === 'site' ? $('#akSite', el).value : null, sparte: $('#akType', el).value === 'leitung' ? $('#akSp', el).value : '', issuer: $('#akIss', el).value.trim(), nr: $('#akNr', el).value.trim(), from: $('#akFrom', el).value, until: $('#akUntil', el).value, note: $('#akNote', el).value.trim(), attach: $('#akAtt', el).checked, file, created: d0?.created || Date.now(), updated: Date.now(), user: d0?.user || S.set.name || '' };
+      await DB.put('akten', r); const i = S.akten.findIndex(z => z.id === r.id); if (i >= 0) S.akten[i] = r; else S.akten.push(r);
+      closeSheet(); toast('Unterlage gespeichert – ' + akState(r)[0] + '.'); refresh(true);
+    }
+    if (x === 'del') { const b = e.target.closest('[data-x]'); if (b.dataset.sure) { await DB.del('akten', d0.id); S.akten = S.akten.filter(z => z.id !== d0.id); closeSheet(); toast('Unterlage gelöscht.'); refresh(true); } else { b.dataset.sure = '1'; b.textContent = 'Wirklich löschen?'; } }
+  });
+}
+/* Warnung beim Betreten einer Baustelle ohne gültige Leitungsauskunft (einmal je Baustelle und Tag) */
+function leitungWarn(s) {
+  const ls = leitungStatus(s); if (!ls.missing) return;
+  const k = 'la|' + s.id + '|' + today(); if (S.set.laWarned === k || $('.banner')) return; S.set.laWarned = k; saveSet();
+  const b = document.createElement('div'); b.className = 'banner banner-bad'; b.setAttribute('role', 'alert');
+  b.innerHTML = `<div class="banner-in"><b>ACHTUNG · ${esc(s.name.toUpperCase())}</b><p>Keine gültige Leitungsauskunft! Nicht graben, bevor die Spartenpläne aller Netzbetreiber vorliegen.${ls.docs.length ? ' Die vorhandene Auskunft ist abgelaufen.' : ''}</p><div class="row"><button class="btn pri" data-b="add">Auskunft ablegen</button><button class="btn" data-b="ok">Verstanden</button></div></div>`;
+  b.addEventListener('click', e => { const k2 = e.target.closest('[data-b]')?.dataset.b; if (!k2) return; b.remove(); if (k2 === 'add') { S.ak.scope = 'site'; S.ak.site = s.id; go('akten'); openAkte(null, { type: 'leitung', siteId: s.id, scope: 'site' }); } });
+  document.body.appendChild(b); buzz([300, 120, 300, 120, 500]); speak(`Achtung. Für ${s.name} liegt keine gültige Leitungsauskunft vor. Bitte nicht graben.`);
+}
+
+/* =====================================================================
+   VERKEHRSSICHERUNG & SPÜLBOHRUNG – zusätzliche Protokollarten
+   ===================================================================== */
+const VS_CHECKS = ['Absperrung vollständig und standsicher', 'Beschilderung nach Anordnung / Regelplan', 'Warnleuchten und Beleuchtung funktionsfähig', 'Gehweg / Notweg sicher geführt (Breite, Rampen)', 'Zufahrten, Rettungswege und Hydranten frei', 'Leitbaken und Schranken richtig gestellt', 'Baugrube gesichert (Abdeckung, Geländer)', 'Fahrbahn und Gehweg sauber'];
+const BOHR_ITEMS = [['V', 'Startgrube mit Maßstab', 'Grube mit Meterstab, Lage gut erkennbar.', 'graben', true], ['V', 'Zielgrube mit Maßstab', 'Grube mit Meterstab, Lage gut erkennbar.', 'graben', true], ['W', 'Bohrgerät aufgebaut / Ortung', 'Gerät und Ortungsgerät im Bild.', 'uebersicht', true], ['W', 'Rohreinzug', 'Das eingezogene Rohr am Austritt.', 'leitung', true], ['N', 'Gruben verfüllt, Oberfläche hergestellt', 'Gleicher Standort wie die Grubenfotos.', 'oberflaeche', true]];
+async function ensureBohrItems(siteId) {
+  const s = S.sites.find(x => x.id === siteId); if (!s) return 0; let n = 0;
+  BOHR_ITEMS.forEach((a, i) => { if (!s.items.some(it => it.id === 'bo' + i || it.label === a[1])) { s.items.push({ id: 'bo' + i, phase: a[0], label: a[1], hint: a[2], cat: a[3], must: a[4] }); n++; } });
+  if (n) await DB.put('sites', s); return n;
+}
+function vsDue(s) { if (!s || s.archived) return false; const p = profileOf(s); const need = p ? !!p.proto?.vs : (s.tpl === 'tiefbau' || s.tpl === 'glasfaser' || s.tpl === 'bohrung'); if (!need) return false; return !S.messungen.some(r => r.kind === 'vs' && r.siteId === s.id && r.date === today()); }
+
+/* =====================================================================
+   DOKU-PROFILE je Netzbetreiber
+   ===================================================================== */
+const PROTO_N = { spleiss: 'Spleißprotokoll', otdr: 'OTDR-Messung', einblas: 'Einblasprotokoll', vs: 'Verkehrssicherung (täglich)', bohr: 'Bohrprotokoll', aufmass: 'Aufmaß' };
+function seedProfiles() {
+  if (Array.isArray(S.set.profiles)) return;
+  S.set.profiles = [
+    { id: 'prof1', example: true, name: 'FTTH-Netzbetreiber (Beispiel)', client: 'Glasfaser-Netzbetreiber', tpl: 'glasfaser', fn: ['auftrag', 'adresse', 'phase', 'titel', 'datum'], dir: 'phase', res: 2560,
+      items: [{ phase: 'W', label: 'Speedpipe-Belegung am NVt', hint: 'Rohrfarben und Beschriftung lesbar.', must: true }, { phase: 'N', label: 'Typenschild Gf-AP mit Home-ID', hint: 'Home-ID-Aufkleber scharf im Bild.', must: true }],
+      proto: { spleiss: true, otdr: true, einblas: true, vs: true }, docs: { leitung: true, vrao: true }, aufmass: true, note: 'Beispiel – bitte nach dem Doku-Handbuch des Netzbetreibers anpassen.' },
+    { id: 'prof2', example: true, name: 'Energieversorger Leitungsbau (Beispiel)', client: 'Regionaler Energieversorger', tpl: 'tiefbau', fn: ['baustelle', 'datum', 'kategorie'], dir: 'date', res: 'orig',
+      items: [{ phase: 'W', label: 'Leitungszone mit Abstand zu Fremdleitungen', hint: 'Meterstab zwischen den Leitungen.', must: true }],
+      proto: { vs: true, bohr: true }, docs: { leitung: true, vrao: true }, aufmass: true, note: 'Beispiel – bitte anpassen.' }];
+  saveSet();
+}
+async function applyProfile(s, pid) {
+  const p = (S.set.profiles || []).find(x => x.id === pid); s.profile = pid || null;
+  if (p) (p.items || []).forEach((it, i) => { const id = 'p' + p.id.slice(-4) + i; if (!s.items.some(x => x.id === id || x.label === it.label)) s.items.push({ id, phase: it.phase, label: it.label, hint: it.hint || '', cat: it.phase === 'N' ? 'uebersicht' : 'detail', must: it.must !== false }); });
+  await DB.put('sites', s); return p;
+}
+function profCheck(s) {
+  const p = profileOf(s), out = []; if (!s) return out;
+  const pr = progress(s); if (pr.missing.length) out.push(`${pr.missing.length} Pflichtfoto${pr.missing.length > 1 ? 's' : ''} fehlen: ${pr.missing.map(i => i.label).join(', ')}`);
+  const ls = leitungStatus(s); if (ls.missing) out.push('Keine gültige Leitungsauskunft');
+  if (p) {
+    Object.entries(p.proto || {}).filter(([, v]) => v).forEach(([k]) => { if (k !== 'vs' && !S.messungen.some(r => r.siteId === s.id && r.kind === k)) out.push(`${PROTO_N[k]} fehlt`); if (k === 'vs' && vsDue(s)) out.push('Verkehrssicherung heute noch nicht geprüft'); });
+    if (p.docs?.vrao && !S.akten.some(d => d.siteId === s.id && d.type === 'vrao' && (daysTo(d.until) ?? 1) >= 0)) out.push('Keine gültige verkehrsrechtliche Anordnung');
+    if (p.aufmass && !S.aufmass.some(e => e.siteId === s.id)) out.push('Noch kein Aufmaß');
+  }
+  return out;
+}
+function openProfiles() {
+  seedProfiles();
+  const L = S.set.profiles;
+  const el = sheet(`<h3>Doku-Profile</h3><p class="sub">Ein Profil je Netzbetreiber oder Auftraggeber: welche Pflichtfotos, Dateinamen, Ordner, Protokolle und Unterlagen gefordert sind. Die Baustelle bekommt ein Profil – der Export kommt fertig im Schema heraus.</p>
+    ${L.map(p => `<button class="ms-card" data-prof="${p.id}"><span class="ms-k" style="background:var(--orange);color:var(--indigo-deep)">${esc((p.name || '?').slice(0, 2).toUpperCase())}</span><span class="ms-m"><b>${esc(p.name)}</b><small>${esc(p.client || '')}${p.tpl ? ' · Vorlage ' + esc(TPL[p.tpl]?.n || '') : ''}</small><small>${S.sites.filter(s => s.profile === p.id).length} Baustelle(n) · ${Object.values(p.proto || {}).filter(Boolean).length} Protokollarten · ${(p.items || []).length} Zusatzfotos</small></span></button>`).join('') || '<p class="note">Noch keine Profile.</p>'}
+    <div class="row" style="margin-top:12px"><button class="btn pri" data-x="new">+ Neues Profil</button><button class="btn" data-x="imp">Profil importieren</button></div>`);
+  el.addEventListener('click', e => { const pb = e.target.closest('[data-prof]'); if (pb) { editProfile(pb.dataset.prof); return; } const x = e.target.closest('[data-x]')?.dataset.x;
+    if (x === 'new') editProfile(null);
+    if (x === 'imp') { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.json,application/json'; inp.onchange = async () => { try { const j = JSON.parse(await inp.files[0].text()); if (j.format !== 'enerweser-doku-profil' || !j.profil?.name) throw new Error('Kein Doku-Profil'); const p = { ...j.profil, id: 'prof' + uid(), example: false }; S.set.profiles.push(p); saveSet(); toast(`Profil „${p.name}“ importiert.`); openProfiles(); } catch (er) { toast('Import fehlgeschlagen: ' + (er.message || er)); } }; inp.click(); } });
+}
+function editProfile(id) {
+  const p0 = id ? S.set.profiles.find(x => x.id === id) : null;
+  const f = p0 ? JSON.parse(JSON.stringify(p0)) : { id: 'prof' + uid(), name: '', client: '', tpl: 'glasfaser', fn: fnParts().slice(), dir: 'site', res: 'orig', items: [], proto: {}, docs: { leitung: true }, aufmass: false, note: '' };
+  const itemsHTML = () => f.items.map((it, i) => `<div class="pf-it"><select data-it="${i}" data-k="phase">${['V', 'W', 'N'].map(ph => `<option value="${ph}"${ph === it.phase ? ' selected' : ''}>${PH[ph].n}</option>`).join('')}</select><input type="text" data-it="${i}" data-k="label" value="${esc(it.label)}" placeholder="Pflichtfoto"><button type="button" class="chip" data-del="${i}">✕</button></div>`).join('');
+  const el = sheet(`<h3>${p0 ? 'Profil bearbeiten' : 'Neues Doku-Profil'}</h3>
+    <div class="fld"><label class="lbl" for="pfName">Name des Profils</label><input type="text" id="pfName" value="${esc(f.name)}" placeholder="z. B. Netzbetreiber XY – FTTH 2026"></div>
+    <div class="fld"><label class="lbl" for="pfCl">Netzbetreiber / Auftraggeber</label><input type="text" id="pfCl" value="${esc(f.client)}"></div>
+    <div class="fld"><label class="lbl" for="pfTpl">Basis-Vorlage (Pflichtfotos)</label><select id="pfTpl"><option value="">–</option>${Object.entries(TPL).map(([k, t]) => `<option value="${k}"${k === f.tpl ? ' selected' : ''}>${esc(t.n)}</option>`).join('')}</select></div>
+    <div class="fld"><span class="lbl">Zusätzliche Pflichtfotos des Netzbetreibers</span><div id="pfItems">${itemsHTML()}</div><button type="button" class="chip" data-x="additem" style="margin-top:6px">+ Pflichtfoto</button></div>
+    <div class="fld"><span class="lbl">Dateiname (Reihenfolge der Bausteine)</span><div class="pick" id="pfFn">${Object.entries(FN_PARTS).map(([k, n]) => `<button type="button" data-fn="${k}" class="${f.fn.includes(k) ? 'on' : ''}">${f.fn.includes(k) ? `<span class="o">${f.fn.indexOf(k) + 1}</span>` : ''}${esc(n)}</button>`).join('')}</div><div class="fnprev" id="pfFnP"></div></div>
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="pfDir">Ordnerstruktur im ZIP</label><select id="pfDir">${[['site', 'je Baustelle'], ['date', 'je Tag'], ['phase', 'je Phase (vorher/während/nachher)'], ['cat', 'je Kategorie'], ['none', 'ohne Ordner']].map(([k, n]) => `<option value="${k}"${k === f.dir ? ' selected' : ''}>${n}</option>`).join('')}</select></div>
+      <div class="fld" style="max-width:130px"><label class="lbl" for="pfRes">Auflösung</label><select id="pfRes">${[['orig', 'Original'], [2560, '2560 px'], [1600, '1600 px']].map(([k, n]) => `<option value="${k}"${String(k) === String(f.res) ? ' selected' : ''}>${n}</option>`).join('')}</select></div></div>
+    <div class="fld"><span class="lbl">Geforderte Protokolle und Unterlagen</span>${Object.entries(PROTO_N).map(([k, n]) => `<label class="tog" style="padding:8px 0"><span>${n}</span><input type="checkbox" class="sw" data-pr="${k}"${(k === 'aufmass' ? f.aufmass : f.proto[k]) ? ' checked' : ''}></label>`).join('')}
+      <label class="tog" style="padding:8px 0"><span>Gültige Leitungsauskunft</span><input type="checkbox" class="sw" data-dc="leitung"${f.docs.leitung ? ' checked' : ''}></label><label class="tog" style="padding:8px 0"><span>Verkehrsrechtliche Anordnung</span><input type="checkbox" class="sw" data-dc="vrao"${f.docs.vrao ? ' checked' : ''}></label></div>
+    <div class="fld"><label class="lbl" for="pfNote">Hinweise aus dem Doku-Handbuch</label><textarea id="pfNote">${esc(f.note || '')}</textarea></div>
+    <div class="fld"><span class="lbl">Baustellen mit diesem Profil</span><div class="pick" id="pfSites">${S.sites.filter(s => !s.archived).map(s => `<button type="button" data-ps="${s.id}" class="${s.profile === f.id ? 'on' : ''}">${esc(short(s.name))}</button>`).join('')}</div></div>
+    <div class="row"><button class="btn pri" data-x="save">Speichern</button><button class="btn" data-x="exp">Als Datei teilen</button></div>${p0 ? '<div class="row" style="margin-top:8px"><button class="btn danger" data-x="del">Löschen</button></div>' : ''}`);
+  const fnPrev = () => { const ex = S.photos.find(p => p.siteId) || S.photos[0]; $('#pfFnP', el).textContent = ex ? fileName(ex, f.fn.length ? f.fn : fnParts()) : f.fn.join('_') + '_xxxx.jpg'; };
+  el.addEventListener('input', e => { const i = e.target.dataset.it; if (i != null) f.items[+i][e.target.dataset.k] = e.target.value; });
+  el.addEventListener('change', e => { const i = e.target.dataset.it; if (i != null) f.items[+i][e.target.dataset.k] = e.target.value; });
+  el.addEventListener('click', async e => {
+    const fb = e.target.closest('[data-fn]'); if (fb) { const k = fb.dataset.fn; f.fn = f.fn.includes(k) ? f.fn.filter(x => x !== k) : [...f.fn, k]; $('#pfFn', el).innerHTML = Object.entries(FN_PARTS).map(([kk, n]) => `<button type="button" data-fn="${kk}" class="${f.fn.includes(kk) ? 'on' : ''}">${f.fn.includes(kk) ? `<span class="o">${f.fn.indexOf(kk) + 1}</span>` : ''}${esc(n)}</button>`).join(''); fnPrev(); return; }
+    const ps = e.target.closest('[data-ps]'); if (ps) { ps.classList.toggle('on'); return; }
+    const dl = e.target.closest('[data-del]'); if (dl) { f.items.splice(+dl.dataset.del, 1); $('#pfItems', el).innerHTML = itemsHTML(); return; }
+    const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
+    const collect = () => { f.name = $('#pfName', el).value.trim() || 'Profil ohne Namen'; f.client = $('#pfCl', el).value.trim(); f.tpl = $('#pfTpl', el).value; f.dir = $('#pfDir', el).value; const rv = $('#pfRes', el).value; f.res = rv === 'orig' ? 'orig' : +rv; f.note = $('#pfNote', el).value.trim();
+      f.proto = {}; $$('[data-pr]', el).forEach(c => { if (c.dataset.pr === 'aufmass') f.aufmass = c.checked; else f.proto[c.dataset.pr] = c.checked; }); f.docs = {}; $$('[data-dc]', el).forEach(c => f.docs[c.dataset.dc] = c.checked); f.items = f.items.filter(it => it.label.trim()); return f; };
+    if (x === 'additem') { f.items.push({ phase: 'W', label: '', must: true }); $('#pfItems', el).innerHTML = itemsHTML(); $$('#pfItems input', el).pop()?.focus(); }
+    if (x === 'save') { collect(); const i = S.set.profiles.findIndex(p => p.id === f.id); if (i >= 0) S.set.profiles[i] = f; else S.set.profiles.push(f); saveSet();
+      const on = new Set($$('#pfSites .on', el).map(b => b.dataset.ps)); for (const s of S.sites) { if (on.has(s.id) && s.profile !== f.id) await applyProfile(s, f.id); else if (!on.has(s.id) && s.profile === f.id) { s.profile = null; await DB.put('sites', s); } }
+      toast(`Profil „${f.name}“ gespeichert.`); openProfiles(); refresh(true); }
+    if (x === 'exp') { collect(); const { example, ...pp } = f; saveFile(`Doku-Profil_${slug(f.name)}.json`, new Blob([JSON.stringify({ format: 'enerweser-doku-profil', version: 1, erstellt: new Date().toISOString(), profil: pp }, null, 1)], { type: 'application/json' }), true); }
+    if (x === 'del') { const b = e.target.closest('[data-x]'); if (b.dataset.sure) { S.set.profiles = S.set.profiles.filter(p => p.id !== f.id); for (const s of S.sites.filter(s => s.profile === f.id)) { s.profile = null; await DB.put('sites', s); } saveSet(); openProfiles(); } else { b.dataset.sure = '1'; b.textContent = 'Wirklich löschen?'; } }
+  });
+  fnPrev();
+}
+function chooseProfile(s) {
+  seedProfiles();
+  const el = sheet(`<h3>Doku-Profil</h3><p class="sub">${esc(s.name)} – nach welchem Schema wird dokumentiert?</p>
+    <button class="ms-card" data-pp=""><span class="ms-k" style="background:var(--mute)">–</span><span class="ms-m"><b>Kein Profil</b><small>Standard-Einstellungen der App</small></span></button>
+    ${S.set.profiles.map(p => `<button class="ms-card${s.profile === p.id ? ' sel' : ''}" data-pp="${p.id}"><span class="ms-k" style="background:var(--orange);color:var(--indigo-deep)">${esc(p.name.slice(0, 2).toUpperCase())}</span><span class="ms-m"><b>${esc(p.name)}</b><small>${esc(p.client || '')}</small></span>${s.profile === p.id ? '<span class="ms-st" style="background:var(--ok)">AKTIV</span>' : ''}</button>`).join('')}
+    <div class="row" style="margin-top:12px"><button class="btn" data-x="manage">Profile verwalten</button></div>`);
+  el.addEventListener('click', async e => { const b = e.target.closest('[data-pp]'); if (b) { const p = await applyProfile(s, b.dataset.pp || null); toast(p ? `Profil „${p.name}“ zugeordnet${(p.items || []).length ? ' – ' + p.items.length + ' Pflichtfotos ergänzt' : ''}.` : 'Kein Profil.'); openSite(s.id); refresh(true); return; }
+    if (e.target.closest('[data-x=manage]')) openProfiles(); });
+}
+
+/* =====================================================================
+   QR-ETIKETTEN: Daten stecken im Code selbst – lesbar auf jedem Handy, auch ohne Server
+   ===================================================================== */
+const b64u = {
+  enc: s => { const b = new TextEncoder().encode(s); let t = ''; b.forEach(x => t += String.fromCharCode(x)); return btoa(t).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); },
+  dec: s => { const t = atob(s.replace(/-/g, '+').replace(/_/g, '/')); return new TextDecoder().decode(Uint8Array.from(t, c => c.charCodeAt(0))); }
+};
+function qrPayload(r) {
+  const s = S.sites.find(x => x.id === r.siteId), e = msEval(r), q = { v: 1, k: r.kind, i: r.id, n: r.name || MS_KIND[r.kind], l: r.loc || '', s: s?.name || '', o: s?.order || '', d: Math.round(r.ts / 1000), u: r.user || '', r: msStatus(r)[0], h: (r.hash || '').slice(0, 16) };
+  if (r.kind === 'spleiss') { q.g = Math.round(lim().splice * 100); q.ci = r.cableIn || ''; q.co = r.cableOut || ''; if ((r.fibers || []).length <= 48) q.f = r.fibers.map(x => { const v = num2(x.loss); return v == null ? -1 : Math.round(v * 100); }); else { q.mx = e.max; q.av = e.avg; q.fc = e.of; } }
+  if (r.kind === 'otdr') q.m = e.rows.map(x => [x.wl, num2(x.len), num2(x.loss)]);
+  if (r.kind === 'einblas') q.m = [num2(r.len), num2(r.dur), r.pipe || '', r.cable || ''];
+  if (r.kind === 'bohr') q.m = [num2(r.len), r.partner || '', (r.rods || []).length];
+  if (r.lat != null) q.p = [+r.lat.toFixed(6), +r.lon.toFixed(6)];
+  return q;
+}
+const qrUrl = r => location.origin + location.pathname.replace(/index\.html$/, '') + '#qr=' + b64u.enc(JSON.stringify(qrPayload(r)));
+async function qrMatrix(text) { await needLib('QR-Baustein', () => window.qrcode); const q = window.qrcode(0, 'M'); q.addData(text); q.make(); const n = q.getModuleCount(); return { n, dark: (r, c) => q.isDark(r, c) }; }
+async function qrLabels(recs) {
+  try {
+    await needLib('PDF-Baustein', () => window.jspdf?.jsPDF);
+    const { jsPDF } = window.jspdf, doc = new jsPDF({ unit: 'mm', format: 'a4' }); await pdfFonts(doc);
+    const LW = 95, LH = 54, mx = 10, my = 13, gx = 0, gy = 0;
+    for (let i = 0; i < recs.length; i++) {
+      if (i && i % 10 === 0) doc.addPage();
+      const r = recs[i], k = i % 10, x = mx + (k % 2) * (LW + gx), y = my + Math.floor(k / 2) * (LH + gy), s = S.sites.find(z => z.id === r.siteId);
+      doc.setDrawColor(200, 196, 220); doc.setLineWidth(0.15); doc.setLineDashPattern([1, 1.2], 0); doc.rect(x, y, LW, LH, 'S'); doc.setLineDashPattern([], 0);
+      doc.setFillColor(47, 35, 130); doc.rect(x, y, LW, 9, 'F'); doc.setFillColor(241, 136, 11); doc.rect(x, y + 9, LW, 0.8, 'F');
+      try { doc.addImage(EW_LOGO_W, 'PNG', x + 3, y + 2, 26, 26 * 146 / 640, 'ewlogo', 'FAST'); } catch (e) {}
+      pf(doc, 'cs', 7); doc.setTextColor(201, 197, 234); doc.text(MS_KIND[r.kind].toUpperCase(), x + LW - 3, y + 5.8, { align: 'right', charSpace: 0.3 });
+      const m = await qrMatrix(qrUrl(r)), qs = 40, cell = qs / m.n, qx = x + 3, qy = y + 11.5;
+      doc.setFillColor(255, 255, 255); doc.rect(qx - 1, qy - 1, qs + 2, qs + 2, 'F'); doc.setFillColor(0, 0, 0);
+      for (let rr = 0; rr < m.n; rr++) for (let cc = 0; cc < m.n; cc++) if (m.dark(rr, cc)) doc.rect(qx + cc * cell, qy + rr * cell, cell + 0.02, cell + 0.02, 'F');
+      const tx = qx + qs + 4, tw = LW - (tx - x) - 3;
+      pf(doc, 'c', 13); doc.setTextColor(47, 35, 130); doc.text(doc.splitTextToSize((r.name || MS_KIND[r.kind]).toUpperCase(), tw).slice(0, 2), tx, y + 16.5);
+      pf(doc, 'r', 7.6); doc.setTextColor(27, 24, 56); let ty = y + 26;
+      [r.loc, s?.name, s?.order && 'Auftrag ' + s.order, fmtDate(r.ts) + (r.user ? ' · ' + r.user : '')].filter(Boolean).forEach(t => { doc.text(doc.splitTextToSize(String(t), tw)[0], tx, ty); ty += 3.7; });
+      const st = msStatus(r)[0]; doc.setFillColor(...(st === 'IO' ? [30, 142, 78] : st === 'NIO' ? [200, 45, 55] : [150, 146, 175])); doc.roundedRect(tx, y + LH - 11.5, 18, 5, 0.8, 0.8, 'F'); pf(doc, 'cs', 7.2); doc.setTextColor(255, 255, 255); doc.text(st === 'IO' ? 'I. O.' : st === 'NIO' ? 'N. I. O.' : 'OFFEN', tx + 9, y + LH - 8.1, { align: 'center' });
+      pf(doc, 'r', 6.2); doc.setTextColor(110, 106, 138); doc.text('Scannen: Protokoll ansehen', tx, y + LH - 3);
+    }
+    await saveFile(`QR-Etiketten_${stamp(Date.now()).slice(0, 8)}.pdf`, doc.output('blob'));
+  } catch (e) { toast('Etiketten fehlgeschlagen: ' + (e.message || e), 5000); }
+}
+function showQr(q) {
+  const loc = S.messungen.find(r => r.id === q.i), L = (q.g || 10) / 100;
+  const fib = q.f ? `<div class="qr-fib">${q.f.map((v, i) => { const fo = fiberOf(i + 1); return `<span><i style="background:${fo.hex}"></i>${i + 1}<b class="${v < 0 ? '' : v / 100 <= L ? 'ok' : 'no'}">${v < 0 ? '–' : (v / 100).toFixed(2).replace('.', ',')}</b></span>`; }).join('')}</div>` : q.mx != null ? `<p class="note">${q.fc} Fasern · max ${fmtN(q.mx, 3)} dB · Ø ${fmtN(q.av, 3)} dB</p>` : '';
+  const mm = q.k === 'otdr' ? (q.m || []).map(x => `<p class="note">${x[0]} nm: ${fmtN(x[1], 1)} m · ${fmtN(x[2], 2)} dB</p>`).join('') : q.k === 'einblas' ? `<p class="note">${fmtN(q.m[0], 1)} m in ${fmtN(q.m[1], 1)} min · ${esc(q.m[2])} · ${esc(q.m[3])}</p>` : q.k === 'bohr' ? `<p class="note">${fmtN(q.m[0], 1)} m · ${q.m[2]} Stangen · ${esc(q.m[1])}</p>` : '';
+  const el = sheet(`<span class="dst" style="background:${q.r === 'IO' ? 'var(--ok)' : q.r === 'NIO' ? 'var(--bad)' : 'var(--amber-fill)'}">${q.r === 'IO' ? 'IN ORDNUNG' : q.r === 'NIO' ? 'NICHT IN ORDNUNG' : 'UNVOLLSTÄNDIG'}</span><h3>${esc(q.n)}</h3>
+    <p class="sub">${esc(MS_KIND[q.k] || 'Protokoll')} aus dem QR-Etikett · ${new Date(q.d * 1000).toLocaleDateString('de-DE')}${q.u ? ' · ' + esc(q.u) : ''}</p>
+    <dl class="kv">${[['Ort', q.l], ['Baustelle', q.s], ['Auftrag', q.o], ['Kabel', [q.ci, q.co].filter(Boolean).join(' → ')], ['Lage', q.p ? q.p.join(', ') : ''], ['Siegel', q.h ? q.h + '…' : '']].filter(r => r[1]).map(([a, b]) => `<dt>${a}</dt><dd>${esc(b)}</dd>`).join('')}</dl>
+    ${fib}${mm}
+    <div class="row" style="margin-top:12px">${loc ? '<button class="btn pri" data-x="open">Vollständiges Protokoll öffnen</button>' : ''}${q.p ? '<button class="btn" data-x="route">Hinfahren</button>' : ''}</div>
+    ${loc ? '' : '<p class="note" style="margin-top:10px">Das vollständige Protokoll mit Fotos liegt auf dem Gerät, das es erstellt hat, und im Bericht. Die Werte oben stammen direkt aus dem Etikett.</p>'}`);
+  el.addEventListener('click', e => { const x = e.target.closest('[data-x]')?.dataset.x; if (x === 'open') { closeSheet(); go('messung'); openMess(loc.id); } if (x === 'route') openRoute({ lat: q.p[0], lon: q.p[1], name: q.n }); });
+}
+function handleQrHash(h = location.hash) {
+  if (!h || !h.startsWith('#qr=')) return false;
+  try { const q = JSON.parse(b64u.dec(h.slice(4))); history.replaceState(null, '', '#cockpit'); setTimeout(() => showQr(q), 300); return true; } catch (e) { toast('Dieses QR-Etikett konnte ich nicht lesen.'); return false; }
+}
+async function scanQr() {
+  if (!('BarcodeDetector' in window)) { toast('Einfach mit der normalen Handy-Kamera scannen – der Link öffnet das Protokoll in der App.', 5000); return; }
+  let stream; try { stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }); } catch (e) { toast('Kamera nicht freigegeben.'); return; }
+  const el = sheet(`<h3>QR-Etikett scannen</h3><p class="sub">Etikett an der Muffe, am NVt oder am HÜP in den Rahmen halten.</p><div class="qr-scan"><video playsinline muted autoplay></video><i></i></div><div class="row" style="margin-top:10px"><button class="btn" data-x="stop">Abbrechen</button></div>`);
+  const v = $('video', el); v.srcObject = stream; const det = new window.BarcodeDetector({ formats: ['qr_code'] }); let on = true;
+  const stop = () => { on = false; stream.getTracks().forEach(t => t.stop()); };
+  el.addEventListener('click', e => { if (e.target.closest('[data-x=stop]')) { stop(); closeSheet(); } });
+  const loop = async () => { if (!on || !document.body.contains(v)) return stop(); try { const c = await det.detect(v); const raw = c[0]?.rawValue; if (raw && raw.includes('#qr=')) { stop(); closeSheet(); const q = JSON.parse(b64u.dec(raw.split('#qr=')[1])); showQr(q); return; } } catch (e) {} setTimeout(loop, 250); };
+  v.onloadeddata = loop;
+}
+
+/* =====================================================================
+   AUFMASS-VORSCHLAG am Feierabend und AUFMASS PER SPRACHE
+   ===================================================================== */
+function amSuggest(day = today()) {
+  const out = [], done = new Set(S.aufmass.filter(e => e.date === day).map(e => e.siteId + '|' + e.pos)), add = (siteId, pos, calc, loc, src) => { if (done.has(siteId + '|' + pos)) return; const L = lvAll().find(x => x.pos === pos); if (!L) return; out.push({ siteId, pos, text: L.text, unit: L.unit, mode: 'calc', calc, loc, src }); };
+  const sites = S.sites.filter(s => !s.archived);
+  for (const s of sites) {
+    const trs = S.trassen.filter(t => t.siteId === s.id && (dayKey(t.created) === day || t.points.some(p => dayKey(p.ts) === day)) && t.points.length > 1);
+    trs.forEach(t => { const L = tLen(t).toFixed(2).replace('.', ','); add(s.id, '01.02', { a: L }, t.name, `Trasse ${t.name}`); add(s.id, /speedpipe|mikro/i.test(t.kind) ? '03.02' : '03.01', { a: L }, t.name, `Trasse ${t.name}`); });
+    const ps = S.photos.filter(p => p.siteId === s.id && dayKey(p.ts) === day), lab = p => s.items.find(i => i.id === p.itemId)?.label || '';
+    const kl = new Set(ps.filter(p => /kopfloch|montagegrube/i.test(lab(p))).map(p => p.itemId)).size; if (kl) add(s.id, '01.04', { n: String(kl) }, '', 'Fotos Kopfloch');
+    if (ps.some(p => /hauseinführung/i.test(lab(p)))) add(s.id, '04.02', { n: '1' }, '', 'Foto Hauseinführung');
+    if (ps.some(p => /hüp|gf-ap/i.test(lab(p)))) add(s.id, '04.03', { n: '1' }, '', 'Foto HÜP / Gf-AP');
+    const ms = S.messungen.filter(r => r.siteId === s.id && r.date === day);
+    const eb = ms.filter(r => r.kind === 'einblas' && num2(r.len)).reduce((a, r) => a + num2(r.len), 0); if (eb) add(s.id, '05.01', { a: fmtN(eb, 2) }, ms.filter(r => r.kind === 'einblas').map(r => r.name).join(', '), 'Einblasprotokoll');
+    const sp = ms.filter(r => r.kind === 'spleiss').reduce((a, r) => a + msEval(r).n, 0); if (sp) add(s.id, '05.02', { n: String(sp) }, ms.filter(r => r.kind === 'spleiss').map(r => r.name).join(', '), 'Spleißprotokoll');
+    const bo = ms.filter(r => r.kind === 'bohr' && num2(r.len)).reduce((a, r) => a + num2(r.len), 0); if (bo) add(s.id, '01.05', { a: fmtN(bo, 2) }, ms.filter(r => r.kind === 'bohr').map(r => r.name).join(', '), 'Bohrprotokoll');
+    if (ms.some(r => r.kind === 'vs')) add(s.id, '06.01', { n: '1' }, '', 'Kontrolle Verkehrssicherung');
+  }
+  return out;
+}
+function openAmSuggest(day = today()) {
+  const L = amSuggest(day);
+  if (!L.length) { toast('Für heute habe ich keine neuen Mengen gefunden – Trassen, Fotos und Protokolle erfassen, dann schlage ich vor.', 5000); return; }
+  const el = sheet(`<h3>Aufmaß-Vorschlag</h3><p class="sub">Aus Trassen, Pflichtfotos und Protokollen von heute. Häkchen prüfen, Mengen bei Bedarf anpassen – ein Tipp übernimmt alles.</p>
+    ${L.map((e, i) => { const s = S.sites.find(x => x.id === e.siteId); return `<label class="sg-row"><input type="checkbox" class="sw" data-sg="${i}" checked><span class="sg-m"><b>${esc(e.pos)} · ${esc(e.text)}</b><small>${esc(short(s?.name || ''))} · ${esc(e.src)}${e.loc ? ' · ' + esc(e.loc) : ''}</small></span><span class="sg-q"><input type="text" inputmode="decimal" data-sq="${i}" value="${esc(e.calc.a ?? e.calc.n)}"><small>${esc(e.unit)}</small></span></label>`; }).join('')}
+    <div class="row" style="margin-top:12px"><button class="btn pri" data-x="take">Ausgewählte übernehmen</button></div>`);
+  el.addEventListener('click', async e => { if (!e.target.closest('[data-x=take]')) return; let n = 0;
+    for (const [i, sg] of L.entries()) { if (!$(`[data-sg="${i}"]`, el).checked) continue; const v = $(`[data-sq="${i}"]`, el).value.trim(); const calc = sg.calc.a != null ? { a: v } : { n: v };
+      const now = Date.now(), r = { id: uid(), ...sg, calc, qty: '', note: '', photoIds: [], ts: now, date: day, updated: now, user: S.set.name || '', lat: S.pos?.lat ?? null, lon: S.pos?.lon ?? null, src: 'Vorschlag: ' + sg.src };
+      if (amQty(r) == null) continue; await DB.put('aufmass', r); S.aufmass.push(r); n++; }
+    closeSheet(); toast(`${n} Aufmaß-Einträge übernommen.`); S.set.amSugDay = day; saveSet(); if (S.view !== 'aufmass') go('aufmass'); else refresh(); });
+}
+const NUMW = { null: 0, eins: 1, ein: 1, eine: 1, einen: 1, zwei: 2, drei: 3, vier: 4, fünf: 5, sechs: 6, sieben: 7, acht: 8, neun: 9, zehn: 10, elf: 11, zwölf: 12, dreizehn: 13, vierzehn: 14, fünfzehn: 15, sechzehn: 16, siebzehn: 17, achtzehn: 18, neunzehn: 19, zwanzig: 20, dreißig: 30, vierzig: 40, fünfzig: 50, sechzig: 60, siebzig: 70, achtzig: 80, neunzig: 90, hundert: 100, einhundert: 100, zweihundert: 200, dreihundert: 300 };
+function wordsToNum(t) {
+  t = ' ' + t.toLowerCase().replace(/(\d)\s*komma\s*(\d)/g, '$1,$2') + ' ';
+  t = t.replace(/\b(ein|zwei|drei|vier|fünf|sechs|sieben|acht|neun)und(zwanzig|dreißig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig)\b/g, (m, a, b) => ' ' + (NUMW[a] + NUMW[b]) + ' ');
+  t = t.replace(/\b(null|eins|eine?n?|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|dreizehn|vierzehn|fünfzehn|sechzehn|siebzehn|achtzehn|neunzehn|zwanzig|dreißig|vierzig|fünfzig|sechzig|siebzig|achtzig|neunzig|einhundert|hundert|zweihundert|dreihundert)\b/g, m => ' ' + NUMW[m] + ' ');
+  t = t.replace(/(\d+)\s+komma\s+(\d+)/g, '$1,$2').replace(/(\d+)\s+meter\s+(\d{2})\b/g, '$1,$2');
+  return t.replace(/\s+/g, ' ').trim();
+}
+const AM_VOICE = [[/graben.*(asphalt|straße|fahrbahn)/, '01.03'], [/graben.*(grün|rasen|unbefestigt|acker)/, '01.01'], [/graben/, '01.02'], [/kopfl[oö]ch|montagegrube|grube/, '01.04'], [/spülbohr|bohrung|erdrakete|querung/, '01.05'], [/aushub|entsorg/, '01.06'],
+  [/(oberfläche|pflaster|platten).*(asphalt)|asphalt.*(oberfläche|wiederher)/, '02.02'], [/pflaster|platten/, '02.01'], [/rasen|grünfläche/, '02.03'], [/schutzrohr|leerrohr/, '03.01'], [/verband|mikrorohr/, '03.02'], [/speedpipe/, '03.03'],
+  [/hausanschl[uü]ss/, '04.01'], [/hauseinführung|einführung/, '04.02'], [/hüp|gf-?ap|abschlusspunkt/, '04.03'], [/einblas/, '05.01'], [/spleiß|spleis/, '05.02'], [/muffe|nvt|verteiler/, '05.03'], [/verkehrssicherung|absperrung/, '06.01'], [/stunde|regie/, '07.01']];
+function amParse(text) {
+  const t = wordsToNum(text), low = t.toLowerCase(), r = { pos: null, calc: {}, loc: '', src: 'Sprache: „' + text.trim() + '“' };
+  for (const [re, pos] of AM_VOICE) if (re.test(low)) { r.pos = pos; break; }
+  const lm = low.match(/\b(vor|bei|ab|an|in|zwischen)\s+(hausnummer|haus nummer|hausnr\.?|nr\.?|nummer)\s*(\d+\s*[a-z]?)(\s*(bis|-)\s*\d+\s*[a-z]?)?/) || low.match(/\b(vor|bei|ab|an)\s+([a-zäöüß.\- ]+?(straße|weg|platz|allee|ring|gasse)\s*\d*)/);
+  if (lm) r.loc = t.slice(lm.index, lm.index + lm[0].length).replace(/^\w/, c => c.toUpperCase()).replace(/hausnummer|haus nummer/i, 'Hausnr.');
+  const nums = [...low.replace(lm ? lm[0] : '§§', ' ').matchAll(/(-?\d+(?:[.,]\d+)?)\s*(meter|m\b|qm|quadratmeter|m²|kubik|m³|stück|stk|mal|x|×|cm|zentimeter|stunden|h\b|tage?)?/g)].map(m => ({ v: m[1].replace('.', ','), u: m[2] || '' }));
+  const L = r.pos ? lvAll().find(x => x.pos === r.pos) : null, unit = L?.unit || 'm';
+  const cm = n => n.u.startsWith('c') || n.u.startsWith('z') ? String(num2(n.v) / 100).replace('.', ',') : n.v;
+  if (unit === 'Stk' || unit === 'h' || unit === 'Tag' || unit === 't') { if (nums[0]) r.calc.n = nums[0].v; }
+  else { const ms = nums.filter(n => !/stück|stk/.test(n.u)); if (ms[0]) r.calc.a = cm(ms[0]); if (ms[1] && unit !== 'm') r.calc.b = cm(ms[1]); if (ms[2] && unit === 'm³') r.calc.c = cm(ms[2]); }
+  return r;
+}
+function openAmVoice() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const el = sheet(`<h3>Aufmaß per Sprache</h3><p class="sub">Einfach sagen, was gebaut wurde – ich erkenne Position, Maße und Ort.</p>
+    ${SR ? '<button class="bigmic" data-x="mic"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><b>Antippen und sprechen</b></button>' : ''}
+    <div class="fld"><label class="lbl" for="avT">${SR ? 'Oder tippen / Diktier-Taste der Tastatur' : 'Text (Diktier-Taste der Tastatur nutzen)'}</label><textarea id="avT" placeholder="z. B. Graben Gehweg zwölf Meter vor Hausnummer 14"></textarea></div>
+    <div class="pick" style="margin-bottom:12px">${['Graben Gehweg zwölf Meter vor Hausnummer 14', 'Pflaster wiederherstellen 8,5 mal 0,6', 'Zwei Kopflöcher bei Hausnummer 3', 'Speedpipe Hausanschluss 11 Meter'].map(x => `<button type="button" data-ex="${esc(x)}">${esc(x)}</button>`).join('')}</div>
+    <div class="am-res" id="avR"><span class="lbl">Erkannt</span><b>–</b></div>
+    <div class="row"><button class="btn pri" data-x="take">Übernehmen und prüfen</button></div>`);
+  const ta = $('#avT', el);
+  const show = () => { const r = amParse(ta.value), L = r.pos ? lvAll().find(x => x.pos === r.pos) : null, q = L ? amQty({ mode: 'calc', calc: r.calc }) : null; $('#avR', el).innerHTML = `<span class="lbl">Erkannt</span>${L ? `<b>${q != null ? fmtN(q, 3) + ' ' + esc(L.unit) : '?'}</b><small>${esc(L.pos)} · ${esc(L.text)}${q != null ? ' · ' + esc(amCalcText({ mode: 'calc', calc: r.calc })) : ''}${r.loc ? ' · ' + esc(r.loc) : ''}</small>` : '<b>–</b><small>Leistung noch nicht erkannt – z. B. „Graben“, „Pflaster“, „Kopfloch“.</small>'}`; };
+  ta.addEventListener('input', show);
+  el.addEventListener('click', e => {
+    const ex = e.target.closest('[data-ex]'); if (ex) { ta.value = ex.dataset.ex; show(); return; }
+    const x = e.target.closest('[data-x]')?.dataset.x;
+    if (x === 'mic') { const b = e.target.closest('[data-x]'); try { const r = new SR(); r.lang = 'de-DE'; r.interimResults = true; b.classList.add('on'); r.onresult = ev => { ta.value = [...ev.results].map(z => z[0].transcript).join(' '); show(); }; r.onend = () => b.classList.remove('on'); r.onerror = () => { b.classList.remove('on'); toast('Mikrofon nicht verfügbar – einfach tippen.'); }; r.start(); } catch (er) { toast('Spracheingabe nicht verfügbar – einfach tippen.'); } }
+    if (x === 'take') { const r = amParse(ta.value); if (!r.pos) return toast('Ich habe die Leistung nicht erkannt. Beispiel: „Graben Gehweg zwölf Meter“.'); closeSheet(); openAm(null, { pos: r.pos, calc: r.calc, loc: r.loc, src: r.src }); }
+  });
+}
+
+/* =====================================================================
+   ANWOHNER-INFO: Infozettel im EnerWeser-Design, zwei A5 je A4-Seite
+   ===================================================================== */
+const AW_RESTR = ['Gehweg teilweise gesperrt – bitte die Umleitung nutzen', 'Grundstückszufahrt zeitweise eingeschränkt', 'Halteverbot im Baustellenbereich', 'Lärm durch Maschinen während der Arbeitszeit', 'Kurze Unterbrechung der Hauszufahrt nach Absprache'];
+function openAnwohner(s) {
+  const a = { from: today(), to: dayKey(Date.now() + 14 * 864e5), hours: 'Mo–Fr 7:00–17:00 Uhr', what: s.tpl === 'glasfaser' ? 'Wir stellen in Ihrer Straße die Glasfaser-Hausanschlüsse her: Kopflöcher, Verlegung der Leitungen und Wiederherstellung der Oberflächen.' : s.tpl === 'bohrung' ? 'Wir verlegen Leitungen im grabenlosen Verfahren (Spülbohrung). Dafür sind nur kleine Start- und Zielgruben nötig.' : 'Wir verlegen in Ihrer Straße neue Versorgungsleitungen und stellen die Oberflächen anschließend wieder her.', restr: [0, 3], contact: S.set.name || '', phone: '', client: s.client || '', note: 'Zufahrten für Rettungsdienst und Müllabfuhr bleiben jederzeit frei. Sprechen Sie unsere Mitarbeiter vor Ort gern an.', ...(s.anwohner || {}) };
+  const el = sheet(`<h3>Anwohner-Info</h3><p class="sub">${esc(s.name)} – Infozettel zum Einwerfen, zwei Stück pro A4-Seite.</p>
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="awF">Von</label><input type="date" id="awF" value="${a.from}"></div><div class="fld"><label class="lbl" for="awT">Bis voraussichtlich</label><input type="date" id="awT" value="${a.to}"></div></div>
+    <div class="fld"><label class="lbl" for="awH">Arbeitszeiten</label><input type="text" id="awH" value="${esc(a.hours)}"></div>
+    <div class="fld"><label class="lbl" for="awW">Was wir machen</label><textarea id="awW">${esc(a.what)}</textarea></div>
+    <div class="fld"><span class="lbl">Was Sie erwartet</span>${AW_RESTR.map((t, i) => `<label class="tog" style="padding:7px 0"><span>${esc(t)}</span><input type="checkbox" class="sw" data-rs="${i}"${a.restr.includes(i) ? ' checked' : ''}></label>`).join('')}</div>
+    <div class="fld"><label class="lbl" for="awN">Hinweis</label><textarea id="awN">${esc(a.note)}</textarea></div>
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="awC">Ansprechpartner vor Ort</label><input type="text" id="awC" value="${esc(a.contact)}"></div><div class="fld"><label class="lbl" for="awP">Telefon</label><input type="text" inputmode="tel" id="awP" value="${esc(a.phone)}" placeholder="0171 …"></div></div>
+    <div class="fld"><label class="lbl" for="awA">Im Auftrag von (optional)</label><input type="text" id="awA" value="${esc(a.client)}" placeholder="z. B. Netzbetreiber"></div>
+    <div class="row"><button class="btn pri" data-x="pdf">Infozettel als PDF</button></div>`);
+  el.addEventListener('click', async e => { if (!e.target.closest('[data-x=pdf]')) return;
+    const r = { from: $('#awF', el).value, to: $('#awT', el).value, hours: $('#awH', el).value.trim(), what: $('#awW', el).value.trim(), restr: $$('[data-rs]', el).filter(c => c.checked).map(c => +c.dataset.rs), note: $('#awN', el).value.trim(), contact: $('#awC', el).value.trim(), phone: $('#awP', el).value.trim(), client: $('#awA', el).value.trim() };
+    s.anwohner = r; await DB.put('sites', s); await anwohnerPDF(s, r); });
+}
+async function anwohnerPDF(s, a) {
+  try {
+    await needLib('PDF-Baustein', () => window.jspdf?.jsPDF);
+    const { jsPDF } = window.jspdf, doc = new jsPDF({ unit: 'mm', format: 'a4' }); await pdfFonts(doc); const K = pdfKit(doc), { C } = K;
+    const addr = S.photos.find(p => p.siteId === s.id && p.address)?.address || '';
+    const half = y0 => {
+      const m = 16, W = 210, cw = W - 2 * m; let y = y0;
+      doc.setFillColor(...C.NAVY); doc.rect(0, y0, W, 26, 'F'); doc.setFillColor(...C.ORANGE); doc.rect(0, y0 + 26, W, 1.6, 'F');
+      try { doc.addImage(EW_LOGO_W, 'PNG', m, y0 + 7, 50, 50 * 146 / 640, 'ewlogo', 'FAST'); } catch (e) {}
+      pf(doc, 'cs', 8.5); doc.setTextColor(201, 197, 234); doc.text('INFORMATION FÜR ANWOHNERINNEN UND ANWOHNER', W - m, y0 + 12, { align: 'right', charSpace: 0.4 }); pf(doc, 'm', 9); doc.setTextColor(255, 255, 255); doc.text(K.one(s.name, 90), W - m, y0 + 18, { align: 'right' });
+      y = y0 + 38; pf(doc, 'c', 21); doc.setTextColor(...C.NAVY); doc.text('LIEBE NACHBARINNEN UND NACHBARN,', m, y); y += 8;
+      pf(doc, 'r', 10.2); doc.setTextColor(...C.INK); const w = doc.splitTextToSize(K.safe(a.what), cw); doc.text(w, m, y); y += w.length * 4.6 + 3;
+      const fromT = a.from ? new Date(a.from + 'T12:00').toLocaleDateString('de-DE') : '', toT = a.to ? new Date(a.to + 'T12:00').toLocaleDateString('de-DE') : '';
+      doc.setFillColor(...C.PAPER); doc.rect(m, y, cw, 15, 'F'); doc.setFillColor(...C.ORANGE); doc.rect(m, y, 1.2, 15, 'F');
+      K.label(m + 5, y + 5, 'Zeitraum'); pf(doc, 'c', 14); doc.setTextColor(...C.NAVY); doc.text(`${fromT} – ${toT}`, m + 5, y + 12);
+      K.label(m + 88, y + 5, 'Arbeitszeiten'); pf(doc, 'sb', 10.5); doc.setTextColor(...C.INK); doc.text(K.one(a.hours, cw - 92), m + 88, y + 11.5); y += 21;
+      if (addr) { K.label(m, y, 'Ort'); pf(doc, 'r', 9.6); doc.setTextColor(...C.INK); doc.text(K.one(addr, cw - 20), m + 16, y); y += 6; }
+      if (a.restr.length) { K.label(m, y, 'Was Sie erwartet'); y += 4.6; pf(doc, 'r', 9.8); doc.setTextColor(...C.INK); a.restr.forEach(i => { doc.setFillColor(...C.ORANGE); doc.rect(m + 0.6, y - 2.4, 1.8, 1.8, 'F'); doc.text(K.safe(AW_RESTR[i]), m + 5, y); y += 4.8; }); y += 1.5; }
+      if (a.note) { pf(doc, 'r', 9.6); doc.setTextColor(...C.GREY); const nl = doc.splitTextToSize(K.safe(a.note), cw).slice(0, 2); doc.text(nl, m, y); y += nl.length * 4.3 + 2; }
+      pf(doc, 'sb', 10); doc.setTextColor(...C.NAVY); doc.text('Vielen Dank für Ihr Verständnis!', m, y + 2);
+      const by = y0 + 148 - 22; doc.setDrawColor(...C.LINE); doc.setLineWidth(0.3); doc.line(m, by, W - m, by);
+      K.label(m, by + 5, 'Ihr Ansprechpartner vor Ort'); pf(doc, 'sb', 11); doc.setTextColor(...C.INK); doc.text(K.one([a.contact, a.phone].filter(Boolean).join('  ·  ') || '–', 110), m, by + 11);
+      pf(doc, 'r', 8); doc.setTextColor(...C.GREY); doc.text(K.one(`${coName()}${/enerweser/i.test(coName()) ? '  ·  ' + EW_CO.addr + '  ·  ' + EW_CO.mail : ''}`, cw), m, by + 16.5);
+      if (a.client) { pf(doc, 'r', 8); doc.text(K.one('Im Auftrag von ' + a.client, 70), W - m, by + 11, { align: 'right' }); }
+    };
+    half(0); half(148.5);
+    doc.setDrawColor(150, 150, 170); doc.setLineWidth(0.2); doc.setLineDashPattern([2, 2], 0); doc.line(0, 148.5, 210, 148.5); doc.setLineDashPattern([], 0);
+    pf(doc, 'r', 6.5); doc.setTextColor(150, 150, 170); doc.text('hier schneiden', 4, 147.3);
+    await saveFile(`Anwohner-Info_${slug(s.name)}.pdf`, doc.output('blob'));
+  } catch (e) { toast('PDF fehlgeschlagen: ' + (e.message || e), 5000); }
+}
+
+/* =====================================================================
+   Beispieldaten für Unterlagen, Verkehrssicherung, Spülbohrung, Profile
+   ===================================================================== */
+function demoSig() { const c = document.createElement('canvas'); c.width = 600; c.height = 180; const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, 600, 180); g.strokeStyle = '#1B1838'; g.lineWidth = 4; g.lineCap = 'round'; g.beginPath(); g.moveTo(40, 120); for (let x = 40; x < 520; x += 8) g.lineTo(x, 110 + Math.sin(x / 23) * 28 + Math.cos(x / 9) * 9); g.stroke(); return c.toDataURL('image/png'); }
+async function seedExamples4() {
+  seedProfiles();
+  if (!S.sites.some(s => s.id === 'ex1')) { S.set.seeded4 = true; saveSet(); return; }
+  const now = Date.now(), day = 864e5, u = S.set.name || 'Sefkan', dk = n => dayKey(now + n * day), ex1 = S.sites.find(s => s.id === 'ex1'), ex2 = S.sites.find(s => s.id === 'ex2');
+  const A = [['firma', 'freist', '', 'Finanzamt Verden', '', -100, 260], ['firma', 'ub_fa', '', 'Finanzamt Verden', '', -30, 60], ['firma', 'ub_soka', '', 'SOKA-BAU', '', -80, 9], ['firma', 'ub_bg', '', 'BG BAU', '', -20, 100], ['firma', 'haft', '', 'Versicherung', 'BHV-2026', -200, 165], ['firma', 'iso', '', 'Zertifizierer', 'QM-9001', -300, 430],
+    ['site', 'leitung', 'Strom', 'Stadtwerke', 'LA-S-112', -10, 18, 'ex2'], ['site', 'leitung', 'Gas', 'Stadtwerke', 'LA-G-112', -10, 18, 'ex2'], ['site', 'leitung', 'Telekommunikation', 'TK-Netzbetreiber', 'LA-T-112', -10, 18, 'ex2'], ['site', 'vrao', '', 'Straßenverkehrsamt', 'VA 2026/341', -9, 25, 'ex2'],
+    ['site', 'leitung', 'Telekommunikation', 'TK-Netzbetreiber', 'LA-T-817', -40, -3, 'ex1']];
+  for (const [i, x] of A.entries()) { const d = { id: 'exak' + i, example: true, scope: x[0], type: x[1], sparte: x[2], issuer: x[3], nr: x[4], from: dk(x[5]), until: dk(x[6]), siteId: x[7] || null, note: '', attach: x[0] === 'firma', file: null, created: now, user: u }; await DB.put('akten', d); S.akten.push(d); }
+  const sig = demoSig();
+  const M = [{ id: 'exms5', example: true, kind: 'vs', siteId: 'ex2', name: 'Kontrolle Bahnhofstraße', anordnung: 'VA 2026/341 · Straßenverkehrsamt', regelplan: 'B I/3', checks: VS_CHECKS.map(() => 'ok'), sig, note: '', photoIds: [], ts: now - day + 2 * 3600e3, date: dk(-1), user: u, lat: ex2?.lat, lon: ex2?.lon, files: [] },
+    { id: 'exms6', example: true, kind: 'bohr', siteId: 'ex2', name: 'Querung Einfahrt Nr. 8', partner: 'Bohrtechnik Partner GmbH', machine: 'Ditch Witch JT10', verfahren: 'Spülbohrung (HDD)', start: 'Gehweg vor Nr. 8, Nordseite', ziel: 'Gehweg gegenüber, Südseite', len: '27', pilot: '65', aufw: '125', pipe: 'Schutzrohr PE 110 + Verband 12×10', rods: [0.6, 0.9, 1.2, 1.4, 1.4, 1.3, 1.1, 0.9, 0.7].map((t, i) => ({ n: i + 1, len: '3', depth: String(t).replace('.', ',') })), result: 'ok', note: 'Fremdleitung Gas bei Stange 4 geortet, Abstand 0,6 m.', photoIds: [], ts: now - 2 * day, date: dk(-2), user: u, lat: ex2?.lat, lon: ex2?.lon, files: [] }];
+  for (const r of M) { await DB.put('messungen', r); S.messungen.push(r); }
+  if (ex1 && !ex1.profile) await applyProfile(ex1, 'prof1');
+  if (ex2) await ensureBohrItems('ex2');
+  S.set.seeded4 = true; saveSet();
 }
 
 /* PDF-Bericht im EnerWeser-Auftritt:
@@ -3855,8 +4425,8 @@ async function buildPDF(l, title, daily) {
         yy = tableHead(yy, MC);
         mss.forEach((r, i) => { const rh = 9.4; if (yy + rh > 270) { newPage(T.name); yy = tableHead(30, MC); } if (i % 2) { doc.setFillColor(...PAPER); doc.rect(m, yy, cw, rh, 'F'); }
           const e = msEval(r), [stT] = msStatus(r);
-          const kv = r.kind === 'spleiss' ? `${e.n}/${e.of} Fasern · max ${fmtN(e.max, 3)} dB` : r.kind === 'otdr' ? e.rows.map(x => `${x.wl}: ${fmtN(num2(x.loss), 2)} dB`).join(' · ') : `${fmtN(num2(r.len), 0)} m · ${e.speed ? fmtN(e.speed, 1) + ' m/min' : '–'}`;
-          pf(doc, 'cs', 8); doc.setTextColor(...NAVY); doc.text(r.kind === 'spleiss' ? 'SPLEISS' : r.kind === 'otdr' ? 'OTDR' : 'EINBLASEN', m + 2, yy + 5.9, { charSpace: 0.2 });
+          const kv = msKv(r, e, false);
+          pf(doc, 'cs', 8); doc.setTextColor(...NAVY); doc.text(MS_LONG[r.kind], m + 2, yy + 5.9, { charSpace: 0.2 });
           pf(doc, 'sb', 8.8); doc.setTextColor(...INK); doc.text(one(r.name || MS_KIND[r.kind], 74), m + 26, yy + 5.9);
           pf(doc, 'r', 8.2); doc.setTextColor(...GREY); doc.text(fmtDate(r.ts), m + 104, yy + 5.9); doc.text(one(kv, 36), m + 124, yy + 5.9);
           chip(m + cw - 22, yy + 5.9, stT === 'IO' ? 'I. O.' : stT === 'NIO' ? 'N. I. O.' : 'OFFEN', stT === 'IO' ? OK : stT === 'NIO' ? BAD : [150, 146, 175], 20);
@@ -3915,11 +4485,19 @@ async function buildPDF(l, title, daily) {
   pf(doc, 'r', 9.2); doc.setTextColor(...INK);
   const bt = doc.splitTextToSize(`${sealed ? `${sealed} von ${l.length} Fotos` : 'Die Fotos'} wurden direkt bei der Aufnahme mit einem SHA-256-Fingerabdruck versiegelt und in einer fortlaufenden Prüfkette verknüpft. Jede spätere Veränderung an einer Bilddatei ist dadurch nachweisbar. Zusätzlich werden die Fingerabdrücke über OpenTimestamps (opentimestamps.org) unabhängig mit einem Zeitstempel versehen. Die Originaldateien, die Prüfsummen (pruefsummen.sha256) und die Zeitstempel-Dateien (.ots) enthält der ZIP-Export. Die Bilder in diesem PDF sind für den Druck verkleinert.`, cw);
   doc.text(bt, m, y); y += bt.length * 4.3 + 6;
+  const akR = S.akten.filter(d => (d.scope === 'firma' && d.attach) || (d.scope === 'site' && allSites.some(s => s.id === d.siteId)));
+  if (akR.length) { label(m, y, 'Unterlagen'); y += 2.5; y = tableHead(y, [['UNTERLAGE', m + 2], ['AUSSTELLER / NR.', m + 92], ['GÜLTIG BIS', m + cw - 2, 'right']]);
+    akR.slice(0, 12).forEach((d, i) => { const rh = 6.6; if (i % 2) { doc.setFillColor(...PAPER); doc.rect(m, y, cw, rh, 'F'); } const [, , stt] = akState(d), ss = S.sites.find(x => x.id === d.siteId);
+      pf(doc, 'sb', 8.4); doc.setTextColor(...INK); doc.text(one((d.type === 'leitung' ? 'Leitungsauskunft ' + (d.sparte || '') : akName(d)) + (ss && allSites.length > 1 ? ' · ' + ss.name : ''), 86), m + 2, y + 4.5);
+      pf(doc, 'r', 8); doc.setTextColor(...GREY); doc.text(one([d.issuer, d.nr].filter(Boolean).join(' · ') || '–', 58), m + 92, y + 4.5);
+      pf(doc, 'sb', 8.2); doc.setTextColor(...(stt === 'bad' ? BAD : stt === 'soon' ? OINK : INK)); doc.text(d.until ? fmtDate(new Date(d.until + 'T12:00')) : '–', m + cw - 2, y + 4.5, { align: 'right' }); hair(y + rh); y += rh; });
+    y += 7; }
   label(m, y, 'Legende'); y += 5.5;
   [['V', 'Vorher', 'Zustand vor Beginn der Arbeiten (Beweissicherung)'], ['W', 'Während', 'Ausführung, Einbau, verdeckte Leistungen vor dem Verfüllen'], ['N', 'Nachher', 'Fertigstellung und wiederhergestellte Oberflächen']].forEach(([ph, n, t]) => {
     chip(m, y, n.toUpperCase(), PC[ph], 20); pf(doc, 'r', 8.8); doc.setTextColor(...INK); doc.text(t, m + 24, y); y += 6.2;
   });
   chip(m, y, 'PFLICHTFOTO', NAVY, 20); pf(doc, 'r', 8.8); doc.setTextColor(...INK); doc.text('Von der Vorlage der Baustelle gefordertes Foto (Nachweis gegenüber Auftraggeber/Netzbetreiber)', m + 24, y); y += 12;
+  if (y > 196) { newPage('Nachweis & Freigabe'); y = 32; }
   label(m, y, 'Freigabe'); y += 4;
   const bw2 = (cw - 8) / 2;
   [['Aufgestellt', coName(), users[0] || S.set.name || ''], ['Geprüft / anerkannt', 'Auftraggeber' + (single?.client ? ': ' + single.client : ''), '']].forEach(([t, who, nm], i) => {
@@ -3975,8 +4553,9 @@ async function buildPDF(l, title, daily) {
   // Hinweise
   const miss = toc.sites.filter(T => T.site && prs.get(T.site.id).missing.length);
   if (y < 262) {
-    const ok = !miss.length && !defOver.length;
-    const lines = ok ? ['Alle geforderten Pflichtfotos sind vorhanden. Es gibt keine überfälligen Mängel.'] : [...miss.map(T => `${T.name}: es fehlen ${prs.get(T.site.id).missing.map(x => x.label).join(', ')}`), ...(defOver.length ? [`${defOver.length} Mangel/Mängel mit überschrittener Frist: ${defOver.map(d => 'M' + d.no).join(', ')}`] : [])];
+    const ok = !miss.length && !defOver.length && !toc.sites.some(T => T.site && profCheck(T.site).some(t => !/Pflichtfoto/.test(t)));
+    const pcl = toc.sites.filter(T => T.site).flatMap(T => profCheck(T.site).filter(t => !/Pflichtfoto/.test(t)).map(t => `${T.name}: ${t}`));
+    const lines = ok && !pcl.length ? ['Alle geforderten Pflichtfotos sind vorhanden. Es gibt keine überfälligen Mängel.'] : [...miss.map(T => `${T.name}: es fehlen ${prs.get(T.site.id).missing.map(x => x.label).join(', ')}`), ...pcl, ...(defOver.length ? [`${defOver.length} Mangel/Mängel mit überschrittener Frist: ${defOver.map(d => 'M' + d.no).join(', ')}`] : [])];
     pf(doc, 'r', 8.8); const wl = lines.flatMap(t => doc.splitTextToSize(pdfSafe('• ' + t), cw - 10)).slice(0, Math.max(1, Math.floor((276 - y - 10) / 4.3)));
     const hh = 10 + wl.length * 4.3;
     doc.setFillColor(...(ok ? [234, 246, 239] : [255, 246, 235])); doc.rect(m, y, cw, hh, 'F'); doc.setFillColor(...(ok ? OK : ORANGE)); doc.rect(m, y, 1.2, hh, 'F');
@@ -4023,7 +4602,8 @@ function geoFeatures(l) {
 }
 /* Dateinamen-Konvention: Bausteine in der gewählten Reihenfolge, die Kurz-ID am Ende hält jeden Namen eindeutig */
 const FN_PARTS = { zeit: 'Datum + Uhrzeit', datum: 'Datum', baustelle: 'Baustelle', auftrag: 'Auftrags-Nr.', phase: 'Phase (V/W/N)', titel: 'Pflichtfoto / Kategorie', adresse: 'Adresse', kategorie: 'Kategorie' };
-function fileName(p, parts = fnParts()) {
+const fnPartsFor = p => { const pr = profileOf(S.sites.find(x => x.id === p.siteId)); return pr?.fn?.length ? pr.fn : fnParts(); };
+function fileName(p, parts = fnPartsFor(p)) {
   const s = S.sites.find(x => x.id === p.siteId), it = s?.items.find(i => i.id === p.itemId);
   const ext = p.kind === 'video' ? (/mp4/.test(p.mime || '') ? '.mp4' : '.webm') : '.jpg';
   const val = { zeit: stamp(p.ts), datum: stamp(p.ts).slice(0, 8), baustelle: s ? slug(s.name) : 'ohne-baustelle', auftrag: s?.order ? slug(s.order) : '', phase: p.phase, titel: (p.kind === 'pano' ? '360_' : '') + slug(it ? it.label : catName(p.cat)), adresse: p.address ? slug(p.address.split(',')[0]) : '', kategorie: slug(catName(p.cat)) };
@@ -4050,8 +4630,9 @@ async function backup(btn) {
     const zip = new window.JSZip();
     const { aiKey, elKey, ...setNoKey } = S.set; // der KI-Schlüssel kommt nie ins Backup
     zip.file('daten.json', JSON.stringify({ app: 'sefki-baudoku', v: 3, at: Date.now(), settings: setNoKey, sites: S.sites, photos: S.photos.map(({ blob, origBlob, posterBlob, ...r }) => ({ ...r, docs: r.docs?.map(({ blob, ...d }) => d) })), master: S.master, collections: S.collections, notes: S.notes.map(({ audio, ...r }) => r), trassen: S.trassen, ledger: S.ledger, daily: S.daily,
-      plans: S.plans.map(({ blob, ...r }) => r), defects: S.defects, protocols: S.protocols, aufmass: S.aufmass, messungen: S.messungen.map(r => ({ ...r, files: (r.files || []).map(({ blob, ...x }) => x) })), lvOwn: S.set.lvOwn || [], customTpl: S.customTpl, layers: S.layers }));
+      plans: S.plans.map(({ blob, ...r }) => r), defects: S.defects, protocols: S.protocols, aufmass: S.aufmass, messungen: S.messungen.map(r => ({ ...r, files: (r.files || []).map(({ blob, ...x }) => x) })), akten: S.akten.map(d => ({ ...d, file: d.file ? (({ blob, ...x }) => x)(d.file) : null })), profiles: S.set.profiles || [], lvOwn: S.set.lvOwn || [], customTpl: S.customTpl, layers: S.layers }));
     const md = zip.folder('messdateien'); S.messungen.forEach(r => (r.files || []).forEach(x => md.file(r.id + '_' + x.id, x.blob)));
+    const akf = zip.folder('akten'); S.akten.forEach(d => { if (d.file?.blob) akf.file(d.id, d.file.blob); });
     const ph = zip.folder('fotos'); S.photos.forEach(p => { ph.file(p.id + '.jpg', p.blob); if (p.origBlob) ph.file(p.id + '_orig.jpg', p.origBlob); if (p.posterBlob) ph.file(p.id + '_poster.jpg', p.posterBlob); });
     const pf = zip.folder('plaene'); S.plans.forEach(p => pf.file(p.id + '.jpg', p.blob));
     const af = zip.folder('anhaenge'); S.photos.forEach(p => (p.docs || []).forEach(d => af.file(p.id + '_' + d.id, d.blob)));
@@ -4068,11 +4649,13 @@ async function restore(file) {
     if (j.app !== 'sefki-baudoku') throw new Error('Das ist kein SEF-KI-Backup');
     let ns = 0, np = 0;
     for (const s of j.sites) if (!S.sites.find(x => x.id === s.id)) { await DB.put('sites', s); S.sites.push(s); ns++; }
-    for (const [store, arr] of [['notes', j.notes], ['trassen', j.trassen], ['ledger', j.ledger], ['defects', j.defects], ['protocols', j.protocols], ['aufmass', j.aufmass], ['messungen', j.messungen]]) for (const r0 of arr || []) if (!S[store].find(x => x.id === r0.id)) {
+    for (const [store, arr] of [['notes', j.notes], ['trassen', j.trassen], ['ledger', j.ledger], ['defects', j.defects], ['protocols', j.protocols], ['aufmass', j.aufmass], ['messungen', j.messungen], ['akten', j.akten]]) for (const r0 of arr || []) if (!S[store].find(x => x.id === r0.id)) {
       const r = { ...r0 }; if (store === 'notes' && r.mime) { const f = zip.file('memos/' + r.id + '.bin'); if (f) r.audio = new Blob([await f.async('arraybuffer')], { type: r.mime }); }
+      if (store === 'akten' && r.file) { const f = zip.file('akten/' + r.id); r.file = f ? { ...r.file, blob: new Blob([await f.async('arraybuffer')], { type: r.file.type }) } : null; }
       if (store === 'messungen') r.files = await Promise.all((r.files || []).map(async x => { const f = zip.file('messdateien/' + r.id + '_' + x.id); return f ? { ...x, blob: new Blob([await f.async('arraybuffer')], { type: x.type }) } : null; })).then(a => a.filter(Boolean));
       await DB.put(store, r); S[store].push(r); }
     for (const r of j.plans || []) if (!S.plans.find(x => x.id === r.id)) { const f = zip.file('plaene/' + r.id + '.jpg'); if (!f) continue; const p = { ...r, blob: new Blob([await f.async('arraybuffer')], { type: 'image/jpeg' }) }; await DB.put('plans', p); S.plans.push(p); }
+    if (Array.isArray(j.profiles)) { seedProfiles(); for (const pr of j.profiles) if (!S.set.profiles.some(x => x.id === pr.id)) S.set.profiles.push(pr); saveSet(); }
     if (Array.isArray(j.lvOwn)) { S.set.lvOwn = [...(S.set.lvOwn || []), ...j.lvOwn.filter(o => !(S.set.lvOwn || []).some(x => x.pos === o.pos && x.text === o.text))]; saveSet(); }
     if (j.customTpl) { Object.assign(S.customTpl, j.customTpl); applyCustomTpl(); saveTpls(); }
     if (Array.isArray(j.layers)) { for (const L of j.layers) if (!S.layers.find(x => x.id === L.id)) S.layers.push(L); saveLayers(); }
@@ -4571,9 +5154,10 @@ function dayData(day, siteF) {
   const ph = S.photos.filter(p => dayKey(p.ts) === day && inSite(p)).sort((a, b) => a.ts - b.ts);
   const notes = S.notes.filter(n => dayKey(n.ts) === day && inSite(n)).sort((a, b) => a.ts - b.ts);
   const tr = S.trassen.filter(t => (dayKey(t.created) === day || t.points.some(p => dayKey(p.ts) === day)) && inSite(t));
-  const siteIds = [...new Set([...ph.map(p => p.siteId), ...notes.map(n => n.siteId), ...tr.map(t => t.siteId)].filter(Boolean))];
+  const ms = S.messungen.filter(r => r.date === day && inSite(r)), am = S.aufmass.filter(e => e.date === day && inSite(e));
+  const siteIds = [...new Set([...ph.map(p => p.siteId), ...notes.map(n => n.siteId), ...tr.map(t => t.siteId), ...ms.map(r => r.siteId), ...am.map(e => e.siteId)].filter(Boolean))];
   const sites = siteIds.map(id => S.sites.find(s => s.id === id)).filter(Boolean);
-  return { day, ph, notes, tr, sites, siteF };
+  return { day, ph, notes, tr, sites, siteF, ms, am };
 }
 function ruleReport(D, weather) {
   const L = [`TAGESBERICHT ${new Date(D.day + 'T12:00').toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }).toUpperCase()}`, `Bearbeiter: ${S.set.name || '–'}`];
@@ -4586,6 +5170,8 @@ function ruleReport(D, weather) {
     ps.filter(p => p.itemId).forEach(p => { const it = s.items.find(i => i.id === p.itemId); L.push(`- ${PH[p.phase].n}: ${it?.label || catName(p.cat)}${p.depthCm ? ` – Tiefe ${p.depthCm} cm` : ''}${p.desc ? ` – ${p.desc}` : p.aiDesc ? ` – ${p.aiDesc}` : ''}`); });
     D.tr.filter(t => t.siteId === s.id).forEach(t => L.push(`- Trasse „${t.name}“ (${t.kind}): ${tLen(t).toFixed(1).replace('.', ',')} m aufgenommen, ${t.marks.length} Markierungen, ${accSummary(t)}`));
     D.notes.filter(n => n.siteId === s.id).forEach(n => L.push(`- Notiz ${fmtTime(n.ts)}: ${n.text}`));
+    (D.ms || []).filter(r => r.siteId === s.id).forEach(r => L.push(`- ${MS_KIND[r.kind]}${r.name ? ' „' + r.name + '“' : ''} (${fmtTime(r.ts)} Uhr): ${msKv(r)} – ${msStatus(r)[2]}`));
+    const amS = amSum((D.am || []).filter(e => e.siteId === s.id)); if (amS.length) L.push('- Aufmaß: ' + amS.map(r => `${r.pos} ${r.text.split(/[,(]/)[0].trim()} ${fmtN(Math.round(r.qty * 1000) / 1000, 2)} ${r.unit}`).join('; '));
     L.push(pr.missing.length ? `- Offen: ${pr.missing.map(i => i.label).join(', ')}` : '- Alle Pflichtfotos vorhanden.');
   }
   const loose = D.ph.filter(p => !p.siteId), ln = D.notes.filter(n => !n.siteId);
@@ -5583,7 +6169,7 @@ if ('speechSynthesis' in window) { try { speechSynthesis.getVoices(); speechSynt
 
 /* ---------- Sandkasten: Beispieldaten, nichts wird gespeichert ---------- */
 const Sandbox = {
-  on: false, orig: null, keys: ['sites', 'photos', 'notes', 'trassen', 'ledger', 'plans', 'defects', 'protocols', 'aufmass', 'messungen'],
+  on: false, orig: null, keys: ['sites', 'photos', 'notes', 'trassen', 'ledger', 'plans', 'defects', 'protocols', 'aufmass', 'messungen', 'akten'],
   async enter() {
     if (this.on) return;
     const cl = o => { try { return structuredClone(o); } catch (e) { return JSON.parse(JSON.stringify(o)); } };
@@ -5592,8 +6178,9 @@ const Sandbox = {
     this.keys.forEach(k => S[k] = (S[k] || []).map(cl));
     S.set = { ...cl({ ...S.set, coLogo: null }), coLogo: S.set.coLogo, aiCheck: false, privacy: false, ots: false, hookUrl: '', series: false, voice: false };
     S.daily = cl(S.daily || {}); S.customTpl = cl(S.customTpl || {});
-    if (!S.sites.length) { try { await seedExamples(); await seedExamples2(); await seedExamples3(); } catch (e) { console.warn(e); } }
+    if (!S.sites.length) { try { await seedExamples(); await seedExamples2(); await seedExamples3(); await seedExamples4(); } catch (e) { console.warn(e); } }
     if (!S.aufmass.length && !S.messungen.length) { try { await seedExamples3(); } catch (e) { console.warn(e); } }
+    if (!S.akten.length) { try { await seedExamples4(); } catch (e) { console.warn(e); } }
     if (!S.plans.length) { const s = tSite(); if (s) { try { const c = demoPlanCanvas(); S.plans.push({ id: 'tourpl', siteId: s.id, name: 'Beispielplan', w: c.width, h: c.height, created: Date.now(), blob: await toBlob(c, 0.85), thumb: fitCanvas(c, 500).toDataURL('image/jpeg', 0.7), example: true }); } catch (e) {} } }
   },
   leave() { if (!this.on) return; Object.assign(S, this.orig); this.orig = null; this.on = false; DB.sandbox = false; }
@@ -5641,7 +6228,7 @@ async function tMapTap(pt) {
   ev('pointerdown'); await tWait(80); ev('pointerup'); await tWait(300);
 }
 /* Kontexte: was auf dem Bildschirm offen sein muss. Rückgabe false = Kapitel überspringen */
-const SHEET_CTX = ['site', 'abn', 'defect', 'photo', 'settings', 'amsheet', 'spl'];
+const SHEET_CTX = ['site', 'abn', 'defect', 'photo', 'settings', 'amsheet', 'spl', 'profil', 'siteprof', 'anw', 'vs', 'bohr', 'qr', 'qrshow', 'amsug', 'amvoice'];
 const TOUR_CTX = {
   cockpit: () => go('cockpit'),
   karte: () => go('karte'),
@@ -5660,6 +6247,16 @@ const TOUR_CTX = {
   aufmass: () => { S.am.site = 'all'; go('aufmass'); },
   amsheet: () => { const s = S.sites.find(x => x.id === 'ex2') || tSite(); go('aufmass'); openAm(null, { siteId: s?.id || null }); },
   messung: () => { S.ms.site = 'all'; S.ms.kind = 'all'; go('messung'); },
+  akten: () => { S.ak.scope = 'site'; S.ak.site = 'all'; go('akten'); },
+  profil: () => { seedProfiles(); const p = S.set.profiles[0]; if (!p) return false; go('mehr'); editProfile(p.id); },
+  siteprof: () => { const s = S.sites.find(x => x.profile) || tSite(); if (!s) return false; go('cockpit'); openSite(s.id); setTimeout(() => $('#scrim .prof-box')?.scrollIntoView({ block: 'center' }), 50); },
+  anw: () => { const s = S.sites.find(x => x.id === 'ex2') || tSite(); if (!s) return false; go('cockpit'); openAnwohner(s); },
+  vs: () => { const s = S.sites.find(x => x.id === 'ex2') || tSite(); go('messung'); openMess(null, 'vs', { siteId: s?.id || null }); },
+  bohr: () => { const r = S.messungen.find(x => x.kind === 'bohr'); if (!r) return false; go('messung'); openMess(r.id); },
+  qr: () => { const r = S.messungen.find(x => x.kind === 'spleiss' && !x.hash); if (!r) return false; go('messung'); openMess(r.id); setTimeout(() => $('#scrim [data-x=qr]')?.scrollIntoView({ block: 'center' }), 50); },
+  qrshow: () => { const r = S.messungen.find(x => x.kind === 'spleiss' && msEval(x).over) || S.messungen.find(x => x.kind === 'spleiss'); if (!r) return false; go('messung'); showQr(qrPayload(r)); },
+  amsug: () => { go('aufmass'); for (let i = 0; i < 7; i++) { const d = dayKey(Date.now() - i * 864e5); if (amSuggest(d).length) { openAmSuggest(d); return; } } return false; },
+  amvoice: () => { go('aufmass'); openAmVoice(); },
   spl: () => { const r = S.messungen.find(x => x.kind === 'spleiss' && msEval(x).over) || S.messungen.find(x => x.kind === 'spleiss'); if (!r) return false; S.ms.site = 'all'; S.ms.kind = 'all'; go('messung'); openMess(r.id); },
   statistik: () => { S.statSel = null; go('statistik'); }
 };
@@ -5782,7 +6379,9 @@ function tourSteps() {
       ['.tab[data-v=mehr]', 'Unter Mehr liegt alles fürs Projekt: Bericht, Mängel, Pläne, Statistik, Trassen, Bautagebuch und Einstellungen. So bleibt die Leiste unten übersichtlich.', { title: 'Mehr' }],
       ['#hubGrid', 'Jede Kachel zeigt schon von außen, was offen ist: ungesicherte Fotos, offene Mängel, die Zahl der Pläne. Orange heißt: Da wartet etwas auf dich.', { title: 'Kacheln' }],
       ['#hubGrid [data-hub=aufmass]', 'Aufmaß: Hier erfasst du die gebauten Mengen mit Rechenansatz – die Grundlage für die Abrechnung.', { pro: 1, title: 'Aufmaß' }],
-      ['#hubGrid [data-hub=messung]', 'Spleiß und Messung: Spleiß-, OTDR- und Einblasprotokolle, jeder Wert gegen den Grenzwert geprüft.', { pro: 1, title: 'Spleiß & Messung' }],
+      ['#hubGrid [data-hub=messung]', 'Protokolle: Spleiß, OTDR, Einblasen, Spülbohrung und die tägliche Verkehrssicherung – jeder Wert gegen den Grenzwert geprüft.', { pro: 1, title: 'Protokolle' }],
+      ['#hubGrid [data-hub=akten]', 'Unterlagen: Leitungsauskünfte, Anordnungen und die Nachweise für die Nachunternehmerprüfung – mit Ablaufdatum.', { pro: 1, title: 'Unterlagen' }],
+      ['#hubGrid [data-hub=profil]', 'Doku-Profile: das Schema je Netzbetreiber – Pflichtfotos, Dateinamen, Ordner und geforderte Protokolle.', { pro: 1, title: 'Doku-Profile' }],
       ['#hubGrid [data-hub=sammlungen]', 'Sammlungen bündeln Fotos quer über Baustellen, zum Beispiel alles für eine Abnahme oder einen Nachtrag.', { pro: 1, title: 'Sammlungen' }],
       ['#hubGrid [data-hub=stamm]', 'Stammdaten: Hier legst du Labels mit Farbe, eigene Kategorien und Textbausteine fest. So schreibt das ganze Team gleich.', { pro: 1, title: 'Stammdaten' }]
     ]),
@@ -5847,10 +6446,11 @@ function tourSteps() {
       [tSh('[data-x=photo]'), 'Foto hängt einen Nachweis an. Am besten mit Maßband im Bild.', { pro: 1 }],
       [tSh('[data-x=next]'), 'Speichern und nächstes: So erfasst du eine ganze Straße am Stück, ohne jedes Mal neu anzufangen.', { pro: 1 }]
     ]),
-    ...C('Spleiß & Messung', 'messung', [
-      ['#v-messung .vhead', 'Spleiß und Messung, ebenfalls unter Mehr. Hier entstehen die Protokolle, die der Netzbetreiber für jede Faser sehen will.', { pro: 1, title: 'Spleiß & Messung' }],
+    ...C('Protokolle', 'messung', [
+      ['#v-messung .vhead', 'Die Protokolle, ebenfalls unter Mehr. Hier entsteht alles, was der Netzbetreiber nachgewiesen haben will: Spleiß, OTDR, Einblasen, Bohrung und Verkehrssicherung.', { pro: 1, title: 'Protokolle' }],
       ['#msStats', 'Oben siehst du, wie viele Protokolle es gibt, wie viele in Ordnung sind und wie viele über dem Grenzwert liegen.', { pro: 1, title: 'Übersicht' }],
-      [tOf('#btnMsSpl', '.row'), 'Drei Arten von Protokollen: Spleißprotokoll je Muffe, Verteiler oder HÜP. OTDR-Messung je Strecke. Und das Einblasprotokoll mit Länge, Dauer und Druck.', { pro: 1, title: 'Neues Protokoll' }],
+      [tOf('#btnMsSpl', '.row'), 'Spleißprotokoll je Muffe, Verteiler oder HÜP. OTDR-Messung je Strecke. Und das Einblasprotokoll mit Länge, Dauer und Druck.', { pro: 1, title: 'Neues Protokoll' }],
+      [tOf('#btnMsBohr', '.row'), 'Dazu die Spülbohrung mit Partnerfirma und Tiefe je Stange, und die tägliche Kontrolle der Verkehrssicherung.', { pro: 1, title: 'Bohrung und Verkehrssicherung' }],
       ['#msSeg', 'Mit diesen Reitern filterst du nach Art.', { pro: 1, title: 'Filter', act: async () => { await tClick('#msSeg [data-mseg=spleiss]'); await tWait(900); await tClick('#msSeg [data-mseg=otdr]'); await tWait(900); await tClick('#msSeg [data-mseg=all]'); }, fx: '#msList' }],
       ['#msList .ms-card', 'Jede Karte zeigt das Ergebnis: IO in Grün heißt in Ordnung, NIO in Rot heißt über dem Grenzwert, Orange heißt noch unvollständig.', { pro: 1, title: 'Ergebnis' }],
       ['#btnMsPdf', 'Alle als PDF macht aus der Auswahl ein Protokollheft für den Netzbetreiber.', { pro: 1 }],
@@ -5862,6 +6462,60 @@ function tourSteps() {
       [tSh('#msSt'), 'Oben steht das Ergebnis des ganzen Protokolls.', { pro: 1, title: 'Ergebnis' }],
       [tSh('[data-x=pdf]'), 'Protokoll als PDF: alle Fasern, Ergebnis-Stempel und Unterschriftsfelder für den Netzbetreiber.', { pro: 1 }],
       [tSh('[data-x=seal]'), 'Abschließen und versiegeln: Danach ist das Protokoll fälschungssicher und lässt sich nicht mehr ändern.', { pro: 1 }]
+    ]),
+    ...C('Unterlagen', 'akten', [
+      ['#v-akten .vhead', 'Die Unterlagen, ebenfalls unter Mehr. Hier liegt alles, was du auf der Baustelle oder bei der Nachunternehmerprüfung vorzeigen musst – jeweils mit Ablaufdatum.', { pro: 1, title: 'Unterlagen' }],
+      ['#akStats', 'Oben siehst du sofort, welche Firmenunterlagen gültig sind, was bald abläuft und welche Baustelle noch keine Leitungsauskunft hat.', { pro: 1, title: 'Übersicht' }],
+      ['#akList .ak-warn', 'Das ist die wichtigste Warnung der ganzen App: Für diese Baustelle gibt es keine gültige Leitungsauskunft. Leitungsschäden sind der teuerste Fehler im Tiefbau. Deshalb warne ich laut, sobald du die Baustelle betrittst, und SEF-KI zeigt die Warnung ganz oben an.', { pro: 1, title: 'Leitungsauskunft-Check' }],
+      [() => $('#akList .ak-card'), 'Jede Auskunft mit Sparte, Netzbetreiber und Ablaufdatum. Grün ist gültig, Orange läuft bald ab, Rot ist abgelaufen.', { pro: 1, title: 'Auskünfte' }],
+      [() => $('#akList [data-aknew=leitung]'), 'Neue Auskunft ablegen: Sparte wählen, Ablaufdatum setzen, das PDF oder ein Foto vom Plan anhängen. Fertig.', { pro: 1 }],
+      ['#akSeg', 'Und hier die Firmenunterlagen für die Nachunternehmerprüfung.', { pro: 1, title: 'Firma', act: () => tClick('#akSeg [data-aks=firma]'), fx: '#akList' }],
+      [() => $('#akList .ak-card'), 'Freistellungsbescheinigung, Unbedenklichkeitsbescheinigungen, Haftpflicht und ISO-Zertifikat. 14 Tage vor Ablauf erinnere ich dich, und auf Wunsch liegen die Unterlagen jedem Bericht und ZIP bei.', { pro: 1, title: 'Nachunternehmer-Unterlagen' }]
+    ]),
+    ...C('Doku-Profile', 'profil', [
+      [tRow('#pfName'), 'Ein Doku-Profil je Netzbetreiber. Es legt fest, was der Auftraggeber sehen will.', { pro: 1, title: 'Doku-Profil' }],
+      [tSh('#pfItems'), 'Zusätzliche Pflichtfotos aus dem Doku-Handbuch, zum Beispiel die Speedpipe-Belegung am NVt oder das Typenschild mit Home-ID. Sie kommen automatisch auf die Checkliste jeder Baustelle mit diesem Profil.', { pro: 1, title: 'Zusätzliche Pflichtfotos' }],
+      [tSh('#pfFn'), 'So heißen die Dateien: Bausteine antippen, die Zahl zeigt die Reihenfolge. Darunter siehst du sofort ein Beispiel.', { pro: 1, title: 'Dateinamen' }],
+      [tRow('#pfDir'), 'Ordnerstruktur und Auflösung im ZIP – genau so, wie der Netzbetreiber es einliest.', { pro: 1, title: 'Ordner' }],
+      [() => $('#scrim [data-pr=spleiss]')?.closest('.fld'), 'Welche Protokolle und Unterlagen gefordert sind. Fehlt etwas, sage ich es in der Baustelle und im Bericht.', { pro: 1, title: 'Geforderte Nachweise' }],
+      [tSh('[data-x=exp]'), 'Als Datei teilen: Das Profil einmal im Büro anlegen und an alle Kolonnen schicken. Dann dokumentieren alle gleich.', { pro: 1 }]
+    ]),
+    ...C('Profil-Check', 'siteprof', [
+      [tSh('.prof-box'), 'In jeder Baustelle steht, nach welchem Profil dokumentiert wird – und was noch fehlt: Pflichtfotos, Protokolle, Leitungsauskunft, Anordnung. So geht nichts unvollständig ans Büro.', { pro: 1, title: 'Vollständig nach Profil?' }],
+      [tSh('[data-x=anw]'), 'Daneben die Anwohner-Info. Die schauen wir uns jetzt an.', { pro: 1 }]
+    ]),
+    ...C('Anwohner-Info', 'anw', [
+      [tRow('#awF'), 'Ein Infozettel für die Nachbarn. Zuerst Zeitraum und Arbeitszeiten.', { pro: 1, title: 'Zeitraum' }],
+      [tRow('#awW'), 'Was gemacht wird – passend zur Baustelle schon vorformuliert.', { pro: 1, title: 'Was wir machen' }],
+      [() => $('#scrim [data-rs]')?.closest('.fld'), 'Was die Anwohner erwartet: Gehweg gesperrt, Zufahrt eingeschränkt, Lärm. Einfach antippen.', { pro: 1, title: 'Einschränkungen' }],
+      [tRow('#awC'), 'Dein Name und deine Telefonnummer. So melden sich die Anwohner direkt bei dir und nicht beschwerend beim Auftraggeber.', { pro: 1, title: 'Ansprechpartner' }],
+      [tSh('[data-x=pdf]'), 'Infozettel als PDF: zwei Stück pro A4-Seite im EnerWeser-Design. Ausdrucken, schneiden, einwerfen.', { pro: 1 }]
+    ]),
+    ...C('Verkehrssicherung', 'vs', [
+      [tRow('#msAo'), 'Jeden Morgen die Verkehrssicherung prüfen – SEF-KI erinnert dich daran. Die Anordnung übernehme ich aus den Unterlagen.', { pro: 1, title: 'Tägliche Kontrolle' }],
+      [tSh('#vsList'), 'Acht Prüfpunkte nach Anordnung: Absperrung, Beschilderung, Beleuchtung, Gehweg, Rettungswege und mehr. Jeder Punkt ist OK, Mangel oder entfällt. Ich zeige es dir.', { pro: 1, title: 'Prüfpunkte', act: async () => { await tClick('#scrim [data-x=allok]'); await tWait(700); await tClick('#scrim [data-vc="7"][data-v=mangel]'); }, fx: '#scrim #msSt' }],
+      [tSh('#vsSig'), 'Unterschreiben direkt auf dem Handy. Das Protokoll landet im Bautagebuch, im Tagesbericht und im Fotobericht.', { pro: 1, title: 'Unterschrift' }],
+      [tSh('[data-x=photo]'), 'Ein Foto der Absperrung als Nachweis gehört dazu.', { pro: 1 }]
+    ]),
+    ...C('Spülbohrung', 'bohr', [
+      [tRow('#msPart'), 'Das Bohrprotokoll für grabenlose Verfahren: Partnerfirma, Verfahren und Bohrgerät.', { pro: 1, title: 'Spülbohrung' }],
+      [tRow('#msSt0'), 'Start- und Zielgrube. Mit einem Tipp übernehme ich die GPS-Position.', { pro: 1, title: 'Start und Ziel' }],
+      [tSh('#msRods'), 'Für jede Stange Länge und Tiefe. Die Station rechne ich mit.', { pro: 1, title: 'Stangen' }],
+      [tSh('#msProf'), 'Daraus zeichne ich das Bohrprofil, genau so steht es auch im PDF. Die fünf Pflichtfotos der Bohrung kommen automatisch auf die Checkliste der Baustelle.', { pro: 1, title: 'Bohrprofil' }]
+    ]),
+    ...C('QR-Etiketten', 'qr', [
+      [tSh('[data-x=qr]'), 'QR-Etikett: Ich drucke ein Etikett für Muffe, NVt oder HÜP. Die Messwerte stecken im Code selbst.', { pro: 1, title: 'QR-Etikett' }]
+    ]),
+    ...C('QR-Etiketten', 'qrshow', [
+      [tSh('.qr-fib'), 'Wer das Etikett Jahre später scannt – auch mit einem fremden Handy, ganz ohne Server – sieht sofort Ort, Kabel und die Dämpfung jeder Faser. Ideal für die Störungssuche.', { pro: 1, title: 'Gescannt' }]
+    ]),
+    ...C('Aufmaß-Vorschlag', 'amsug', [
+      [tSh('.sg-row'), 'Am Feierabend schlägt SEF-KI das Aufmaß vor: aus der aufgezeichneten Trasse, den Pflichtfotos und den Protokollen des Tages. Meter Graben, Kopflöcher, Spleiße, Einblaslänge.', { pro: 1, title: 'Vorschlag am Feierabend' }],
+      [tSh('[data-x=take]'), 'Mengen prüfen, Häkchen setzen, ein Tipp – und das Aufmaß des Tages ist fertig.', { pro: 1 }]
+    ]),
+    ...C('Aufmaß per Sprache', 'amvoice', [
+      [tRow('#avT'), 'Oder einfach sagen, was gebaut wurde. Ich schreibe hier mit.', { pro: 1, title: 'Per Sprache', act: () => tType('#scrim #avT', 'Graben Gehweg zwölf Meter vor Hausnummer 14'), fx: '#scrim #avR' }],
+      [tSh('#avR'), 'Ich erkenne Position, Maße und Ort: 12 Meter Graben im Gehweg, vor Hausnummer 14. Übernehmen, prüfen, speichern.', { pro: 1, title: 'Erkannt' }]
     ]),
     ...C('Fotos', 'galerie', [
       ['.tab[data-v=galerie]', 'Weiter zu den Fotos. Die Zahl am Symbol sagt dir, wie viele Fotos noch nicht gesichert sind.'],
@@ -6134,7 +6788,7 @@ addEventListener('keydown', e => { if (!Tour.on) return; if (e.key === 'Escape')
    ===================================================================== */
 function applyMode() {
   const simple = S.set.mode === 'simple'; document.body.classList.toggle('simple', simple);
-  if (simple && ['plaene', 'maengel', 'aufmass', 'messung'].includes(S.view)) go('cockpit');
+  if (simple && ['plaene', 'maengel', 'aufmass', 'messung', 'akten'].includes(S.view)) go('cockpit');
 }
 async function setMode(m) {
   if (m === 'full' && S.set.modePin) {
@@ -6913,6 +7567,7 @@ async function deriveImage(p, o) {
 }
 async function exportZIP(btn, list, o = {}) {
   await savingQ; o = { ...EXP_DEF, ...o }; bmCache.delete('fail');
+  { const ids = [...new Set((list || repList()).map(p => p.siteId))], s1 = ids.length === 1 ? S.sites.find(x => x.id === ids[0]) : null, pr = profileOf(s1); if (pr && !o.manual) o = { ...o, dir: pr.dir || o.dir, res: pr.res || o.res }; }
   let l = (list || repList()).slice().sort((a, b) => a.ts - b.ts); if (o.onlyClient) l = l.filter(p => p.client !== false);
   if (!l.length) return toast('Keine Fotos in dieser Auswahl.');
   btn.disabled = true; const lbl = btn.textContent; btn.textContent = 'Packe ZIP …';
@@ -6939,6 +7594,9 @@ async function exportZIP(btn, list, o = {}) {
     if (dl.length && o.csv) f.file('maengelliste.csv', defCSV(dl));
     const sids = new Set(site ? [site.id] : l.map(p => p.siteId)), al = S.aufmass.filter(e => sids.has(e.siteId)), ml = S.messungen.filter(r => sids.has(r.siteId));
     if (al.length && o.csv) f.file('aufmass.csv', amCSV(al));
+    const akl = S.akten.filter(d => d.file?.blob && (d.attach || (d.scope === 'site' && sids.has(d.siteId))) && (d.scope === 'firma' || sids.has(d.siteId)));
+    akl.forEach(d => { const fn = 'unterlagen/' + slug(d.type === 'leitung' ? 'Leitungsauskunft ' + (d.sparte || '') : akName(d)) + '_' + d.file.name; f.file(fn, d.file.blob); if (d.file.hash) sums.push(`${d.file.hash}  ${fn}`); });
+    for (const sid of sids) { const ss = S.sites.find(x => x.id === sid), pr = profileOf(ss); if (pr) f.file(`profil-check_${slug(ss.name)}.txt`, `Doku-Profil: ${pr.name}${pr.client ? ' (' + pr.client + ')' : ''}\r\nBaustelle: ${ss.name}\r\nStand: ${new Date().toLocaleString('de-DE')}\r\n\r\n` + (profCheck(ss).length ? 'Offene Punkte:\r\n' + profCheck(ss).map(t => '- ' + t).join('\r\n') : 'Vollständig nach Profil.') + (pr.note ? '\r\n\r\nHinweise: ' + pr.note : '')); }
     ml.forEach(r => (r.files || []).forEach(x => { f.file('messdateien/' + slug(r.name || MS_KIND[r.kind]) + '_' + x.name, x.blob); if (x.hash) sums.push(`${x.hash}  messdateien/${slug(r.name || MS_KIND[r.kind])}_${x.name}`); }));
     if (sums.length && o.sums) {
       f.file('pruefsummen.sha256', sums.join('\n') + '\n');
@@ -7123,9 +7781,17 @@ function bind() {
     const st = e.target.closest('[data-amsite]'); if (st) { S.am.site = st.dataset.amsite; renderAufmass(); return; }
     const r = e.target.closest('[data-am]'); if (r) { openAm(r.dataset.am); return; }
     if (e.target.closest('#btnAmNew')) openAm(null);
+    if (e.target.closest('#btnAmSug')) openAmSuggest();
+    if (e.target.closest('#btnAmVoice')) openAmVoice();
     const l = amList();
     if (e.target.closest('#btnAmCsv')) { if (!l.length) return toast('Noch kein Aufmaß.'); const s = S.sites.find(x => x.id === S.am.site); saveFile(`Aufmass_${slug(s ? s.name : 'Baustellen')}_${stamp(Date.now()).slice(0, 8)}.csv`, new Blob([amCSV(l)], { type: 'text/csv' })); }
     const pb = e.target.closest('#btnAmPdf'); if (pb) { if (!l.length) return toast('Noch kein Aufmaß.'); (async () => { pb.disabled = true; try { await needLib('PDF-Baustein', () => window.jspdf?.jsPDF); const doc = await buildAmPDF(l); const s = S.sites.find(x => x.id === S.am.site); await saveFile(`Aufmass_${slug(s ? s.name : 'Baustellen')}_${stamp(Date.now()).slice(0, 8)}.pdf`, doc.output('blob')); } catch (er) { toast('PDF fehlgeschlagen: ' + (er.message || er), 5000); } pb.disabled = false; })(); }
+  });
+  $('#v-akten').addEventListener('click', e => {
+    const sg = e.target.closest('[data-aks]'); if (sg) { S.ak.scope = sg.dataset.aks; renderAkten(); return; }
+    const st = e.target.closest('[data-aksite]'); if (st) { S.ak.site = st.dataset.aksite; renderAkten(); return; }
+    const c = e.target.closest('[data-ak]'); if (c) { openAkte(c.dataset.ak); return; }
+    const n = e.target.closest('[data-aknew]'); if (n) { const t = n.dataset.aknew; openAkte(null, t === 'firma' ? { scope: 'firma' } : { scope: 'site', type: t, siteId: n.dataset.site }); }
   });
   $('#v-messung').addEventListener('click', e => {
     const sg = e.target.closest('[data-mseg]'); if (sg) { S.ms.kind = sg.dataset.mseg; renderMessung(); return; }
@@ -7134,6 +7800,10 @@ function bind() {
     if (e.target.closest('#btnMsSpl')) openMess(null, 'spleiss');
     if (e.target.closest('#btnMsOtdr')) openMess(null, 'otdr');
     if (e.target.closest('#btnMsEin')) openMess(null, 'einblas');
+    if (e.target.closest('#btnMsBohr')) openMess(null, 'bohr');
+    if (e.target.closest('#btnMsVs')) openMess(null, 'vs');
+    if (e.target.closest('#btnMsScan')) scanQr();
+    if (e.target.closest('#btnMsQr')) { let l = S.messungen.filter(x => x.kind === 'spleiss' || x.kind === 'otdr' || x.kind === 'einblas' || x.kind === 'bohr'); if (S.ms.site !== 'all') l = l.filter(x => x.siteId === S.ms.site); if (S.ms.kind !== 'all') l = l.filter(x => x.kind === S.ms.kind); if (!l.length) return toast('Keine Protokolle für Etiketten.'); qrLabels(l.sort((a, b) => a.ts - b.ts)); }
     if (e.target.closest('#btnMsLim')) openMsLimits();
     if (e.target.closest('#btnMsPdf')) { let l = S.messungen.slice(); if (S.ms.site !== 'all') l = l.filter(x => x.siteId === S.ms.site); if (S.ms.kind !== 'all') l = l.filter(x => x.kind === S.ms.kind); if (!l.length) return toast('Keine Protokolle in dieser Auswahl.'); const s = S.sites.find(x => x.id === S.ms.site); msPDF(l.sort((a, b) => a.ts - b.ts), s ? s.name : 'Baustellen'); }
   });
@@ -7167,7 +7837,7 @@ function bind() {
     S.daily = kv.find(x => x.id === 'daily')?.map || {};
     S.rec = S.trassen.find(t => t.status === 'rec' || t.status === 'paused')?.id || null;
     S.plans = await DB.all('plans'); S.defects = await DB.all('defects'); S.protocols = await DB.all('protocols');
-    S.aufmass = await DB.all('aufmass'); S.messungen = await DB.all('messungen');
+    S.aufmass = await DB.all('aufmass'); S.messungen = await DB.all('messungen'); S.akten = await DB.all('akten');
     S.customTpl = kv.find(x => x.id === 'tpls')?.map || {}; applyCustomTpl();
     S.layers = kv.find(x => x.id === 'layers')?.list || [];
     const ms = kv.find(x => x.id === 'master'); if (ms) { const { id, ...rest } = ms; S.master = rest; }
@@ -7187,10 +7857,14 @@ function bind() {
   }
   if (!S.set.seeded2 && S.sites.some(s => s.example)) { try { await seedExamples2(); } catch (e) { console.warn(e); } }
   if (!S.set.seeded3 && S.sites.some(s => s.example)) { try { await seedExamples3(); } catch (e) { console.warn(e); } }
+  if (!S.set.seeded4 && S.sites.some(s => s.example)) { try { await seedExamples4(); } catch (e) { console.warn(e); } }
+  seedProfiles();
   try { S.persisted = await navigator.storage?.persisted?.(); if (!S.persisted && navigator.storage?.persist) S.persisted = await navigator.storage.persist(); } catch (e) {}
   initHeading();
   S.gal.view = S.set.galView || 'list'; applyMode();
-  const h = location.hash.slice(1); go(['cockpit', 'karte', 'plaene', 'maengel', 'galerie', 'bericht', 'mehr', 'statistik', 'aufmass', 'messung'].includes(h) ? h : 'cockpit');
+  const qrH = location.hash.startsWith('#qr=') ? location.hash : null;
+  const h = location.hash.slice(1); go(['cockpit', 'karte', 'plaene', 'maengel', 'galerie', 'bericht', 'mehr', 'statistik', 'aufmass', 'messung', 'akten'].includes(h) ? h : 'cockpit');
+  handleQrHash(qrH);
   startGPS();
   if (S.set.demo) toast('Demo-Position aktiv – in den Einstellungen abschaltbar.', 3000);
   if ('serviceWorker' in navigator && !inFrame && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
