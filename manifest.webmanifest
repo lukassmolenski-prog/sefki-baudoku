@@ -1,13 +1,13 @@
 {
- "name": "SEF-KI Baudoku",
- "short_name": "SEF-KI",
- "description": "GPS-Fotodokumentation für Baustellen – Smolens·KI",
+ "name": "EnerWeser Baudoku",
+ "short_name": "EnerWeser",
+ "description": "GPS-Fotodokumentation für Baustellen – EnerWeser Bautechnik (entwickelt von Smolens·KI)",
  "start_url": "./index.html",
  "scope": "./",
  "display": "standalone",
  "orientation": "portrait",
- "background_color": "#050b16",
- "theme_color": "#050b16",
+ "background_color": "#F6F5FA",
+ "theme_color": "#ffffff",
  "lang": "de",
  "icons": [
   {
