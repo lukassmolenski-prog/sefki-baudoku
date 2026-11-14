@@ -451,6 +451,31 @@ input[type=range]{width:100%;accent-color:var(--amber-fill)}
 /* ---------- Zeichnen ---------- */
 body:has(.pv) .scrim{z-index:92}body:has(.pv) .cam{z-index:93}
 .mk{position:fixed;inset:0;z-index:90;background:#120d3a;display:flex;flex-direction:column}
+.pxcard{display:block;width:100%;text-align:left;margin-top:12px;padding:14px 16px;border:2px solid var(--orange);border-radius:12px;background:linear-gradient(135deg,#fff7ec,#fff);cursor:pointer}
+.pxcard b{display:block;font-family:var(--f-display);font-size:19px;color:var(--indigo);text-transform:uppercase;letter-spacing:.02em}
+.pxcard span{display:block;font-size:13px;color:var(--mute);margin-top:4px;line-height:1.35}
+.pxcard em{display:inline-block;margin-top:8px;font-style:normal;font-family:var(--f-display);font-weight:700;color:var(--orange-ink,#B85F00);letter-spacing:.06em}
+.qchead{display:flex;gap:14px;align-items:center}
+.qcring{flex:none}
+.qcstate{display:inline-block;padding:3px 9px;border-radius:5px;color:#fff;font-family:var(--f-mono);font-weight:700;font-size:12px;letter-spacing:.12em}
+.qcstate.sm{font-size:10px;padding:2px 6px;letter-spacing:.08em}
+.qccnt{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0 4px}
+.qccnt div{border-top:3px solid var(--line);background:var(--surface);padding:6px 8px;font-size:12px;color:var(--mute)}
+.qccnt b{display:block;font-family:var(--f-display);font-size:22px;color:var(--ink);line-height:1}
+.qchist{display:flex;align-items:flex-end;gap:3px;height:38px;margin:8px 0 0}
+.qchist i{width:10px;border-radius:2px 2px 0 0}
+.qchist span{margin-left:8px;font-size:11.5px;color:var(--mute);align-self:center}
+.qctabs button{font-size:12.5px;padding:7px 4px}
+.qclist{display:flex;flex-direction:column;gap:8px}
+.qcf{border:1px solid var(--line);border-left:5px solid;border-radius:8px;padding:9px 11px;background:#fff}
+.qct{display:flex;gap:8px;align-items:center}
+.qct b{flex:1;font-size:14.5px}
+.qcsev{width:20px;height:20px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:800;font-size:12px;flex:none}
+.qcr{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;color:var(--mute);white-space:nowrap}
+.qcf p{margin:5px 0 0;font-size:13.5px;line-height:1.35}
+.qcb{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.qcok{padding:18px;text-align:center;color:var(--ok);font-weight:600;border:1px dashed var(--line);border-radius:8px}
+.btn.qcbtn{border-color:var(--ok);color:var(--ok)}
 .z3{position:fixed;left:0;right:0;top:var(--z3t,56px);bottom:var(--z3b,66px);z-index:20;overflow:hidden;color:#fff;user-select:none;-webkit-user-select:none;
   background:radial-gradient(120% 85% at 50% 0%,#33278a 0%,#18124a 48%,#0b0824 100%)}
 .z3.full{top:0;bottom:0;z-index:65}
@@ -1569,6 +1594,7 @@ function startGPS() {
 }
 function stopGPS() { if (gpsWatch != null) { try { navigator.geolocation.clearWatch(gpsWatch); } catch (e) {} gpsWatch = null; } }
 function onPos(p) {
+  if (window.PX_LOCK) return;   // Praxis-Rundgang: Position kommt aus dem Drehbuch
   const c = p.coords;
   if (!S.realHeading && c.heading != null && !isNaN(c.heading) && c.speed > 1) S.heading = Math.round(c.heading);
   if (S.gnss) return; // externer Empfänger hat Vorrang
@@ -1688,6 +1714,7 @@ function lotse() {
       else cards.push({ t: 'Checkliste ansehen', x: `Noch ${pr.missing.length} Pflichtfoto${pr.missing.length > 1 ? 's' : ''}. Reihenfolge: Vorher → Während → Nachher.`, tag: 'ÜBERSICHT', a: () => openSite(s.id) });
     } else {
       say = `${s.name} ist komplett: alle ${pr.must} Pflichtfotos sind drin. Erstell jetzt den Bericht, dann ist alles gesichert.`;
+      { const q = qcRun(s), lastQ = (s.qcRuns || []).slice(-1)[0]; if (q.cnt.err || q.cnt.warn || !lastQ || dayKey(lastQ.ts) !== today()) cards.push({ t: q.cnt.err ? `Q-Check: ${q.cnt.err} Fehler vor der Abgabe` : 'Q-Check vor der Abgabe', x: q.cnt.err || q.cnt.warn ? `${q.score} Punkte · ${q.cnt.err} Fehler, ${q.cnt.warn} Warnungen – prüfen und beheben, bevor der Bericht rausgeht.` : 'Alles prüfen lassen: Vollständigkeit, Richtigkeit, Sinnhaftigkeit.', tag: 'Q-CHECK', a: () => openQC(s.id), hot: !!q.cnt.err }); }
       cards.push({ t: 'Bericht & Sicherung', x: 'PDF für den Auftraggeber und ein ZIP mit allen Fotos.', tag: 'ABSCHLUSS', a: () => { S.rep.site = s.id; S.rep.range = 'all'; go('bericht'); }, hot: true });
       cards.push({ t: 'Zusatzfoto', x: 'Wird dieser Baustelle zugeordnet.', tag: 'FREI', a: () => openCamera(s.id, null) });
       cards.push({ t: 'Abnahme mit Unterschrift', x: 'Protokoll mit Vorbehalten, beide unterschreiben direkt auf dem Handy.', tag: 'ABNAHME', a: () => openAbnahme(s.id) });
@@ -2483,6 +2510,7 @@ function openSite(id) {
     <div class="row pro-only" style="margin-top:8px"><button class="btn amb" data-x="abn">Abnahme mit Unterschrift</button></div>
     <div class="row pro-only" style="margin-top:8px"><button class="btn" data-x="tpl">Checkliste bearbeiten</button><button class="btn" data-x="client">Auftraggeber & Logo</button></div>
     <div class="row" style="margin-top:8px"><button class="btn" data-x="route">Route</button><button class="btn" data-x="report">Bericht</button></div>
+    <div class="row" style="margin-top:8px"><button class="btn qcbtn" data-x="qc">✓ Q-Check · ${(() => { const r = qcRun(s); return r.score + ' Punkte · ' + (r.cnt.err ? r.cnt.err + ' Fehler' : r.cnt.warn ? r.cnt.warn + ' Warnungen' : 'freigabefähig'); })()}</button><button class="btn" data-x="z3">3D-Zwilling</button></div>
     <div class="row pro-only" style="margin-top:8px">${s.poly ? '<button class="btn" data-x="bound">Grenze neu zeichnen</button><button class="btn" data-x="unpoly">Fläche entfernen (Kreis)</button>' : '<button class="btn" data-x="center">Mitte = meine Position</button><button class="btn" data-x="radius">Umkreis ändern</button>'}</div>
     <div class="row pro-only" style="margin-top:8px">${s.poly ? '' : '<button class="btn" data-x="bound">Grenze als Fläche zeichnen</button>'}<button class="btn" data-x="assign">Fotos im Bereich zuordnen</button></div>
     <div class="row pro-only" style="margin-top:8px"><button class="btn" data-x="arch">${s.archived ? 'Wieder aktivieren' : 'Abschließen (archivieren)'}</button><button class="btn danger" data-x="del">Löschen</button></div>`);
@@ -2492,6 +2520,8 @@ function openSite(id) {
     const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
     if (x === 'route') openRoute(s);
     if (x === 'report') { closeSheet(); S.rep.site = s.id; S.rep.range = 'all'; go('bericht'); }
+    if (x === 'qc') { openQC(s.id); }
+    if (x === 'z3') { closeSheet(); Z3V.site = s.id; go('zwilling'); }
     if (x === 'plans') { closeSheet(); S.planSite = s.id; go('plaene'); }
     if (x === 'defs') { closeSheet(); S.def.site = s.id; S.def.status = 'open'; go('maengel'); }
     if (x === 'abn') openAbnahme(s.id);
@@ -3241,6 +3271,7 @@ function renderHub() {
   const t = (k, ic, title, sub, cnt, cls = '') => `<button class="tile" data-hub="${k}">${hsvg(ic)}${cnt != null ? `<span class="cnt2 ${cls}">${cnt}</span>` : ''}<b>${title}</b><span>${sub}</span></button>`;
   $('#hubGrid').innerHTML =
     (bad ? `<button class="tile wide" data-hub="qual" style="border-color:var(--amber)">${hsvg('qual')}<div><b>${bad} Foto${bad > 1 ? 's' : ''} unvollständig</b><span>Ohne GPS oder ohne Baustelle – jetzt zuordnen, damit der Bericht stimmt.</span></div><span class="cnt2 warn" style="position:static">→</span></button>` : '') +
+    t('qc', 'qual', 'Q-Check', (() => { const rs = activeSites().map(qcRun), e = rs.filter(r => r.cnt.err).length; return e ? `${e} Baustelle${e > 1 ? 'n' : ''} nicht freigabefähig` : 'Vollständigkeit, Richtigkeit, Sinnhaftigkeit prüfen'; })(), (() => { const e = activeSites().filter(s => qcRun(s).cnt.err).length; return e || '✓'; })(), activeSites().some(s => qcRun(s).cnt.err) ? 'bad' : '') +
     t('bericht', 'bericht', 'Bericht & Sichern', 'PDF-Fotobericht, ZIP mit Karte und Echtheitsnachweis', open ? open + ' offen' : '✓', open ? 'warn' : '') +
     t('maengel', 'maengel', 'Mängel', ov ? `${ov} Frist${ov > 1 ? 'en' : ''} überschritten` : 'Erfassen, Frist setzen, weiterleiten', od, ov ? 'bad' : od ? 'warn' : '') +
     t('aufmass', 'aufmass', 'Aufmaß', S.aufmass.length ? `${new Set(S.aufmass.map(e => e.pos)).size} Positionen · PDF und Excel` : 'Mengen mit Rechenansatz, ablaufen, Excel', S.aufmass.filter(e => e.date === dayKey(Date.now())).length || null) +
@@ -3263,6 +3294,7 @@ function hubAction(e) {
   if (k === 'qual') { S.gal.mode = 'issue'; S.gal.f = {}; S.gal.site = 'all'; go('galerie'); }
   if (k === 'bericht' || k === 'maengel' || k === 'plaene' || k === 'aufmass' || k === 'messung' || k === 'akten') go(k);
   if (k === 'profil') openProfiles();
+  if (k === 'qc') openQCAll();
   if (k === 'statistik') { S.statSel = null; go('statistik'); }
   if (k === 'trassen') { go('karte'); setTimeout(() => $('#trassPanel')?.scrollIntoView({ block: 'start', behavior: 'smooth' }), 60); }
   if (k === 'ebenen') openLayers();
@@ -4133,7 +4165,7 @@ function amSuggest(day = today()) {
   const out = [], done = new Set(S.aufmass.filter(e => e.date === day).map(e => e.siteId + '|' + e.pos)), add = (siteId, pos, calc, loc, src, trId) => { if (done.has(siteId + '|' + pos)) return; const L = lvAll().find(x => x.pos === pos); if (!L) return; out.push({ siteId, pos, text: L.text, unit: L.unit, mode: 'calc', calc, loc, src, ...(trId ? { trId } : {}) }); };
   const sites = S.sites.filter(s => !s.archived);
   for (const s of sites) {
-    const trs = S.trassen.filter(t => t.siteId === s.id && (dayKey(t.created) === day || t.points.some(p => dayKey(p.ts) === day)) && t.points.length > 1);
+    const trs = S.trassen.filter(t => t.siteId === s.id && (t.status || 'verlegt') !== 'bestand' && (dayKey(t.created) === day || t.points.some(p => dayKey(p.ts) === day)) && t.points.length > 1);
     trs.forEach(t => { const L = tLen(t).toFixed(2).replace('.', ','); add(s.id, '01.02', { a: L }, t.name, `Trasse ${t.name}`, t.id); add(s.id, /speedpipe|mikro/i.test(t.kind) ? '03.02' : '03.01', { a: L }, t.name, `Trasse ${t.name}`, t.id); });
     const ps = S.photos.filter(p => p.siteId === s.id && dayKey(p.ts) === day), lab = p => s.items.find(i => i.id === p.itemId)?.label || '';
     const kl = new Set(ps.filter(p => /kopfloch|montagegrube/i.test(lab(p))).map(p => p.itemId)).size; if (kl) add(s.id, '01.04', { n: String(kl) }, '', 'Fotos Kopfloch');
@@ -4626,6 +4658,15 @@ async function buildPDF(l, title, daily) {
   /* ---------- Nachweis & Freigabe ---------- */
   newPage('Nachweis & Freigabe'); toc.end = doc.getNumberOfPages(); let y = 32;
   eyebrow(m, y, 'Abschluss'); y += 10; y += h1(m, y, 'Nachweis & Freigabe') + 4;
+  { const qs = toc.sites.filter(T => T.site).map(T => ({ T, r: qcRun(T.site) }));
+    if (qs.length) { label(m, y, 'Qualitätsprüfung (Q-Check)'); y += 3;
+      const QC = [['BAUSTELLE', m + 2], ['ERGEBNIS', m + 92], ['PUNKTE', m + 136, 'right'], ['F / W / H', m + 160, 'right'], ['AKZ.', m + cw - 2, 'right']];
+      y = tableHead(y, QC);
+      qs.forEach(({ T, r }, i) => { const rh = 6.4; if (i % 2) { doc.setFillColor(...PAPER); doc.rect(m, y, cw, rh, 'F'); } const c = [1, 3, 5].map(k => parseInt(r.state[1].slice(k, k + 2), 16));
+        pf(doc, 'sb', 8.6); doc.setTextColor(...INK); doc.text(one(T.name, 86), m + 2, y + 4.3); pf(doc, 'sb', 8); doc.setTextColor(...c); doc.text(pdfSafe(r.state[0]), m + 92, y + 4.3);
+        pf(doc, 'c', 10); doc.text(String(r.score), m + 136, y + 4.5, { align: 'right' }); pf(doc, 'r', 8.4); doc.setTextColor(...INK); doc.text(`${r.cnt.err} / ${r.cnt.warn} / ${r.cnt.info}`, m + 160, y + 4.3, { align: 'right' }); doc.text(String(r.waived.length), m + cw - 2, y + 4.3, { align: 'right' });
+        hair(y + rh); y += rh; });
+      pf(doc, 'r', 7.2); doc.setTextColor(...GREY); doc.text(pdfSafe('F / W / H = Fehler, Warnungen, Hinweise. Einzelbefunde und begründete Ausnahmen stehen im Prüfprotokoll (Q-Check in der App).'), m, y + 4); y += 10; } }
   const sealed = l.filter(p => p.hash).length;
   label(m, y, 'Beweissicherung'); y += 5;
   pf(doc, 'r', 9.2); doc.setTextColor(...INK);
@@ -5291,6 +5332,557 @@ async function tourBlurDemo() {
   const W = pd.c.width, H = pd.c.height; E.add({ x: W * 0.58, y: H * 0.5, w: W * 0.22, h: H * 0.16, kind: 'Von Hand' }); await tWait(600);
 }
 
+/* ===QC-START=== */
+/* =====================================================================
+   Q-CHECK – Qualitätsprüfung einer Baustelle (wie ein Q-Checker im CAD):
+   Vollständigkeit · Richtigkeit · Sinnhaftigkeit, mit Schweregrad,
+   Sprung zur Stelle, begründeter Ausnahme und Prüfprotokoll
+   ===================================================================== */
+const QC_CAT = { voll: 'Vollständigkeit', richt: 'Richtigkeit', sinn: 'Sinnhaftigkeit' };
+const QC_SEV = { err: { n: 'Fehler', c: '#D22D3D', w: 10, i: '✕' }, warn: { n: 'Warnung', c: '#E07B00', w: 4, i: '!' }, info: { n: 'Hinweis', c: '#5B4FD0', w: 1, i: 'i' } };
+const QC_COVER = { 'Speedpipe / Mikrorohr': 0.4, 'Leerrohr': 0.6, 'Glasfaserkabel': 0.4, 'Stromkabel': 0.6, 'Wasserleitung': 1.0, 'Gasleitung': 0.6, 'Abwasser / Kanal': 1.0, 'Sonstige Leitung': 0.5 };
+const qcSet = () => ({ gap: 0.3, maxAcc: 10, lenTol: 5, cover: { ...QC_COVER }, ...(S.set.qc || {}), cover: { ...QC_COVER, ...(S.set.qc?.cover || {}) } });
+const qcPhotoName = (s, p) => s?.items.find(i => i.id === p.itemId)?.label || catName(p.cat);
+/* kleinster Abstand zweier Leitungen im Raum (in m), Leitungen alle 0,5 m abgetastet */
+function qcSample(t, O) {
+  const d = trDepths(t), P = t.points.map((p, i) => ({ ...z3xz(O, p), y: -d[i] })), out = [];
+  for (let i = 1; i < P.length; i++) { const a = P[i - 1], b = P[i], L = Math.hypot(b.x - a.x, b.z - a.z, b.y - a.y), n = Math.max(1, Math.ceil(L / 0.5)); for (let k = 0; k < n; k++) { const u = k / n; out.push({ x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u, z: a.z + (b.z - a.z) * u }); } }
+  out.push(P[P.length - 1]); return out;
+}
+function qcMinDist(a, b, O) {
+  const A = qcSample(a, O), B = qcSample(b, O); let best = { d: Infinity };
+  for (const p of A) for (const q of B) { const dx = p.x - q.x, dz = p.z - q.z; if (Math.abs(dx) > 3 || Math.abs(dz) > 3) continue; const d = Math.hypot(dx, p.y - q.y, dz); if (d < best.d) best = { d, p, q, cross: Math.hypot(dx, dz) < 0.3 }; }
+  return best;
+}
+function qcRun(s) {
+  const F = [], C = qcSet(), add = (rule, cat, sev, title, msg, fix, target = '') => F.push({ key: rule + ':' + target, rule, cat, sev, title, msg, fix });
+  if (!s) return { F: [], score: 100 };
+  const ps = S.photos.filter(p => p.siteId === s.id && !p.archived), pr = progress(s), trs = S.trassen.filter(t => t.siteId === s.id && t.points.length > 1);
+  const own = trs.filter(t => (t.status || 'verlegt') !== 'bestand'), fremd = trs.filter(t => t.status === 'bestand');
+  const ms = S.messungen.filter(r => r.siteId === s.id), ams = S.aufmass.filter(e => e.siteId === s.id), defs = S.defects.filter(d => d.siteId === s.id);
+  const abn = S.protocols.filter(p => p.siteId === s.id), done = pr.must > 0 && !pr.missing.length;
+  /* ---------------- Vollständigkeit ---------------- */
+  pr.missing.forEach(i => add('V01', 'voll', 'err', 'Pflichtfoto fehlt', `${PH[i.phase].n}: ${i.label}`, { a: 'cam', site: s.id, item: i.id }, i.id));
+  ps.filter(p => p.needCheck?.some(n => !n.ok)).forEach(p => add('V02', 'voll', 'warn', 'Pflichtinhalt nicht bestätigt', `${qcPhotoName(s, p)}: ${p.needCheck.filter(n => !n.ok).map(n => n.punkt).join(', ')}`, { a: 'photo', id: p.id }, p.id));
+  ps.filter(p => p.itemId && itemMeta(s, s.items.find(i => i.id === p.itemId))?.depth && !p.depthCm).forEach(p => add('V03', 'voll', 'warn', 'Tiefe fehlt', `${qcPhotoName(s, p)} – Foto mit Meterstab, aber keine Tiefe eingetragen`, { a: 'photo', id: p.id }, p.id));
+  const ls = leitungStatus(s); if (ls.missing) add('V04', 'voll', 'err', 'Leitungsauskunft fehlt', ls.docs.length ? 'Die vorhandene Leitungsauskunft ist abgelaufen.' : 'Für diese Baustelle ist keine Leitungsauskunft abgelegt.', { a: 'akten', site: s.id });
+  akWarn().filter(d => akState(d)[2] === 'bad').forEach(d => add('V05', 'voll', 'warn', 'Firmen-Unterlage abgelaufen', `${(AK_FIRMA[d.type] || d.type)} – ${akState(d)[0]}`, { a: 'akte', id: d.id }, d.id));
+  profCheck(s).filter(t => !/Pflichtfoto|Leitungsauskunft|Verkehrssicherung/.test(t)).forEach((t, i) => add('V06', 'voll', 'warn', 'Doku-Profil', t, { a: 'siteprof', site: s.id }, String(i)));
+  own.filter(t => (t.status || 'verlegt') === 'verlegt' && !ams.some(e => e.trId === t.id || e.src === 'Trasse ' + t.name)).forEach(t => add('V07', 'voll', 'warn', 'Trasse ohne Aufmaß', `„${t.name}“ (${fmtN(tLen(t), 1)} m) ist in keinem Aufmaß verwendet.`, { a: 'amsug', day: dayKey(t.created) }, t.id));
+  const sp = own.some(t => /speedpipe|mikro|glasfaser/i.test(t.kind) && (t.status || 'verlegt') === 'verlegt');
+  if (s.tpl === 'glasfaser' && sp) {
+    if (!ms.some(r => r.kind === 'einblas')) add('V08', 'voll', 'warn', 'Einblasprotokoll fehlt', 'Glasfaser verlegt, aber kein Einblasprotokoll erfasst.', { a: 'mess', kind: 'einblas', site: s.id }, 'einblas');
+    if (!ms.some(r => r.kind === 'otdr')) add('V08', 'voll', 'warn', 'OTDR-Messung fehlt', 'Ohne Messung kein Nachweis der Dämpfung.', { a: 'mess', kind: 'otdr', site: s.id }, 'otdr');
+    if (!ms.some(r => r.kind === 'spleiss')) add('V08', 'voll', 'info', 'Spleißprotokoll fehlt', 'Kein Spleißprotokoll für diese Baustelle.', { a: 'mess', kind: 'spleiss', site: s.id }, 'spleiss');
+  }
+  if (done && !abn.length) add('V09', 'voll', 'warn', 'Abnahme fehlt', 'Alle Pflichtfotos sind da – die Abnahme mit Unterschrift steht noch aus.', { a: 'abn', site: s.id });
+  if (vsDue(s) && ps.some(p => dayKey(p.ts) === today())) add('V10', 'voll', 'warn', 'Verkehrssicherung heute nicht kontrolliert', 'Heute wurde gearbeitet, aber die tägliche Kontrolle fehlt.', { a: 'mess', kind: 'vs', site: s.id });
+  defs.filter(isOver).forEach(d => add('V11', 'voll', 'err', 'Mangel überfällig', `M${d.no} ${d.title} – Frist ${fmtDate(new Date(d.due + 'T12:00'))}`, { a: 'def', id: d.id }, d.id));
+  defs.filter(d => (d.status === 'open' || d.status === 'work') && !isOver(d)).forEach(d => add('V12', 'voll', 'warn', 'Mangel offen', `M${d.no} ${d.title}`, { a: 'def', id: d.id }, d.id));
+  const unexp = ps.filter(p => !p.exported).length; if (unexp) add('V13', 'voll', 'info', 'Fotos noch nicht gesichert', `${unexp} Foto${unexp > 1 ? 's' : ''} noch nicht exportiert oder gesichert.`, { a: 'bericht', site: s.id });
+  if ((s.tpl === 'tiefbau' || s.tpl === 'glasfaser' || s.tpl === 'bohrung') && !s.anwohner) add('V14', 'voll', 'info', 'Anwohner-Info nicht erstellt', 'Ein Infozettel vor Baubeginn vermeidet Beschwerden.', { a: 'anw', site: s.id });
+  /* ---------------- Richtigkeit ---------------- */
+  ps.filter(p => p.lat == null).forEach(p => add('R01', 'richt', 'warn', 'Foto ohne GPS', `${qcPhotoName(s, p)} von ${fmtDate(p.ts)} – Position fehlt.`, { a: 'photo', id: p.id }, p.id));
+  ps.filter(p => p.lat != null && siteOut(p, s) > Math.max(15, p.acc || 0)).forEach(p => add('R02', 'richt', 'warn', 'Foto außerhalb der Baustelle', `${qcPhotoName(s, p)} liegt ${fmtDist(siteOut(p, s))} außerhalb.`, { a: 'photo', id: p.id }, p.id));
+  ps.filter(p => p.lat != null && p.acc > 35).forEach(p => add('R03', 'richt', 'info', 'GPS ungenau', `${qcPhotoName(s, p)}: ±${Math.round(p.acc)} m`, { a: 'photo', id: p.id }, p.id));
+  ps.filter(p => p.itemId && p.q?.flags?.length).forEach(p => add('R04', 'richt', 'warn', 'Pflichtfoto unscharf oder schlecht belichtet', `${qcPhotoName(s, p)}: ${p.q.flags.join(', ')}`, { a: 'photo', id: p.id }, p.id));
+  const vor = ps.filter(p => p.phase === 'V'), nach = ps.filter(p => p.phase === 'N');
+  if (vor.length && nach.length) { const lastV = Math.max(...vor.map(p => p.ts)); nach.filter(p => p.ts < Math.min(...vor.map(q => q.ts))).forEach(p => add('R05', 'richt', 'err', 'Zeitfolge unplausibel', `Nachher-Foto „${qcPhotoName(s, p)}“ ist älter als alle Vorher-Fotos.`, { a: 'photo', id: p.id }, p.id)); void lastV; }
+  ps.filter(p => p.ts > Date.now() + 36e5).forEach(p => add('R06', 'richt', 'err', 'Aufnahmezeit in der Zukunft', `${qcPhotoName(s, p)}: ${fmtDate(p.ts)} ${fmtTime(p.ts)}`, { a: 'photo', id: p.id }, p.id));
+  ps.filter(p => !p.hash && !p.example).forEach(p => add('R07', 'richt', 'info', 'Foto nicht versiegelt', `${qcPhotoName(s, p)} hat keinen Echtheits-Fingerabdruck.`, { a: 'photo', id: p.id }, p.id));
+  own.forEach(t => {
+    const acc = t.points.map(p => p.acc).filter(a => a != null).sort((a, b) => a - b), med = acc.length ? acc[Math.floor(acc.length / 2)] : null;
+    if (med != null && med > C.maxAcc) add('R08', 'richt', 'warn', 'Trasse ungenau', `„${t.name}“: Genauigkeit im Mittel ±${fmtN(med, 1)} m – für die Bestandsdoku RTK nutzen.`, { a: 'z3', site: s.id, id: t.id }, t.id);
+    for (let i = 1; i < t.points.length; i++) { const d = dist(t.points[i - 1], t.points[i]); if (d > 40) { add('R09', 'richt', 'warn', 'Sprung im Trassenverlauf', `„${t.name}“: ${fmtN(d, 0)} m ohne Zwischenpunkt (Punkt ${i} → ${i + 1}).`, { a: 'z3', site: s.id, id: t.id }, t.id + ':' + i); break; } }
+    const st = trStats(t), min = C.cover[t.kind] ?? 0.5;
+    if (st.min < min) add('R10', 'richt', st.min < min / 2 ? 'err' : 'warn', 'Überdeckung zu gering', `„${t.name}“: ${fmtN(st.min, 2)} m – Richtwert für ${z3k(t).s} ≥ ${fmtN(min, 2)} m.`, { a: 'z3', site: s.id, id: t.id }, t.id);
+    const O = z3O(t.points[0]);
+    fremd.forEach(f => { const r = qcMinDist(t, f, O); if (r.d < C.gap) add('R11', 'richt', r.d < C.gap / 2 ? 'err' : 'warn', r.cross ? 'Kreuzung zu dicht' : 'Abstand zu Fremdleitung zu gering', `„${t.name}“ ↔ „${f.name}“: ${fmtN(r.d, 2)} m (Richtwert ≥ ${fmtN(C.gap, 2)} m)`, { a: 'z3', site: s.id, id: t.id }, t.id + ':' + f.id); });
+  });
+  ams.filter(e => e.mode === 'calc' && e.calc && (e.trId || /^Trasse /.test(e.src || ''))).forEach(e => {
+    const t = trs.find(x => x.id === e.trId || 'Trasse ' + x.name === e.src); if (!t) return; const a = num2(e.calc.a); if (a == null) return;
+    const L = tLen(t), dev = Math.abs(a - L) / (L || 1) * 100; if (dev > C.lenTol) add('R12', 'richt', 'warn', 'Aufmaß weicht von Trasse ab', `${e.pos} ${e.text.split(',')[0]}: ${fmtN(a, 2)} m statt ${fmtN(L, 2)} m (${fmtN(dev, 0)} %)`, { a: 'am', id: e.id }, e.id);
+  });
+  const eb = ms.filter(r => r.kind === 'einblas' && num2(r.len)), spL = own.filter(t => /speedpipe|mikro/i.test(t.kind)).reduce((a, t) => Math.max(a, tLen(t)), 0);
+  eb.forEach(r => { const l = num2(r.len); if (spL && l > spL * 1.6) add('R13', 'richt', 'info', 'Einblaslänge unplausibel', `„${r.name}“: ${fmtN(l, 0)} m eingeblasen, längste Speedpipe-Trasse ${fmtN(spL, 0)} m.`, { a: 'mess', id: r.id }, r.id); });
+  ms.filter(r => { const e = msEval(r); return e.bad || e.over; }).forEach(r => add('R14', 'richt', 'err', 'Messung außerhalb der Grenzwerte', `${PROTO_N[r.kind] || r.kind} „${r.name}“: ${msStatus(r)[2]}`, { a: 'mess', id: r.id }, r.id));
+  ms.filter(r => !msEval(r).ok && !(msEval(r).bad || msEval(r).over)).forEach(r => add('R15', 'richt', 'warn', 'Protokoll unvollständig', `${PROTO_N[r.kind] || r.kind} „${r.name}“ ist nicht vollständig ausgefüllt.`, { a: 'mess', id: r.id }, r.id));
+  /* ---------------- Sinnhaftigkeit ---------------- */
+  const sigs = ps.filter(p => p.sig && (!p.kind || p.kind === 'photo')); const seen = new Set();
+  for (let i = 0; i < sigs.length; i++) for (let j = i + 1; j < sigs.length; j++) { const a = sigs[i], b = sigs[j]; if (a.phase !== b.phase || seen.has(b.id)) continue; if (sigDist(a.sig, b.sig) <= 6) { seen.add(b.id); add('S01', 'sinn', 'info', 'Doppeltes Foto', `${qcPhotoName(s, b)} (${fmtTime(b.ts)}) gleicht ${qcPhotoName(s, a)} (${fmtTime(a.ts)}).`, { a: 'photo', id: b.id }, b.id); } }
+  const nodesc = ps.filter(p => p.itemId && !String(p.desc || '').trim()); if (ps.length >= 4 && nodesc.length / ps.length > 0.5) add('S02', 'sinn', 'info', 'Viele Fotos ohne Beschreibung', `${nodesc.length} von ${ps.length} Pflichtfotos ohne Beschreibung.`, { a: 'galerie', site: s.id });
+  own.filter(t => t.status === 'geplant').forEach(t => add('S03', 'sinn', abn.length ? 'warn' : 'info', 'Geplante Leitung nicht als verlegt erfasst', `„${t.name}“ (${fmtN(tLen(t), 1)} m) steht noch auf „geplant“.`, { a: 'z3', site: s.id, id: t.id }, t.id));
+  own.filter(t => t.orig3d?.points?.length).forEach(t => { let mx = 0; const O = z3O(t.points[0]); t.points.forEach(p => { const q = z3xz(O, p); let mn = Infinity; t.orig3d.points.forEach(o => { const r = z3xz(O, o); mn = Math.min(mn, Math.hypot(q.x - r.x, q.z - r.z)); }); mx = Math.max(mx, mn); });
+    if (mx > 0.5) add('S04', 'sinn', 'warn', 'Trasse in 3D stark verändert', `„${t.name}“ weicht bis zu ${fmtN(mx, 1)} m vom gemessenen Verlauf ab – bitte begründen.`, { a: 'z3', site: s.id, id: t.id }, t.id); });
+  defs.filter(d => (d.status === 'done' || d.status === 'closed') && !(d.photoIds || []).length).forEach(d => add('S05', 'sinn', 'info', 'Mangel erledigt ohne Nachweisfoto', `M${d.no} ${d.title}`, { a: 'def', id: d.id }, d.id));
+  ams.filter(e => !(amQty(e) > 0)).forEach(e => add('S06', 'sinn', 'warn', 'Aufmaß ohne Menge', `${e.pos} ${e.text.split(',')[0]}`, { a: 'am', id: e.id }, e.id));
+  const last = Math.max(0, ...ps.map(p => p.ts)); if (ps.length && !done && Date.now() - last > 14 * 864e5) add('S07', 'sinn', 'info', 'Keine Aktivität seit über 2 Wochen', `Letztes Foto am ${fmtDate(last)} – Baustelle fertig? Dann Abnahme machen oder archivieren.`, { a: 'site', site: s.id });
+  if (!ps.length) add('S08', 'sinn', 'info', 'Noch keine Fotos', 'Für diese Baustelle wurde noch nichts dokumentiert.', { a: 'cam', site: s.id });
+  /* Ergebnis */
+  const W = s.qcWaive || {}, open = F.filter(f => !W[f.key]), waived = F.filter(f => W[f.key]).map(f => ({ ...f, waive: W[f.key] }));
+  const cnt = { err: open.filter(f => f.sev === 'err').length, warn: open.filter(f => f.sev === 'warn').length, info: open.filter(f => f.sev === 'info').length };
+  const score = Math.max(0, 100 - open.reduce((a, f) => a + QC_SEV[f.sev].w, 0));
+  const state = cnt.err ? ['NICHT FREIGABEFÄHIG', '#D22D3D'] : cnt.warn ? ['MIT HINWEISEN', '#E07B00'] : ['FREIGABEFÄHIG', '#1E8E4E'];
+  return { F: open, waived, cnt, score, state, ts: Date.now(), rules: 37 };
+}
+async function qcRecord(s, r) { s.qcRuns = [...(s.qcRuns || []), { ts: r.ts, score: r.score, ...r.cnt }].slice(-12); await DB.put('sites', s).catch(() => {}); }
+function qcFix(f) {
+  const x = f.fix || {}; closeSheet();
+  if (x.a === 'photo') openPhoto(x.id);
+  else if (x.a === 'cam') openCamera(x.site, x.item);
+  else if (x.a === 'akten') { S.ak.scope = 'site'; S.ak.site = x.site; go('akten'); openAkte(null, { type: 'leitung', siteId: x.site, scope: 'site' }); }
+  else if (x.a === 'akte') { go('akten'); openAkte(x.id); }
+  else if (x.a === 'siteprof') { openSite(x.site); }
+  else if (x.a === 'amsug') { go('aufmass'); openAmSuggest(x.day); }
+  else if (x.a === 'am') { go('aufmass'); openAm(x.id); }
+  else if (x.a === 'mess') { go('messung'); x.id ? openMess(x.id) : openMess(null, x.kind, { siteId: x.site }); }
+  else if (x.a === 'abn') openAbnahme(x.site);
+  else if (x.a === 'def') { go('maengel'); openDefect(x.id); }
+  else if (x.a === 'bericht') { S.rep.site = x.site; go('bericht'); }
+  else if (x.a === 'anw') { const s = S.sites.find(z => z.id === x.site); if (s) openAnwohner(s); }
+  else if (x.a === 'galerie') { S.gal.site = x.site; go('galerie'); }
+  else if (x.a === 'site') openSite(x.site);
+  else if (x.a === 'z3') { Z3V.site = x.site; go('zwilling'); Promise.resolve(Z3V.readyP).then(() => setTimeout(() => x.id && Z3V.select('pipe', x.id, true), 400)); }
+}
+const qcRing = (r, size = 74) => { const R = size / 2 - 6, L = 2 * Math.PI * R, c = r.state[1]; return `<svg class="qcring" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}"><circle cx="${size / 2}" cy="${size / 2}" r="${R}" fill="none" stroke="var(--line)" stroke-width="7"/><circle cx="${size / 2}" cy="${size / 2}" r="${R}" fill="none" stroke="${c}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${L * r.score / 100} ${L}" transform="rotate(-90 ${size / 2} ${size / 2})"/><text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="${size * 0.3}" fill="${c}">${r.score}</text></svg>`; };
+async function openQC(siteId, opt = {}) {
+  const s = S.sites.find(x => x.id === siteId); if (!s) return;
+  let r = qcRun(s); if (!opt.noRecord) await qcRecord(s, r);
+  let tab = opt.tab || 'all';
+  const el = sheet('<div id="qcIn"></div>'), box = $('#qcIn', el), paint = () => { box.innerHTML = qcHTML(s, r, tab); };
+  paint();
+  box.onclick = async e => {
+    const t = e.target.closest('[data-qt]'); if (t) { tab = t.dataset.qt; paint(); return; }
+    const list = tab === 'waived' ? r.waived : r.F.filter(f => tab === 'all' || f.cat === tab);
+    const fx = e.target.closest('[data-qf]'); if (fx) { qcFix(list[+fx.dataset.qf]); return; }
+    const w = e.target.closest('[data-qw]'); if (w) { const i = +w.dataset.qw, b = $('#qcw' + i, box); b.hidden = false; b.innerHTML = `<div class="inrow" style="margin-top:6px"><input type="text" id="qcwr${i}" placeholder="Begründung, z. B. „mit Netzbetreiber abgestimmt“"><button class="btn pri" data-qok="${i}">OK</button></div>`; $('#qcwr' + i, box).focus(); return; }
+    const ok = e.target.closest('[data-qok]'); if (ok) { const i = +ok.dataset.qok, reason = $('#qcwr' + i, box).value.trim(); if (!reason) return toast('Bitte eine Begründung eintragen.'); s.qcWaive = { ...(s.qcWaive || {}), [list[i].key]: { reason, by: S.set.name || '', ts: Date.now() } }; await DB.put('sites', s); r = qcRun(s); paint(); toast('Als begründete Ausnahme akzeptiert.'); return; }
+    const u = e.target.closest('[data-qu]'); if (u) { const k = list[+u.dataset.qu].key, W = { ...(s.qcWaive || {}) }; delete W[k]; s.qcWaive = W; await DB.put('sites', s); r = qcRun(s); paint(); return; }
+    const x = e.target.closest('[data-x]')?.dataset.x;
+    if (x === 'again') { r = qcRun(s); await qcRecord(s, r); paint(); toast(`Q-Check: ${r.score} Punkte · ${r.cnt.err} Fehler, ${r.cnt.warn} Warnungen.`); }
+    if (x === 'pdf') { try { await qcPDF(s, r); } catch (err) { toast('PDF fehlgeschlagen: ' + (err.message || err)); } }
+    if (x === 'set') qcSettings(s.id);
+  };
+  return r;
+}
+function qcHTML(s, r, tab) {
+  const list = tab === 'waived' ? r.waived : r.F.filter(f => tab === 'all' || f.cat === tab), runs = s.qcRuns || [];
+  return `<div class="qchead">${qcRing(r)}<div><h3 style="margin:0">Q-Check</h3><p class="sub" style="margin:2px 0 4px">${esc(s.name)}</p><span class="qcstate" style="background:${r.state[1]}">${r.state[0]}</span></div></div>
+    <div class="qccnt">${Object.entries(QC_SEV).map(([k, v]) => `<div style="border-color:${v.c}"><b style="color:${v.c}">${r.cnt[k]}</b>${k === 'err' ? 'Fehler' : k === 'warn' ? (r.cnt[k] === 1 ? 'Warnung' : 'Warnungen') : (r.cnt[k] === 1 ? 'Hinweis' : 'Hinweise')}</div>`).join('')}<div><b>${r.waived.length}</b>akzeptiert</div></div>
+    ${runs.length > 1 ? `<div class="qchist">${runs.map(x => `<i title="${fmtDate(x.ts)} ${fmtTime(x.ts)}: ${x.score}" style="height:${Math.max(6, x.score * 0.32)}px;background:${x.err ? '#D22D3D' : x.warn ? '#E07B00' : '#1E8E4E'}"></i>`).join('')}<span>Verlauf der letzten ${runs.length} Prüfungen</span></div>` : ''}
+    <div class="segs qctabs" style="margin:10px 0">${[['all', 'Alle'], ['voll', 'Vollständig'], ['richt', 'Richtig'], ['sinn', 'Sinnvoll'], ['waived', 'Akzeptiert']].map(([k, n]) => `<button type="button" data-qt="${k}" class="${tab === k ? 'on' : ''}">${n}</button>`).join('')}</div>
+    <div class="qclist">${list.length ? list.map((f, i) => `<div class="qcf" style="border-left-color:${QC_SEV[f.sev].c}"><div class="qct"><span class="qcsev" style="background:${QC_SEV[f.sev].c}">${QC_SEV[f.sev].i}</span><b>${esc(f.title)}</b><span class="qcr">${f.rule} · ${QC_CAT[f.cat]}</span></div>
+      <p>${esc(f.msg)}</p>${f.waive ? `<p class="note">Akzeptiert von ${esc(f.waive.by || '–')} am ${fmtDate(f.waive.ts)}: „${esc(f.waive.reason)}“</p>` : ''}
+      <div class="qcb">${f.fix ? `<button class="chip" data-qf="${i}">→ Zeigen / beheben</button>` : ''}${f.waive ? `<button class="chip" data-qu="${i}">Ausnahme aufheben</button>` : `<button class="chip" data-qw="${i}">Begründet akzeptieren</button>`}</div><div class="qcw" id="qcw${i}" hidden></div></div>`).join('')
+      : `<div class="qcok">${tab === 'waived' ? 'Keine akzeptierten Ausnahmen.' : '✓ Keine Befunde in diesem Bereich.'}</div>`}</div>
+    <p class="note" style="margin-top:10px">${r.rules} Prüfregeln: Pflichtfotos und -inhalte, Tiefen, Unterlagen, Doku-Profil, Aufmaß gegen Trasse, Protokolle und Grenzwerte, GPS und Lage, Zeitfolge, Siegel, Überdeckung und Abstand zu Fremdleitungen im 3D-Modell, Doppelfotos und mehr.</p>
+    <div class="row" style="margin-top:10px"><button class="btn" data-x="set">Richtwerte</button><button class="btn" data-x="again">↻ Erneut prüfen</button></div>
+    <div class="row" style="margin-top:8px"><button class="btn pri" data-x="pdf">Prüfprotokoll als PDF</button></div>`;
+}
+function qcSettings(back) {
+  const C = qcSet();
+  const el = sheet(`<h3>Q-Check · Richtwerte</h3><p class="sub">Richtwerte für die Prüfung. Bitte an die Vorgaben eurer Netzbetreiber anpassen.</p>
+    <div class="lbl" style="margin:6px 0">Mindestüberdeckung je Leitungsart (m)</div>
+    ${Object.keys(QC_COVER).map(k => `<div class="inrow" style="align-items:center;margin-bottom:6px"><span style="flex:1">${k}</span><input type="text" inputmode="decimal" data-cv="${esc(k)}" value="${fmtN(C.cover[k], 2)}" style="width:80px"></div>`).join('')}
+    <div class="fld"><label class="lbl" for="qcGap">Mindestabstand zu Fremdleitungen (m)</label><input type="text" inputmode="decimal" id="qcGap" value="${fmtN(C.gap, 2)}"></div>
+    <div class="fld"><label class="lbl" for="qcAcc">Trassen-Genauigkeit höchstens (± m)</label><input type="text" inputmode="decimal" id="qcAcc" value="${fmtN(C.maxAcc, 1)}"></div>
+    <div class="fld"><label class="lbl" for="qcTol">Abweichung Aufmaß zu Trasse höchstens (%)</label><input type="text" inputmode="decimal" id="qcTol" value="${fmtN(C.lenTol, 0)}"></div>
+    <div class="row"><button class="btn" data-x="reset">Standard</button><button class="btn pri" data-x="save">Speichern</button></div>`);
+  el.onclick = e => { const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
+    if (x === 'reset') { delete S.set.qc; saveSet(); toast('Richtwerte zurückgesetzt.'); }
+    if (x === 'save') { const cover = {}; $$('[data-cv]', el).forEach(i => { const v = num2(i.value); if (v != null) cover[i.dataset.cv] = v; }); S.set.qc = { cover, gap: num2($('#qcGap', el).value) ?? 0.3, maxAcc: num2($('#qcAcc', el).value) ?? 10, lenTol: num2($('#qcTol', el).value) ?? 5 }; saveSet(); toast('Richtwerte gespeichert.'); }
+    if (back) openQC(back, { noRecord: true }); else closeSheet(); };
+}
+/* Übersicht aller Baustellen */
+function openQCAll() {
+  const rs = activeSites().map(s => ({ s, r: qcRun(s) })).sort((a, b) => a.r.score - b.r.score);
+  const el = sheet(`<h3>Q-Check</h3><p class="sub">Prüft jede Baustelle auf Vollständigkeit, Richtigkeit und Sinnhaftigkeit – wie ein Q-Checker im CAD, bevor die Doku rausgeht.</p>
+    ${rs.map(({ s, r }) => `<button class="trow" data-qs="${s.id}" style="width:100%;text-align:left;display:flex;gap:12px;align-items:center">${qcRing(r, 50)}<span style="flex:1"><b>${esc(s.name)}</b><span class="meta" style="display:block">${r.cnt.err} Fehler · ${r.cnt.warn} Warnungen · ${r.cnt.info} Hinweise</span></span><span class="qcstate sm" style="background:${r.state[1]}">${r.state[0]}</span></button>`).join('') || '<p class="note">Noch keine Baustelle.</p>'}`);
+  el.onclick = e => { const b = e.target.closest('[data-qs]'); if (b) openQC(b.dataset.qs); };
+}
+/* Prüfprotokoll als PDF */
+async function qcPDF(s, r) {
+  await needLib('PDF-Baustein', () => window.jspdf?.jsPDF);
+  const { jsPDF } = window.jspdf, doc = new jsPDF({ unit: 'mm', format: 'a4' }); await pdfFonts(doc);
+  const m = 14, cw = 182, safe = t => String(t ?? '').replace(/[→←]/g, '-').replace(/[↔]/g, '<->').replace(/[✓✔]/g, 'OK').replace(/[✗✘✕]/g, 'X').replace(/[^\x00-\xff€„“‚‘’–—…•]/g, '');
+  pdfHeader(doc, `Q-Check · ${fmtDate(r.ts)}, ${fmtTime(r.ts)} Uhr`, 'PRÜFPROTOKOLL');
+  let y = 34; pf(doc, 'cs', 8); doc.setTextColor(184, 95, 0); doc.text('QUALITÄTSPRÜFUNG · Q-CHECK', m, y); y += 9;
+  pf(doc, 'c', 22); doc.setTextColor(47, 35, 130); doc.text(safe(s.name).toUpperCase(), m, y, { maxWidth: cw - 50 }); y += 7;
+  pf(doc, 'r', 9); doc.setTextColor(93, 90, 120); doc.text(safe(`${TPL[s.tpl]?.n || ''}${s.order ? ' · Auftrag ' + s.order : ''} · geprüft von ${S.set.name || '–'} · ${r.rules} Prüfregeln`), m, y); y += 8;
+  const col = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  doc.setFillColor(...col(r.state[1])); doc.roundedRect(m, y, 64, 9, 1.5, 1.5, 'F'); pf(doc, 'cs', 9); doc.setTextColor(255, 255, 255); doc.text(r.state[0], m + 32, y + 6, { align: 'center' });
+  pf(doc, 'c', 30); doc.setTextColor(...col(r.state[1])); doc.text(String(r.score), m + cw, y + 9, { align: 'right' }); pf(doc, 'r', 8); doc.setTextColor(93, 90, 120); doc.text('von 100 Punkten', m + cw, y + 13, { align: 'right' }); y += 16;
+  const box = (x, lab, n, c) => { doc.setDrawColor(...c); doc.setLineWidth(0.5); doc.line(x, y, x, y + 11); pf(doc, 'c', 16); doc.setTextColor(...c); doc.text(String(n), x + 3, y + 6.5); pf(doc, 'r', 7.5); doc.setTextColor(93, 90, 120); doc.text(lab, x + 3, y + 10.5); };
+  box(m, 'Fehler', r.cnt.err, col(QC_SEV.err.c)); box(m + 46, 'Warnungen', r.cnt.warn, col(QC_SEV.warn.c)); box(m + 92, 'Hinweise', r.cnt.info, col(QC_SEV.info.c)); box(m + 138, 'akzeptiert', r.waived.length, [93, 90, 120]); y += 18;
+  const head = () => { doc.setFillColor(47, 35, 130); doc.rect(m, y, cw, 6.8, 'F'); doc.setFillColor(241, 136, 11); doc.rect(m, y + 6.8, cw, 0.6, 'F'); pf(doc, 'cs', 7.4); doc.setTextColor(255, 255, 255); [['REGEL', m + 2], ['BEREICH', m + 16], ['BEFUND', m + 44]].forEach(([t, x]) => doc.text(t, x, y + 4.6)); y += 7.4; };
+  const rows = (list, waived) => { list.forEach((f, i) => { pf(doc, 'r', 8.2); const tl = doc.splitTextToSize(safe(f.msg + (waived ? `  ·  Ausnahme: „${f.waive.reason}“ (${f.waive.by || '–'}, ${fmtDate(f.waive.ts)})` : '')), cw - 46); const rh = 5.2 + tl.length * 3.7;
+    if (y + rh > 280) { doc.addPage(); pdfHeader(doc, `Q-Check · ${s.name}`, 'PRÜFPROTOKOLL'); y = 30; head(); }
+    if (i % 2) { doc.setFillColor(246, 245, 250); doc.rect(m, y, cw, rh, 'F'); }
+    doc.setFillColor(...col(QC_SEV[f.sev].c)); doc.rect(m, y, 1.2, rh, 'F');
+    pf(doc, 'sb', 8); doc.setTextColor(27, 24, 56); doc.text(f.rule, m + 2.5, y + 4.2); pf(doc, 'r', 7.6); doc.setTextColor(93, 90, 120); doc.text(safe(QC_CAT[f.cat]), m + 16, y + 4.2);
+    pf(doc, 'sb', 8.4); doc.setTextColor(...(waived ? [93, 90, 120] : col(QC_SEV[f.sev].c))); doc.text(safe(`${QC_SEV[f.sev].n}: ${f.title}`), m + 44, y + 4.2); pf(doc, 'r', 8.2); doc.setTextColor(27, 24, 56); doc.text(tl, m + 44, y + 8);
+    y += rh; }); };
+  if (r.F.length) { head(); rows(r.F, false); } else { pf(doc, 'sb', 11); doc.setTextColor(30, 142, 78); doc.text('Keine offenen Befunde – die Dokumentation ist vollständig und plausibel.', m, y + 4); y += 10; }
+  if (r.waived.length) { y += 6; if (y > 250) { doc.addPage(); pdfHeader(doc, `Q-Check · ${s.name}`, 'PRÜFPROTOKOLL'); y = 30; } pf(doc, 'cs', 8); doc.setTextColor(184, 95, 0); doc.text('BEGRÜNDET AKZEPTIERTE AUSNAHMEN', m, y); y += 4; head(); rows(r.waived, true); }
+  y += 8; if (y > 262) { doc.addPage(); pdfHeader(doc, `Q-Check · ${s.name}`, 'PRÜFPROTOKOLL'); y = 30; }
+  pf(doc, 'r', 7.6); doc.setTextColor(93, 90, 120); doc.text(doc.splitTextToSize(safe('Geprüft wurden Vollständigkeit (Pflichtfotos, Pflichtinhalte, Tiefen, Unterlagen, Doku-Profil, Aufmaß, Protokolle, Abnahme, Mängel), Richtigkeit (GPS und Lage, Zeitfolge, Siegel, Trassen-Genauigkeit, Überdeckung, Abstand zu Fremdleitungen, Aufmaß gegen Trasse, Grenzwerte) und Sinnhaftigkeit (Doppelfotos, Beschreibungen, geplante Leitungen, Änderungen im 3D-Zwilling, Nachweise). Richtwerte sind einstellbar und ersetzen nicht die Vorgaben des Netzbetreibers.'), cw), m, y);
+  pdfFooter(doc, () => 'EnerWeser Baudoku · Q-Check');
+  await saveFile(`Q-Check_${slug(s.name)}_${stamp(r.ts).slice(0, 8)}.pdf`, doc.output('blob'), true);
+}
+
+/* ===QC-END=== */
+/* ===PX-START=== */
+/* =====================================================================
+   PRAXIS-RUNDGANG – eine komplette Baustelle von A bis Z, mit Eingaben
+   in jedes Feld und jeder Funktion einmal (läuft im Sandkasten)
+   ===================================================================== */
+const PX = {
+  base: { lat: 52.92395, lon: 9.22610 }, name: 'Glasfaser-HA Mühlenweg 7', done: new Set(), sid: null,
+  ll(x, y) { const O = { lat: this.base.lat, lon: this.base.lon, kx: MDEG * Math.cos(this.base.lat * RAD) }; return z3ll(O, x, -y); },
+  pos(x, y) { const p = this.ll(x, y); S.pos = { lat: p.lat, lon: p.lon, acc: 0.02, alt: 24.6, ts: Date.now(), src: 'demo', fix: 'RTK FIX' }; return S.pos; },
+  site() { return S.sites.find(s => s.id === this.sid) || S.sites.find(s => s.px) || null; },
+  item(label) { return this.site()?.items.find(i => i.label === label) || null; },
+  reset() { this.done = new Set(); this.sid = null; },
+  meta(x, y, dt = 0) { const p = this.ll(x, y); return { ts: Date.now() - dt, lat: p.lat, lon: p.lon, acc: 0.02, alt: 24.6, fix: 'RTK FIX', heading: 20, src: 'demo' }; },
+  async photo(label, o = {}) {
+    const s = this.site(), it = label ? this.item(label) : null; if (label && !it) return null;
+    if (it && S.photos.some(p => p.siteId === s.id && p.itemId === it.id)) return S.photos.find(p => p.siteId === s.id && p.itemId === it.id);
+    const c = o.canvas || demoCanvas(label || o.title || 'Zusatzfoto', it?.phase || o.phase || 'W', o.seed || [...(label || o.title || 'x')].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) % 997, 7));
+    const need = it ? (itemMeta(s, it).need || []).map(n => ({ punkt: n, ok: true })) : null;
+    const f = { siteId: s.id, itemId: it?.id || '', phase: it?.phase || o.phase || 'W', cat: it?.cat || o.cat || 'detail', labels: o.labels || 'Mühlenweg 7', desc: o.desc ?? autoDesc(s, it, it?.phase || 'W', it?.cat || 'detail', o.depthCm, []) };
+    const m = this.meta(o.x ?? 2, o.y ?? -4, o.dt || 0);
+    const p = await savePhoto(c, m, f, analyze(fitCanvas(c, 640)), { needCheck: need, depthCm: o.depthCm ?? null, depthSrc: o.depthCm ? 'am Meterstab gemessen' : null });
+    p.address = 'Mühlenweg 7, 27283 Verden (Aller)'; await DB.put('photos', p).catch(() => {});
+    return p;
+  },
+  async upTo(k) { for (let i = 0; i < k; i++) if (!this.done.has(i)) { try { await PX_ST[i](false); } catch (e) { console.warn('Praxis', i, e); } this.done.add(i); } },
+  async run(k) { if (this.done.has(k)) return; await this.upTo(k); try { await PX_ST[k](true); } catch (e) { if (e === 'stop') throw e; console.warn('Praxis', k, e); try { await PX_ST[k](false); } catch (er) {} } this.done.add(k); refresh(true); }
+};
+async function pType(sel, val, ms = 24) {
+  const el = tRes(sel); if (!el) return; Tour.focus(el); el.scrollIntoView?.({ block: 'center' }); await tWait(250); el.classList.add('tut-typing'); el.value = '';
+  for (const ch of String(val)) { el.value += ch; el.dispatchEvent(new Event('input', { bubbles: true })); await tWait(ch === ' ' ? ms * 0.6 : ms); }
+  el.dispatchEvent(new Event('change', { bubbles: true })); await tWait(200); el.classList.remove('tut-typing');
+}
+async function tSign(sel) {
+  const cv = tRes(sel); if (!cv) return; Tour.focus(cv); cv.scrollIntoView?.({ block: 'center' }); await tWait(300);
+  const r = cv.getBoundingClientRect(), P = (x, y) => ({ clientX: r.left + x * r.width, clientY: r.top + y * r.height, pointerId: 7, bubbles: true });
+  cv.dispatchEvent(new PointerEvent('pointerdown', P(0.12, 0.62)));
+  for (let i = 1; i <= 46; i++) { const u = i / 46; cv.dispatchEvent(new PointerEvent('pointermove', P(0.12 + u * 0.74, 0.55 + Math.sin(u * 17) * 0.17 * (1 - u * 0.4) - u * 0.1))); if (i % 4 === 0) await tWait(16); }
+  cv.dispatchEvent(new PointerEvent('pointerup', P(0.86, 0.45))); await tWait(250);
+}
+const pxClick = async sel => { const el = tRes(sel); if (!el) return; el.scrollIntoView?.({ block: 'center' }); await tWait(120); await tClick(sel); };
+const pxSheetScroll = async y => { const sh = $('#scrim .sheet'); if (sh) { sh.scrollTo({ top: y, behavior: 'smooth' }); await tWait(500); } };
+/* Plan für den Hausanschluss */
+function pxPlanCanvas() {
+  const c = document.createElement('canvas'); c.width = 1600; c.height = 1130; const g = c.getContext('2d');
+  g.fillStyle = '#fff'; g.fillRect(0, 0, 1600, 1130); g.strokeStyle = '#1b1838'; g.lineWidth = 2;
+  g.font = '700 34px Arial'; g.fillStyle = '#1b1838'; g.fillText('Lageplan Hausanschluss Mühlenweg 7', 60, 70); g.font = '22px Arial'; g.fillText('M 1:200 · Glasfaser FTTH · Beispiel', 60, 104);
+  g.fillStyle = '#e9e7f2'; g.fillRect(40, 760, 1520, 170); g.fillStyle = '#1b1838'; g.font = '600 26px Arial'; g.fillText('Mühlenweg', 680, 860);
+  g.strokeStyle = '#1b1838'; g.lineWidth = 6; g.strokeRect(560, 260, 480, 380); g.font = '600 30px Arial'; g.fillText('Haus Nr. 7', 720, 460);
+  g.setLineDash([18, 10]); g.strokeStyle = '#f1880b'; g.lineWidth = 7; g.beginPath(); g.moveTo(100, 800); g.lineTo(820, 800); g.lineTo(820, 640); g.stroke(); g.setLineDash([]);
+  g.fillStyle = '#f1880b'; g.font = '600 22px Arial'; g.fillText('Speedpipe 7 mm, Tiefe 0,60 m', 160, 785); g.fillText('HÜP / Gf-AP im Keller', 850, 610);
+  g.strokeStyle = '#3d9bff'; g.lineWidth = 5; g.beginPath(); g.moveTo(40, 840); g.lineTo(1560, 840); g.stroke(); g.fillStyle = '#3d9bff'; g.fillText('Wasser (Bestand)', 1280, 830);
+  g.strokeStyle = '#ff4d5a'; g.beginPath(); g.moveTo(40, 900); g.lineTo(1560, 900); g.stroke(); g.fillStyle = '#ff4d5a'; g.fillText('Strom 0,4 kV (Bestand)', 1250, 890);
+  g.strokeStyle = '#1b1838'; g.lineWidth = 2; g.strokeRect(1380, 960, 160, 110); g.font = '18px Arial'; g.fillStyle = '#1b1838'; g.fillText('EnerWeser', 1400, 995); g.fillText('Plan-Nr. 26-1107', 1400, 1022); g.fillText('Stand 11/2026', 1400, 1049);
+  g.beginPath(); g.moveTo(1500, 140); g.lineTo(1520, 200); g.lineTo(1480, 200); g.closePath(); g.fill(); g.fillText('N', 1492, 130);
+  return c;
+}
+/* ---------------- Ablauf der Baustelle (jede Stufe: schnell oder vorgeführt) ---------------- */
+const PX_ST = [
+  /* 0 Start */ async () => { PX.pos(-30, -9); },
+  /* 1 Baustelle anlegen */ async anim => {
+    PX.pos(0, -6);
+    if (anim) {
+      go('cockpit'); await tWait(400); newSite(); await tWait(700);
+      await pType('#nsName', PX.name); await pType('#nsOrder', 'GF-26-1107');
+      await pxClick('#nsTpl [data-t=glasfaser]'); const r = $('#nsRad'); if (r) { r.value = 35; r.dispatchEvent(new Event('input')); }
+      await tWait(400); await pxClick('#nsSave'); await tWait(700);
+      const s = S.sites.find(x => x.name === PX.name && !x.archived); if (!s) throw new Error('Baustelle nicht angelegt');
+      s.px = true; PX.sid = s.id;
+    } else {
+      const s = { id: 'pxs' + Date.now().toString(36), name: PX.name, tpl: 'glasfaser', ...PX.ll(0, -6), radius: 35, order: 'GF-26-1107', created: Date.now() - 6 * 3600e3, items: mkItems('glasfaser'), px: true };
+      await DB.put('sites', s); S.sites.push(s); PX.sid = s.id; S.set.pin = { siteId: s.id, until: Date.now() + 3 * 3600e3 };
+    }
+    const s = PX.site(); s.client = 'Glasfaser Nordwest GmbH (Beispiel)'; s.clientRep = 'Frau Becker, Bauüberwachung';
+    if (anim) { openClient(s); await tWait(500); await pType('#clN', s.client); await pType('#clR', s.clientRep); await pxClick('#scrim [data-x=save]'); await tWait(400); }
+    await applyProfile(s, 'prof1'); await DB.put('sites', s);
+    if (anim) { openSite(s.id); await tWait(900); }
+  },
+  /* 2 Unterlagen */ async anim => {
+    const s = PX.site(), sid = s.id, plus = d => dayKey(Date.now() + d * 864e5);
+    const L = [['Strom', 'Avacon Netz GmbH', 'LA-26-48213'], ['Gas', 'Stadtwerke Verden GmbH', 'SWV-2611-07'], ['Wasser', 'Stadtwerke Verden GmbH', 'SWV-2611-08'], ['Telekommunikation', 'Deutsche Telekom Technik', 'TK-9934127']];
+    $('.banner')?.remove();
+    if (anim) { S.ak.scope = 'site'; S.ak.site = sid; go('akten'); await tWait(500); openAkte(null, { type: 'leitung', siteId: sid, scope: 'site' }); await tWait(600);
+      const sp = $('#akSp'); if (sp) { sp.value = 'Strom'; sp.dispatchEvent(new Event('change', { bubbles: true })); }
+      await pType('#akIss', L[0][1]); await pType('#akNr', L[0][2]); const u = $('#akUntil'); if (u) { u.value = plus(28); u.dispatchEvent(new Event('change', { bubbles: true })); }
+      await pxClick('#scrim [data-x=save]'); await tWait(500); }
+    const now = Date.now(), mk = (type, sparte, issuer, nr, until, note = '') => ({ id: uid(), scope: 'site', type, siteId: sid, sparte, issuer, nr, from: today(), until, note, ts: now, user: S.set.name || '' });
+    const recs = L.filter(x => !(anim && x[0] === 'Strom')).map(([sp, is, nr]) => mk('leitung', sp, is, nr, plus(28)));
+    recs.push(mk('vrao', '', 'Landkreis Verden, Straßenverkehrsbehörde', 'VA 2026/518', plus(14), 'Halbseitige Sperrung Gehweg, Regelplan B I/1'));
+    for (const r of recs) if (!S.akten.some(d => d.siteId === sid && d.type === r.type && d.sparte === r.sparte)) { S.akten.push(r); await DB.put('akten', r).catch(() => {}); }
+    if (anim) { refresh(true); await tWait(600); }
+  },
+  /* 3 Anwohner-Info */ async anim => {
+    const s = PX.site();
+    if (anim) { openAnwohner(s); await tWait(600); await pType('#awC', 'Bauleitung EnerWeser, Sefkan Kadah'); await pType('#awN', 'Zufahrten für Rettungsdienst und Müllabfuhr bleiben frei. Am Mittwoch ist die Einfahrt Nr. 5 von 8 bis 12 Uhr gesperrt.', 12); await tWait(500); }
+    s.anwohner = { from: today(), to: dayKey(Date.now() + 5 * 864e5), hours: 'Mo–Fr 7:00–17:00 Uhr', what: 'Wir stellen den Glasfaser-Hausanschluss her: Kopfloch, Verlegung im Gehweg, Querung der Einfahrt Nr. 5 per Spülbohrung und Wiederherstellung der Oberfläche.', restr: [0, 3], contact: 'Bauleitung EnerWeser, Sefkan Kadah', phone: '', client: s.client, note: 'Zufahrten für Rettungsdienst und Müllabfuhr bleiben frei. Am Mittwoch ist die Einfahrt Nr. 5 von 8 bis 12 Uhr gesperrt.' };
+    await DB.put('sites', s);
+  },
+  /* 4 Verkehrssicherung */ async anim => {
+    const s = PX.site();
+    if (anim) { S.ms.site = s.id; go('messung'); await tWait(400); openMess(null, 'vs', { siteId: s.id }); await tWait(700);
+      await pType('#msName', 'Morgenkontrolle Mühlenweg'); await pType('#msAo', 'VA 2026/518 · Landkreis Verden'); await pType('#msRp', 'B I/1');
+      await pxClick('#scrim [data-x=allok]'); await tWait(300); await tSign('#vsSig'); await tWait(300); await pxClick('#scrim [data-x=save]'); await tWait(600);
+      if (S.messungen.some(r => r.siteId === s.id && r.kind === 'vs')) return; }
+    if (S.messungen.some(r => r.siteId === s.id && r.kind === 'vs')) return;
+    const r = { id: uid(), kind: 'vs', siteId: s.id, name: 'Morgenkontrolle Mühlenweg', anordnung: 'VA 2026/518 · Landkreis Verden', regelplan: 'B I/1', checks: VS_CHECKS.map(() => 'ok'), sig: demoSig(), note: '', photoIds: [], ts: Date.now() - 5 * 3600e3, date: today(), user: S.set.name || '', ...PX.ll(-4, -8), files: [] };
+    S.messungen.push(r); await DB.put('messungen', r).catch(() => {});
+  },
+  /* 5 Vorher-Fotos */ async anim => {
+    const s = PX.site(), it = PX.item('Hausfassade mit Hausnummer');
+    if (anim && !S.photos.some(p => p.siteId === s.id && p.itemId === it.id)) {
+      go('cockpit'); tourCamOpen(); camCtx = { siteId: s.id, itemId: it.id, mark: null }; renderCamHud(); await tWait(900);
+      await tClick('#shutter'); await handleCapture(demoCanvas('Hausfassade mit Hausnummer', 'V', 71), PX.meta(1, -2)); await tWait(1100);
+      for (const cb of $$('#rvLocal [data-nd]')) { if (!cb.checked) { cb.click(); await tWait(250); } }
+      await pType('#rvLabels', 'Mühlenweg 7, Vorher'); await tWait(300); await pxClick('#rvSave'); await tWait(1200); tourCamClose();
+      const p = S.photos.filter(x => x.siteId === s.id).sort((a, b) => b.ts - a.ts)[0]; if (p) { p.address = 'Mühlenweg 7, 27283 Verden (Aller)'; await DB.put('photos', p); }
+    }
+    await PX.photo('Hausfassade mit Hausnummer', { x: 1, y: -2, dt: 5 * 3600e3 });
+    await PX.photo('Einführungsstelle vorher', { x: 2.5, y: 1.5, dt: 4.9 * 3600e3, desc: 'Kellerwand rechts neben dem Lichtschacht, hier kommt die Hauseinführung hin.' });
+  },
+  /* 6 Trasse */ async anim => {
+    const s = PX.site(), path = [[-24, -9.2], [-12, -9.1], [-2, -9.0], [1.5, -9.0], [1.5, -5], [2, -1], [2.2, 2.2]];
+    if (!S.trassen.some(t => t.siteId === s.id && t.px === 'ha')) {
+      const t = { id: uid(), name: 'Hausanschluss Mühlenweg 7', kind: 'Speedpipe / Mikrorohr', siteId: s.id, created: Date.now() - 4 * 3600e3, points: [], marks: [], status: 'rec', px: 'ha', dn: 7, count: 1 };
+      S.trassen.push(t); S.rec = t.id; await DB.put('trassen', t).catch(() => {});
+      if (anim) { go('karte'); M.follow = true; await tWait(700); }
+      const seg = []; for (let i = 1; i < path.length; i++) { const [a, b] = [path[i - 1], path[i]], n = Math.max(1, Math.round(Math.hypot(b[0] - a[0], b[1] - a[1]) / 2)); for (let k = 0; k < n; k++) seg.push([a[0] + (b[0] - a[0]) * k / n, a[1] + (b[1] - a[1]) * k / n]); } seg.push(path[path.length - 1]);
+      for (const [x, y] of seg) { PX.pos(x, y); recPoint(S.pos, true); if (anim) { refresh(); await tWait(110); } }
+      const at = (x, y) => t.points.reduce((b, p) => { const d = dist(p, PX.ll(x, y)); return d < b.d ? { d, p } : b; }, { d: Infinity }).p;
+      t.points.forEach(p => { p.dm = 0.6; }); at(2.2, 2.2).dm = 0.9; at(2, -1).dm = 0.62;
+      const mk = (type, x, y, depth, note) => { const q = at(x, y); return { id: uid(), n: t.marks.length + 1, lat: q.lat, lon: q.lon, acc: 0.02, alt: 24.6, fix: 'RTK FIX', ts: Date.now(), type, depthCm: depth, note }; };
+      t.marks.push(mk('Muffe', -24, -9.2, 60, 'Anbindung an NVt-Verband')); t.marks.push(mk('Abzweig', 1.5, -9.0, 60, 'Abzweig HA Nr. 7')); t.marks.push(mk('Kreuzung', 1.5, -5, 62, 'Wasser (Bestand) gekreuzt, Abstand 0,70 m'));
+      t.marks.push(mk('Hausanschluss', 2.2, 2.2, 90, 'Hauseinführung Keller'));
+      t.status = 'done'; t.ended = Date.now(); S.rec = null; await DB.put('trassen', t).catch(() => {});
+      if (anim) { toast(`Trasse gespeichert: ${fmtDist(tLen(t))}, ${t.points.length} Punkte, ${t.marks.length} Markierungen.`); await tWait(800); }
+      // Fremdleitungen aus der Leitungsauskunft
+      const O = { lat: PX.base.lat, lon: PX.base.lon, kx: MDEG * Math.cos(PX.base.lat * RAD) }, P = (x, y, d) => ({ ...z3ll(O, x, -y), acc: 0.05, alt: null, ts: Date.now(), fix: 'aus Leitungsauskunft', dm: d });
+      [['Wasser DN 100 (Bestand)', 'Wasserleitung', -7.2, 1.3, 110], ['Strom 0,4 kV (Bestand)', 'Stromkabel', -11.2, 0.75, 40], ['Gas DN 63 (Bestand)', 'Gasleitung', -12.8, 0.9, 63]].forEach(([n, k, y, d, dn]) => {
+        const f = { id: uid(), name: n, kind: k, siteId: s.id, created: Date.now(), status: 'bestand', dn, points: [P(-30, y, d), P(30, y, d)], marks: [], px: 'fremd' }; S.trassen.push(f); DB.put('trassen', f).catch(() => {}); });
+    }
+  },
+  /* 7 Kopfloch mit Tiefe */ async anim => {
+    const s = PX.site(), it = PX.item('Kopfloch mit Meterstab');
+    if (anim && !S.photos.some(p => p.siteId === s.id && p.itemId === it.id)) {
+      go('cockpit'); tourCamOpen(); camCtx = { siteId: s.id, itemId: it.id, mark: null }; renderCamHud(); await tWait(700);
+      await tClick('#shutter'); await handleCapture(demoRulerCanvas(), PX.meta(1.6, -8.6)); await tWait(1000);
+      const pd = pending; if (pd) { if (!pd.c) await pd.cP;
+        const D = openDepthTool(pd.c, r => { pd.depthMeas = r; $('#rvDepthF').hidden = false; $('#rvDepth').value = r.cm; refreshAutoDesc(); }); await tWait(700);
+        D.set('a', { x: 612, y: 753 }, 10); await tWait(700); D.set('b', { x: 612, y: 195 }, 100); await tWait(700); D.set('o', { x: 560, y: 210 }); await tWait(600); D.set('u', { x: 560, y: 815 }); await tWait(1200);
+        await pxClick('#itool [data-it=ok]'); await tWait(500);
+        for (const cb of $$('#rvLocal [data-nd]')) { if (!cb.checked) { cb.click(); await tWait(200); } }
+        await pxClick('#rvSave'); await tWait(1200); }
+      tourCamClose();
+    }
+    await PX.photo('Kopfloch mit Meterstab', { canvas: demoRulerCanvas(), depthCm: 98, x: 1.6, y: -8.6, dt: 3.5 * 3600e3 });
+  },
+  /* 8 Während: Fotos, Unkenntlich von Hand, Belegung, Notiz */ async anim => {
+    const s = PX.site(), it = PX.item('Speedpipe verlegt + Warnband');
+    if (anim && !S.photos.some(p => p.siteId === s.id && p.itemId === it.id)) {
+      go('cockpit'); tourCamOpen(); camCtx = { siteId: s.id, itemId: it.id, mark: null }; renderCamHud(); await tWait(600);
+      await tClick('#shutter'); await handleCapture(demoCanvas('Speedpipe verlegt + Warnband', 'W', 83), PX.meta(1.5, -6)); await tWait(1000);
+      await pxClick('#rvBlurEd'); await tWait(800); const E = lastBlurEd, pd = pending; if (E && pd?.c) { E.add({ x: pd.c.width * 0.66, y: pd.c.height * 0.12, w: pd.c.width * 0.22, h: pd.c.height * 0.16, kind: 'Von Hand' }); await tWait(1100); await pxClick('#itool [data-it=ok]'); await tWait(400); }
+      for (const cb of $$('#rvLocal [data-nd]')) { if (!cb.checked) { cb.click(); await tWait(200); } }
+      await pxClick('#rvSave'); await tWait(1200); tourCamClose();
+    }
+    await PX.photo('Speedpipe verlegt + Warnband', { x: 1.5, y: -6, dt: 3 * 3600e3 });
+    await PX.photo('Hauseinführung abgedichtet', { x: 2.2, y: 2.4, dt: 2.6 * 3600e3, desc: 'Ringraumdichtung gesetzt, Speedpipe 7 mm durch die Kellerwand, dicht.' });
+    // NVt liegt an der Straßenecke außerhalb der Baustelle – wird im Q-Check gefunden und begründet akzeptiert
+    await PX.photo('Speedpipe-Belegung am NVt', { x: -58, y: -10, dt: 2.4 * 3600e3, desc: 'NVt 12 an der Ecke Mühlenweg / Am Wall: Speedpipe rot-weiß belegt, Beschriftung HA Mühlenweg 7.' });
+    if (!S.notes.some(n => n.px)) { const n = { id: uid(), ts: Date.now() - 2 * 3600e3, text: 'Anwohner Nr. 9 fragt nach einem Glasfaser-Anschluss – an den Vertrieb weitergeben.', siteId: s.id, ...PX.ll(4, -9), px: true }; S.notes.push(n); await DB.put('notes', n).catch(() => {}); }
+  },
+  /* 9 Mangel und Plan */ async anim => {
+    const s = PX.site();
+    if (!S.plans.some(p => p.siteId === s.id)) { const c = pxPlanCanvas(); const pl = { id: uid(), siteId: s.id, name: 'Lageplan Hausanschluss', w: c.width, h: c.height, created: Date.now(), blob: await toBlob(c, 0.9), thumb: fitCanvas(c, 500).toDataURL('image/jpeg', 0.75) }; await DB.put('plans', pl); S.plans.push(pl); }
+    const pl = S.plans.find(p => p.siteId === s.id), ph = S.photos.find(p => p.siteId === s.id && p.itemId === PX.item('Kopfloch mit Meterstab')?.id);
+    if (ph && !ph.plan) { ph.plan = { planId: pl.id, x: 0.52, y: 0.71 }; await DB.put('photos', ph).catch(() => {}); }
+    if (S.defects.some(d => d.siteId === s.id)) return;
+    const title = 'Gehwegplatte am Kopfloch gebrochen', desc = 'Beim Aufnehmen des Pflasters ist eine Betonplatte (30 × 30) gebrochen. Ersatzplatte bestellen und beim Wiederherstellen tauschen.';
+    if (anim) { go('maengel'); await tWait(400); openDefect(null, { siteId: s.id, photoId: ph?.id, plan: { planId: pl.id, x: 0.5, y: 0.7 } }); await tWait(700);
+      await pType('#dfTitle', title); await pType('#dfDesc', desc, 10); { const tr = $('#dfTrade'); if (tr) { Tour.focus(tr); tr.value = 'Straßenbau'; tr.dispatchEvent(new Event('change', { bubbles: true })); await tWait(400); } } await pType('#dfAss', 'Pflasterkolonne Meyer');
+      await pxClick('#scrim [data-due="3"]'); const pr = $('#dfPrio'); if (pr) { pr.value = 'hoch'; pr.dispatchEvent(new Event('change', { bubbles: true })); }
+      await tWait(300); await pxClick('#scrim [data-x=save]'); await tWait(700); }
+    if (!S.defects.some(d => d.siteId === s.id)) await saveDefect({ id: uid(), siteId: s.id, title, desc, trade: 'Straßenbau', assignee: 'Pflasterkolonne Meyer', due: dayKey(Date.now() + 3 * 864e5), prio: 'hoch', status: 'open', photoIds: ph ? [ph.id] : [], plan: { planId: pl.id, x: 0.5, y: 0.7 }, history: [] }, null);
+    if (anim) { await openPlan(pl.id); await tWait(1400); }
+  },
+  /* 10 Spülbohrung */ async anim => {
+    const s = PX.site();
+    if (!S.messungen.some(r => r.siteId === s.id && r.kind === 'bohr')) {
+      const r = { id: uid(), kind: 'bohr', siteId: s.id, name: 'Querung Einfahrt Nr. 5', partner: 'Bohrtechnik Nord GmbH (Beispiel)', machine: 'Ditch Witch JT10', verfahren: 'Spülbohrung (HDD)', start: 'Gehweg vor Nr. 5, Westseite', ziel: 'Gehweg vor Nr. 7, Ostseite', len: '12', pilot: '65', aufw: '90', pipe: 'Schutzrohr PE 50 + Speedpipe 7 mm', rods: [0.7, 1.0, 1.15, 1.1, 0.8].map((t, i) => ({ n: i + 1, len: '3', depth: String(t).replace('.', ',') })), result: 'ok', note: 'Ortung ohne Auffälligkeiten, Fremdleitung Wasser bei Stange 3 mit 0,6 m Abstand unterquert.', photoIds: [], ts: Date.now() - 2.2 * 3600e3, date: today(), user: S.set.name || '', ...PX.ll(-8, -9), files: [] };
+      S.messungen.push(r); await DB.put('messungen', r).catch(() => {}); await ensureBohrItems(s.id);
+    }
+    const bp = [['Startgrube mit Maßstab', -14, -9, 1], ['Zielgrube mit Maßstab', -2, -9, 0], ['Bohrgerät aufgebaut / Ortung', -15, -10, 0], ['Rohreinzug', -2, -9.2, 0], ['Gruben verfüllt, Oberfläche hergestellt', -8, -9, 0]];
+    for (const [l, x, y, ruler] of bp) await PX.photo(l, { canvas: ruler ? demoRulerCanvas() : null, depthCm: ruler ? 98 : null, x, y, dt: 2 * 3600e3 });
+    if (anim) { S.ms.site = s.id; go('messung'); await tWait(400); openMess(S.messungen.find(r => r.siteId === s.id && r.kind === 'bohr').id); await tWait(1200); await pxSheetScroll(520); await tWait(800); }
+  },
+  /* 11 Einblasen, Spleiß, OTDR, QR */ async anim => {
+    const s = PX.site(), now = Date.now(), base = { siteId: s.id, photoIds: [], date: today(), user: S.set.name || '', files: [], note: '' };
+    const add = async r => { if (!S.messungen.some(x => x.siteId === s.id && x.kind === r.kind)) { S.messungen.push(r); await DB.put('messungen', r).catch(() => {}); } };
+    if (anim && !S.messungen.some(x => x.siteId === s.id && x.kind === 'einblas')) {
+      S.ms.site = s.id; go('messung'); await tWait(400); openMess(null, 'einblas', { siteId: s.id }); await tWait(700);
+      await pType('#msName', 'NVt 12 → HA Mühlenweg 7'); await pType('#msPipe', '7 × 1,5 mm, rot'); await pType('#msCab', 'Micro 4F 1,6 mm'); await pType('#msLen', '38'); await pType('#msDur', '3,5'); await pType('#msBar', '11'); await pType('#msTmp', '8');
+      await pType('#msDev', 'Plumettaz MiniJet');
+      await pxClick('#scrim [data-res=ok]'); await tWait(300); await pxClick('#scrim [data-x=save]'); await tWait(600);
+    }
+    await add({ ...base, id: uid(), kind: 'einblas', name: 'NVt 12 → HA Mühlenweg 7', pipe: '7 × 1,5 mm, rot', cable: 'Micro 4F 1,6 mm', len: '38', dur: '3,5', bar: '11', temp: '8', machine: 'Plumettaz MiniJet', result: 'ok', ts: now - 1.8 * 3600e3, ...PX.ll(-24, -9) });
+    const fib = (n, v) => Array.from({ length: n }, (_, i) => ({ n: i + 1, loss: v[i] ?? '' }));
+    await add({ ...base, id: uid(), kind: 'spleiss', name: 'HÜP Mühlenweg 7', loc: 'HÜP / Gf-AP', cableIn: 'Micro 4F (Speedpipe rt)', cableOut: 'Gf-AP 4 Ports', device: 'Fujikura 90S+', count: 4, fibers: fib(4, ['0,02', '0,03', '0,02', '0,04']), ts: now - 1.5 * 3600e3, ...PX.ll(2.2, 3) });
+    await add({ ...base, id: uid(), kind: 'otdr', name: 'NVt 12 → HÜP Mühlenweg 7', fiber: 'BA 1 · F 1 (rt)', device: 'EXFO MaxTester 730C', splices: '2', conns: '2', rows: [{ wl: 1310, len: '412,6', loss: '1,12', events: '3' }, { wl: 1550, len: '412,6', loss: '1,04', events: '3' }], ts: now - 1.2 * 3600e3, ...PX.ll(2.2, 3) });
+    if (anim) { const sp = S.messungen.find(x => x.siteId === s.id && x.kind === 'spleiss'); closeSheet(); await tWait(300); showQr(qrPayload(sp)); await tWait(1600); }
+  },
+  /* 12 Aufmaß: Trasse, Sprache, Vorschlag */ async anim => {
+    const s = PX.site(), t = S.trassen.find(x => x.siteId === s.id && x.px === 'ha'); if (S.aufmass.some(e => e.siteId === s.id)) return;
+    const L = tLen(t).toFixed(2).replace('.', ','), now = Date.now(), mk = (pos, calc, loc, src, o = {}) => { const lv = lvAll().find(x => x.pos === pos); return { id: uid(), siteId: s.id, pos, text: lv?.text || pos, unit: lv?.unit || 'm', mode: 'calc', calc, qty: '', loc, src, note: '', photoIds: [], ts: now, date: today(), updated: now, user: S.set.name || '', ...PX.ll(1.5, -8), ...o }; };
+    if (anim) { S.am.site = s.id; go('aufmass'); await tWait(400); openAm(null, { siteId: s.id, pos: '01.02' }); await tWait(700); await pxClick('#scrim [data-x=tr]'); await tWait(600);
+      await pType('#scrim [data-c=b]', '0,30'); await pType('#scrim [data-c=c]', '0,60'); await pType('#amLoc', 'Gehweg vor Nr. 5–7'); await pxClick('#scrim [data-x=save]'); await tWait(700);
+      openAmVoice(); await tWait(600); await pType('#avT', 'Pflaster wiederherstellen 2,4 mal 0,6 vor Hausnummer 7', 30); await tWait(900); await pxClick('#scrim [data-x=take]'); await tWait(900); await pxClick('#scrim [data-x=save]'); await tWait(600);
+      openAmSuggest(today()); await tWait(1200); await pxClick('#scrim [data-x=take]'); await tWait(800); }
+    if (!S.aufmass.some(e => e.siteId === s.id && e.pos === '01.02')) { const e = mk('01.02', { a: L, b: '0,30', c: '0,60' }, 'Gehweg vor Nr. 5–7', 'Trasse ' + t.name, { trId: t.id }); S.aufmass.push(e); await DB.put('aufmass', e).catch(() => {}); }
+    for (const e of S.aufmass.filter(e => e.siteId === s.id && (e.src || '').includes('Trasse ' + t.name))) { e.trId = t.id; await DB.put('aufmass', e).catch(() => {}); }
+    if (!S.aufmass.some(e => e.siteId === s.id && e.pos === '03.02')) { const e = mk('03.02', { a: L }, 'Gehweg und Hauseinführung', 'Trasse ' + t.name, { trId: t.id }); S.aufmass.push(e); await DB.put('aufmass', e).catch(() => {}); }
+    if (!S.aufmass.some(e => e.siteId === s.id && e.pos === '01.04')) { const e = mk('01.04', { n: '1' }, 'Gehweg vor Nr. 7', 'Fotos Kopfloch'); S.aufmass.push(e); await DB.put('aufmass', e).catch(() => {}); }
+    if (!S.aufmass.some(e => e.siteId === s.id && /pflaster/i.test(e.text))) { const lv = lvAll().find(x => /pflaster/i.test(x.text)); if (lv) { const e = mk(lv.pos, lv.unit === 'm²' ? { a: '2,4', b: '0,6' } : { a: '2,4' }, 'vor Hausnummer 7', 'Sprache'); S.aufmass.push(e); await DB.put('aufmass', e).catch(() => {}); } }
+    S.aufmass.filter(e => e.siteId === s.id && !(amQty(e) > 0)).forEach(e => { S.aufmass = S.aufmass.filter(x => x !== e); DB.del('aufmass', e.id).catch(() => {}); });
+  },
+  /* 13 Bautagebuch */ async anim => {
+    const s = PX.site(), k = 'd|' + today() + '|' + s.id;
+    S.daily[k] = { crew: [{ name: 'Tiefbau-Kolonne EnerWeser', n: 3, h: '8' }, { name: 'Glasfaser-Monteur', n: 1, h: '5' }, { name: 'Bohrtechnik Nord (Nachunternehmer)', n: 2, h: '3' }], equip: [{ name: 'Minibagger 1,8 t', h: '5' }, { name: 'Spülbohrgerät JT10', h: '3' }, { name: 'Einblasgerät', h: '1,5' }], hind: 'Ab 14 Uhr Regen, Pflasterarbeiten auf morgen verschoben.\nEinfahrt Nr. 5 von 8 bis 12 Uhr gesperrt, Anwohner informiert.' };
+    saveDaily();
+    if (anim) { S.rep.site = s.id; S.rep.day = today(); S.rep.range = 'all'; go('bericht'); await tWait(600); $('#dailyPanel')?.scrollIntoView({ block: 'start', behavior: 'smooth' }); await tWait(800); await pxClick('[data-dy=rule]'); await tWait(1200); }
+    else { try { const D = dayData(today(), s.id); S.daily['t|' + today() + '|' + s.id] = ruleReport(D, null); saveDaily(); } catch (e) {} }
+  },
+  /* 14 3D-Zwilling */ async anim => {
+    const s = PX.site(), O = { lat: PX.base.lat, lon: PX.base.lon, kx: MDEG * Math.cos(PX.base.lat * RAD) }, hx = (x, y) => { const ll = z3ll(O, x, -y); return [+ll.lat.toFixed(7), +ll.lon.toFixed(7)]; };
+    if (!(s.buildings || []).length) { s.buildings = [{ id: 'pxb1', poly: [hx(-5, 2.2), hx(6, 2.2), hx(6, 12), hx(-5, 12)], h: 8.2, name: 'Mühlenweg 7', keller: true, src: 'hand' }, { id: 'pxb2', poly: [hx(-22, 3), hx(-11, 3), hx(-11, 12), hx(-22, 12)], h: 7.4, name: 'Mühlenweg 5', keller: true, src: 'hand' }, { id: 'pxb3', poly: [hx(13, 3), hx(24, 3), hx(24, 13), hx(13, 13)], h: 6.9, name: 'Mühlenweg 9', keller: true, src: 'hand' }]; s.osmTried = true; await DB.put('sites', s); }
+    if (anim) { Z3V.site = s.id; Z3V.key = ''; Z3V.sel = null; Z3V.layer = 'satellit'; go('zwilling'); await Z3V.readyP; await Z3V.rebuild(true); await tWait(1200);
+      Z3V.animTo('xray', 0.85, 1500); await tWait(1700); Z3V.fly('explosion', 1500); Z3V.animTo('expl', 1, 1900); await tWait(2400); Z3V.animTo('expl', 0, 1200); Z3V.fly('haus', 1400); await tWait(1800); }
+  },
+  /* 15 Nachher-Fotos mit Geisterbild, Mangel erledigt */ async anim => {
+    const s = PX.site(), it = PX.item('Oberfläche wiederhergestellt');
+    if (anim && !S.photos.some(p => p.siteId === s.id && p.itemId === it.id)) {
+      go('cockpit'); tourCamOpen(); camCtx = { siteId: s.id, itemId: it.id, mark: null }; renderCamHud(); updateGhost(); await tWait(1800);
+      await tClick('#shutter'); await handleCapture(demoCanvas('Oberfläche wiederhergestellt', 'N', 97), PX.meta(1, -2)); await tWait(1000);
+      for (const cb of $$('#rvLocal [data-nd]')) { if (!cb.checked) { cb.click(); await tWait(200); } }
+      await pxClick('#rvSave'); await tWait(1200); tourCamClose();
+    }
+    await PX.photo('Oberfläche wiederhergestellt', { x: 1, y: -2, dt: 0.6 * 3600e3 });
+    await PX.photo('HÜP / Gf-AP montiert', { x: 2.2, y: 3, dt: 1.1 * 3600e3, desc: 'Gf-AP im Keller montiert, Speedpipe eingeführt und abgedichtet.' });
+    await PX.photo('Typenschild Gf-AP mit Home-ID', { x: 2.2, y: 3, dt: 1 * 3600e3, desc: 'Home-ID-Aufkleber lesbar.' });
+    const d = S.defects.find(x => x.siteId === s.id);
+    if (d && d.status !== 'done') { const p = await PX.photo(null, { title: 'Gehwegplatte getauscht', phase: 'N', cat: 'mangel', x: 1.6, y: -8.6, dt: 0.4 * 3600e3, desc: 'Gebrochene Platte durch neue Betonplatte ersetzt.' }); await saveDefect({ ...d, status: 'done', photoIds: [...(d.photoIds || []), p.id] }, d); if (anim) { go('maengel'); await tWait(400); openDefect(d.id); await tWait(1400); } }
+  },
+  /* 16 Q-Check: Befunde ansehen, begründet akzeptieren */ async anim => {
+    const s = PX.site(); if (anim) { await openQC(s.id); await tWait(1600); }
+    const r = qcRun(s), f = r.F.find(x => x.rule === 'R02');
+    if (f) { if (anim) { const list = r.F; const i = list.indexOf(f); const b = $(`#qcIn [data-qw="${i}"]`); if (b) { b.scrollIntoView({ block: 'center' }); await tWait(400); await tClick(`#qcIn [data-qw="${i}"]`); await pType('#qcwr' + i, 'NVt steht an der Straßenecke außerhalb der Baustellenfläche – Lage stimmt.', 18); await pxClick(`#qcIn [data-qok="${i}"]`); await tWait(900); } }
+      if (!s.qcWaive?.[f.key]) { s.qcWaive = { ...(s.qcWaive || {}), [f.key]: { reason: 'NVt steht an der Straßenecke außerhalb der Baustellenfläche – Lage stimmt.', by: S.set.name || '', ts: Date.now() } }; await DB.put('sites', s); } }
+  },
+  /* 17 Abnahme */ async anim => {
+    const s = PX.site(); if (S.protocols.some(p => p.siteId === s.id)) return;
+    if (anim) { openAbnahme(s.id); await tWait(700); await pType('#abAGP', 'Frau Becker'); await pType('#abAN', 'EnerWeser Bautechnik GmbH'); await pType('#abANP', S.set.name || 'Sefkan Kadah'); await pType('#abRem', 'Hausanschluss betriebsbereit übergeben. Messprotokolle liegen vor.', 14);
+      await tSign('#sigAG'); await tSign('#sigAN'); await tWait(500); }
+    const pr = progress(s), pt = { id: uid(), siteId: s.id, ts: Date.now() - 0.2 * 3600e3, client: s.client, clientRep: 'Frau Becker', contractor: 'EnerWeser Bautechnik GmbH', contractorRep: S.set.name || 'Sefkan Kadah', result: 'ok', remarks: 'Hausanschluss betriebsbereit übergeben. Messprotokolle liegen vor.', warrantyUntil: dayKey(Date.now() + 5 * 365 * 864e5), defects: [], photos: `${pr.done}/${pr.must}`, missing: pr.missing.map(i => i.label), ...PX.ll(1, -2), sigAG: demoSig(), sigAN: demoSig() };
+    pt.hash = await sha256(JSON.stringify({ ...pt, hash: undefined })); await sealDoc(pt, 'abnahme'); await DB.put('protocols', pt).catch(() => {}); S.protocols.push(pt);
+    if (anim) { closeSheet(); toast('Abnahmeprotokoll erstellt und versiegelt.', 2600); await tWait(600); }
+  },
+  /* 18 Bericht und Sichern */ async anim => {
+    const s = PX.site(); S.rep.site = s.id; S.rep.range = 'all';
+    if (anim) { go('bericht'); await tWait(900); }
+    await markExported(S.photos.filter(p => p.siteId === s.id));
+  },
+  /* 19 Q-Check final */ async anim => { const s = PX.site(); if (anim) { await openQC(s.id); await tWait(1200); } else { const r = qcRun(s); await qcRecord(s, r); } }
+];
+/* Rundgang-Kontexte und Schritte */
+const PX_CTX = {}; for (let k = 0; k < PX_ST.length; k++) PX_CTX['px' + k] = async () => { window.PX_LOCK = true; await PX.upTo(k); };
+function praxisSteps() {
+  const S0 = (c, ctx, list) => list.map(([el, t, o]) => ({ c, ctx, el, t, keep: true, ...(o || {}) }));
+  const site = () => PX.site(), qcLine = () => { const r = qcRun(site()); return r; };
+  void qcLine;
+  return [
+    ...S0('Start', 'px0', [
+      [null, 'Praxis-Rundgang: Wir dokumentieren jetzt gemeinsam eine komplette Baustelle, einen Glasfaser-Hausanschluss im Mühlenweg 7 in Verden. Von der Anlage über Unterlagen, Fotos, Trasse, Spülbohrung, Protokolle und Aufmaß bis zu Abnahme, Q-Check und Bericht. Jede Funktion kommt einmal dran, mit echten Eingaben in jedes Feld. Alles läuft mit Beispieldaten, deine echten Daten bleiben unverändert.', { title: 'Eine Baustelle von A bis Z', act: async () => { go('cockpit'); await tWait(300); } }],
+    ]),
+    ...S0('1 · Anlegen', 'px1', [
+      ['.tab[data-v=cockpit]', 'Morgens, 7 Uhr, wir stehen vor dem Haus. Ich lege die Baustelle an: Name, Auftragsnummer, Art der Arbeit und Umkreis. Dann trage ich den Auftraggeber ein und wähle das Doku-Profil des Netzbetreibers.', { title: 'Baustelle anlegen', act: () => PX.run(1) }],
+      [null, 'Fertig: Die Baustelle hat ihre Pflichtfoto-Liste aus der Vorlage und zwei zusätzliche Pflichtfotos aus dem Doku-Profil. Fotos in diesem Umkreis ordne ich ab jetzt automatisch zu.', { title: 'Pflichtfotos stehen fest', act: async () => { openSite(site().id); await tWait(800); } }],
+      [null, 'Und sofort die Warnung: Für diese Baustelle liegt keine Leitungsauskunft vor. Ohne Spartenpläne wird nicht gegraben. Das erledigen wir als Nächstes.', { title: 'Leitungsauskunft-Check', act: async () => { closeSheet(); leitungWarn(site()); await tWait(1200); } }]
+    ]),
+    ...S0('2 · Unterlagen', 'px2', [
+      [null, 'Ich lege die Leitungsauskünfte ab: Strom, Gas, Wasser und Telekommunikation, jeweils mit Netzbetreiber, Nummer und Ablaufdatum. Dazu die verkehrsrechtliche Anordnung vom Landkreis.', { title: 'Leitungsauskünfte und Anordnung', act: () => PX.run(2) }],
+      [null, 'Alle Unterlagen liegen vor. Läuft etwas ab, warne ich 14 Tage vorher. Im Bericht erscheint die Liste automatisch.', { title: 'Unterlagen vollständig', act: async () => { closeSheet(); S.ak.scope = 'site'; S.ak.site = site().id; go('akten'); await tWait(500); }, fx: '#akStats' }]
+    ]),
+    ...S0('3 · Anwohner', 'px3', [
+      [null, 'Bevor es losgeht, informieren wir die Nachbarn: Zeitraum, Arbeitszeiten, was wir machen, Einschränkungen und Ansprechpartner. Daraus wird ein Infozettel zum Einwerfen.', { title: 'Anwohner-Info', act: () => PX.run(3) }]
+    ]),
+    ...S0('4 · Absichern', 'px4', [
+      [null, 'Absperrung steht. Ich mache die tägliche Kontrolle der Verkehrssicherung: Anordnung und Regelplan, alle acht Prüfpunkte, Unterschrift. Das landet auch im Bautagebuch.', { title: 'Verkehrssicherung', act: () => PX.run(4) }]
+    ]),
+    ...S0('5 · Vorher', 'px5', [
+      [null, 'Jetzt die Vorher-Fotos. Die App weiß, welches Pflichtfoto dran ist. Nach dem Auslösen prüft sie Schärfe, Licht und GPS, ich hake die Pflichtinhalte ab und trage Stichworte ein. Die Beschreibung schlägt die App selbst vor.', { title: 'Vorher-Fotos', act: () => PX.run(5) }],
+      [null, 'Beide Vorher-Fotos sind drin, mit Zeitstempel, Zentimeter-Position und Echtheitssiegel.', { title: 'Vorher erledigt', act: async () => { go('cockpit'); await tWait(300); openSite(site().id); await tWait(800); } }]
+    ]),
+    ...S0('6 · Trasse', 'px6', [
+      [null, 'Der Graben ist offen, die Speedpipe liegt. Ich laufe den Leitungsverlauf mit dem RTK-Empfänger ab, vom NVt-Verband bis in den Keller. Unterwegs markiere ich Muffe, Abzweig, die Kreuzung mit der Wasserleitung und den Hausanschluss, jeweils mit Tiefe.', { title: 'Trasse aufnehmen', act: () => PX.run(6), fx: '#map' }],
+      [null, 'Die Trasse ist gespeichert: Länge, Punkte, Markierungen und Genauigkeit. Export als Shapefile, DXF oder GeoJSON geht von hier. Die Fremdleitungen aus der Leitungsauskunft habe ich ebenfalls erfasst.', { title: 'Trasse fertig', act: async () => { go('karte'); await tWait(500); $('#trassPanel')?.scrollIntoView({ block: 'center' }); await tWait(400); }, fx: '#trassPanel' }]
+    ]),
+    ...S0('7 · Kopfloch', 'px7', [
+      [null, 'Kopfloch mit Meterstab. Ich messe die Tiefe direkt auf dem Foto: zwei Zahlen am Meterstab antippen, dann Geländeoberkante und Sohle. Ergebnis 98 Zentimeter, mit dem Vermerk am Meterstab gemessen.', { title: 'Tiefe am Meterstab messen', act: () => PX.run(7) }]
+    ]),
+    ...S0('8 · Während', 'px8', [
+      [null, 'Speedpipe mit Warnband vor dem Verfüllen. Im Hintergrund steht ein Auto, das Kennzeichen mache ich von Hand unkenntlich. Dann die Hauseinführung und die Belegung am NVt an der Straßenecke. Und eine Notiz für den Vertrieb.', { title: 'Fotos während der Arbeit', act: () => PX.run(8) }]
+    ]),
+    ...S0('9 · Mangel', 'px9', [
+      [null, 'Beim Aufnehmen des Pflasters ist eine Gehwegplatte gebrochen. Ich erfasse den Mangel: Titel, Beschreibung, Gewerk, wer zuständig ist, Priorität und Frist. Das Kopfloch-Foto hängt dran, und ich verorte ihn im Lageplan.', { title: 'Mangel erfassen', act: () => PX.run(9) }],
+      [null, 'Im Lageplan liegen jetzt Foto und Mangel genau an der Stelle. So findet jeder die Stelle wieder, auch ohne GPS.', { title: 'Im Plan verortet', act: async () => { const pl = S.plans.find(p => p.siteId === site().id); if (pl) await openPlan(pl.id); await tWait(900); } }]
+    ]),
+    ...S0('10 · Spülbohrung', 'px10', [
+      [null, 'Die Einfahrt von Nummer 5 queren wir grabenlos. Das Bohrprotokoll mit Nachunternehmer, Gerät, Start- und Zielgrube, Pilot- und Aufweitbohrung und jeder Bohrstange mit Tiefe. Die Pflichtfotos für die Bohrung kommen automatisch dazu.', { title: 'Spülbohrung', act: () => PX.run(10) }]
+    ]),
+    ...S0('11 · Messen', 'px11', [
+      [null, 'Jetzt die Glasfaser: Einblasprotokoll mit Rohr, Kabel, Länge, Dauer, Druck und Temperatur. Danach Spleißprotokoll im HÜP und die OTDR-Messung. Die Grenzwerte prüft die App selbst.', { title: 'Einblasen, Spleißen, Messen', act: () => PX.run(11) }],
+      [null, 'Das QR-Etikett für den HÜP: Wer es scannt, sieht die Spleißwerte sofort, ganz ohne Server.', { title: 'QR-Etikett', act: async () => { const sp = S.messungen.find(x => x.siteId === site().id && x.kind === 'spleiss'); if (sp) { closeSheet(); await tWait(200); showQr(qrPayload(sp)); } await tWait(800); } }],
+      [null, 'Alle Protokolle der Baustelle auf einen Blick, mit Ampel: in Ordnung, nicht in Ordnung oder unvollständig.', { title: 'Protokolle', act: async () => { closeSheet(); S.ms.site = site().id; S.ms.kind = 'all'; go('messung'); await tWait(500); }, fx: '#msStats' }]
+    ]),
+    ...S0('12 · Aufmaß', 'px12', [
+      [null, 'Aufmaß: Graben mit Länge direkt aus der Trasse, Breite und Tiefe dazu. Dann per Sprache: Pflaster wiederherstellen 2,4 mal 0,6. Und der Aufmaß-Vorschlag sammelt alles, was heute aus Trassen, Fotos und Protokollen angefallen ist.', { title: 'Aufmaß erfassen', act: () => PX.run(12) }],
+      [null, 'Das Aufmaß ist fertig, mit Rechenansatz für jede Position. Als Aufmaßblatt im PDF oder für Excel.', { title: 'Aufmaß fertig', act: async () => { closeSheet(); S.am.site = site().id; go('aufmass'); await tWait(500); }, fx: '#amStats' }]
+    ]),
+    ...S0('13 · Tagebuch', 'px13', [
+      [null, 'Bautagebuch: Personal, Geräte, Behinderungen. Daraus schreibt die App den Tagesbericht, mit Wetter, Fotos, Protokollen und Aufmaß des Tages.', { title: 'Bautagebuch', act: () => PX.run(13), fx: '#dailyPanel' }]
+    ]),
+    ...S0('14 · 3D', 'px14', [
+      [null, 'Der 3D-Zwilling der Baustelle: Haus mit Keller, unser Hausanschluss und die Fremdleitungen in echter Tiefe. Röntgenblick, Explosion, und dann nah ran an die Hauseinführung.', { title: '3D-Zwilling', act: () => PX.run(14) }]
+    ]),
+    ...S0('15 · Nachher', 'px15', [
+      [null, 'Nachher-Foto der Oberfläche. Das Geisterbild blendet das Vorher-Foto ein, damit ich vom gleichen Standpunkt fotografiere. Dann HÜP und Typenschild. Die gebrochene Platte ist getauscht, ich setze den Mangel mit Nachweisfoto auf erledigt.', { title: 'Nachher und Mangel erledigt', act: () => PX.run(15) }]
+    ]),
+    ...S0('16 · Q-Check', 'px16', [
+      [null, 'Vor der Abnahme der Q-Check, wie ein Prüfprogramm im CAD: Ist alles vollständig, richtig und sinnvoll? Er findet noch zwei Dinge. Das Foto am NVt liegt außerhalb der Baustellenfläche, das ist hier richtig so, also akzeptiere ich es mit Begründung. Die Abnahme fehlt noch.', { title: 'Q-Check', act: () => PX.run(16) }]
+    ]),
+    ...S0('17 · Abnahme', 'px17', [
+      [null, 'Abnahme mit dem Auftraggeber: Ansprechpartner, Bemerkung, Ergebnis ohne Vorbehalt, beide unterschreiben direkt auf dem Handy. Das Protokoll wird versiegelt.', { title: 'Abnahme', act: () => PX.run(17) }]
+    ]),
+    ...S0('18 · Bericht', 'px18', [
+      [null, 'Bericht und Sicherung: PDF-Fotobericht mit Deckblatt, Lageplan, 3D-Lageplan, Aufmaß, Protokollen, Unterlagen und Q-Check-Ergebnis, dazu ein ZIP mit allen Fotos im Schema des Netzbetreibers. Im Rundgang lade ich nichts herunter, die Fotos markiere ich als gesichert.', { title: 'Bericht und ZIP', act: () => PX.run(18) }]
+    ]),
+    ...S0('19 · Freigabe', 'px19', [
+      [null, 'Letzter Q-Check: Alle Pflichtfotos, Unterlagen, Protokolle, Aufmaß und Abnahme sind da, die Ausnahme ist begründet. Die Baustelle ist freigabefähig.', { title: 'Freigabefähig', act: () => PX.run(19) }],
+      [null, 'Das war eine komplette Baustelle in der App, von der Anlage bis zur Freigabe. Jede Funktion hast du einmal gesehen. Im Haupt-Rundgang erkläre ich jeden Knopf einzeln.', { title: 'Geschafft', act: async () => { closeSheet(); go('cockpit'); await tWait(300); } }]
+    ])
+  ];
+}
+
+/* ===PX-END=== */
 /* ===Z3-START=== */
 /* =====================================================================
    3D-ZWILLING – die Baustelle als bewegliches 3D-Modell
@@ -7423,7 +8015,7 @@ async function tMapTap(pt) {
   ev('pointerdown'); await tWait(80); ev('pointerup'); await tWait(300);
 }
 /* Kontexte: was auf dem Bildschirm offen sein muss. Rückgabe false = Kapitel überspringen */
-const SHEET_CTX = ['site', 'abn', 'defect', 'photo', 'settings', 'amsheet', 'spl', 'profil', 'siteprof', 'anw', 'vs', 'bohr', 'qr', 'qrshow', 'amsug', 'amvoice'];
+const SHEET_CTX = ['qc', 'site', 'abn', 'defect', 'photo', 'settings', 'amsheet', 'spl', 'profil', 'siteprof', 'anw', 'vs', 'bohr', 'qr', 'qrshow', 'amsug', 'amvoice'];
 const TOUR_CTX = {
   cockpit: () => go('cockpit'),
   karte: () => go('karte'),
@@ -7440,6 +8032,7 @@ const TOUR_CTX = {
   settings: async () => { go('cockpit'); await openSettings(); $$('#scrim details.sgrp').forEach(d => d.open = true); },
   mehr: () => go('mehr'),
   aufmass: () => { S.am.site = 'all'; go('aufmass'); },
+  qc: async () => { go('cockpit'); await openQC('ex1', { noRecord: true }); },
   zwilling: async () => { Z3V.site = 'ex1'; Z3V.key = ''; Z3V.sel = null; Z3V.mode = 'view'; Z3V.layer = 'satellit'; go('zwilling'); await Z3V.readyP; await Z3V.rebuild(true); if (Z3V.ctx) { Z3V.ctx.xray = 0.55; Z3V.ctx.expl = 0; z3Update(Z3V.ctx); Z3V.syncSliders(); } },
   amsheet: () => { const s = S.sites.find(x => x.id === 'ex2') || tSite(); go('aufmass'); openAm(null, { siteId: s?.id || null }); },
   messung: () => { S.ms.site = 'all'; S.ms.kind = 'all'; go('messung'); },
@@ -7577,6 +8170,14 @@ function tourSteps() {
       ['#trassPanel [data-tr=show]', 'Auf Karte zeigt dir die Trasse oben in der Karte.'],
       ['#trassPanel [data-tr=del]', 'Löschen entfernt die Trasse, nach einer Rückfrage.'],
       ['#mapInfo', 'Hier unten stehen Details zur gewählten Baustelle. Tipp auf einen Baustellenkreis, dann siehst du Entfernung, Fotos und die nächste Aufgabe.', { title: 'Baustelle in der Nähe' }]
+    ]),
+    ...C('Q-Check', 'qc', [
+      ['#qcIn .qchead', 'Der Q-Check prüft eine Baustelle wie ein Prüfprogramm im CAD: Ist alles vollständig, richtig und sinnvoll? Oben siehst du die Punkte von 0 bis 100 und die Ampel: freigabefähig, mit Hinweisen oder nicht freigabefähig.', { title: 'Q-Check' }],
+      ['#qcIn .qccnt', 'Fehler, Warnungen und Hinweise werden gezählt. Begründet akzeptierte Ausnahmen zählen nicht mehr, stehen aber im Prüfprotokoll.', { title: 'Befunde', keep: true }],
+      ['#qcIn .qctabs', 'Filter nach Vollständigkeit, Richtigkeit und Sinnhaftigkeit. Geprüft werden über 35 Regeln: Pflichtfotos, Tiefen, Unterlagen, Aufmaß gegen Trasse, Grenzwerte, GPS, Zeitfolge, Überdeckung und Abstand zu Fremdleitungen im 3D-Modell, Doppelfotos und mehr.', { title: 'Drei Prüfbereiche', keep: true }],
+      ['#qcIn .qcf', 'Jeder Befund sagt genau, was nicht stimmt. „Zeigen / beheben“ springt direkt an die Stelle, zum Foto, zur Kamera, zum Aufmaß oder in den 3D-Zwilling.', { title: 'Zeigen und beheben', keep: true }],
+      ['#qcIn [data-qw]', 'Ist etwas bewusst so, akzeptierst du es mit Begründung, zum Beispiel „mit dem Netzbetreiber abgestimmt“. Wer und wann, steht dabei.', { title: 'Begründet akzeptieren', keep: true }],
+      ['#qcIn [data-x=pdf]', 'Das Prüfprotokoll als PDF geht an Bauleitung oder Auftraggeber. Im Fotobericht steht das Q-Check-Ergebnis jeder Baustelle auf der Seite Nachweis und Freigabe.', { title: 'Prüfprotokoll', keep: true }]
     ]),
     ...C('3D-Zwilling', 'zwilling', [
       ['.tab[data-v=zwilling]', 'Neu: der 3D-Zwilling. Jede Baustelle als bewegliches 3D-Modell, mit allen Rohren und Kabeln im Boden, den Häusern und den Fotos.', { title: '3D-Zwilling' }],
@@ -7850,6 +8451,7 @@ const Tour = {
         <div class="fld" style="flex:1"><span class="lbl">Modus</span><div class="segs" id="tvMode"><button type="button" data-m="listen" class="${this.mode === 'listen' ? 'on' : ''}">🔊 Hören</button><button type="button" data-m="read" class="${this.mode === 'read' ? 'on' : ''}">📖 Lesen</button></div></div></div>
       <div id="tvHint">${this.voiceHint()}</div>
       <button class="btn pri wide" data-t="0" style="margin-top:14px">▶ Alles abspielen · ca. ${Math.round(all / 60000)} Min.</button>
+      <button class="pxcard" data-px="1" type="button"><b>Praxis-Rundgang: Eine Baustelle von A bis Z</b><span>Glasfaser-Hausanschluss Mühlenweg 7 – ich fülle jedes Feld aus und nutze jede Funktion einmal: Anlegen, Unterlagen, Anwohner-Info, Verkehrssicherung, Fotos, Trasse, Tiefe, Mangel, Plan, Spülbohrung, Einblasen, Spleiß, OTDR, QR, Aufmaß, Tagebuch, 3D-Zwilling, Q-Check, Abnahme, Bericht.</span><em>▶ Starten · ca. 12 Min.</em></button>
       <div class="lbl" style="margin:16px 0 6px">Oder ein Kapitel</div>
       ${ch.filter(c => c.c !== 'Ende').map(c => `<button class="trow" data-t="${c.i}" style="width:100%;text-align:left"><span><b>${esc(c.c)}</b><span class="meta" style="display:flex"><span>${c.n} Schritte</span></span></span><span class="sd num">${Math.max(1, Math.round(c.ms / 60000))} Min.</span></button>`).join('')}`);
     const sel = $('#tvSel', el);
@@ -7858,10 +8460,11 @@ const Tour = {
     $('#tvRate', el).onclick = e => { const b = e.target.closest('[data-r]'); if (!b) return; S.set.tourRate = +b.dataset.r; saveSet(); $$('#tvRate button', el).forEach(x => x.classList.toggle('on', x === b)); };
     $('#tvMode', el).onclick = e => { const b = e.target.closest('[data-m]'); if (!b) return; this.mode = b.dataset.m; $$('#tvMode button', el).forEach(x => x.classList.toggle('on', x === b)); };
     try { speechSynthesis.onvoiceschanged = () => { if (sel.isConnected) { sel.innerHTML = this.voiceOptions(); $('#tvHint', el).innerHTML = this.voiceHint(); } }; } catch (e) {}
-    el.addEventListener('click', e => { const b = e.target.closest('[data-t]'); if (b) { TV.unlock(); closeSheet(); this.start(+b.dataset.t); } });
+    el.addEventListener('click', e => { const px = e.target.closest('[data-px]'); if (px) { TV.unlock(); closeSheet(); this.start(0, 'praxis'); return; } const b = e.target.closest('[data-t]'); if (b) { TV.unlock(); closeSheet(); this.start(+b.dataset.t); } });
   },
-  async start(from = 0) {
+  async start(from = 0, kind = 'app') {
     if (this.on) await this.end(false);
+    this.kind = kind; if (kind === 'praxis') { PX.reset(); Object.assign(TOUR_CTX, PX_CTX); }
     TV.unlock();
     S.set.tourSeen = true; saveSet(); $('#btnTour')?.classList.remove('new');
     this.on = true; this.paused = false; this.ctx = null; this.dir = 1; window.TOUR_ON = true;
@@ -7886,7 +8489,8 @@ const Tour = {
     $('.ttxt', ov).textContent = 'Einen Moment, ich bereite die Beispieldaten vor …';
     await Sandbox.enter();
     if (!this.on) return;
-    this.steps = tourSteps();
+    this.steps = this.kind === 'praxis' ? praxisSteps() : tourSteps();
+    if (this.kind === 'praxis') { const h = $('.thead span:nth-child(2)', ov); if (h) h.textContent = 'Praxis-Rundgang'; }
     $('.tchips', ov).innerHTML = this.chapters().map(c => `<button type="button" data-tj="${c.i}">${esc(c.c)}</button>`).join('');
     this.syncMode();
     const loop = () => { if (!this.on) return; this.place(); this.raf = requestAnimationFrame(loop); }; this.raf = requestAnimationFrame(loop);
@@ -7977,7 +8581,7 @@ const Tour = {
     cap.classList.toggle('tc-top', wantTop); cap.classList.toggle('tc-bot', !wantTop);
   },
   async end(back = true, user = false) {
-    if (!this.on) return; this.on = false; window.TOUR_ON = false; this.run++; cancelAnimationFrame(this.raf);
+    if (!this.on) return; this.on = false; window.TOUR_ON = false; window.PX_LOCK = false; this.run++; cancelAnimationFrame(this.raf);
     TV.stop(); speaking = false;
     this.ov?.remove(); this.ov = null; this.el = null;
     try { await Promise.race([this.actP, new Promise(r => setTimeout(r, 4000))]); } catch (e) {}
