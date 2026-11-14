@@ -723,6 +723,57 @@ body.mapfull .app{z-index:auto}
 @media (min-width:760px){
   .say{font-size:21px}
 }
+/* Aufmaß */
+.am-pos{padding:12px 12px 4px}
+.am-h{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:baseline;padding-bottom:8px;border-bottom:2px solid var(--cyan)}
+.am-no{font-family:var(--f-display);font-weight:700;font-size:18px;color:var(--orange-ink)}
+.am-h b{font-size:15px;line-height:1.25}
+.am-sum{font-family:var(--f-display);font-weight:700;font-size:22px;color:var(--cyan);white-space:nowrap}
+.am-sum small{font-size:14px;color:var(--mute);margin-left:2px}
+.am-row{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;width:100%;text-align:left;padding:9px 2px;border-bottom:1px solid var(--hair)}
+.am-row:last-child{border-bottom:0}
+.am-row:active{background:var(--tint)}
+.am-d{font-family:var(--f-mono);font-weight:700;font-size:14px;color:var(--cyan);line-height:1.1}
+.am-d small{font-weight:500;font-size:12px;color:var(--mute)}
+.am-m{display:flex;flex-direction:column;gap:1px;min-width:0}
+.am-m b{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.am-m small{font-family:var(--f-mono);font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.am-m .am-ph{color:var(--orange-ink)}
+.am-q{font-family:var(--f-display);font-weight:700;font-size:19px;text-align:right;white-space:nowrap}
+.am-q small{display:block;font-size:12px;font-weight:600;color:var(--mute);margin-top:-2px}
+.am-calc{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.am-calc label{display:flex;flex-direction:column;gap:4px;min-width:0}
+.am-calc input{width:100%;min-width:0;padding:11px 8px;border:1.5px solid var(--line);border-radius:var(--r);background:var(--field);font-size:16px;font-family:var(--f-mono);font-weight:600}
+.am-help{margin:8px 0 6px}
+.am-help .chip{font-size:13px}
+.am-res{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:10px 0 14px;padding:10px 12px;border-left:5px solid var(--orange);background:var(--void);border-radius:var(--r)}
+.am-res b{font-family:var(--f-display);font-size:28px;font-weight:700;color:var(--cyan);line-height:1}
+.am-res small{font-family:var(--f-mono);font-size:13px;color:var(--mute)}
+#amOwn input,#amOwn select{padding:11px 10px;border:1.5px solid var(--line);border-radius:var(--r);background:var(--field);min-width:0}
+/* Spleiß & Messung */
+.ms-new .btn{flex:1 1 90px;padding:10px 8px}
+.ms-card{display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;padding:12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);margin-top:8px;box-shadow:var(--shadow)}
+.ms-k{width:46px;height:46px;border-radius:6px;display:grid;place-items:center;background:var(--cyan);color:#fff;font-family:var(--f-display);font-weight:700;font-size:13px;letter-spacing:.04em}
+.ms-m{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ms-m b{font-size:15px;line-height:1.25}
+.ms-m small{font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ms-st{font-family:var(--f-display);font-weight:700;font-size:13px;letter-spacing:.06em;color:#fff;padding:3px 9px;border-radius:3px}
+.fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px}
+@media (max-width:380px){.fb-grid{grid-template-columns:1fr}}
+.fb-row{display:grid;grid-template-columns:16px 50px 1fr 22px;gap:8px;align-items:center;padding:3px 0;border-bottom:1px solid var(--hair)}
+.fb-c{width:16px;height:16px;border-radius:50%;border:1px solid rgba(30,22,89,.35)}
+.fb-n{font-family:var(--f-display);font-weight:700;font-size:16px;line-height:1}
+.fb-n small{display:block;font-size:11px;font-weight:600;color:var(--mute)}
+.fb-row input{width:100%;min-width:0;padding:8px;border:1.5px solid var(--line);border-radius:var(--r);background:var(--field);font-family:var(--f-mono);font-weight:600;font-size:16px}
+.fb-ok{font-weight:800;font-size:16px;text-align:center}
+.fb-ok.ok,.ot-res b.ok{color:var(--ok)}.fb-ok.no,.ot-res b.no{color:var(--bad)}
+.ot-grid{display:grid;grid-template-columns:70px 1.15fr 1fr 44px 72px;gap:5px;align-items:center}
+.ot-grid input,.ot-grid select{width:100%;min-width:0;padding:9px 5px;font-size:14px!important;border:1.5px solid var(--line);border-radius:var(--r);background:var(--field);font-family:var(--f-mono);font-weight:600;font-size:15px}
+.ot-grid.ein{grid-template-columns:repeat(4,1fr)}
+.ot-grid.ein label{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ot-res{font-family:var(--f-mono);font-weight:600;font-size:14px}
+.ms-files{display:flex;flex-wrap:wrap;gap:6px}
+#msSt{color:#fff}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -810,6 +861,27 @@ body.mapfull .app{z-index:auto}
     <div class="chips" id="defSites"></div>
     <div class="row"><button class="btn pri" id="btnNewDefect">+ Mangel erfassen</button><button class="btn" id="btnDefExport">Liste exportieren</button></div>
     <div id="defList"></div>
+  </main>
+
+  <!-- AUFMASS -->
+  <main class="view stack" id="v-aufmass" hidden>
+    <div class="vhead"><button class="back" data-back aria-label="Zurück zu Mehr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>Mehr</button><h1>Aufmaß</h1></div>
+    <section class="stats" id="amStats"></section>
+    <div class="chips" id="amSites"></div>
+    <div class="row"><button class="btn pri" id="btnAmNew">+ Aufmaß erfassen</button></div>
+    <div class="row"><button class="btn" id="btnAmPdf">Aufmaßblatt (PDF)</button><button class="btn" id="btnAmCsv">Excel / CSV</button></div>
+    <div id="amList" class="stack"></div>
+  </main>
+
+  <!-- SPLEISS & MESSUNG -->
+  <main class="view stack" id="v-messung" hidden>
+    <div class="vhead"><button class="back" data-back aria-label="Zurück zu Mehr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>Mehr</button><h1>Spleiß &amp; Messung</h1></div>
+    <section class="stats" id="msStats"></section>
+    <div class="row ms-new"><button class="btn pri" id="btnMsSpl">+ Spleiß</button><button class="btn pri" id="btnMsOtdr">+ OTDR</button><button class="btn pri" id="btnMsEin">+ Einblasen</button></div>
+    <div class="seg" id="msSeg"></div>
+    <div class="chips" id="msSites"></div>
+    <div id="msList"></div>
+    <div class="row"><button class="btn" id="btnMsPdf">Alle als PDF</button><button class="btn" id="btnMsLim">Grenzwerte</button></div>
   </main>
 
   <!-- GALERIE -->
@@ -1019,14 +1091,16 @@ const itemMeta = (site, it) => {
 
 /* ---------------- Speicher (IndexedDB, Fallback im Arbeitsspeicher) ---------------- */
 const DB = {
-  db: null, mem: { sites: new Map(), photos: new Map(), kv: new Map(), notes: new Map(), trassen: new Map(), ledger: new Map(), plans: new Map(), defects: new Map(), protocols: new Map() },
+  db: null, mem: { sites: new Map(), photos: new Map(), kv: new Map(), notes: new Map(), trassen: new Map(), ledger: new Map(), plans: new Map(), defects: new Map(), protocols: new Map(), aufmass: new Map(), messungen: new Map() },
   async open() {
     try {
       this.db = await new Promise((res, rej) => {
-        const r = indexedDB.open('sefki-baudoku', 3);
-        r.onupgradeneeded = () => { const d = r.result; ['sites', 'photos', 'kv', 'notes', 'trassen', 'ledger', 'plans', 'defects', 'protocols'].forEach(s => { if (!d.objectStoreNames.contains(s)) d.createObjectStore(s, { keyPath: 'id' }); }); };
-        r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
-        setTimeout(() => rej(new Error('timeout')), 5000);
+        const r = indexedDB.open('sefki-baudoku', 4);
+        r.onupgradeneeded = () => { const d = r.result; ['sites', 'photos', 'kv', 'notes', 'trassen', 'ledger', 'plans', 'defects', 'protocols', 'aufmass', 'messungen'].forEach(s => { if (!d.objectStoreNames.contains(s)) d.createObjectStore(s, { keyPath: 'id' }); }); };
+        let blocked = false;
+        r.onblocked = () => { blocked = true; try { toast('Bitte andere offene Fenster der App schließen – ich aktualisiere den Speicher.', 8000); } catch (e) {} };
+        r.onsuccess = () => { const db = r.result; db.onversionchange = () => { try { db.close(); } catch (e) {} }; res(db); }; r.onerror = () => rej(r.error);
+        setTimeout(() => { if (!blocked) rej(new Error('timeout')); }, 5000); setTimeout(() => rej(new Error('timeout')), 60000);
       });
     } catch (e) { this.db = null; }
     return !!this.db;
@@ -1049,7 +1123,8 @@ const DB = {
 
 /* ---------------- Zustand ---------------- */
 const S = {
-  sites: [], photos: [], notes: [], trassen: [], ledger: [], daily: {}, rec: null, plans: [], defects: [], protocols: [], customTpl: {},
+  sites: [], photos: [], notes: [], trassen: [], ledger: [], daily: {}, rec: null, plans: [], defects: [], protocols: [], aufmass: [], messungen: [], customTpl: {},
+  am: { site: 'all' }, ms: { site: 'all', kind: 'all' },
   def: { status: 'open', site: 'all' }, planSite: null,
   set: { id: 'settings', name: 'Sefkan', voice: false, watermark: true, series: false, demo: false, demoAt: null, pin: null, seeded: false, lastLabels: [],
     aiKey: '', aiModel: 'claude-sonnet-5-5', aiCheck: true, privacy: true, ghost: true, ghostOpacity: 0.42, ots: true, chainHead: '', trassMaxAcc: 10,
@@ -1595,14 +1670,16 @@ function refresh(force) {
   if (S.view === 'karte') renderMapSide();
   if (S.view === 'plaene') renderPlans();
   if (S.view === 'maengel') renderDefects();
+  if (S.view === 'aufmass') renderAufmass();
+  if (S.view === 'messung') renderMessung();
   if (S.view === 'mehr') renderHub();
   if (S.view === 'statistik') renderStats();
   updDefBadge(); updGalBadge(); PV?.draw?.();
 }
-const HUB_VIEWS = ['mehr', 'plaene', 'maengel', 'statistik', 'bericht'];
+const HUB_VIEWS = ['mehr', 'plaene', 'maengel', 'statistik', 'bericht', 'aufmass', 'messung'];
 function go(v) {
   const simple = S.set.mode === 'simple';
-  if (simple && ['plaene', 'maengel', 'mehr', 'statistik'].includes(v) && !window.TOUR_ON) v = 'cockpit';
+  if (simple && ['plaene', 'maengel', 'mehr', 'statistik', 'aufmass', 'messung'].includes(v) && !window.TOUR_ON) v = 'cockpit';
   if (v !== 'galerie' && S.gal.sel) S.gal.sel = null;
   S.view = v; document.body.dataset.view = v;
   $$('.view').forEach(x => x.hidden = x.id !== 'v-' + v);
@@ -1651,7 +1728,7 @@ function camTarget() {
 }
 async function openCamera(siteId, itemId, mark, extra = {}) {
   askOrientation();
-  camCtx = { siteId, itemId, mark: mark || null, planPin: extra.planPin || null, defect: extra.defect || null };
+  camCtx = { siteId, itemId, mark: mark || null, planPin: extra.planPin || null, defect: extra.defect || null, attach: extra.attach || null };
   if (mediaRec) mediaRec.stop(); setCamMode('foto');
   if (S.set.privacy) Det.load();
   const ov = $('#cam'); ov.hidden = false; document.body.classList.add('noscroll');
@@ -1694,6 +1771,8 @@ function renderCamHud() {
   if (site && item) {
     ins.className = 'instr';
     ins.innerHTML = `<div class="k">PFLICHTFOTO ${pr.its.filter(i => i.must).findIndex(i => i.id === item.id) + 1 || '+'}/${pr.must} · ${PH[item.phase].n.toUpperCase()}</div><div class="t">${esc(item.label)}</div><div class="h">${esc(item.hint)}</div>`;
+  } else if (camCtx.attach) {
+    ins.className = 'instr'; ins.innerHTML = `<div class="k">NACHWEISFOTO</div><div class="t">${esc(camCtx.attach.title || 'Nachweis')}</div><div class="h">Maßband, Messgerät oder Spleißkassette gut lesbar mit ins Bild nehmen.</div>`;
   } else if (camCtx.defect) {
     const d = S.defects.find(x => x.id === camCtx.defect);
     ins.className = 'instr'; ins.innerHTML = `<div class="k">FOTO ZU MANGEL M${d?.no || ''}</div><div class="t">${esc(d?.title || 'Mangel')}</div><div class="h">${d?.status === 'done' ? 'Nachweis der Behebung: gleicher Blickwinkel wie das Mangelfoto.' : 'Den Mangel deutlich zeigen – gern mit Maßstab daneben.'}</div>`;
@@ -1781,6 +1860,7 @@ function attachCtx(p) {
   if (camCtx.mark) { const t = S.trassen.find(tr => tr.marks.some(m => m.id === camCtx.mark)), m = t?.marks.find(mm => mm.id === camCtx.mark);
     if (m) { m.photoId = p.id; if (!m.depthCm && p.depthCm) m.depthCm = p.depthCm; saveTrasse(t); } }
   if (camCtx.planPin) p.plan = camCtx.planPin;
+  if (camCtx.attach) { const A = camCtx.attach, arr = A.store === 'aufmass' ? S.aufmass : S.messungen, r = arr.find(x => x.id === A.id); if (r && !r.hash) { r.photoIds = [...(r.photoIds || []), p.id]; r.updated = Date.now(); DB.put(A.store, r).catch(() => {}); } }
   if (camCtx.defect) { const d = S.defects.find(x => x.id === camCtx.defect); if (d) { d.photoIds = [...(d.photoIds || []), p.id]; d.updated = Date.now(); d.history = [...(d.history || []), { ts: Date.now(), text: 'Foto hinzugefügt' }]; DB.put('defects', d).catch(() => {}); if (!p.plan && d.plan) p.plan = d.plan; } }
 }
 /* KI-Ergebnis nachträglich an ein schon gespeichertes Foto hängen (Serienmodus) – das Bild selbst bleibt unverändert versiegelt */
@@ -2155,6 +2235,9 @@ async function removeExamples() {
   for (const p of S.plans.filter(p => p.example)) await DB.del('plans', p.id);
   for (const d of S.defects.filter(d => d.example)) await DB.del('defects', d.id);
   S.plans = S.plans.filter(p => !p.example); S.defects = S.defects.filter(d => !d.example);
+  for (const e of S.aufmass.filter(e => e.example)) await DB.del('aufmass', e.id);
+  for (const r of S.messungen.filter(r => r.example)) await DB.del('messungen', r.id);
+  S.aufmass = S.aufmass.filter(e => !e.example); S.messungen = S.messungen.filter(r => !r.example);
   for (const p of S.photos.filter(p => p.example)) await DB.del('photos', p.id);
   for (const s of S.sites.filter(s => s.example)) await DB.del('sites', s.id);
   S.photos = S.photos.filter(p => !p.example); S.sites = S.sites.filter(s => !s.example);
@@ -2929,6 +3012,8 @@ function updGalBadge() { const b = $('#galBadge'); if (!b) return; const n = S.p
 const HICON = {
   bericht: '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h7"/>',
   maengel: '<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.6"/>',
+  aufmass: '<path d="M3 17l14-14 4 4L7 21H3z"/><path d="M7 13l2 2M10 10l2 2M13 7l2 2"/>',
+  messung: '<path d="M3 12h4l2-6 4 12 2-6h6"/><circle cx="20" cy="12" r="1.4"/>',
   plaene: '<rect x="3" y="3" width="18" height="18"/><path d="M3 10h8v11M11 14h10M15 3v7"/>',
   stat: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
   trasse: '<path d="M3 18c4 0 4-12 9-12s5 12 9 12"/><circle cx="12" cy="6" r="2"/>',
@@ -2950,6 +3035,8 @@ function renderHub() {
     (bad ? `<button class="tile wide" data-hub="qual" style="border-color:var(--amber)">${hsvg('qual')}<div><b>${bad} Foto${bad > 1 ? 's' : ''} unvollständig</b><span>Ohne GPS oder ohne Baustelle – jetzt zuordnen, damit der Bericht stimmt.</span></div><span class="cnt2 warn" style="position:static">→</span></button>` : '') +
     t('bericht', 'bericht', 'Bericht & Sichern', 'PDF-Fotobericht, ZIP mit Karte und Echtheitsnachweis', open ? open + ' offen' : '✓', open ? 'warn' : '') +
     t('maengel', 'maengel', 'Mängel', ov ? `${ov} Frist${ov > 1 ? 'en' : ''} überschritten` : 'Erfassen, Frist setzen, weiterleiten', od, ov ? 'bad' : od ? 'warn' : '') +
+    t('aufmass', 'aufmass', 'Aufmaß', S.aufmass.length ? `${new Set(S.aufmass.map(e => e.pos)).size} Positionen · PDF und Excel` : 'Mengen mit Rechenansatz, ablaufen, Excel', S.aufmass.filter(e => e.date === dayKey(Date.now())).length || null) +
+    t('messung', 'messung', 'Spleiß & Messung', (() => { const b = S.messungen.filter(r => { const e = msEval(r); return e.bad || e.over; }).length; return b ? `${b} Protokoll${b > 1 ? 'e' : ''} über Grenzwert` : 'Spleiß-, OTDR- und Einblasprotokolle'; })(), (() => { const b = S.messungen.filter(r => { const e = msEval(r); return e.bad || e.over; }).length; return b || S.messungen.length || null; })(), S.messungen.some(r => { const e = msEval(r); return e.bad || e.over; }) ? 'bad' : '') +
     t('plaene', 'plaene', 'Pläne', 'Fotos und Mängel im Grundriss verorten', S.plans.length) +
     t('statistik', 'stat', 'Statistik', `${wk} Fotos in 7 Tagen · Kategorien · Datenqualität`) +
     t('trassen', 'trasse', 'Trassen', 'Leitungsverlauf ablaufen, Export als Shapefile, DXF, KML', S.trassen.length || null) +
@@ -2964,7 +3051,7 @@ function renderHub() {
 function hubAction(e) {
   const k = e.target.closest('[data-hub]')?.dataset.hub; if (!k) return;
   if (k === 'qual') { S.gal.mode = 'issue'; S.gal.f = {}; S.gal.site = 'all'; go('galerie'); }
-  if (k === 'bericht' || k === 'maengel' || k === 'plaene') go(k);
+  if (k === 'bericht' || k === 'maengel' || k === 'plaene' || k === 'aufmass' || k === 'messung') go(k);
   if (k === 'statistik') { S.statSel = null; go('statistik'); }
   if (k === 'trassen') { go('karte'); setTimeout(() => $('#trassPanel')?.scrollIntoView({ block: 'start', behavior: 'smooth' }), 60); }
   if (k === 'ebenen') openLayers();
@@ -3090,184 +3177,833 @@ async function saveFile(name, blob, preferShare) {
     setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 5000); return true;
   } catch (e) { toast('Datei konnte nicht gespeichert werden.'); return false; }
 }
-async function pdfImg(blob) { const img = await loadImage(blob); const c = fitCanvas(img, 1600); return { d: c.toDataURL('image/jpeg', 0.84), w: c.width, h: c.height }; }
-/* PDF-Bericht: je Baustelle eine Übersichtsseite (Kennzahlen, Pflichtfoto-Nachweis, Lageplan), dann 2 Fotos pro Seite */
+
+/* =====================================================================
+   PDF-Baukasten für eigene Protokolle (gleicher Auftritt wie der Fotobericht)
+   ===================================================================== */
+function pdfKit(doc) {
+  const W = 210, m = 14, cw = W - 2 * m;
+  const C = { NAVY: [47, 35, 130], DEEP: [30, 22, 89], ORANGE: [241, 136, 11], OINK: [184, 95, 0], INK: [27, 24, 56], GREY: [93, 90, 120], LINE: [220, 217, 234], PAPER: [246, 245, 250], OK: [30, 142, 78], BAD: [200, 45, 55] };
+  const safe = s => String(s ?? '').replace(/[→←]/g, '-').replace(/[✓✔]/g, 'OK').replace(/[✗✘]/g, 'X').replace(/[^\x00-\xff€„“‚‘’–—…•²³]/g, '');
+  const one = (t, w) => { const a = doc.splitTextToSize(safe(t), w); return a.length > 1 ? a[0].replace(/\s*\S*$/, '') + ' …' : a[0] || ''; };
+  const K = {
+    W, m, cw, C, safe, one,
+    eyebrow(x, y, t) { doc.setFillColor(...C.ORANGE); doc.rect(x, y - 2.2, 6, 0.9, 'F'); pf(doc, 'cs', 8); doc.setTextColor(...C.OINK); doc.text(safe(t).toUpperCase(), x + 8.5, y, { charSpace: 0.45 }); },
+    h1(x, y, t, size = 24, w = cw) { pf(doc, 'c', size); doc.setTextColor(...C.NAVY); const a = doc.splitTextToSize(safe(t).toUpperCase(), w); doc.text(a, x, y); return a.length * size * 0.36; },
+    label(x, y, t) { pf(doc, 'cs', 7.2); doc.setTextColor(...C.OINK); doc.text(safe(t).toUpperCase(), x, y, { charSpace: 0.35 }); },
+    hair(y, x1 = m, x2 = m + cw) { doc.setDrawColor(...C.LINE); doc.setLineWidth(0.15); doc.line(x1, y, x2, y); },
+    kv(x, y, w, a, b) { K.label(x, y, a); pf(doc, 'sb', 9.6); doc.setTextColor(...C.INK); doc.text(one(b || '–', w), x, y + 4.6); },
+    chip(x, y, t, rgb, w, ink = [255, 255, 255]) { doc.setFillColor(...rgb); doc.roundedRect(x, y - 3.4, w, 4.6, 0.8, 0.8, 'F'); doc.setTextColor(...ink); pf(doc, 'cs', 7); doc.text(t, x + w / 2, y, { align: 'center', charSpace: 0.2 }); },
+    head(y, cols) { doc.setFillColor(...C.NAVY); doc.rect(m, y, cw, 6.8, 'F'); doc.setFillColor(...C.ORANGE); doc.rect(m, y + 6.8, cw, 0.6, 'F'); pf(doc, 'cs', 7.6); doc.setTextColor(255, 255, 255); cols.forEach(([t, x, al]) => doc.text(t, x, y + 4.6, { charSpace: 0.3, align: al || 'left' })); return y + 7.4; },
+    box(y, rows, cols = 2) { const bw = (cw - 8) / cols, rh = 11.2, n = Math.ceil(rows.length / cols); doc.setFillColor(...C.PAPER); doc.rect(m, y - 2, cw, n * rh + 3, 'F'); rows.forEach(([a, b], i) => K.kv(m + 4 + (i % cols) * (bw + 4), y + 3.5 + Math.floor(i / cols) * rh, bw - 6, a, b)); return y + n * rh + 7; },
+    sign(y, left, right) {
+      const bw = (cw - 8) / 2;
+      [['Aufgestellt', left[0], left[1]], ['Geprüft / anerkannt', right[0], right[1]]].forEach(([t, who, nm], i) => {
+        const x = m + i * (bw + 8); doc.setDrawColor(...C.LINE); doc.setLineWidth(0.3); doc.rect(x, y, bw, 46, 'S'); doc.setFillColor(...C.NAVY); doc.rect(x, y, bw, 7.5, 'F');
+        pf(doc, 'cs', 8); doc.setTextColor(255, 255, 255); doc.text(t.toUpperCase(), x + 4, y + 5.1, { charSpace: 0.35 });
+        pf(doc, 'sb', 9); doc.setTextColor(...C.INK); doc.text(one(who || '', bw - 8), x + 4, y + 14);
+        [['Name', nm], ['Ort, Datum', ''], ['Unterschrift', '']].forEach(([a, v], j) => { const ly = y + 22 + j * 9; K.hair(ly, x + 4, x + bw - 4); K.label(x + 4, ly + 3.4, a); if (v) { pf(doc, 'r', 9); doc.setTextColor(...C.INK); doc.text(safe(v), x + 4, ly - 1.4); } });
+      });
+      return y + 50;
+    }
+  };
+  return K;
+}
+
+/* =====================================================================
+   AUFMASS: prüffähiges Aufmaß mit Rechenansatz, Fotos, GPS – Export als PDF und Excel/CSV
+   ===================================================================== */
+const AM_UNITS = ['m', 'm²', 'm³', 'Stk', 'h', 'Tag', 't', 'psch'];
+const LV_STD = [
+  ['01.01', 'Graben offene Bauweise, unbefestigt / Grünfläche', 'm'],
+  ['01.02', 'Graben offene Bauweise, Gehweg Pflaster/Platten', 'm'],
+  ['01.03', 'Graben offene Bauweise, Asphalt', 'm'],
+  ['01.04', 'Kopfloch / Montagegrube herstellen', 'Stk'],
+  ['01.05', 'Querung grabenlos (Erdrakete / Spülbohrung)', 'm'],
+  ['01.06', 'Bodenaushub laden und entsorgen', 't'],
+  ['02.01', 'Oberfläche Pflaster / Platten wiederherstellen', 'm²'],
+  ['02.02', 'Oberfläche Asphalt wiederherstellen', 'm²'],
+  ['02.03', 'Oberfläche unbefestigt / Rasen wiederherstellen', 'm²'],
+  ['03.01', 'Schutzrohr verlegen', 'm'],
+  ['03.02', 'Mikrorohrverband / Speedpipe-Verband verlegen', 'm'],
+  ['03.03', 'Speedpipe Hausanschluss verlegen', 'm'],
+  ['04.01', 'Hausanschluss komplett herstellen', 'Stk'],
+  ['04.02', 'Hauseinführung herstellen und abdichten', 'Stk'],
+  ['04.03', 'HÜP / Gf-AP setzen', 'Stk'],
+  ['05.01', 'Glasfaserkabel einblasen', 'm'],
+  ['05.02', 'Spleißung herstellen inkl. Messung', 'Stk'],
+  ['05.03', 'Muffe / NVt montieren', 'Stk'],
+  ['06.01', 'Verkehrssicherung vorhalten', 'Tag'],
+  ['07.01', 'Stundenlohnarbeiten', 'h']
+];
+const lvAll = () => [...LV_STD.map(([pos, text, unit]) => ({ pos, text, unit })), ...(S.set.lvOwn || [])].sort((a, b) => a.pos.localeCompare(b.pos, 'de', { numeric: true }));
+const num2 = v => { if (v == null || v === '') return null; const n = parseFloat(String(v).replace(/\s/g, '').replace(',', '.')); return isFinite(n) ? n : null; };
+const fmtN = (n, d = 2) => n == null ? '–' : n.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: d });
+const AM_F = [['a', 'Länge', 'm'], ['b', 'Breite', 'm'], ['c', 'Tiefe / Höhe', 'm'], ['n', 'Anzahl', '×']];
+function amQty(e) {
+  if (e.mode === 'direct') return num2(e.qty);
+  const f = AM_F.map(([k]) => num2(e.calc?.[k])).filter(v => v != null);
+  return f.length ? Math.round(f.reduce((x, y) => x * y, 1) * 1000) / 1000 : null;
+}
+function amCalcText(e) {
+  if (e.mode === 'direct') return 'direkt ' + fmtN(num2(e.qty), 3) + (e.src ? ' (' + e.src + ')' : '');
+  const L = { a: 'L', b: 'B', c: 'T', n: 'n' };
+  const parts = AM_F.map(([k]) => k).filter(k => num2(e.calc?.[k]) != null).map(k => `${L[k]} ${fmtN(num2(e.calc[k]), 3)}`);
+  return (parts.join(' × ') || '–') + (e.src ? '  (' + e.src + ')' : '');
+}
+function amSum(list) { const m = new Map(); list.forEach(e => { const k = e.pos + '|' + e.unit; const r = m.get(k) || { pos: e.pos, text: e.text, unit: e.unit, qty: 0, n: 0 }; r.qty += amQty(e) || 0; r.n++; m.set(k, r); }); return [...m.values()].sort((a, b) => a.pos.localeCompare(b.pos, 'de', { numeric: true })); }
+function amList() { let l = S.aufmass.slice(); if (S.am.site !== 'all') l = l.filter(e => e.siteId === S.am.site); return l.sort((a, b) => a.pos.localeCompare(b.pos, 'de', { numeric: true }) || a.ts - b.ts); }
+function renderAufmass() {
+  if (S.am.site !== 'all' && !S.sites.find(s => s.id === S.am.site)) S.am.site = 'all';
+  const l = amList(), today = l.filter(e => e.date === dayKey(Date.now())).length, sums = amSum(l);
+  $('#amStats').innerHTML = `<div class="stat"><div class="lbl">Positionen</div><div class="v">${sums.length}</div><div class="s">im Aufmaß</div></div>
+    <div class="stat"><div class="lbl">Einträge</div><div class="v">${l.length}</div><div class="s">mit Rechenansatz</div></div>
+    <div class="stat"><div class="lbl">Heute</div><div class="v ${today ? 'good' : ''}">${today}</div><div class="s">erfasst</div></div>`;
+  $('#amSites').innerHTML = `<button class="chip${S.am.site === 'all' ? ' on' : ''}" data-amsite="all">Alle Baustellen</button>` + S.sites.filter(s => !s.archived).map(s => `<button class="chip${S.am.site === s.id ? ' on' : ''}" data-amsite="${s.id}">${esc(short(s.name))}</button>`).join('');
+  if (!l.length) { $('#amList').innerHTML = `<p class="empty">Noch kein Aufmaß. Tipp auf „+ Aufmaß erfassen“ – Länge ablaufen, aus der Trasse übernehmen oder Maße eintippen.</p>`; return; }
+  const by = new Map(); l.forEach(e => { const k = e.pos + '|' + e.unit; by.set(k, [...(by.get(k) || []), e]); });
+  $('#amList').innerHTML = [...by.values()].map(es => { const e0 = es[0], tot = es.reduce((a, e) => a + (amQty(e) || 0), 0);
+    return `<section class="panel am-pos"><div class="am-h"><span class="am-no">${esc(e0.pos)}</span><b>${esc(e0.text)}</b><span class="am-sum">${fmtN(tot, 3)} <small>${esc(e0.unit)}</small></span></div>
+      ${es.map(e => { const s = S.sites.find(x => x.id === e.siteId); return `<button class="am-row" data-am="${e.id}"><span class="am-d">${fmtDate(e.ts).slice(0, 6)}<br><small>${fmtTime(e.ts)}</small></span>
+        <span class="am-m"><b>${esc(e.loc || (S.am.site === 'all' && s ? short(s.name) : 'ohne Ortsangabe'))}</b><small>${esc(amCalcText(e))}</small>${(e.photoIds || []).length ? `<small class="am-ph">${e.photoIds.length} Foto${e.photoIds.length > 1 ? 's' : ''}</small>` : ''}</span>
+        <span class="am-q">${fmtN(amQty(e), 3)}<small>${esc(e.unit)}</small></span></button>`; }).join('')}</section>`; }).join('');
+}
+function openAm(id, preset = {}) {
+  const e0 = id ? S.aufmass.find(x => x.id === id) : null; if (id && !e0) return;
+  const st = siteStatus(), last = S.aufmass.slice().sort((a, b) => b.ts - a.ts)[0];
+  const f = e0 ? { ...e0, calc: { ...(e0.calc || {}) }, photoIds: [...(e0.photoIds || [])] } : { id: uid(), siteId: preset.siteId ?? (S.am.site !== 'all' ? S.am.site : st.state === 'in' ? st.site.id : activeSites()[0]?.id || null), pos: last?.pos || '01.02', text: last?.text || '', unit: last?.unit || 'm', mode: 'calc', calc: {}, qty: '', src: '', loc: '', note: '', photoIds: [] };
+  if (!f.text) { const lv = lvAll().find(x => x.pos === f.pos); if (lv) { f.text = lv.text; f.unit = lv.unit; } }
+  let walk = null;
+  const trs = () => S.trassen.filter(t => t.points.length > 1 && (!f.siteId || t.siteId === f.siteId));
+  const el = sheet(`<h3>${e0 ? 'Aufmaß ' + esc(f.pos) : 'Aufmaß erfassen'}</h3><p class="sub">${e0 ? 'Erfasst ' + fmtDay(e0.ts) + ', ' + fmtTime(e0.ts) + (e0.user ? ' · ' + esc(e0.user) : '') : 'Position wählen, Maße eingeben oder ablaufen – die Menge rechne ich mit nachvollziehbarem Rechenansatz.'}</p>
+    <div class="fld"><label class="lbl" for="amSite">Baustelle</label><select id="amSite"><option value="">Ohne Baustelle</option>${S.sites.map(s => `<option value="${s.id}"${s.id === f.siteId ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</select></div>
+    <div class="fld"><label class="lbl" for="amLv">Leistung (LV-Position)</label><select id="amLv">${lvAll().map(x => `<option value="${esc(x.pos)}"${x.pos === f.pos && x.text === f.text ? ' selected' : ''}>${esc(x.pos)} · ${esc(x.text)} [${esc(x.unit)}]</option>`).join('')}<option value="__own"${lvAll().some(x => x.pos === f.pos && x.text === f.text) ? '' : ' selected'}>Eigene Position …</option></select></div>
+    <div id="amOwn" class="inrow" style="gap:8px;margin-bottom:14px"${lvAll().some(x => x.pos === f.pos && x.text === f.text) ? ' hidden' : ''}><input type="text" id="amPos" value="${esc(f.pos)}" placeholder="Pos." style="max-width:84px"><input type="text" id="amText" value="${esc(f.text)}" placeholder="Leistung"><select id="amUnit" style="max-width:86px">${AM_UNITS.map(u => `<option${u === f.unit ? ' selected' : ''}>${u}</option>`).join('')}</select></div>
+    <div class="fld"><label class="lbl" for="amLoc">Ort / Abschnitt</label><input type="text" id="amLoc" value="${esc(f.loc)}" placeholder="z. B. Hausnr. 12–18, Station 0+120, vor Einfahrt"></div>
+    <div class="fld"><span class="lbl">Menge</span><div class="segs" id="amMode"><button type="button" data-mode="calc" class="${f.mode !== 'direct' ? 'on' : ''}">Rechenansatz</button><button type="button" data-mode="direct" class="${f.mode === 'direct' ? 'on' : ''}">Menge direkt</button></div></div>
+    <div id="amCalc"${f.mode === 'direct' ? ' hidden' : ''}><div class="am-calc">${AM_F.map(([k, n, u]) => `<label><span class="lbl">${n}</span><input type="text" inputmode="decimal" data-c="${k}" value="${esc(f.calc[k] ?? '')}" placeholder="${u}"></label>`).join('')}</div>
+      <div class="row am-help"><button type="button" class="chip" data-x="walk">⌖ Länge ablaufen</button>${trs().length ? '<button type="button" class="chip" data-x="tr">Länge aus Trasse</button>' : ''}<button type="button" class="chip" data-x="minus">Abzug (−)</button></div>
+      <div id="amWalk" class="warnbox" hidden></div></div>
+    <div class="fld" id="amDirect"${f.mode === 'direct' ? '' : ' hidden'}><input type="text" inputmode="decimal" id="amQty" value="${esc(f.qty ?? '')}" placeholder="Menge"></div>
+    <div class="am-res"><span class="lbl">Ergebnis</span><b id="amRes"></b><small id="amCt"></small></div>
+    <div class="fld"><label class="lbl" for="amNote">Bemerkung</label><textarea id="amNote" placeholder="z. B. Mehrtiefe wegen Fremdleitung, Abstimmung mit Bauleitung">${esc(f.note)}</textarea></div>
+    <div class="fld"><span class="lbl">Fotos als Nachweis (${f.photoIds.length})</span><div class="thumbs">${f.photoIds.map(pid => { const p = S.photos.find(x => x.id === pid); return p ? `<img src="${p.thumb}" data-photo="${p.id}" alt="">` : ''; }).join('')}</div></div>
+    <div class="row"><button class="btn" data-x="photo">+ Foto</button><button class="btn pri" data-x="save">Speichern</button></div>
+    <div class="row" style="margin-top:8px"><button class="btn" data-x="next">Speichern + nächstes</button>${e0 ? '<button class="btn danger" data-x="del">Löschen</button>' : ''}</div>`);
+  const upd = () => { const c = collect(), q = amQty(c); $('#amRes', el).textContent = q == null ? '–' : `${fmtN(q, 3)} ${c.unit}`; $('#amCt', el).textContent = c.mode === 'direct' ? '' : amCalcText(c); };
+  const collect = () => {
+    const lv = $('#amLv', el).value, own = lv === '__own', L = lvAll().find(x => x.pos === lv);
+    const calc = {}; $$('[data-c]', el).forEach(i => { if (i.value.trim()) calc[i.dataset.c] = i.value.trim(); });
+    return { ...f, siteId: $('#amSite', el).value || null, pos: own ? ($('#amPos', el).value.trim() || '99.01') : L.pos, text: own ? ($('#amText', el).value.trim() || 'Eigene Leistung') : L.text, unit: own ? $('#amUnit', el).value : L.unit,
+      mode: $('#amMode .on', el).dataset.mode, calc, qty: $('#amQty', el).value.trim(), loc: $('#amLoc', el).value.trim(), note: $('#amNote', el).value.trim() };
+  };
+  const save = async () => {
+    const c = collect(); if (amQty(c) == null) { toast('Bitte Maße oder eine Menge eingeben.'); return null; }
+    const own = $('#amLv', el).value === '__own';
+    if (own && !lvAll().some(x => x.pos === c.pos && x.text === c.text)) { S.set.lvOwn = [...(S.set.lvOwn || []), { pos: c.pos, text: c.text, unit: c.unit }]; saveSet(); }
+    const now = Date.now(), r = { ...c, ts: e0?.ts || now, date: e0?.date || dayKey(now), updated: now, user: e0?.user || S.set.name || '', lat: e0?.lat ?? S.pos?.lat ?? null, lon: e0?.lon ?? S.pos?.lon ?? null, acc: e0?.acc ?? S.pos?.acc ?? null };
+    await DB.put('aufmass', r); const i = S.aufmass.findIndex(x => x.id === r.id); if (i >= 0) S.aufmass[i] = r; else S.aufmass.push(r);
+    hook(e0 ? 'aufmass_geaendert' : 'aufmass_neu', { baustelle: S.sites.find(s => s.id === r.siteId)?.name || null, position: r.pos, leistung: r.text, menge: amQty(r), einheit: r.unit, rechenansatz: amCalcText(r), ort: r.loc });
+    return r;
+  };
+  el.addEventListener('input', upd); el.addEventListener('change', e => {
+    if (e.target.id === 'amLv') { const own = e.target.value === '__own'; $('#amOwn', el).hidden = !own; }
+    upd();
+  });
+  el.addEventListener('click', async e => {
+    const md = e.target.closest('[data-mode]'); if (md) { $$('#amMode button', el).forEach(b => b.classList.toggle('on', b === md)); $('#amCalc', el).hidden = md.dataset.mode === 'direct'; $('#amDirect', el).hidden = md.dataset.mode !== 'direct'; upd(); return; }
+    const ph = e.target.closest('[data-photo]'); if (ph) { openPhoto(ph.dataset.photo); return; }
+    const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
+    if (x === 'minus') { const n = $('[data-c=n]', el); const v = num2(n.value) ?? 1; n.value = String(-Math.abs(v)).replace('.', ','); f.src = 'Abzug'; upd(); }
+    if (x === 'tr') { const ts = trs(); const t = ts.length === 1 ? ts[0] : ts.find(z => z.siteId === $('#amSite', el).value) || ts[0]; $('[data-c=a]', el).value = tLen(t).toFixed(2).replace('.', ','); f.src = 'Trasse ' + t.name; toast(`Länge aus Trasse „${t.name}“: ${fmtN(tLen(t), 2)} m`); upd(); }
+    if (x === 'walk') {
+      const box = $('#amWalk', el), b = e.target.closest('[data-x]');
+      if (!S.pos) { toast('Noch kein GPS – kurz warten.'); return; }
+      if (!walk) { walk = { lat: S.pos.lat, lon: S.pos.lon, acc: S.pos.acc }; b.textContent = '⌖ Hier Ende – Länge übernehmen'; box.hidden = false; box.innerHTML = `<b>Start gesetzt</b> (±${fmtAcc(S.pos.acc)}). Jetzt bis zum Ende der Strecke gehen und noch einmal tippen. Gemessen wird die gerade Linie Start → Ende.`; }
+      else { const d = dist(walk, S.pos), acc = Math.round(Math.hypot(walk.acc || 0, S.pos.acc || 0) * 10) / 10; $('[data-c=a]', el).value = d.toFixed(2).replace('.', ','); f.src = `abgelaufen ±${String(acc).replace('.', ',')} m`; box.innerHTML = `<b>${fmtN(d, 2)} m</b> übernommen (Genauigkeit ±${String(acc).replace('.', ',')} m${acc > 2 ? ' – für die Abrechnung mit Maßband gegenprüfen' : ''}).`; walk = null; b.textContent = '⌖ Länge ablaufen'; upd(); }
+    }
+    if (x === 'save') { const r = await save(); if (!r) return; closeSheet(); toast(`Aufmaß gespeichert: ${fmtN(amQty(r), 3)} ${r.unit}`); refresh(); }
+    if (x === 'next') { const r = await save(); if (!r) return; closeSheet(); refresh(); openAm(null, { siteId: r.siteId }); toast('Gespeichert – nächster Eintrag.'); }
+    if (x === 'photo') { const r = await save(); if (!r) return; closeSheet(); openCamera(r.siteId || null, null, null, { attach: { store: 'aufmass', id: r.id, title: `Aufmaß ${r.pos} · ${r.text}` } }); }
+    if (x === 'del') { const b = e.target.closest('[data-x]'); if (b.dataset.sure) { await DB.del('aufmass', e0.id); S.aufmass = S.aufmass.filter(z => z.id !== e0.id); closeSheet(); toast('Eintrag gelöscht.'); refresh(); } else { b.dataset.sure = '1'; b.textContent = 'Wirklich löschen?'; } }
+  });
+  upd();
+}
+function amCSV(l) {
+  const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`, n = v => v == null ? '' : String(v).replace('.', ',');
+  const rows = [['Baustelle', 'Auftrag', 'Pos.', 'Leistung', 'Ort / Abschnitt', 'Länge', 'Breite', 'Tiefe', 'Anzahl', 'Menge', 'Einheit', 'Rechenansatz', 'Datum', 'Uhrzeit', 'Bearbeiter', 'Fotos', 'Bemerkung', 'Breite (GPS)', 'Länge (GPS)']];
+  l.forEach(e => { const s = S.sites.find(x => x.id === e.siteId); rows.push([s?.name || '', s?.order || '', e.pos, e.text, e.loc, ...AM_F.map(([k]) => e.mode === 'direct' ? '' : n(num2(e.calc?.[k]))), n(amQty(e)), e.unit, amCalcText(e), fmtDate(e.ts), fmtTime(e.ts), e.user, (e.photoIds || []).length, e.note, e.lat?.toFixed(7).replace('.', ','), e.lon?.toFixed(7).replace('.', ',')]); });
+  rows.push([]); rows.push(['Zusammenstellung']); rows.push(['Baustelle', '', 'Pos.', 'Leistung', '', '', '', '', '', 'Menge', 'Einheit', 'Einträge']);
+  [...new Set(l.map(e => e.siteId))].forEach(sid => amSum(l.filter(e => e.siteId === sid)).forEach(r => rows.push([S.sites.find(x => x.id === sid)?.name || 'Ohne Baustelle', '', r.pos, r.text, '', '', '', '', '', n(Math.round(r.qty * 1000) / 1000), r.unit, r.n])));
+  return '﻿' + rows.map(r => r.map(q).join(';')).join('\r\n');
+}
+async function buildAmPDF(l) {
+  const { jsPDF } = window.jspdf, doc = new jsPDF({ unit: 'mm', format: 'a4' }); await pdfFonts(doc);
+  const K = pdfKit(doc), { m, cw, C } = K, now = Date.now(), repNo = 'AM-' + stamp(now).slice(0, 8) + '-' + stamp(now).slice(9, 13);
+  const sids = [...new Set(l.map(e => e.siteId || ''))]; let first = true; const titles = [];
+  const page = t => { if (!first) doc.addPage(); first = false; titles[doc.getNumberOfPages()] = t; pdfHeader(doc, repNo, 'AUFMASS'); };
+  for (const sid of sids) {
+    const s = S.sites.find(x => x.id === sid) || null, es = l.filter(e => (e.siteId || '') === sid).sort((a, b) => a.pos.localeCompare(b.pos, 'de', { numeric: true }) || a.ts - b.ts), nm = s ? s.name : 'Ohne Baustelle';
+    page(nm); let y = 32;
+    K.eyebrow(m, y, 'Aufmaß · prüffähige Mengenermittlung'); y += 10; y += K.h1(m, y, nm, 24) + 2;
+    const d0 = Math.min(...es.map(e => e.ts)), d1 = Math.max(...es.map(e => e.ts));
+    y = K.box(y, [['Auftrag', s?.order || '–'], ['Auftraggeber', s?.client || '–'], ['Gewerk / Vorlage', s ? TPL[s.tpl]?.n : '–'], ['Aufmaß-Nr.', repNo], ['Zeitraum', fmtDate(d0) === fmtDate(d1) ? fmtDate(d0) : fmtDate(d0) + ' – ' + fmtDate(d1)], ['Aufgestellt von', [...new Set(es.map(e => e.user).filter(Boolean))].join(', ') || S.set.name || '–']]);
+    K.label(m, y, 'Einzelaufmaß mit Rechenansatz'); y += 2.5;
+    const CO = [['POS.', m + 2], ['LEISTUNG · ORT', m + 18], ['RECHENANSATZ', m + 88], ['MENGE', m + 152, 'right'], ['EINH.', m + 155], ['DATUM', m + cw - 2, 'right']];
+    y = K.head(y, CO);
+    es.forEach((e, i) => {
+      pf(doc, 'r', 7.6); const ct = doc.splitTextToSize(K.safe(amCalcText(e)), 60).slice(0, 2), sub = [e.loc, (e.photoIds || []).length ? (e.photoIds.length + ' Foto' + (e.photoIds.length > 1 ? 's' : '')) : '', e.note].filter(Boolean).join(' · ');
+      const rh = Math.max(8.6, 5.6 + Math.max(sub ? 3.6 : 0, (ct.length - 1) * 3.4) + 2.6);
+      if (y + rh > 268) { page(nm); y = K.head(30, CO); }
+      if (i % 2) { doc.setFillColor(...C.PAPER); doc.rect(m, y, cw, rh, 'F'); }
+      pf(doc, 'c', 10); doc.setTextColor(...C.NAVY); doc.text(e.pos, m + 2, y + 5.3);
+      pf(doc, 'sb', 8.6); doc.setTextColor(...C.INK); doc.text(K.one(e.text, 68), m + 18, y + 5.1);
+      if (sub) { pf(doc, 'r', 7.4); doc.setTextColor(...C.GREY); doc.text(K.one(sub, 68), m + 18, y + 8.7); }
+      pf(doc, 'r', 7.6); doc.setTextColor(...C.INK); doc.text(ct, m + 88, y + 5.1);
+      pf(doc, 'b', 9.4); doc.setTextColor(...(amQty(e) < 0 ? C.BAD : C.INK)); doc.text(fmtN(amQty(e), 3), m + 152, y + 5.3, { align: 'right' });
+      pf(doc, 'r', 8.4); doc.setTextColor(...C.GREY); doc.text(e.unit, m + 155, y + 5.3); doc.text(fmtDate(e.ts).slice(0, 6), m + cw - 2, y + 5.3, { align: 'right' });
+      K.hair(y + rh); y += rh;
+    });
+    y += 8; if (y > 210) { page(nm); y = 32; }
+    K.label(m, y, 'Zusammenstellung je Position'); y += 2.5;
+    const CS = [['POS.', m + 2], ['LEISTUNG', m + 18], ['EINTRÄGE', m + 128, 'right'], ['SUMME', m + 160, 'right'], ['EINH.', m + 163]];
+    y = K.head(y, CS);
+    amSum(es).forEach((r, i) => { if (y + 8 > 268) { page(nm); y = K.head(30, CS); } if (i % 2) { doc.setFillColor(...C.PAPER); doc.rect(m, y, cw, 8, 'F'); }
+      pf(doc, 'c', 10); doc.setTextColor(...C.NAVY); doc.text(r.pos, m + 2, y + 5.4); pf(doc, 'sb', 9); doc.setTextColor(...C.INK); doc.text(K.one(r.text, 100), m + 18, y + 5.3);
+      pf(doc, 'r', 8.6); doc.setTextColor(...C.GREY); doc.text(String(r.n), m + 128, y + 5.3, { align: 'right' }); pf(doc, 'b', 10); doc.setTextColor(...C.NAVY); doc.text(fmtN(Math.round(r.qty * 1000) / 1000, 3), m + 160, y + 5.4, { align: 'right' });
+      pf(doc, 'r', 8.6); doc.setTextColor(...C.GREY); doc.text(r.unit, m + 163, y + 5.3); K.hair(y + 8); y += 8; });
+    y += 7; if (y > 224) { page(nm); y = 32; }
+    pf(doc, 'r', 7.6); doc.setTextColor(...C.GREY);
+    doc.text(doc.splitTextToSize('Rechenansatz: L = Länge, B = Breite, T = Tiefe/Höhe, n = Anzahl (negativ = Abzug). Mengen in den angegebenen Einheiten, auf drei Nachkommastellen gerundet. Abgelaufene Längen sind GPS-gestützt (Genauigkeit je Eintrag angegeben); Lage, Zeit und Fotos je Eintrag liegen in der App bzw. im CSV-Export vor.', cw), m, y); y += 10;
+    K.sign(y, [coName(), [...new Set(es.map(e => e.user).filter(Boolean))][0] || S.set.name || ''], ['Auftraggeber' + (s?.client ? ': ' + s.client : ''), '']);
+  }
+  pdfFooter(doc, i => 'Aufmaß · ' + (titles[i] || ''));
+  return doc;
+}
+
+/* =====================================================================
+   SPLEISS- & MESSPROTOKOLLE: Spleißplan je Muffe/NVt/HÜP, OTDR-Messung mit Sollwert, Einblasprotokoll
+   ===================================================================== */
+const FIBER_COL = [['rt', '#E53935'], ['gn', '#43A047'], ['bl', '#1E63D6'], ['ge', '#FDD835'], ['ws', '#FFFFFF'], ['gr', '#9E9E9E'], ['br', '#795548'], ['vi', '#8E24AA'], ['tk', '#00ACC1'], ['sw', '#212121'], ['or', '#FB8C00'], ['rs', '#F48FB1']];
+const fiberOf = n => { const i = (n - 1) % 12; return { tube: Math.floor((n - 1) / 12) + 1, c: FIBER_COL[i][0], hex: FIBER_COL[i][1] }; };
+const MS_KIND = { spleiss: 'Spleißprotokoll', otdr: 'OTDR-Messung', einblas: 'Einblasprotokoll' };
+const MS_LOC = ['Muffe', 'NVt', 'HÜP / Gf-AP', 'POP / PoP', 'Gf-TA', 'Sonstige'];
+const lim = () => ({ splice: 0.10, att1310: 0.35, att1550: 0.25, att1625: 0.25, conn: 0.50, ...(S.set.lim || {}) });
+function msEval(r) {
+  const L = lim();
+  if (r.kind === 'spleiss') { const v = (r.fibers || []).map(x => num2(x.loss)).filter(x => x != null); const over = (r.fibers || []).filter(x => num2(x.loss) != null && num2(x.loss) > L.splice).length;
+    return { n: v.length, of: (r.fibers || []).length, max: v.length ? Math.max(...v) : null, avg: v.length ? v.reduce((a, b) => a + b, 0) / v.length : null, over, ok: v.length > 0 && !over && v.length === (r.fibers || []).length, part: v.length > 0 && v.length < (r.fibers || []).length }; }
+  if (r.kind === 'otdr') { const rows = (r.rows || []).map(x => { const len = num2(x.len), loss = num2(x.loss), att = L['att' + x.wl] ?? 0.35; const soll = len == null ? null : len / 1000 * att + (num2(r.splices) || 0) * L.splice + (num2(r.conns) || 0) * L.conn; return { ...x, soll, ok: soll != null && loss != null ? loss <= soll : null }; });
+    return { rows, ok: rows.length > 0 && rows.every(x => x.ok === true), bad: rows.some(x => x.ok === false) }; }
+  const len = num2(r.len), dur = num2(r.dur); return { speed: len && dur ? len / dur : null, ok: r.result === 'ok' && len != null, bad: r.result === 'abbruch' };
+}
+function msStatus(r) { const e = msEval(r); return e.ok ? ['IO', 'var(--ok)', 'in Ordnung'] : e.bad || e.over ? ['NIO', 'var(--bad)', 'nicht in Ordnung'] : ['OFFEN', 'var(--amber-fill)', 'unvollständig']; }
+function renderMessung() {
+  if (S.ms.site !== 'all' && !S.sites.find(s => s.id === S.ms.site)) S.ms.site = 'all';
+  let l = S.messungen.slice(); if (S.ms.site !== 'all') l = l.filter(r => r.siteId === S.ms.site);
+  const ok = l.filter(r => msEval(r).ok).length, bad = l.filter(r => { const e = msEval(r); return e.bad || e.over; }).length;
+  $('#msStats').innerHTML = `<div class="stat"><div class="lbl">Protokolle</div><div class="v">${l.length}</div><div class="s">${l.filter(r => r.kind === 'spleiss').length} Spleiß · ${l.filter(r => r.kind === 'otdr').length} OTDR</div></div>
+    <div class="stat"><div class="lbl">In Ordnung</div><div class="v good">${ok}</div><div class="s">Grenzwerte eingehalten</div></div>
+    <div class="stat"><div class="lbl">Prüfen</div><div class="v ${bad ? '' : 'good'}" style="${bad ? 'color:var(--bad)' : ''}">${bad}</div><div class="s">über Grenzwert</div></div>`;
+  $('#msSeg').innerHTML = [['all', 'Alle'], ['spleiss', 'Spleiß'], ['otdr', 'OTDR'], ['einblas', 'Einblasen']].map(([k, n]) => `<button data-mseg="${k}" class="${S.ms.kind === k ? 'on' : ''}">${n}</button>`).join('');
+  $('#msSites').innerHTML = `<button class="chip${S.ms.site === 'all' ? ' on' : ''}" data-mssite="all">Alle Baustellen</button>` + S.sites.filter(s => !s.archived).map(s => `<button class="chip${S.ms.site === s.id ? ' on' : ''}" data-mssite="${s.id}">${esc(short(s.name))}</button>`).join('');
+  if (S.ms.kind !== 'all') l = l.filter(r => r.kind === S.ms.kind);
+  l.sort((a, b) => b.ts - a.ts);
+  $('#msList').innerHTML = l.length ? l.map(r => { const [t, col] = msStatus(r), e = msEval(r), s = S.sites.find(x => x.id === r.siteId);
+    const kv = r.kind === 'spleiss' ? `${e.n}/${e.of} Fasern · max ${fmtN(e.max, 3)} dB · Ø ${fmtN(e.avg, 3)} dB` : r.kind === 'otdr' ? e.rows.map(x => `${x.wl} nm: ${fmtN(num2(x.loss), 2)} dB / Soll ${fmtN(x.soll, 2)} dB`).join(' · ') : `${fmtN(num2(r.len), 1)} m in ${fmtN(num2(r.dur), 1)} min${e.speed ? ' · ' + fmtN(e.speed, 1) + ' m/min' : ''}`;
+    return `<button class="ms-card" data-ms="${r.id}"><span class="ms-k">${r.kind === 'spleiss' ? 'SPL' : r.kind === 'otdr' ? 'OTDR' : 'EIN'}</span><span class="ms-m"><b>${esc(r.name || MS_KIND[r.kind])}</b><small>${esc(MS_KIND[r.kind])}${s ? ' · ' + esc(short(s.name)) : ''} · ${fmtDate(r.ts)}${r.hash ? ' · versiegelt' : ''}</small><small>${esc(kv)}</small></span><span class="ms-st" style="background:${col}">${t}</span></button>`; }).join('')
+    : `<p class="empty">Noch keine Protokolle. Lege oben ein Spleißprotokoll, eine OTDR-Messung oder ein Einblasprotokoll an.</p>`;
+}
+function openMess(id, kind, preset = {}) {
+  const r0 = id ? S.messungen.find(x => x.id === id) : null; if (id && !r0) return; kind = r0?.kind || kind;
+  const st = siteStatus(), L = lim(), locked = !!r0?.hash;
+  const f = r0 ? JSON.parse(JSON.stringify({ ...r0, files: undefined })) : { id: uid(), kind, siteId: preset.siteId ?? (S.ms.site !== 'all' ? S.ms.site : st.state === 'in' ? st.site.id : activeSites()[0]?.id || null), name: '', loc: kind === 'spleiss' ? 'Muffe' : '', note: '', photoIds: [],
+    ...(kind === 'spleiss' ? { count: 12, fibers: Array.from({ length: 12 }, (_, i) => ({ n: i + 1, loss: '' })), cableIn: '', cableOut: '', device: S.set.lastSpliceDev || '' } : {}),
+    ...(kind === 'otdr' ? { link: '', fiber: '', splices: '', conns: '2', device: S.set.lastOtdrDev || '', rows: [{ wl: 1310, len: '', loss: '', events: '' }, { wl: 1550, len: '', loss: '', events: '' }] } : {}),
+    ...(kind === 'einblas' ? { from: '', to: '', pipe: '10 × 1,0 mm', cable: '', len: '', dur: '', bar: '', temp: '', machine: S.set.lastBlowDev || '', result: 'ok' } : {}) };
+  const files = [...(r0?.files || [])];
+  const dis = locked ? ' disabled' : '';
+  const fiberRows = () => f.fibers.map(x => { const fo = fiberOf(x.n), v = num2(x.loss); return `<div class="fb-row"><span class="fb-c" style="background:${fo.hex}"></span><span class="fb-n">${x.n}<small>${fo.c}${f.count > 12 ? ' · BA ' + fo.tube : ''}</small></span><input type="text" inputmode="decimal" data-fb="${x.n - 1}" value="${esc(x.loss ?? '')}" placeholder="dB"${dis}><span class="fb-ok ${v == null ? '' : v <= L.splice ? 'ok' : 'no'}">${v == null ? '' : v <= L.splice ? '✓' : '✗'}</span></div>`; }).join('');
+  const body = kind === 'spleiss' ? `
+    <div class="inrow" style="gap:8px"><div class="fld" style="max-width:150px"><label class="lbl" for="msLoc">Ort</label><select id="msLoc"${dis}>${MS_LOC.map(x => `<option${x === f.loc ? ' selected' : ''}>${x}</option>`).join('')}</select></div><div class="fld"><label class="lbl" for="msName">Bezeichnung</label><input type="text" id="msName" value="${esc(f.name)}" placeholder="z. B. M3 / NVt 12, HÜP Lindenweg 12"${dis}></div></div>
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="msCi">Kabel kommend</label><input type="text" id="msCi" value="${esc(f.cableIn)}" placeholder="z. B. 96F Verband A"${dis}></div><div class="fld"><label class="lbl" for="msCo">Kabel gehend</label><input type="text" id="msCo" value="${esc(f.cableOut)}" placeholder="z. B. 12F HA-Kabel"${dis}></div></div>
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="msDev">Spleißgerät</label><input type="text" id="msDev" value="${esc(f.device)}" placeholder="Hersteller, Typ, Ser.-Nr."${dis}></div><div class="fld" style="max-width:110px"><label class="lbl" for="msCnt">Fasern</label><select id="msCnt"${dis}>${[1, 2, 4, 6, 8, 12, 24, 36, 48, 72, 96, 144].map(n => `<option${n === f.count ? ' selected' : ''}>${n}</option>`).join('')}</select></div></div>
+    <div class="fld"><span class="lbl">Spleißdämpfung je Faser · Grenzwert ${fmtN(L.splice, 2)} dB</span><div class="fb-grid" id="msFb">${fiberRows()}</div></div>`
+  : kind === 'otdr' ? `
+    <div class="fld"><label class="lbl" for="msName">Strecke</label><input type="text" id="msName" value="${esc(f.name)}" placeholder="z. B. NVt 12 → HÜP Lindenweg 12"${dis}></div>
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="msFi">Faser / Port</label><input type="text" id="msFi" value="${esc(f.fiber)}" placeholder="z. B. BA 1 · F 3 (bl)"${dis}></div><div class="fld"><label class="lbl" for="msDev">Messgerät</label><input type="text" id="msDev" value="${esc(f.device)}" placeholder="OTDR, Typ, Ser.-Nr."${dis}></div></div>
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="msSp">Spleiße auf der Strecke</label><input type="text" inputmode="numeric" id="msSp" value="${esc(f.splices)}" placeholder="Anzahl"${dis}></div><div class="fld"><label class="lbl" for="msCn">Steckverbinder</label><input type="text" inputmode="numeric" id="msCn" value="${esc(f.conns)}" placeholder="Anzahl"${dis}></div></div>
+    <div class="fld"><span class="lbl">Messwerte je Wellenlänge</span><div class="ot-grid"><span class="lbl">nm</span><span class="lbl">Länge m</span><span class="lbl">Dämpfung dB</span><span class="lbl">Ereign.</span><span class="lbl">Soll / Ergebnis</span>
+      ${f.rows.map((x, i) => `<select data-ot="${i}" data-k="wl"${dis}>${[1310, 1383, 1490, 1550, 1625].map(w => `<option${w === +x.wl ? ' selected' : ''}>${w}</option>`).join('')}</select><input type="text" inputmode="decimal" data-ot="${i}" data-k="len" value="${esc(x.len)}"${dis}><input type="text" inputmode="decimal" data-ot="${i}" data-k="loss" value="${esc(x.loss)}"${dis}><input type="text" inputmode="numeric" data-ot="${i}" data-k="events" value="${esc(x.events)}"${dis}><span class="ot-res" data-otres="${i}"></span>`).join('')}</div>
+      <p class="note" style="margin:6px 0 0">Soll = Länge × ${fmtN(L.att1310, 2)} dB/km (1310) bzw. ${fmtN(L.att1550, 2)} dB/km (1550) + Spleiße × ${fmtN(L.splice, 2)} dB + Stecker × ${fmtN(L.conn, 2)} dB. Grenzwerte in den Einstellungen dieses Moduls anpassbar.</p></div>
+    <div class="fld"><span class="lbl">Messdatei (.sor, PDF, Bild)</span><div class="ms-files">${files.map(x => `<span class="chip">${esc(x.name)} · ${Math.round(x.size / 1024)} KB</span>`).join('') || '<span class="note">Noch keine Datei angehängt.</span>'}</div>${locked ? '' : '<button type="button" class="btn" data-x="file" style="margin-top:6px">+ Messdatei anhängen</button>'}</div>`
+  : `
+    <div class="fld"><label class="lbl" for="msName">Strecke</label><input type="text" id="msName" value="${esc(f.name)}" placeholder="z. B. NVt 12 → Hausnr. 14"${dis}></div>
+    <div class="inrow" style="gap:8px"><div class="fld"><label class="lbl" for="msPipe">Speedpipe / Rohr</label><input type="text" id="msPipe" value="${esc(f.pipe)}" placeholder="z. B. 10 × 1,0 mm, Farbe rt"${dis}></div><div class="fld"><label class="lbl" for="msCab">Kabel</label><input type="text" id="msCab" value="${esc(f.cable)}" placeholder="z. B. Micro 24F 6,1 mm"${dis}></div></div>
+    <div class="ot-grid ein"><label><span class="lbl">Länge m</span><input type="text" inputmode="decimal" id="msLen" value="${esc(f.len)}"${dis}></label><label><span class="lbl">Dauer min</span><input type="text" inputmode="decimal" id="msDur" value="${esc(f.dur)}"${dis}></label><label><span class="lbl">Druck bar</span><input type="text" inputmode="decimal" id="msBar" value="${esc(f.bar)}"${dis}></label><label><span class="lbl">Temp. °C</span><input type="text" inputmode="decimal" id="msTmp" value="${esc(f.temp)}"${dis}></label></div>
+    <div class="fld" style="margin-top:12px"><label class="lbl" for="msDev">Einblasmaschine / Kompressor</label><input type="text" id="msDev" value="${esc(f.machine)}" placeholder="Typ, Ser.-Nr."${dis}></div>
+    <div class="fld"><span class="lbl">Ergebnis</span><div class="segs" id="msRes"><button type="button" data-res="ok" class="${f.result === 'ok' ? 'on' : ''}"${dis}>Eingeblasen</button><button type="button" data-res="abbruch" class="${f.result === 'abbruch' ? 'on' : ''}"${dis}>Abgebrochen</button></div></div>`;
+  const el = sheet(`<span class="dst" id="msSt"></span><h3>${esc(MS_KIND[kind])}</h3><p class="sub">${r0 ? 'Erfasst ' + fmtDay(r0.ts) + ', ' + fmtTime(r0.ts) + (r0.user ? ' · ' + esc(r0.user) : '') + (locked ? ' · versiegelt, nicht mehr änderbar' : '') : kind === 'spleiss' ? 'Je Faser die Spleißdämpfung vom Gerät abtippen – ich prüfe jeden Wert gegen den Grenzwert.' : kind === 'otdr' ? 'Länge und Gesamtdämpfung je Wellenlänge eintragen – den Sollwert rechne ich aus.' : 'Länge, Dauer und Druck eintragen – Geschwindigkeit und Ergebnis kommen ins Protokoll.'}</p>
+    <div class="fld"><label class="lbl" for="msSite">Baustelle</label><select id="msSite"${dis}><option value="">Ohne Baustelle</option>${S.sites.map(s => `<option value="${s.id}"${s.id === f.siteId ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</select></div>
+    ${body}
+    <div class="fld"><label class="lbl" for="msNote">Bemerkung</label><textarea id="msNote" placeholder="Auffälligkeiten, Nacharbeit, Abstimmung"${dis}>${esc(f.note)}</textarea></div>
+    <div class="fld"><span class="lbl">Fotos (${f.photoIds.length})</span><div class="thumbs">${f.photoIds.map(pid => { const p = S.photos.find(x => x.id === pid); return p ? `<img src="${p.thumb}" data-photo="${p.id}" alt="">` : ''; }).join('')}</div></div>
+    ${r0?.hash ? `<p class="seal"><b>Versiegelt #${r0.seq}</b> · SHA-256 ${r0.hash}</p>` : ''}
+    <div class="row">${locked ? '' : '<button class="btn" data-x="photo">+ Foto</button><button class="btn pri" data-x="save">Speichern</button>'}</div>
+    <div class="row" style="margin-top:8px"><button class="btn" data-x="pdf">Protokoll als PDF</button>${locked ? '' : '<button class="btn" data-x="seal">Abschließen & versiegeln</button>'}</div>
+    ${r0 && !locked ? '<div class="row" style="margin-top:8px"><button class="btn danger" data-x="del">Löschen</button></div>' : ''}`);
+  const collect = () => {
+    const g = s => $(s, el)?.value?.trim() ?? '';
+    const r = { ...f, siteId: g('#msSite') || null, name: g('#msName'), note: g('#msNote') };
+    if (kind === 'spleiss') Object.assign(r, { loc: g('#msLoc'), cableIn: g('#msCi'), cableOut: g('#msCo'), device: g('#msDev') });
+    if (kind === 'otdr') Object.assign(r, { fiber: g('#msFi'), device: g('#msDev'), splices: g('#msSp'), conns: g('#msCn') });
+    if (kind === 'einblas') Object.assign(r, { pipe: g('#msPipe'), cable: g('#msCab'), len: g('#msLen'), dur: g('#msDur'), bar: g('#msBar'), temp: g('#msTmp'), machine: g('#msDev'), result: $('#msRes .on', el)?.dataset.res || 'ok' });
+    return r;
+  };
+  const status = () => { const [t, col, n] = msStatus(collect()); const b = $('#msSt', el); b.textContent = t + ' · ' + n.toUpperCase(); b.style.background = col; if (kind === 'otdr') msEval(collect()).rows.forEach((x, i) => { const c = $(`[data-otres="${i}"]`, el); if (c) c.innerHTML = x.soll == null ? '–' : `${fmtN(x.soll, 2)} <b class="${x.ok === false ? 'no' : x.ok ? 'ok' : ''}">${x.ok == null ? '' : x.ok ? '✓' : '✗'}</b>`; }); };
+  const save = async (seal) => {
+    const r = collect(), now = Date.now();
+    Object.assign(r, { ts: r0?.ts || now, date: r0?.date || dayKey(now), updated: now, user: r0?.user || S.set.name || '', lat: r0?.lat ?? S.pos?.lat ?? null, lon: r0?.lon ?? S.pos?.lon ?? null, files });
+    if (kind === 'spleiss' && r.device) S.set.lastSpliceDev = r.device; if (kind === 'otdr' && r.device) S.set.lastOtdrDev = r.device; if (kind === 'einblas' && r.machine) S.set.lastBlowDev = r.machine; saveSet();
+    if (seal) { const { files: fl, hash, seq, chain, ots, ...core } = r; r.hash = await sha256(JSON.stringify(core) + '|' + fl.map(x => x.hash || '').join(',')); await sealDoc(r, 'messung'); }
+    await DB.put('messungen', r); const i = S.messungen.findIndex(x => x.id === r.id); if (i >= 0) S.messungen[i] = r; else S.messungen.push(r);
+    const e = msEval(r); hook(r0 ? 'messung_geaendert' : 'messung_neu', { art: MS_KIND[kind], baustelle: S.sites.find(s => s.id === r.siteId)?.name || null, bezeichnung: r.name, ergebnis: msStatus(r)[2], max_dB: e.max ?? null });
+    return r;
+  };
+  if (kind === 'spleiss') {
+    $('#msCnt', el)?.addEventListener('change', e => { const n = +e.target.value, old = f.fibers; f.count = n; f.fibers = Array.from({ length: n }, (_, i) => old[i] || { n: i + 1, loss: '' }); $('#msFb', el).innerHTML = fiberRows(); status(); });
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset.fb) { e.preventDefault(); $(`[data-fb="${+e.target.dataset.fb + 1}"]`, el)?.focus(); } });
+  }
+  el.addEventListener('input', e => {
+    const fb = e.target.dataset.fb; if (fb != null) { f.fibers[+fb].loss = e.target.value.trim(); const v = num2(e.target.value), m = e.target.nextElementSibling; m.className = 'fb-ok ' + (v == null ? '' : v <= L.splice ? 'ok' : 'no'); m.textContent = v == null ? '' : v <= L.splice ? '✓' : '✗'; }
+    const ot = e.target.dataset.ot; if (ot != null) f.rows[+ot][e.target.dataset.k] = e.target.value.trim();
+    status();
+  });
+  el.addEventListener('change', e => { const ot = e.target.dataset.ot; if (ot != null) { f.rows[+ot][e.target.dataset.k] = e.target.dataset.k === 'wl' ? +e.target.value : e.target.value.trim(); status(); } });
+  el.addEventListener('click', async e => {
+    const rs = e.target.closest('[data-res]'); if (rs && !locked) { $$('#msRes button', el).forEach(b => b.classList.toggle('on', b === rs)); status(); return; }
+    const ph = e.target.closest('[data-photo]'); if (ph) { openPhoto(ph.dataset.photo); return; }
+    const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
+    if (x === 'save') { await save(); closeSheet(); toast(`${MS_KIND[kind]} gespeichert – ${msStatus(collect())[2]}.`); refresh(); }
+    if (x === 'photo') { const r = await save(); closeSheet(); openCamera(r.siteId || null, null, null, { attach: { store: 'messungen', id: r.id, title: `${MS_KIND[kind]} · ${r.name || ''}` } }); }
+    if (x === 'file') { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.sor,.SOR,.pdf,application/pdf,image/*,.trc,.msor'; inp.onchange = async () => { const fl = inp.files[0]; if (!fl) return; if (fl.size > 25e6) return toast('Datei zu groß (max. 25 MB).'); files.push({ id: uid(), name: fl.name, type: fl.type || 'application/octet-stream', size: fl.size, blob: fl, hash: await sha256(fl) }); const r = await save(); closeSheet(); openMess(r.id); toast('Messdatei angehängt.'); }; inp.click(); }
+    if (x === 'pdf') { const r = locked ? r0 : await save(); await msPDF([r], r.name || MS_KIND[kind]); }
+    if (x === 'seal') { const r = collect(); const ev = msEval(r); if (kind === 'spleiss' && !ev.n) return toast('Erst Messwerte eintragen.'); if (kind === 'otdr' && !ev.rows.some(z => num2(z.loss) != null)) return toast('Erst Messwerte eintragen.');
+      const b = e.target.closest('[data-x]'); if (!b.dataset.sure) { b.dataset.sure = '1'; b.textContent = 'Versiegeln – danach nicht mehr änderbar?'; return; }
+      const nr = await save(true); closeSheet(); toast('Protokoll versiegelt.'); refresh(); openMess(nr.id); }
+    if (x === 'del') { const b = e.target.closest('[data-x]'); if (b.dataset.sure) { await DB.del('messungen', r0.id); S.messungen = S.messungen.filter(z => z.id !== r0.id); closeSheet(); toast('Protokoll gelöscht.'); refresh(); } else { b.dataset.sure = '1'; b.textContent = 'Wirklich löschen?'; } }
+  });
+  status();
+}
+function openMsLimits() {
+  const L = lim();
+  const el = sheet(`<h3>Grenzwerte</h3><p class="sub">Gelten für die Bewertung in allen Spleiß- und OTDR-Protokollen. Bitte nach Vorgabe des Netzbetreibers einstellen.</p>
+    ${[['splice', 'Spleißdämpfung max. (dB)'], ['conn', 'Steckverbinder max. (dB)'], ['att1310', 'Faserdämpfung 1310 nm (dB/km)'], ['att1550', 'Faserdämpfung 1550 nm (dB/km)'], ['att1625', 'Faserdämpfung 1625 nm (dB/km)']].map(([k, n]) => `<div class="fld"><label class="lbl" for="lim_${k}">${n}</label><input type="text" inputmode="decimal" id="lim_${k}" value="${String(L[k]).replace('.', ',')}"></div>`).join('')}
+    <div class="row"><button class="btn" data-x="std">Standard</button><button class="btn pri" data-x="ok">Übernehmen</button></div>`);
+  el.addEventListener('click', e => { const x = e.target.closest('[data-x]')?.dataset.x; if (!x) return;
+    if (x === 'std') { S.set.lim = {}; } else { const o = {}; ['splice', 'conn', 'att1310', 'att1550', 'att1625'].forEach(k => { const v = num2($('#lim_' + k, el).value); if (v != null && v >= 0) o[k] = v; }); S.set.lim = o; }
+    saveSet(); closeSheet(); toast('Grenzwerte gespeichert.'); refresh(); });
+}
+async function msPDF(recs, title) {
+  try {
+    await needLib('PDF-Baustein', () => window.jspdf?.jsPDF);
+    const { jsPDF } = window.jspdf, doc = new jsPDF({ unit: 'mm', format: 'a4' }); await pdfFonts(doc);
+    const K = pdfKit(doc), { m, cw, C } = K, L = lim(), titles = []; let first = true;
+    for (const r of recs) {
+      if (!first) doc.addPage(); first = false; titles[doc.getNumberOfPages()] = MS_KIND[r.kind]; pdfHeader(doc, r.name ? K.one(r.name, 70) : fmtDate(r.ts), MS_KIND[r.kind].toUpperCase());
+      const s = S.sites.find(x => x.id === r.siteId), ev = msEval(r), [stT, , stN] = msStatus(r); let y = 32;
+      K.eyebrow(m, y, MS_KIND[r.kind]); y += 10; y += K.h1(m, y, r.name || MS_KIND[r.kind], 22, cw - 46) - 1;
+      const sc = stT === 'IO' ? C.OK : stT === 'NIO' ? C.BAD : C.ORANGE; doc.setFillColor(...sc); doc.roundedRect(m + cw - 42, 37, 42, 11, 1, 1, 'F'); pf(doc, 'c', 12); doc.setTextColor(255, 255, 255); doc.text(stT === 'IO' ? 'IN ORDNUNG' : stT === 'NIO' ? 'NICHT I. O.' : 'UNVOLLSTÄNDIG', m + cw - 21, 44.4, { align: 'center' });
+      y += 5;
+      const base = [['Baustelle', s?.name || '–'], ['Auftrag', s?.order || '–'], ['Datum', `${fmtDay(r.ts)}, ${fmtTime(r.ts)} Uhr`], ['Ausführender', r.user || S.set.name || '–'], ['Lage', r.lat != null ? coord(r.lat, r.lon) : '–'], ['Auftraggeber', s?.client || '–']];
+      if (r.kind === 'spleiss') {
+        y = K.box(y, [['Ort', r.loc || '–'], ['Spleißgerät', r.device || '–'], ['Kabel kommend', r.cableIn || '–'], ['Kabel gehend', r.cableOut || '–'], ...base]);
+        const kp = [['Fasern', `${ev.n} / ${ev.of}`], ['Max.', ev.max != null ? fmtN(ev.max, 3) + ' dB' : '–'], ['Mittel', ev.avg != null ? fmtN(ev.avg, 3) + ' dB' : '–'], ['Grenzwert', fmtN(L.splice, 2) + ' dB']], kw = (cw - 9) / 4;
+        kp.forEach(([a, b], i) => { const x = m + i * (kw + 3); doc.setFillColor(...C.PAPER); doc.rect(x, y, kw, 16, 'F'); doc.setFillColor(...C.ORANGE); doc.rect(x, y, kw, 0.8, 'F'); K.label(x + 4, y + 5.5, a); pf(doc, 'c', 15); doc.setTextColor(...(i === 1 && ev.over ? C.BAD : C.NAVY)); doc.text(b, x + 4, y + 13); });
+        y += 23; K.label(m, y, 'Spleißdämpfung je Faser'); y += 2.5;
+        const half = Math.ceil(r.fibers.length / 2), colW = (cw - 6) / 2, cols = r.fibers.length > 12 ? 2 : 1, perCol = cols === 2 ? half : r.fibers.length, w = cols === 2 ? colW : cw;
+        const yTop = y; let yEnd = y;
+        for (let c = 0; c < cols; c++) {
+          let yy = yTop; const x0 = m + c * (colW + 6);
+          doc.setFillColor(...C.NAVY); doc.rect(x0, yy, w, 6.4, 'F'); pf(doc, 'cs', 7.2); doc.setTextColor(255, 255, 255); ['FASER', 'FARBE', 'BÜNDEL', 'DÄMPFUNG', 'ERGEBNIS'].forEach((t, i) => doc.text(t, x0 + [2, 16, w * 0.38, w * 0.62, w - 2][i], yy + 4.4, { align: i === 4 || i === 3 ? 'right' : 'left', charSpace: 0.25 })); yy += 6.4;
+          r.fibers.slice(c * perCol, (c + 1) * perCol).forEach((x, i) => { if (yy > 270) return; const fo = fiberOf(x.n), v = num2(x.loss), rh = 5.6;
+            if (i % 2) { doc.setFillColor(...C.PAPER); doc.rect(x0, yy, w, rh, 'F'); }
+            pf(doc, 'sb', 8.2); doc.setTextColor(...C.INK); doc.text(String(x.n), x0 + 2, yy + 4);
+            const rgb = [1, 3, 5].map(k => parseInt(fo.hex.slice(k, k + 2), 16)); doc.setFillColor(...rgb); doc.setDrawColor(150, 150, 160); doc.setLineWidth(0.15); doc.circle(x0 + 17.6, yy + 2.8, 1.5, 'FD'); pf(doc, 'r', 8); doc.text(fo.c, x0 + 20.5, yy + 4);
+            doc.text(String(fo.tube), x0 + w * 0.38, yy + 4); pf(doc, 'b', 8.4); doc.setTextColor(...(v != null && v > L.splice ? C.BAD : C.INK)); doc.text(v == null ? '–' : fmtN(v, 3) + ' dB', x0 + w * 0.62, yy + 4, { align: 'right' });
+            pf(doc, 'cs', 7.4); doc.setTextColor(...(v == null ? C.GREY : v <= L.splice ? C.OK : C.BAD)); doc.text(v == null ? 'OFFEN' : v <= L.splice ? 'I. O.' : 'N. I. O.', x0 + w - 2, yy + 4, { align: 'right' });
+            K.hair(yy + rh, x0, x0 + w); yy += rh; });
+          yEnd = Math.max(yEnd, yy);
+        }
+        y = yEnd + 6;
+      } else if (r.kind === 'otdr') {
+        y = K.box(y, [['Faser / Port', r.fiber || '–'], ['Messgerät', r.device || '–'], ['Spleiße auf Strecke', r.splices || '0'], ['Steckverbinder', r.conns || '0'], ...base]);
+        K.label(m, y, 'Messwerte und Bewertung'); y += 2.5;
+        const CO = [['WELLENLÄNGE', m + 2], ['LÄNGE', m + 50, 'right'], ['DÄMPFUNG', m + 80, 'right'], ['EREIGNISSE', m + 106, 'right'], ['SOLL MAX.', m + 136, 'right'], ['ERGEBNIS', m + cw - 2, 'right']];
+        y = K.head(y, CO);
+        ev.rows.forEach((x, i) => { const rh = 8; if (i % 2) { doc.setFillColor(...C.PAPER); doc.rect(m, y, cw, rh, 'F'); }
+          pf(doc, 'c', 11); doc.setTextColor(...C.NAVY); doc.text(x.wl + ' nm', m + 2, y + 5.5); pf(doc, 'sb', 9); doc.setTextColor(...C.INK);
+          doc.text(num2(x.len) != null ? fmtN(num2(x.len), 1) + ' m' : '–', m + 50, y + 5.4, { align: 'right' }); doc.text(num2(x.loss) != null ? fmtN(num2(x.loss), 2) + ' dB' : '–', m + 80, y + 5.4, { align: 'right' }); doc.text(x.events || '–', m + 106, y + 5.4, { align: 'right' }); doc.text(x.soll != null ? fmtN(x.soll, 2) + ' dB' : '–', m + 136, y + 5.4, { align: 'right' });
+          if (x.ok != null) K.chip(m + cw - 24, y + 5.4, x.ok ? 'I. O.' : 'N. I. O.', x.ok ? C.OK : C.BAD, 22); else { pf(doc, 'r', 8.4); doc.setTextColor(...C.GREY); doc.text('offen', m + cw - 2, y + 5.4, { align: 'right' }); }
+          K.hair(y + rh); y += rh; });
+        y += 5; pf(doc, 'r', 7.6); doc.setTextColor(...C.GREY);
+        doc.text(doc.splitTextToSize(`Sollwert = Länge × Faserdämpfung (${fmtN(L.att1310, 2)} dB/km bei 1310 nm, ${fmtN(L.att1550, 2)} dB/km bei 1550/1625 nm) + Spleiße × ${fmtN(L.splice, 2)} dB + Steckverbinder × ${fmtN(L.conn, 2)} dB.${(r.files || []).length ? ' Messdatei(en): ' + r.files.map(x => x.name).join(', ') + ' (im ZIP-Export enthalten).' : ''}`, cw), m, y); y += 12;
+      } else {
+        y = K.box(y, [['Speedpipe / Rohr', r.pipe || '–'], ['Kabel', r.cable || '–'], ['Maschine', r.machine || '–'], ['Ergebnis', r.result === 'ok' ? 'eingeblasen' : 'abgebrochen'], ...base]);
+        const kp = [['Länge', num2(r.len) != null ? fmtN(num2(r.len), 1) + ' m' : '–'], ['Dauer', num2(r.dur) != null ? fmtN(num2(r.dur), 1) + ' min' : '–'], ['Geschwindigkeit', ev.speed ? fmtN(ev.speed, 1) + ' m/min' : '–'], ['Druck / Temp.', `${r.bar ? r.bar + ' bar' : '–'} · ${r.temp ? r.temp + ' °C' : '–'}`]], kw = (cw - 9) / 4;
+        kp.forEach(([a, b], i) => { const x = m + i * (kw + 3); doc.setFillColor(...C.PAPER); doc.rect(x, y, kw, 16, 'F'); doc.setFillColor(...C.ORANGE); doc.rect(x, y, kw, 0.8, 'F'); K.label(x + 4, y + 5.5, a); pf(doc, 'c', 14); doc.setTextColor(...C.NAVY); doc.text(K.one(b, kw - 6), x + 4, y + 13); });
+        y += 24;
+      }
+      if (r.note) { K.label(m, y, 'Bemerkung'); pf(doc, 'r', 9); doc.setTextColor(...C.INK); const nl = doc.splitTextToSize(K.safe(r.note), cw).slice(0, 4); doc.text(nl, m, y + 5); y += 6 + nl.length * 4; }
+      // Fotos (bis zu 3)
+      const phs = (r.photoIds || []).map(id => S.photos.find(p => p.id === id)).filter(Boolean).slice(0, 3);
+      if (phs.length && y < 200) { K.label(m, y, 'Fotos'); y += 3; const pw = (cw - 8) / 3; for (let i = 0; i < phs.length; i++) { const im = await pdfImg(phs[i].blob), kk = Math.min(pw / im.w, 40 / im.h); doc.setFillColor(...C.PAPER); doc.rect(m + i * (pw + 4), y, pw, 40, 'F'); doc.addImage(im.d, 'JPEG', m + i * (pw + 4) + (pw - im.w * kk) / 2, y + (40 - im.h * kk) / 2, im.w * kk, im.h * kk); } y += 46; }
+      if (r.hash) { pf(doc, 'cs', 6.8); doc.setTextColor(...C.OK); doc.text('VERSIEGELT', m, y); doc.setFont('courier', 'normal'); doc.setFontSize(6.4); doc.setTextColor(120, 116, 148); doc.text(`#${r.seq}  SHA-256 ${r.hash}`, m + 20, y); y += 6; }
+      if (y > 234) { doc.addPage(); titles[doc.getNumberOfPages()] = MS_KIND[r.kind]; pdfHeader(doc, r.name || '', MS_KIND[r.kind].toUpperCase()); y = 32; }
+      K.sign(Math.max(y + 2, 232), [coName(), r.user || S.set.name || ''], ['Auftraggeber / Netzbetreiber' + (s?.client ? ': ' + s.client : ''), '']);
+    }
+    pdfFooter(doc, i => titles[i] || 'Messprotokoll');
+    await saveFile(`${recs.length > 1 ? 'Messprotokolle' : MS_KIND[recs[0].kind].replace(/[^\wäöüÄÖÜß-]/g, '')}_${slug(title)}_${stamp(Date.now()).slice(0, 8)}.pdf`, doc.output('blob'));
+  } catch (e) { toast('PDF fehlgeschlagen: ' + (e.message || e), 5000); }
+}
+async function seedExamples3() {
+  if (!S.sites.some(s => s.id === 'ex1')) { S.set.seeded3 = true; saveSet(); return; }
+  const now = Date.now(), day = 864e5, u = S.set.name || 'Sefkan', ex1 = S.sites.find(s => s.id === 'ex2'), ex2 = S.sites.find(s => s.id === 'ex1');
+  const am = (i, sid, pos, loc, calc, dOff, src = '') => { const L = lvAll().find(x => x.pos === pos), s = S.sites.find(x => x.id === sid); return { id: 'exam' + i, example: true, siteId: sid, pos, text: L.text, unit: L.unit, mode: 'calc', calc, qty: '', src, loc, note: '', photoIds: [], ts: now - dOff * day, date: dayKey(now - dOff * day), user: u, lat: s?.lat ?? null, lon: s?.lon ?? null }; };
+  const A = [am(1, 'ex2', '01.02', 'Bahnhofstr. 2–14, Gehweg Nordseite', { a: '86,40' }, 5, 'abgelaufen ±1,2 m'), am(2, 'ex2', '01.03', 'Querung Einfahrt Nr. 8', { a: '6,20' }, 5), am(3, 'ex2', '02.01', 'Gehweg Nr. 2–14', { a: '86,40', b: '0,60' }, 4),
+    am(4, 'ex2', '02.02', 'Einfahrt Nr. 8', { a: '6,20', b: '0,80' }, 4), am(5, 'ex2', '03.02', 'Verband 12×10 mm', { a: '92,60' }, 5, 'Trasse'), am(6, 'ex2', '01.04', 'vor Nr. 6 und Nr. 12', { n: '2' }, 4), am(7, 'ex2', '06.01', 'Gehwegsperrung', { n: '3' }, 3),
+    am(8, 'ex1', '04.01', 'Lindenweg 12', { n: '1' }, 2), am(9, 'ex1', '03.03', 'Kopfloch → Hauswand', { a: '11,80' }, 2), am(10, 'ex1', '05.01', 'NVt 12 → HÜP', { a: '214' }, 1)];
+  const fib = (n, vals) => Array.from({ length: n }, (_, i) => ({ n: i + 1, loss: vals[i] ?? '' }));
+  const M = [
+    { id: 'exms1', example: true, kind: 'spleiss', siteId: 'ex1', name: 'HÜP Lindenweg 12', loc: 'HÜP / Gf-AP', cableIn: 'Micro 12F (Speedpipe rt)', cableOut: 'Gf-AP 4 Ports', device: 'Fujikura 90S+', count: 4, fibers: fib(4, ['0,02', '0,03', '0,01', '0,04']), note: '', photoIds: [], ts: now - day, date: dayKey(now - day), user: u, lat: ex2?.lat, lon: ex2?.lon, files: [] },
+    { id: 'exms2', example: true, kind: 'spleiss', siteId: 'ex2', name: 'Muffe M3 Bahnhofstraße', loc: 'Muffe', cableIn: '96F Verband A', cableOut: '24F Abzweig Nr. 2–14', device: 'Fujikura 90S+', count: 12, fibers: fib(12, ['0,03', '0,02', '0,05', '0,04', '0,02', '0,13', '0,03', '0,02', '0,04', '', '', '']), note: 'Faser 6 neu spleißen.', photoIds: [], ts: now - 3 * day, date: dayKey(now - 3 * day), user: u, lat: ex1?.lat, lon: ex1?.lon, files: [] },
+    { id: 'exms3', example: true, kind: 'otdr', siteId: 'ex1', name: 'NVt 12 → HÜP Lindenweg 12', fiber: 'BA 1 · F 3 (bl)', device: 'EXFO MaxTester 730C', splices: '2', conns: '2', rows: [{ wl: 1310, len: '214,6', loss: '1,18', events: '4' }, { wl: 1550, len: '214,6', loss: '1,09', events: '4' }], note: '', photoIds: [], ts: now - day, date: dayKey(now - day), user: u, lat: ex2?.lat, lon: ex2?.lon, files: [] },
+    { id: 'exms4', example: true, kind: 'einblas', siteId: 'ex1', name: 'NVt 12 → Lindenweg 12', pipe: '7 × 1,5 mm, rt', cable: 'Micro 12F 2,5 mm', len: '214', dur: '6,5', bar: '12', temp: '9', machine: 'Plumettaz MiniJet', result: 'ok', note: '', photoIds: [], ts: now - day - 3600e3, date: dayKey(now - day), user: u, lat: ex2?.lat, lon: ex2?.lon, files: [] }];
+  for (const e of A) { await DB.put('aufmass', e); S.aufmass.push(e); }
+  for (const r of M) { await DB.put('messungen', r); S.messungen.push(r); }
+  S.set.seeded3 = true; saveSet();
+}
+
+/* PDF-Bericht im EnerWeser-Auftritt:
+   Deckblatt · Zusammenfassung mit Inhalt · je Baustelle Übersicht (Stammdaten, Pflichtfoto-Nachweis, Lageplan), Pläne, Mängel, Fotoblätter · Nachweis & Freigabe */
+const EW_CO = { name: 'EnerWeser Bautechnik GmbH', addr: 'Scharnhorster Straße 26 · 27283 Verden (Aller)', mail: 'info@enerweser.de', claim: 'Tiefbau · Glasfaser FTTH · Kabel- und Rohrleitungsbau' };
+const coName = () => S.set.coName || EW_CO.name;
+let EWF = null;
+async function pdfFontData() {
+  if (EWF) return EWF;
+  const files = { r: 'Barlow-Regular', m: 'Barlow-Medium', sb: 'Barlow-SemiBold', b: 'Barlow-Bold', cs: 'BarlowCondensed-SemiBold', c: 'BarlowCondensed-Bold' }, out = {};
+  for (const [k, f] of Object.entries(files)) {
+    const r = await fetch('fonts/' + f + '.ttf'); if (!r.ok) throw new Error('Schrift fehlt');
+    const u = new Uint8Array(await r.arrayBuffer()); let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000));
+    out[k] = [f, btoa(s)];
+  }
+  return EWF = out;
+}
+async function pdfFonts(doc) {
+  try { const F = await pdfFontData(); for (const [k, [f, b]] of Object.entries(F)) { doc.addFileToVFS(f + '.ttf', b); doc.addFont(f + '.ttf', 'EW' + k, 'normal'); } doc._ew = true; } catch (e) { doc._ew = false; }
+}
+function pf(doc, k, size) { if (doc._ew) doc.setFont('EW' + k, 'normal'); else doc.setFont('helvetica', /^(b|sb|c|cs)$/.test(k) ? 'bold' : 'normal'); if (size) doc.setFontSize(size); }
+async function pdfImg(blob) { const img = await loadImage(blob); const c = fitCanvas(img, 1600); return { d: c.toDataURL('image/jpeg', 0.86), w: c.width, h: c.height }; }
+
 async function buildPDF(l, title, daily) {
   await savingQ;
   const { jsPDF } = window.jspdf; const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-  const W = 210, H = 297, m = 14, cw = W - 2 * m;
+  await pdfFonts(doc);
+  const W = 210, H = 297, m = 14, cw = W - 2 * m, now = Date.now();
   const PC = { V: [90, 79, 207], W: [214, 112, 0], N: [30, 142, 78] };
-  const NAVY = [47, 35, 130], CYAN = [241, 136, 11], INK = [27, 24, 56], GREY = [93, 90, 120], LINE = [220, 217, 234];
-  const created = `${fmtDate(Date.now())}, ${fmtTime(Date.now())} Uhr`;
-  const span = ps => { if (!ps.length) return fmtDate(Date.now()); const a = fmtDate(ps[0].ts), b = fmtDate(ps[ps.length - 1].ts); return a === b ? a : `${a} – ${b}`; };
+  const NAVY = [47, 35, 130], DEEP = [30, 22, 89], ORANGE = [241, 136, 11], OINK = [184, 95, 0], INK = [27, 24, 56], GREY = [93, 90, 120], LINE = [220, 217, 234], PAPER = [246, 245, 250], LAV = [201, 197, 234];
+  const OK = [30, 142, 78], BAD = [200, 45, 55];
+  const repNo = 'FB-' + stamp(now).slice(0, 8) + '-' + stamp(now).slice(9, 13);
+  const created = `${fmtDate(now)}, ${fmtTime(now)} Uhr`;
+  const span = ps => { if (!ps.length) return fmtDate(now); const a = fmtDate(ps[0].ts), b = fmtDate(ps[ps.length - 1].ts); return a === b ? a : `${a} – ${b}`; };
   const pdfSafe = s => String(s ?? '').replace(/[→←]/g, '-').replace(/[✓✔]/g, 'OK').replace(/[✗✘]/g, 'X').replace(/[^\x00-\xff€„“‚‘’–—…•]/g, '');
+  const one = (t, w) => { const a = doc.splitTextToSize(pdfSafe(t), w); return a.length > 1 ? a[0].replace(/\s*\S*$/, '') + ' …' : a[0] || ''; };
   const groups = [];
   [...new Set(l.map(p => p.siteId || ''))].forEach(id => groups.push({ s: S.sites.find(x => x.id === id) || null, ps: l.filter(p => (p.siteId || '') === id) }));
   const num = new Map(); let k = 0; groups.forEach(g => g.ps.forEach(p => num.set(p.id, ++k)));
-  const pageTitle = []; let first = true;
-  const newPage = t => {
-    if (!first) doc.addPage(); first = false; pageTitle[doc.getNumberOfPages()] = t;
-    pdfHeader(doc, span(l), daily && !l.length ? 'TAGESBERICHT' : 'FOTOBERICHT');
-  };
-  const chip = (x, y, txt, rgb, w) => { doc.setFillColor(...rgb); doc.roundedRect(x, y - 3.4, w, 4.6, 0.8, 0.8, 'F'); doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.6); doc.text(txt, x + w / 2, y, { align: 'center' }); };
-  const label = (x, y, txt) => { doc.setFont('helvetica', 'bold'); doc.setFontSize(7.2); doc.setTextColor(184, 95, 0); doc.text(txt.toUpperCase(), x, y, { charSpace: 0.35 }); };
+  const reportKind = daily && !l.length ? 'TAGESBERICHT' : 'FOTOBERICHT';
+  const pageTitle = [];
+  const newPage = t => { doc.addPage(); pageTitle[doc.getNumberOfPages()] = t; pdfHeader(doc, `${repNo}  ·  ${span(l)}`, reportKind); };
+  const chip = (x, y, txt, rgb, w, ink = [255, 255, 255]) => { doc.setFillColor(...rgb); doc.roundedRect(x, y - 3.4, w, 4.6, 0.8, 0.8, 'F'); doc.setTextColor(...ink); pf(doc, 'cs', 7); doc.text(txt, x + w / 2, y, { align: 'center', charSpace: 0.2 }); };
+  const eyebrow = (x, y, txt, col = OINK) => { doc.setFillColor(...ORANGE); doc.rect(x, y - 2.2, 6, 0.9, 'F'); pf(doc, 'cs', 8); doc.setTextColor(...col); doc.text(pdfSafe(txt).toUpperCase(), x + 8.5, y, { charSpace: 0.45 }); };
+  const h1 = (x, y, txt, size = 24, w = cw) => { pf(doc, 'c', size); doc.setTextColor(...NAVY); const t = doc.splitTextToSize(pdfSafe(txt).toUpperCase(), w); doc.text(t, x, y); return t.length * size * 0.36; };
+  const label = (x, y, txt) => { pf(doc, 'cs', 7.2); doc.setTextColor(...OINK); doc.text(pdfSafe(txt).toUpperCase(), x, y, { charSpace: 0.35 }); };
+  const hair = (y, x1 = m, x2 = m + cw) => { doc.setDrawColor(...LINE); doc.setLineWidth(0.15); doc.line(x1, y, x2, y); };
+  const bar = (x, y, w, h, frac, col) => { doc.setFillColor(...LINE); doc.roundedRect(x, y, w, h, h / 2, h / 2, 'F'); if (frac > 0) { doc.setFillColor(...col); doc.roundedRect(x, y, Math.max(h, w * Math.min(1, frac)), h, h / 2, h / 2, 'F'); } };
+  const kv = (x, y, w, lab, val) => { label(x, y, lab); pf(doc, 'sb', 9.6); doc.setTextColor(...INK); doc.text(one(val || '–', w), x, y + 4.6); };
+  const tableHead = (y, cols) => { doc.setFillColor(...NAVY); doc.rect(m, y, cw, 6.8, 'F'); doc.setFillColor(...ORANGE); doc.rect(m, y + 6.8, cw, 0.6, 'F'); pf(doc, 'cs', 7.6); doc.setTextColor(255, 255, 255); cols.forEach(([t, x, al]) => doc.text(t, x, y + 4.6, { charSpace: 0.3, align: al || 'left' })); return y + 7.4; };
+  // Kennzahlen gesamt
+  const allSites = groups.map(g => g.s).filter(Boolean), prs = new Map(allSites.map(s => [s.id, progress(s)]));
+  const mustAll = [...prs.values()].reduce((a, p) => a + p.must, 0), doneAll = [...prs.values()].reduce((a, p) => a + p.done, 0);
+  const defs = S.defects.filter(d => allSites.some(s => s.id === d.siteId));
+  const defOpen = defs.filter(d => d.status === 'open' || d.status === 'work'), defOver = defs.filter(isOver);
+  const users = [...new Set(l.map(p => p.user).filter(Boolean))]; if (!users.length && S.set.name) users.push(S.set.name);
+  const single = groups.length === 1 ? groups[0].s : null;
+  const toc = { daily: 0, sites: [], end: 0 };
 
+  /* ---------- 1. Deckblatt ---------- */
+  pageTitle[1] = 'Deckblatt'; doc._skipFooter = 1;
+  doc.setFillColor(...NAVY); doc.rect(0, 0, W, 156, 'F');
+  // dezente Trassenlinie wie auf der Homepage
+  doc.setDrawColor(70, 58, 160); doc.setLineWidth(0.5); doc.setLineDashPattern([3, 2.2], 0); doc.line(0, 132, W, 132); doc.line(0, 136, W, 136); doc.setLineDashPattern([], 0);
+  try { doc.addImage(EW_LOGO_W, 'PNG', 18, 20, 66, 66 * 146 / 640, 'ewlogo', 'FAST'); } catch (e) {}
+  pf(doc, 'cs', 8.5); doc.setTextColor(...LAV); doc.text('BAUDOKU  ·  ' + reportKind, W - 18, 26, { align: 'right', charSpace: 0.5 });
+  doc.setFillColor(...ORANGE); doc.rect(18, 62.8, 8, 1.1, 'F'); pf(doc, 'cs', 10); doc.setTextColor(...ORANGE);
+  doc.text(reportKind === 'TAGESBERICHT' ? 'TAGESBERICHT · BAUTAGEBUCH' : 'FOTODOKUMENTATION · PFLICHTFOTO-NACHWEIS', 29, 64, { charSpace: 0.6 });
+  pf(doc, 'c', 38); doc.setTextColor(255, 255, 255);
+  const ct = doc.splitTextToSize(pdfSafe(single ? single.name : groups.length > 1 ? `${groups.length} Baustellen` : title).toUpperCase(), W - 36).slice(0, 3);
+  doc.text(ct, 18, 80, { lineHeightFactor: 1.0 });
+  let cy = 80 + (ct.length - 1) * 13.4 + 9;
+  const csub = single ? [TPL[single.tpl]?.n, single.order && 'Auftrag ' + single.order, l.find(p => p.address)?.address].filter(Boolean).join('   ·   ') : allSites.map(s => s.name).join('  ·  ');
+  if (csub) { pf(doc, 'm', 11.5); doc.setTextColor(213, 210, 238); doc.text(doc.splitTextToSize(pdfSafe(csub), W - 36).slice(0, 2), 18, cy); }
+  doc.setFillColor(...ORANGE); doc.rect(0, 156, W, 4.5, 'F');
+  if (single?.clientLogo) { try { const L = single.clientLogo, hh = 16, ww = Math.min(52, hh * L.w / L.h); doc.addImage(L.d, pdfImgType(L.d), W - 18 - ww, 172, ww, hh, undefined, 'FAST'); } catch (e) {} }
+  const cov = [['Zeitraum', span(l)], ['Bericht-Nr.', repNo], [groups.length > 1 ? 'Baustellen' : 'Baustelle', single ? single.name : String(groups.length)], ['Fotos', `${l.length} Aufnahmen`],
+    ['Pflichtfotos', mustAll ? `${doneAll} von ${mustAll} vorhanden (${Math.round(doneAll / mustAll * 100)} %)` : '–'], ['Mängel', defs.length ? `${defOpen.length} offen${defOver.length ? ', ' + defOver.length + ' überfällig' : ''} · ${defs.length} gesamt` : 'keine erfasst'],
+    ['Auftraggeber', single?.client || [...new Set(allSites.map(s => s.client).filter(Boolean))].join(', ') || '–'], ['Erstellt von', users.join(', ') || '–'], ['Erstellt am', created]];
+  let gy = single?.clientLogo ? 196 : 178;
+  pf(doc, 'c', 13); doc.setTextColor(...NAVY); doc.text('BERICHTSDATEN', 18, gy - 6, { charSpace: 0.3 });
+  cov.forEach(([a, b], i) => { const col = i % 2, row = Math.floor(i / 2), x = 18 + col * 88, y = gy + row * 13; kv(x, y, 82, a, b); hair(y + 7.6, x, x + 82); });
+  // Firmenblock
+  doc.setFillColor(...PAPER); doc.rect(0, 262, W, 35, 'F'); doc.setFillColor(...NAVY); doc.rect(0, 262, W, 0.6, 'F');
+  pf(doc, 'b', 10); doc.setTextColor(...NAVY); doc.text(pdfSafe(coName()), 18, 273);
+  pf(doc, 'r', 8.4); doc.setTextColor(...GREY);
+  if (/enerweser/i.test(coName())) { doc.text(EW_CO.addr + '  ·  ' + EW_CO.mail, 18, 278.5); doc.text(EW_CO.claim, 18, 283.5); }
+  pf(doc, 'r', 7.2); doc.setTextColor(140, 136, 165); doc.text('Erstellt mit EnerWeser Baudoku · entwickelt von Smolens·KI', W - 18, 290, { align: 'right' });
+
+  /* ---------- 2. Zusammenfassung (wird am Ende gefüllt, wenn alle Seitenzahlen feststehen) ---------- */
+  newPage('Zusammenfassung'); const sumPage = doc.getNumberOfPages();
+
+  /* ---------- Tagesbericht ---------- */
   if (daily && daily.trim()) {
-    newPage('Tagesbericht'); let y = 31;
-    label(m, y, 'Tagesbericht · Bautagebuch'); y += 9;
+    newPage('Tagesbericht'); toc.daily = doc.getNumberOfPages(); let y = 32;
+    eyebrow(m, y, 'Bautagebuch'); y += 9; y += h1(m, y, 'Tagesbericht') + 3;
     for (const raw of pdfSafe(daily).split('\n')) {
       const ln = raw.trimEnd(); if (!ln.trim()) { y += 2.5; continue; }
       const tt = ln.trim(), isHead = tt === tt.toUpperCase() && /[A-ZÄÖÜ]{3}/.test(tt) && tt.length < 90, bullet = /^\s*[-•]\s+/.test(ln);
-      doc.setFont('helvetica', isHead ? 'bold' : 'normal'); doc.setFontSize(isHead ? 11 : 9.6); doc.setTextColor(...(isHead ? NAVY : INK));
+      const setF = () => { if (isHead) { pf(doc, 'c', 13); doc.setTextColor(...NAVY); } else { pf(doc, 'r', 9.8); doc.setTextColor(...INK); } };
+      setF();
       const wrapped = doc.splitTextToSize(bullet ? ln.replace(/^\s*[-•]\s+/, '') : tt, cw - (bullet ? 6 : 0));
-      if (isHead) y += 2;
+      if (isHead) y += 3;
       wrapped.forEach((w, i) => {
-        if (y > 278) { newPage('Tagesbericht'); y = 31; doc.setFont('helvetica', isHead ? 'bold' : 'normal'); doc.setFontSize(isHead ? 11 : 9.6); doc.setTextColor(...(isHead ? NAVY : INK)); }
-        if (bullet && i === 0) { doc.setFillColor(...CYAN); doc.circle(m + 1.6, y - 1.2, 0.8, 'F'); }
-        doc.text(w, m + (bullet ? 6 : 0), y); y += isHead ? 5.6 : 4.6;
+        if (y > 276) { newPage('Tagesbericht'); y = 32; setF(); }
+        if (bullet && i === 0) { doc.setFillColor(...ORANGE); doc.rect(m + 0.8, y - 2.4, 1.8, 1.8, 'F'); }
+        doc.text(w, m + (bullet ? 6 : 0), y); y += isHead ? 5.8 : 4.8;
       });
-      if (isHead) { doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.line(m, y - 3.6, m + cw, y - 3.6); y += 1.2; }
+      if (isHead) { doc.setFillColor(...ORANGE); doc.rect(m, y - 3.9, 10, 0.6, 'F'); y += 1.4; }
     }
   }
-  for (const g of groups) {
-    const s = g.s, pr = s ? progress(s) : null, addr = g.ps.find(p => p.address)?.address;
-    newPage(s ? s.name : 'Ohne Baustelle'); let y = 31;
-    if (s?.clientLogo) { try { const L = s.clientLogo, h = 15, w = Math.min(48, h * L.w / L.h); doc.addImage(L.d, pdfImgType(L.d), W - m - w, 25, w, h, undefined, 'FAST'); } catch (e) {} }
-    if (s?.client) { doc.setFont('helvetica', 'normal'); doc.setFontSize(7.6); doc.setTextColor(...GREY); doc.text(pdfSafe('Auftraggeber: ' + s.client), W - m, s.clientLogo ? 44 : 31, { align: 'right' }); }
-    label(m, y, s ? 'Baustelle' : 'Fotos ohne Baustelle'); y += 8;
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(21); doc.setTextColor(...INK);
-    const tl = doc.splitTextToSize(s ? s.name : 'Ohne Baustelle', cw); doc.text(tl, m, y); y += 8.5 * tl.length - 2;
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5); doc.setTextColor(...GREY);
-    const sub = [s && TPL[s.tpl]?.n, s?.order && 'Auftrag ' + s.order, addr].filter(Boolean).join('   ·   ');
-    if (sub) { doc.text(doc.splitTextToSize(sub, cw), m, y); y += 6; }
-    y += 3;
-    // Kennzahlen
-    const facts = [['Fotos', String(g.ps.length), INK], ['Zeitraum', span(g.ps), INK], ['Bearbeiter', S.set.name || '–', INK]];
-    if (pr) facts.splice(1, 0, ['Pflichtfotos', `${pr.done} von ${pr.must}`, pr.missing.length ? [210, 100, 20] : [30, 150, 90]]);
-    const fw = (cw - 3 * (facts.length - 1)) / facts.length;
-    facts.forEach(([a, b, col], i) => {
-      const x = m + i * (fw + 3); doc.setFillColor(242, 241, 248); doc.roundedRect(x, y, fw, 17, 1.2, 1.2, 'F');
-      doc.setFillColor(...(i === 1 && pr ? col : CYAN)); doc.rect(x, y, 1.1, 17, 'F');
-      doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(...GREY); doc.text(a.toUpperCase(), x + 4, y + 5.5, { charSpace: 0.3 });
-      doc.setFont('helvetica', 'bold'); doc.setFontSize(b.length > 18 ? 8.6 : b.length > 12 ? 10.5 : 13); doc.setTextColor(...col); doc.text(b, x + 4, y + 13);
+
+  /* ---------- Lageplan zeichnen ---------- */
+  async function drawMap(s, ps, y, mh) {
+    const geo = ps.filter(p => p.lat != null);
+    doc.setFillColor(...PAPER); doc.rect(m, y, cw, mh, 'F');
+    const ox = m + cw / 2, oy = y + mh / 2, cosL = Math.cos(s.lat * RAD);
+    const xy = p => [(p.lon - s.lon) * 111320 * cosL, (p.lat - s.lat) * 110540];
+    const trs = S.trassen.filter(t => t.siteId === s.id && t.points.length > 1);
+    let ext = s.radius * 1.15; [...geo, ...trs.flatMap(t => t.points), ...(s.poly || []).map(([a, o]) => ({ lat: a, lon: o }))].forEach(p => { const [a, b] = xy(p); ext = Math.max(ext, Math.hypot(a, b) * 1.15); });
+    const sc = Math.min(mh / 2 - 6, cw / 2 - 6) / ext;
+    const grid = [5, 10, 20, 50, 100, 200, 500, 1000].find(v => v * sc >= 14) || 1000;
+    const bm = await basemapData(s.lat, s.lon, sc * 7, Math.round(cw * 7), Math.round(mh * 7)).catch(() => null);
+    if (bm) doc.addImage(bm, 'JPEG', m, y, cw, mh);
+    else {
+      doc.setDrawColor(236, 234, 245); doc.setLineWidth(0.1);
+      for (let gx = ox % (grid * sc); gx < m + cw; gx += grid * sc) if (gx > m) doc.line(gx, y, gx, y + mh);
+      for (let gy = oy - Math.floor((oy - y) / (grid * sc)) * grid * sc; gy < y + mh; gy += grid * sc) if (gy > y) doc.line(m, gy, m + cw, gy);
+    }
+    doc.setDrawColor(...LINE); doc.setLineWidth(0.25); doc.rect(m, y, cw, mh, 'S');
+    doc.setDrawColor(...NAVY); doc.setLineWidth(0.45); doc.setLineDashPattern([1.8, 1.2], 0); if (s.poly?.length > 2) s.poly.forEach((q, i) => { const r = s.poly[(i + 1) % s.poly.length], [a1, b1] = xy({ lat: q[0], lon: q[1] }), [a2, b2] = xy({ lat: r[0], lon: r[1] }); doc.line(ox + a1 * sc, oy - b1 * sc, ox + a2 * sc, oy - b2 * sc); }); else doc.circle(ox, oy, s.radius * sc, 'S'); doc.setLineDashPattern([], 0);
+    doc.setFillColor(...NAVY); doc.circle(ox, oy, 0.9, 'F');
+    trs.forEach(t => {
+      doc.setDrawColor(...OINK); doc.setLineWidth(0.8);
+      for (let i = 1; i < t.points.length; i++) { const [a1, b1] = xy(t.points[i - 1]), [a2, b2] = xy(t.points[i]); doc.line(ox + a1 * sc, oy - b1 * sc, ox + a2 * sc, oy - b2 * sc); }
+      t.marks.forEach(mk => { const [a, b] = xy(mk); doc.setFillColor(...OINK); doc.rect(ox + a * sc - 1.1, oy - b * sc - 1.1, 2.2, 2.2, 'F'); pf(doc, 'sb', 6); doc.setTextColor(120, 60, 10); doc.text(pdfSafe(`${mk.n} ${mk.type}${mk.depthCm ? ' ' + mk.depthCm + ' cm' : ''}`), ox + a * sc + 1.8, oy - b * sc - 1); });
     });
-    y += 26;
+    geo.forEach(p => {
+      const [a, b] = xy(p), px = ox + a * sc, py = oy - b * sc, c = PC[p.phase], lc = c.map(v => Math.round(v + (255 - v) * 0.6));
+      if (p.heading != null) { const r = 12, h1a = (p.heading - 20) * RAD, h2a = (p.heading + 20) * RAD; doc.setFillColor(...lc); doc.triangle(px, py, px + r * Math.sin(h1a), py - r * Math.cos(h1a), px + r * Math.sin(h2a), py - r * Math.cos(h2a), 'F'); }
+    });
+    geo.forEach(p => {
+      const [a, b] = xy(p), px = ox + a * sc, py = oy - b * sc;
+      doc.setFillColor(...PC[p.phase]); doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.45); doc.circle(px, py, 2.5, 'FD');
+      doc.setTextColor(255, 255, 255); pf(doc, 'b', 6.4); doc.text(String(num.get(p.id)), px, py + 0.95, { align: 'center' });
+    });
+    const nx = m + cw - 9, ny = y + 9; doc.setFillColor(255, 255, 255); doc.circle(nx, ny, 5.6, 'F'); doc.setFillColor(...NAVY); doc.triangle(nx, ny - 3.6, nx - 2.3, ny + 2.6, nx + 2.3, ny + 2.6, 'F'); pf(doc, 'b', 6.5); doc.setTextColor(255, 255, 255); doc.text('N', nx, ny + 1.8, { align: 'center' });
+    doc.setFillColor(255, 255, 255); doc.rect(m + 3, y + mh - 11, grid * sc + 6, 8, 'F');
+    doc.setDrawColor(...NAVY); doc.setLineWidth(0.5); doc.line(m + 6, y + mh - 5, m + 6 + grid * sc, y + mh - 5); doc.line(m + 6, y + mh - 6.5, m + 6, y + mh - 3.5); doc.line(m + 6 + grid * sc, y + mh - 6.5, m + 6 + grid * sc, y + mh - 3.5);
+    pf(doc, 'sb', 6.8); doc.setTextColor(...NAVY); doc.text(fmtDist(grid), m + 6, y + mh - 7);
+    y += mh + 5;
+    // Legende
+    let lx = m; pf(doc, 'r', 7.4); doc.setTextColor(...GREY);
+    ['V', 'W', 'N'].forEach(ph => { doc.setFillColor(...PC[ph]); doc.circle(lx + 1.4, y - 1.1, 1.4, 'F'); doc.text(PH[ph].n, lx + 4, y); lx += doc.getTextWidth(PH[ph].n) + 9; });
+    const leg = `${s.poly ? 'Gestrichelt = Baustellengrenze (' + fmtArea(polyArea(s.poly)) + ')' : `Gestrichelt = Baustellenbereich (r = ${s.radius} m)`}  ·  Kegel = Blickrichtung  ·  Zahl = Foto-Nr.${trs.length ? '  ·  Linie = Trasse' : ''}${bm ? '  ·  Karte © OpenStreetMap-Mitwirkende' : ''}`;
+    doc.text(doc.splitTextToSize(leg, m + cw - lx)[0] || '', lx + 2, y);
+    if (trs.length) { y += 4.4; doc.text(pdfSafe(trs.map(t => `${t.name}: ${tLen(t).toFixed(1).replace('.', ',')} m, ${t.marks.length} Markierungen, ${accSummary(t)}`).join('   ·   ')), m, y); }
+    return y;
+  }
+
+  /* ---------- je Baustelle ---------- */
+  for (let gi = 0; gi < groups.length; gi++) {
+    const g = groups[gi], s = g.s, pr = s ? prs.get(s.id) : null, addr = g.ps.find(p => p.address)?.address, T = { name: s ? s.name : 'Ohne Baustelle', site: s, ps: g.ps };
+    toc.sites.push(T);
+    newPage(T.name); T.over = doc.getNumberOfPages(); let y = 32;
+    eyebrow(m, y, groups.length > 1 ? `Baustelle ${gi + 1} von ${groups.length}` : s ? 'Baustelle' : 'Fotos ohne Baustelle'); y += 10;
+    if (s?.clientLogo) { try { const L = s.clientLogo, hh = 13, ww = Math.min(44, hh * L.w / L.h); doc.addImage(L.d, pdfImgType(L.d), W - m - ww, 25, ww, hh, undefined, 'FAST'); } catch (e) {} }
+    y += h1(m, y, T.name, 26, s?.clientLogo ? cw - 50 : cw) - 2;
+    const sub = [s && TPL[s.tpl]?.n, s?.order && 'Auftrag ' + s.order, addr].filter(Boolean).join('   ·   ');
+    if (sub) { pf(doc, 'm', 10); doc.setTextColor(...GREY); doc.text(one(sub, cw), m, y + 3); y += 6; }
+    y += 6;
+    // Stammdaten
+    const cnt = { V: 0, W: 0, N: 0 }; g.ps.forEach(p => cnt[p.phase]++);
+    const temps = g.ps.map(p => p.weather?.t).filter(t => t != null);
+    const us = [...new Set(g.ps.map(p => p.user).filter(Boolean))];
+    const sd = [
+      ['Gewerk / Vorlage', s ? TPL[s.tpl]?.n : '–'], ['Auftrag', s?.order || '–'],
+      ['Auftraggeber', s?.client || '–'], ['Adresse', addr || '–'],
+      ['Lage (Mittelpunkt)', s ? coord(s.lat, s.lon) : '–'], ['Bereich', s ? (s.poly ? 'Fläche ' + fmtArea(polyArea(s.poly)) : 'Umkreis ' + s.radius + ' m') : '–'],
+      ['Zeitraum', span(g.ps)], ['Aufnahmen', `${g.ps.length} Fotos  ·  ${cnt.V} vorher, ${cnt.W} während, ${cnt.N} nachher`],
+      ['Bearbeiter', us.join(', ') || S.set.name || '–'], ['Wetter', temps.length ? `${String(Math.min(...temps)).replace('.', ',')} bis ${String(Math.max(...temps)).replace('.', ',')} °C` : 'nicht erfasst']
+    ];
+    const bx = (cw - 8) / 2;
+    doc.setFillColor(...PAPER); doc.rect(m, y - 2, cw, Math.ceil(sd.length / 2) * 12.4 + 3, 'F');
+    sd.forEach(([a, b], i) => { const x = m + 4 + (i % 2) * (bx + 4), yy = y + 3.5 + Math.floor(i / 2) * 12.4; kv(x, yy, bx - 6, a, b); });
+    y += Math.ceil(sd.length / 2) * 12.4 + 9;
     if (pr) {
+      // Fortschritt
+      const frac = pr.must ? pr.done / pr.must : 1;
+      label(m, y, 'Pflichtfotos'); pf(doc, 'c', 12); doc.setTextColor(...(pr.missing.length ? OINK : OK));
+      doc.text(`${pr.done} VON ${pr.must}  ·  ${Math.round(frac * 100)} %`, m + cw, y + 0.4, { align: 'right' });
+      bar(m, y + 2.6, cw, 2.6, frac, pr.missing.length ? ORANGE : OK); y += 11;
       // Pflichtfoto-Nachweis
-      label(m, y, 'Pflichtfoto-Nachweis'); y += 4;
-      const cx = [m + 2, m + 22, m + 120, m + 146];
-      doc.setFillColor(...NAVY); doc.rect(m, y, cw, 6.5, 'F'); doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(255, 255, 255);
-      ['PHASE', 'PFLICHTFOTO', 'STATUS', 'FOTO-NR. / AUFNAHME'].forEach((h, i) => doc.text(h, cx[i], y + 4.4)); y += 6.5;
+      label(m, y, 'Pflichtfoto-Nachweis'); y += 2.5;
+      const cx = [m + 2, m + 23, m + 121, m + 147];
+      y = tableHead(y, [['PHASE', cx[0]], ['PFLICHTFOTO', cx[1]], ['STATUS', cx[2]], ['FOTO-NR. · AUFNAHME', cx[3]]]);
       pr.its.forEach((it, i) => {
-        const rh = 7.2; if (i % 2) { doc.setFillColor(246, 245, 250); doc.rect(m, y, cw, rh, 'F'); }
-        chip(cx[0], y + 4.9, PH[it.phase].n.toUpperCase(), PC[it.phase], 17);
-        doc.setFont('helvetica', it.must ? 'bold' : 'normal'); doc.setFontSize(9); doc.setTextColor(...INK);
-        doc.text(doc.splitTextToSize(it.label + (it.must ? '' : ' (optional)'), 94)[0], cx[1], y + 4.9);
+        const rh = 7.4; if (y + rh > 278) { newPage(T.name); y = tableHead(30, [['PHASE', cx[0]], ['PFLICHTFOTO', cx[1]], ['STATUS', cx[2]], ['FOTO-NR. · AUFNAHME', cx[3]]]); }
+        if (i % 2) { doc.setFillColor(...PAPER); doc.rect(m, y, cw, rh, 'F'); }
+        chip(cx[0], y + 5, PH[it.phase].n.toUpperCase(), PC[it.phase], 18);
+        pf(doc, it.must ? 'sb' : 'r', 9.2); doc.setTextColor(...(it.must ? INK : GREY));
+        doc.text(one(it.label + (it.must ? '' : ' (optional)'), 94), cx[1], y + 5);
         const own = it.photos.filter(p => num.has(p.id));
-        if (it.photos.length) chip(cx[2], y + 4.9, 'VORHANDEN', [30, 150, 90], 22);
-        else if (it.must) chip(cx[2], y + 4.9, 'FEHLT', [205, 70, 40], 22);
-        else chip(cx[2], y + 4.9, 'ENTFÄLLT', [150, 160, 170], 22);
-        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.3); doc.setTextColor(...GREY);
-        const ref = own.length ? own.map(p => 'Nr. ' + num.get(p.id)).join(', ') + '  ·  ' + fmtDate(own[0].ts).slice(0, 6) + ' ' + fmtTime(own[0].ts) : it.photos.length ? 'früher erfasst' : '–';
-        doc.text(ref, cx[3], y + 4.9);
-        doc.setDrawColor(...LINE); doc.setLineWidth(0.15); doc.line(m, y + rh, m + cw, y + rh); y += rh;
+        if (it.photos.length) chip(cx[2], y + 5, 'VORHANDEN', OK, 22); else if (it.must) chip(cx[2], y + 5, 'FEHLT', BAD, 22); else chip(cx[2], y + 5, 'ENTFÄLLT', [150, 146, 175], 22);
+        pf(doc, 'r', 8.4); doc.setTextColor(...GREY);
+        doc.text(own.length ? own.map(p => 'Nr. ' + num.get(p.id)).join(', ') + '  ·  ' + fmtDate(own[0].ts).slice(0, 6) + ' ' + fmtTime(own[0].ts) : it.photos.length ? 'früher erfasst' : '–', cx[3], y + 5);
+        hair(y + rh); y += rh;
       });
       y += 9;
-      // Lageplan
-      const geo = g.ps.filter(p => p.lat != null), mh = Math.min(86, 262 - y);
-      if (mh > 45) {
-        label(m, y, 'Lageplan der Aufnahmen'); y += 4;
-        doc.setFillColor(244, 248, 251); doc.rect(m, y, cw, mh, 'F');
-        const ox = m + cw / 2, oy = y + mh / 2, cosL = Math.cos(s.lat * RAD);
-        const xy = p => [(p.lon - s.lon) * 111320 * cosL, (p.lat - s.lat) * 110540];
-        const trs = S.trassen.filter(t => t.siteId === s.id && t.points.length > 1);
-        let ext = s.radius * 1.15; [...geo, ...trs.flatMap(t => t.points), ...(s.poly || []).map(([a, o]) => ({ lat: a, lon: o }))].forEach(p => { const [a, b] = xy(p); ext = Math.max(ext, Math.hypot(a, b) * 1.15); });
-        const sc = (mh / 2 - 6) / ext;
-        const grid = [5, 10, 20, 50, 100, 200, 500, 1000].find(v => v * sc >= 12) || 1000;
-        const bm = await basemapData(s.lat, s.lon, sc * 7, Math.round(cw * 7), Math.round(mh * 7)).catch(() => null);
-        if (bm) doc.addImage(bm, 'JPEG', m, y, cw, mh);
-        else {
-          doc.setDrawColor(236, 234, 245); doc.setLineWidth(0.1);
-          for (let gx = ox % (grid * sc); gx < m + cw; gx += grid * sc) if (gx > m) doc.line(gx, y, gx, y + mh);
-          for (let gy = oy - Math.floor((oy - y) / (grid * sc)) * grid * sc; gy < y + mh; gy += grid * sc) if (gy > y) doc.line(m, gy, m + cw, gy);
-        }
-        doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.rect(m, y, cw, mh, 'S');
-        doc.setDrawColor(47, 35, 130); doc.setLineWidth(0.35); doc.setLineDashPattern([1.6, 1.2], 0); if (s.poly?.length > 2) s.poly.forEach((q, i) => { const r = s.poly[(i + 1) % s.poly.length], [a1, b1] = xy({ lat: q[0], lon: q[1] }), [a2, b2] = xy({ lat: r[0], lon: r[1] }); doc.line(ox + a1 * sc, oy - b1 * sc, ox + a2 * sc, oy - b2 * sc); }); else doc.circle(ox, oy, s.radius * sc, 'S'); doc.setLineDashPattern([], 0);
-        doc.setFillColor(24, 150, 180); doc.circle(ox, oy, 0.8, 'F');
-        trs.forEach(t => {
-          doc.setDrawColor(214, 110, 20); doc.setLineWidth(0.7);
-          for (let i = 1; i < t.points.length; i++) { const [a1, b1] = xy(t.points[i - 1]), [a2, b2] = xy(t.points[i]); doc.line(ox + a1 * sc, oy - b1 * sc, ox + a2 * sc, oy - b2 * sc); }
-          t.marks.forEach(mk => { const [a, b] = xy(mk); doc.setFillColor(214, 110, 20); doc.rect(ox + a * sc - 1.1, oy - b * sc - 1.1, 2.2, 2.2, 'F'); doc.setFont('helvetica', 'normal'); doc.setFontSize(5.8); doc.setTextColor(120, 60, 10); doc.text(pdfSafe(`${mk.n} ${mk.type}${mk.depthCm ? ' ' + mk.depthCm + ' cm' : ''}`), ox + a * sc + 1.8, oy - b * sc - 1); });
-        });
-        geo.forEach(p => {
-          const [a, b] = xy(p), px = ox + a * sc, py = oy - b * sc, c = PC[p.phase], lc = c.map(v => Math.round(v + (255 - v) * 0.62));
-          if (p.heading != null) { const r = 11, h1 = (p.heading - 20) * RAD, h2 = (p.heading + 20) * RAD; doc.setFillColor(...lc); doc.triangle(px, py, px + r * Math.sin(h1), py - r * Math.cos(h1), px + r * Math.sin(h2), py - r * Math.cos(h2), 'F'); }
-        });
-        geo.forEach(p => {
-          const [a, b] = xy(p), px = ox + a * sc, py = oy - b * sc;
-          doc.setFillColor(...PC[p.phase]); doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.4); doc.circle(px, py, 2.3, 'FD');
-          doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.2); doc.text(String(num.get(p.id)), px, py + 0.9, { align: 'center' });
-        });
-        // Nordpfeil + Maßstab
-        const nx = m + cw - 9, ny = y + 8; doc.setFillColor(...NAVY); doc.triangle(nx, ny - 4, nx - 2.6, ny + 3, nx + 2.6, ny + 3, 'F'); doc.setFontSize(7); doc.setTextColor(...NAVY); doc.text('N', nx, ny - 5.5, { align: 'center' });
-        doc.setDrawColor(...NAVY); doc.setLineWidth(0.4); doc.line(m + 5, y + mh - 5, m + 5 + grid * sc, y + mh - 5); doc.line(m + 5, y + mh - 6.5, m + 5, y + mh - 3.5); doc.line(m + 5 + grid * sc, y + mh - 6.5, m + 5 + grid * sc, y + mh - 3.5);
-        doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.text(fmtDist(grid), m + 5, y + mh - 7.5);
-        y += mh + 4.5;
-        doc.setFontSize(7.4); doc.setTextColor(...GREY);
-        doc.text(`${s.poly ? 'Gestrichelte Linie = Baustellengrenze (' + fmtArea(polyArea(s.poly)) + ')' : `Gestrichelter Kreis = Baustellenbereich (r = ${s.radius} m)`}  ·  Kegel = Blickrichtung  ·  Farbe: Vorher / Während / Nachher${trs.length ? '  ·  Linie = Trasse' : ''}${bm ? '  ·  Karte: © OpenStreetMap-Mitwirkende' : ''}`, m, y);
-        if (trs.length) { y += 4.2; doc.text(pdfSafe(trs.map(t => `${t.name}: ${tLen(t).toFixed(1).replace('.', ',')} m, ${t.marks.length} Markierungen, ${accSummary(t)}`).join('   ·   ')), m, y); }
-      }
     }
-    if (g.ps.some(p => p.hash)) {
-      doc.setFont('helvetica', 'normal'); doc.setFontSize(7.4); doc.setTextColor(...GREY);
-      doc.text(doc.splitTextToSize('Beweissicherung: Jedes Foto wurde beim Speichern mit einem SHA-256-Fingerabdruck versiegelt und in einer fortlaufenden Prüfkette verknüpft. Die Originaldateien lassen sich mit dem ZIP-Export prüfen (pruefsummen.sha256, Zeitstempel-Dateien .ots für opentimestamps.org). Die Bilder in diesem PDF sind verkleinert.', cw), m, 276);
+    // Lageplan
+    if (s && g.ps.some(p => p.lat != null)) {
+      if (278 - y >= 92) { eyebrow(m, y, 'Lageplan der Aufnahmen'); y += 4; T.map = doc.getNumberOfPages(); y = await drawMap(s, g.ps, y, Math.min(118, 278 - y - 12)); }
+      else { newPage(T.name); T.map = doc.getNumberOfPages(); let yy = 32; eyebrow(m, yy, 'Lageplan der Aufnahmen'); yy += 10; yy += h1(m, yy, T.name, 20) + 2; await drawMap(s, g.ps, yy, 214); }
     }
-    // Baupläne mit verorteten Fotos und Mängeln
+    // Baupläne
     if (s) for (const pl of plansOf(s.id)) {
       const pp = g.ps.filter(p => p.plan?.planId === pl.id), dd = S.defects.filter(d => d.plan?.planId === pl.id);
       if (!pp.length && !dd.length) continue;
-      newPage(s.name); label(m, 31, 'Bauplan · ' + pdfSafe(pl.name));
-      const im = await blobToPdfImg(pl.blob, 2200), bw = cw, bh = 238, kk = Math.min(bw / im.w, bh / im.h), ix = m + (bw - im.w * kk) / 2, iy = 36;
-      doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.rect(ix, iy, im.w * kk, im.h * kk, 'S'); doc.addImage(im.d, 'JPEG', ix, iy, im.w * kk, im.h * kk);
-      pp.forEach(p => { const px = ix + p.plan.x * im.w * kk, py = iy + p.plan.y * im.h * kk; doc.setFillColor(...PC[p.phase]); doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.5); doc.circle(px, py, 2.8, 'FD'); doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.6); doc.text(String(num.get(p.id)), px, py + 1, { align: 'center' }); });
-      dd.forEach(d => { const px = ix + d.plan.x * im.w * kk, py = iy + d.plan.y * im.h * kk, c = [1, 3, 5].map(i => parseInt(DSTAT[d.status].c.slice(i, i + 2), 16)); doc.setFillColor(...c); doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.5); doc.triangle(px, py - 3.6, px + 3.2, py, px - 3.2, py, 'FD'); doc.triangle(px, py + 3.6, px + 3.2, py, px - 3.2, py, 'FD'); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.4); doc.setTextColor(120, 30, 20); doc.text('M' + d.no, px + 4, py + 1); });
-      doc.setFont('helvetica', 'normal'); doc.setFontSize(7.4); doc.setTextColor(...GREY); doc.text(`Kreise = Fotos (Nummer wie im Bericht)  ·  Rauten = Mängel  ·  ${pp.length} Fotos, ${dd.length} Mängel auf diesem Plan`, m, iy + im.h * kk + 5);
+      newPage(T.name); T.plans = T.plans || doc.getNumberOfPages(); eyebrow(m, 32, 'Bauplan'); h1(m, 42, pl.name, 18);
+      const im = await blobToPdfImg(pl.blob, 2200), bw = cw, bh = 226, kk = Math.min(bw / im.w, bh / im.h), ix = m + (bw - im.w * kk) / 2, iy = 48;
+      doc.setDrawColor(...LINE); doc.setLineWidth(0.25); doc.rect(ix, iy, im.w * kk, im.h * kk, 'S'); doc.addImage(im.d, 'JPEG', ix, iy, im.w * kk, im.h * kk);
+      pp.forEach(p => { const px = ix + p.plan.x * im.w * kk, py = iy + p.plan.y * im.h * kk; doc.setFillColor(...PC[p.phase]); doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.5); doc.circle(px, py, 2.8, 'FD'); doc.setTextColor(255, 255, 255); pf(doc, 'b', 6.6); doc.text(String(num.get(p.id)), px, py + 1, { align: 'center' }); });
+      dd.forEach(d => { const px = ix + d.plan.x * im.w * kk, py = iy + d.plan.y * im.h * kk, c = [1, 3, 5].map(i => parseInt(DSTAT[d.status].c.slice(i, i + 2), 16)); doc.setFillColor(...c); doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.5); doc.triangle(px, py - 3.6, px + 3.2, py, px - 3.2, py, 'FD'); doc.triangle(px, py + 3.6, px + 3.2, py, px - 3.2, py, 'FD'); pf(doc, 'b', 6.4); doc.setTextColor(120, 30, 20); doc.text('M' + d.no, px + 4, py + 1); });
+      pf(doc, 'r', 7.4); doc.setTextColor(...GREY); doc.text(`Kreise = Fotos (Nummer wie im Bericht)  ·  Rauten = Mängel  ·  ${pp.length} Fotos, ${dd.length} Mängel auf diesem Plan`, m, iy + im.h * kk + 5);
     }
-    // Mängel der Baustelle
-    const sd = s ? S.defects.filter(d => d.siteId === s.id).sort((a, b) => a.no - b.no) : [];
-    if (sd.length) {
-      newPage(s.name); let yy = 31; label(m, yy, `Mängel · ${sd.filter(d => d.status === 'open' || d.status === 'work').length} offen, ${sd.filter(isOver).length} überfällig`); yy += 4;
-      doc.setFillColor(...NAVY); doc.rect(m, yy, cw, 6.5, 'F'); doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(255, 255, 255);
-      ['NR', 'MANGEL', 'ZUSTÄNDIG', 'FRIST', 'STATUS'].forEach((h, i) => doc.text(h, [m + 1, m + 14, m + 92, m + 128, m + 154][i], yy + 4.4)); yy += 6.5;
-      sd.forEach((d, i) => { if (yy > 276) return; const rh = 7.2; if (i % 2) { doc.setFillColor(246, 245, 250); doc.rect(m, yy, cw, rh, 'F'); }
-        doc.setFont('helvetica', 'bold'); doc.setFontSize(8.8); doc.setTextColor(...INK); doc.text('M' + d.no, m + 1, yy + 4.9); doc.setFont('helvetica', 'normal'); doc.text(doc.splitTextToSize(pdfSafe(d.title || '–'), 76)[0], m + 14, yy + 4.9); doc.text(doc.splitTextToSize(pdfSafe(d.assignee || '–'), 34)[0], m + 92, yy + 4.9);
-        doc.setTextColor(...(isOver(d) ? [205, 60, 40] : INK)); doc.text(d.due ? fmtDate(new Date(d.due + 'T12:00')) : '–', m + 128, yy + 4.9);
-        chip(m + 154, yy + 4.9, DSTAT[d.status].n.toUpperCase(), [1, 3, 5].map(k => parseInt(DSTAT[d.status].c.slice(k, k + 2), 16)), 26);
-        doc.setDrawColor(...LINE); doc.setLineWidth(0.15); doc.line(m, yy + rh, m + cw, yy + rh); yy += rh; });
+    // Mängel
+    const sdf = s ? S.defects.filter(d => d.siteId === s.id).sort((a, b) => a.no - b.no) : [];
+    if (sdf.length) {
+      newPage(T.name); T.defs = doc.getNumberOfPages(); let yy = 32;
+      eyebrow(m, yy, 'Mängel'); yy += 10; yy += h1(m, yy, 'Mängelliste', 22) + 1;
+      const op = sdf.filter(d => d.status === 'open' || d.status === 'work').length, ov = sdf.filter(isOver).length;
+      pf(doc, 'm', 9.6); doc.setTextColor(...GREY); doc.text(`${sdf.length} Mängel erfasst  ·  ${op} offen  ·  ${ov} überfällig  ·  ${sdf.filter(d => d.status === 'done' || d.status === 'closed').length} erledigt`, m, yy); yy += 7;
+      const DC = [['NR', m + 2], ['MANGEL', m + 15], ['ZUSTÄNDIG', m + 100], ['FRIST', m + 137], ['STATUS', m + 156]];
+      yy = tableHead(yy, DC);
+      sdf.forEach((d, i) => {
+        pf(doc, 'r', 7.8); const dl = d.desc ? doc.splitTextToSize(pdfSafe(d.desc), 82).slice(0, 2) : [], rh = 7.6 + dl.length * 3.5;
+        if (yy + rh > 278) { newPage(T.name); yy = tableHead(30, DC); }
+        if (i % 2) { doc.setFillColor(...PAPER); doc.rect(m, yy, cw, rh, 'F'); }
+        if (isOver(d)) { doc.setFillColor(...BAD); doc.rect(m, yy, 0.9, rh, 'F'); }
+        pf(doc, 'c', 10.5); doc.setTextColor(...NAVY); doc.text('M' + d.no, m + 2, yy + 5.2);
+        pf(doc, 'sb', 9); doc.setTextColor(...INK); doc.text(one(d.title || '–', 82), m + 15, yy + 5.2);
+        if (dl.length) { pf(doc, 'r', 7.8); doc.setTextColor(...GREY); doc.text(dl, m + 15, yy + 8.9); }
+        pf(doc, 'r', 8.4); doc.setTextColor(...INK); doc.text(one(d.assignee || '–', 35), m + 100, yy + 5.2); if (d.trade) { doc.setTextColor(...GREY); pf(doc, 'r', 7.6); doc.text(one(d.trade, 35), m + 100, yy + 8.9); }
+        pf(doc, isOver(d) ? 'sb' : 'r', 8.4); doc.setTextColor(...(isOver(d) ? BAD : INK)); doc.text(d.due ? fmtDate(new Date(d.due + 'T12:00')) : '–', m + 137, yy + 5.2);
+        chip(m + 156, yy + 5.2, DSTAT[d.status].n.toUpperCase(), [1, 3, 5].map(q => parseInt(DSTAT[d.status].c.slice(q, q + 2), 16)), 26, d.status === 'work' ? DEEP : [255, 255, 255]);
+        hair(yy + rh); yy += rh;
+      });
     }
-    // Fotoseiten: 2 Fotos pro Seite in festen Feldern
+    // Aufmaß (Zusammenstellung) und Mess-/Spleißprotokolle der Baustelle
+    const ams = s ? S.aufmass.filter(e => e.siteId === s.id) : [], mss = s ? S.messungen.filter(r => r.siteId === s.id).sort((a, b) => a.ts - b.ts) : [];
+    if (ams.length || mss.length) {
+      newPage(T.name); let yy = 32;
+      if (ams.length) {
+        T.am = doc.getNumberOfPages(); eyebrow(m, yy, 'Aufmaß'); yy += 10; yy += h1(m, yy, 'Aufmaß · Zusammenstellung', 20) + 1;
+        pf(doc, 'm', 9.4); doc.setTextColor(...GREY); doc.text(`${ams.length} Einträge mit Rechenansatz  ·  Einzelaufmaß als eigenes Aufmaßblatt (PDF) und als Excel/CSV`, m, yy); yy += 6;
+        const AC = [['POS.', m + 2], ['LEISTUNG', m + 18], ['EINTRÄGE', m + 128, 'right'], ['MENGE', m + 160, 'right'], ['EINH.', m + 163]];
+        yy = tableHead(yy, AC);
+        amSum(ams).forEach((r, i) => { if (yy + 8 > 270) { newPage(T.name); yy = tableHead(30, AC); } if (i % 2) { doc.setFillColor(...PAPER); doc.rect(m, yy, cw, 8, 'F'); }
+          pf(doc, 'c', 10); doc.setTextColor(...NAVY); doc.text(r.pos, m + 2, yy + 5.4); pf(doc, 'sb', 9); doc.setTextColor(...INK); doc.text(one(r.text, 100), m + 18, yy + 5.3);
+          pf(doc, 'r', 8.6); doc.setTextColor(...GREY); doc.text(String(r.n), m + 128, yy + 5.3, { align: 'right' }); pf(doc, 'b', 10); doc.setTextColor(...NAVY); doc.text(fmtN(Math.round(r.qty * 1000) / 1000, 3), m + 160, yy + 5.4, { align: 'right' });
+          pf(doc, 'r', 8.6); doc.setTextColor(...GREY); doc.text(r.unit, m + 163, yy + 5.3); hair(yy + 8); yy += 8; });
+        yy += 12;
+      }
+      if (mss.length) {
+        if (yy > 220) { newPage(T.name); yy = 32; }
+        T.ms = doc.getNumberOfPages(); eyebrow(m, yy, 'Spleiß & Messung'); yy += 10; yy += h1(m, yy, 'Mess- und Spleißprotokolle', 20) + 1;
+        const io = mss.filter(r => msEval(r).ok).length, nio = mss.filter(r => { const e = msEval(r); return e.bad || e.over; }).length;
+        pf(doc, 'm', 9.4); doc.setTextColor(...GREY); doc.text(`${mss.length} Protokolle  ·  ${io} in Ordnung  ·  ${nio} über Grenzwert  ·  ${mss.length - io - nio} unvollständig  ·  Grenzwert Spleiß ${fmtN(lim().splice, 2)} dB`, m, yy); yy += 6;
+        const MC = [['ART', m + 2], ['BEZEICHNUNG', m + 26], ['DATUM', m + 104], ['KENNWERTE', m + 124], ['ERGEBNIS', m + cw - 2, 'right']];
+        yy = tableHead(yy, MC);
+        mss.forEach((r, i) => { const rh = 9.4; if (yy + rh > 270) { newPage(T.name); yy = tableHead(30, MC); } if (i % 2) { doc.setFillColor(...PAPER); doc.rect(m, yy, cw, rh, 'F'); }
+          const e = msEval(r), [stT] = msStatus(r);
+          const kv = r.kind === 'spleiss' ? `${e.n}/${e.of} Fasern · max ${fmtN(e.max, 3)} dB` : r.kind === 'otdr' ? e.rows.map(x => `${x.wl}: ${fmtN(num2(x.loss), 2)} dB`).join(' · ') : `${fmtN(num2(r.len), 0)} m · ${e.speed ? fmtN(e.speed, 1) + ' m/min' : '–'}`;
+          pf(doc, 'cs', 8); doc.setTextColor(...NAVY); doc.text(r.kind === 'spleiss' ? 'SPLEISS' : r.kind === 'otdr' ? 'OTDR' : 'EINBLASEN', m + 2, yy + 5.9, { charSpace: 0.2 });
+          pf(doc, 'sb', 8.8); doc.setTextColor(...INK); doc.text(one(r.name || MS_KIND[r.kind], 74), m + 26, yy + 5.9);
+          pf(doc, 'r', 8.2); doc.setTextColor(...GREY); doc.text(fmtDate(r.ts), m + 104, yy + 5.9); doc.text(one(kv, 36), m + 124, yy + 5.9);
+          chip(m + cw - 22, yy + 5.9, stT === 'IO' ? 'I. O.' : stT === 'NIO' ? 'N. I. O.' : 'OFFEN', stT === 'IO' ? OK : stT === 'NIO' ? BAD : [150, 146, 175], 20);
+          hair(yy + rh); yy += rh; });
+        yy += 5; pf(doc, 'r', 7.4); doc.setTextColor(...GREY); doc.text('Die vollständigen Protokolle (je Faser bzw. je Wellenlänge, mit Unterschriftsfeld) erstellt die App unter „Spleiß & Messung“ als eigenes PDF.', m, yy);
+      }
+    }
+    // Fotoblätter: 2 pro Seite, Bild links, Aufnahmedaten rechts
     for (let i = 0; i < g.ps.length; i++) {
-      const p = g.ps[i], slot = i % 2; if (!slot) newPage(s ? s.name : 'Ohne Baustelle');
-      const y0 = 27 + slot * 129, it = s?.items.find(x => x.id === p.itemId), img = await pdfImg(p.posterBlob || p.blob);
-      const bh = 91, kk = Math.min(cw / img.w, bh / img.h), iw = img.w * kk, ih = img.h * kk;
-      doc.setFillColor(236, 234, 245); doc.rect(m, y0, cw, bh, 'F');
-      doc.addImage(img.d, 'JPEG', m + (cw - iw) / 2, y0 + (bh - ih) / 2, iw, ih);
-      let y = y0 + bh + 7;
-      doc.setFillColor(...PC[p.phase]); doc.roundedRect(m, y - 4.6, 8, 6.2, 0.8, 0.8, 'F');
-      doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.text(String(num.get(p.id)), m + 4, y, { align: 'center' });
-      doc.setTextColor(...INK); doc.setFontSize(11.5); doc.text(doc.splitTextToSize(pdfSafe(`${PH[p.phase].n} – ${p.kind === 'video' ? 'Video ' + fmtDur(p.dur || 0) + ': ' : p.kind === 'pano' ? '360°: ' : ''}${it ? it.label : catName(p.cat)}${p.depthCm ? '  ·  Tiefe ' + p.depthCm + ' cm' : ''}`), cw - 48)[0], m + 11, y);
-      chip(m + cw - 26, y - 0.6, it?.must ? 'PFLICHTFOTO' : 'ZUSATZFOTO', it?.must ? NAVY : [150, 160, 170], 26);
-      y += 6; doc.setFont('helvetica', 'normal'); doc.setFontSize(8.4); doc.setTextColor(...GREY);
-      doc.text(`${fmtDay(p.ts)}, ${fmtTime(p.ts)} Uhr   ·   ${p.lat != null ? coord(p.lat, p.lon) + '  ±' + fmtAcc(p.acc) + (p.fix && /RTK/.test(p.fix) ? ' ' + p.fix : '') : 'ohne GPS'}${p.heading != null ? '   ·   Blick ' + p.heading + '° ' + dirName(p.heading, 1) : ''}`, m + 11, y);
-      const extra = pdfSafe([p.address, p.user ? 'Bearbeiter: ' + p.user : '', p.weather ? 'Wetter: ' + wxShort(p.weather) : '', catName(p.cat), (p.labels || []).length ? 'Stichworte: ' + p.labels.join(', ') : '', p.aiOk != null ? (p.aiOk ? 'KI-Prüfung: Pflichtinhalte erkannt' : 'KI-Prüfung: unvollständig') : '', p.privacy?.length ? p.privacy.length + ' Bereich(e) unkenntlich' : ''].filter(Boolean).join('   ·   '));
-      if (extra) { const xl = doc.splitTextToSize(extra, cw - 11).slice(0, p.desc ? 1 : 2); y += 4.4; doc.text(xl, m + 11, y); y += (xl.length - 1) * 3.7; }
-      if (p.desc) { y += 5; doc.setTextColor(...INK); doc.setFontSize(9); doc.text(doc.splitTextToSize(pdfSafe(p.desc), cw - 11).slice(0, 2), m + 11, y); y += doc.splitTextToSize(pdfSafe(p.desc), cw - 11).length > 1 ? 3.7 : 0; }
-      if (p.hash) { y += 4.6; doc.setFont('courier', 'normal'); doc.setFontSize(6.6); doc.setTextColor(110, 106, 138); doc.text(`Siegel #${p.seq}  SHA-256 ${p.hash}${p.origHash ? '  (bearbeitet)' : ''}`, m + 11, y); }
+      const p = g.ps[i], slot = i % 2; if (!slot) { newPage(T.name); if (!T.ph0) T.ph0 = doc.getNumberOfPages(); T.ph1 = doc.getNumberOfPages(); }
+      const y0 = 26 + slot * 127, it = s?.items.find(x => x.id === p.itemId), img = await pdfImg(p.posterBlob || p.blob);
+      // Titelzeile
+      doc.setFillColor(...NAVY); doc.roundedRect(m, y0, 10, 7, 0.8, 0.8, 'F'); pf(doc, 'c', 11); doc.setTextColor(255, 255, 255); doc.text(String(num.get(p.id)), m + 5, y0 + 5.1, { align: 'center' });
+      const ttl = `${p.kind === 'video' ? 'Video ' + fmtDur(p.dur || 0) + ' · ' : p.kind === 'pano' ? '360° · ' : ''}${it ? it.label : catName(p.cat)}${p.depthCm ? '  ·  Tiefe ' + p.depthCm + ' cm' : ''}`;
+      pf(doc, 'c', 13.5); doc.setTextColor(...NAVY); doc.text(one(ttl.toUpperCase(), cw - 72), m + 13, y0 + 5.3);
+      chip(m + cw - 48, y0 + 4.3, PH[p.phase].n.toUpperCase(), PC[p.phase], 20);
+      chip(m + cw - 26, y0 + 4.3, it?.must ? 'PFLICHTFOTO' : 'ZUSATZFOTO', it?.must ? NAVY : [150, 146, 175], 26);
+      // Bild
+      const iy = y0 + 10, bw = 120, bh = 90, kk = Math.min(bw / img.w, bh / img.h), iw = img.w * kk, ih = img.h * kk;
+      doc.setFillColor(...PAPER); doc.rect(m, iy, bw, bh, 'F');
+      doc.addImage(img.d, 'JPEG', m + (bw - iw) / 2, iy + (bh - ih) / 2, iw, ih);
+      doc.setDrawColor(...LINE); doc.setLineWidth(0.2); doc.rect(m, iy, bw, bh, 'S');
+      // Aufnahmedaten
+      const rx = m + bw + 5, rw = cw - bw - 5; let ry = iy + 3.2;
+      doc.setFillColor(...ORANGE); doc.rect(rx - 2.6, iy, 0.7, bh, 'F');
+      const rows = [
+        ['Aufnahme', `${fmtDay(p.ts)}, ${fmtTime(p.ts)} Uhr`],
+        ['Position', p.lat != null ? coord(p.lat, p.lon) : 'ohne GPS'],
+        ['Genauigkeit', p.lat != null ? `± ${fmtAcc(p.acc)}${p.fix ? '  ·  ' + p.fix : ''}` : ''],
+        ['Adresse', p.address || ''],
+        ['Blickrichtung', p.heading != null ? `${p.heading}° ${dirName(p.heading, 1)}` : ''],
+        ['Wetter', p.weather ? wxShort(p.weather) : ''],
+        ['Kategorie', [catName(p.cat), ...(p.labels || [])].filter(Boolean).join(' · ')],
+        ['Bearbeiter', p.user || ''],
+        ['KI-Prüfung', p.aiOk != null ? (p.aiOk ? 'Pflichtinhalte erkannt' : 'unvollständig') : ''],
+        ['Datenschutz', p.privacy?.length ? p.privacy.length + ' Bereich(e) unkenntlich gemacht' : '']
+      ].filter(r => r[1]);
+      for (const [a, b] of rows) {
+        pf(doc, 'r', 8.4); const vl = doc.splitTextToSize(pdfSafe(b), rw).slice(0, a === 'Adresse' ? 2 : 1), need = 4.4 + vl.length * 3.7 + 1.6;
+        if (ry + need > iy + bh + 1) break;
+        label(rx, ry, a); pf(doc, 'r', 8.4); doc.setTextColor(...INK); doc.text(vl, rx, ry + 4.1); ry += need;
+      }
+      // Beschreibung + Siegel
+      let by = iy + bh + 5.5;
+      if (p.desc) { label(m, by, 'Beschreibung'); pf(doc, 'r', 9); doc.setTextColor(...INK); const dl = doc.splitTextToSize(pdfSafe(p.desc), cw).slice(0, 2); doc.text(dl, m + 25, by); by += dl.length * 3.9 + 1.5; }
+      if (p.hash) { pf(doc, 'cs', 6.8); doc.setTextColor(...OK); doc.text('VERSIEGELT', m, by + 0.2, { charSpace: 0.3 }); doc.setFont('courier', 'normal'); doc.setFontSize(6.4); doc.setTextColor(120, 116, 148); doc.text(`#${p.seq}  SHA-256 ${p.hash}${p.origHash ? '  (bearbeitet, Original versiegelt)' : ''}`, m + 25, by); }
+      if (!slot && i + 1 < g.ps.length) hair(y0 + 123.5);
     }
   }
+
+  /* ---------- Nachweis & Freigabe ---------- */
+  newPage('Nachweis & Freigabe'); toc.end = doc.getNumberOfPages(); let y = 32;
+  eyebrow(m, y, 'Abschluss'); y += 10; y += h1(m, y, 'Nachweis & Freigabe') + 4;
+  const sealed = l.filter(p => p.hash).length;
+  label(m, y, 'Beweissicherung'); y += 5;
+  pf(doc, 'r', 9.2); doc.setTextColor(...INK);
+  const bt = doc.splitTextToSize(`${sealed ? `${sealed} von ${l.length} Fotos` : 'Die Fotos'} wurden direkt bei der Aufnahme mit einem SHA-256-Fingerabdruck versiegelt und in einer fortlaufenden Prüfkette verknüpft. Jede spätere Veränderung an einer Bilddatei ist dadurch nachweisbar. Zusätzlich werden die Fingerabdrücke über OpenTimestamps (opentimestamps.org) unabhängig mit einem Zeitstempel versehen. Die Originaldateien, die Prüfsummen (pruefsummen.sha256) und die Zeitstempel-Dateien (.ots) enthält der ZIP-Export. Die Bilder in diesem PDF sind für den Druck verkleinert.`, cw);
+  doc.text(bt, m, y); y += bt.length * 4.3 + 6;
+  label(m, y, 'Legende'); y += 5.5;
+  [['V', 'Vorher', 'Zustand vor Beginn der Arbeiten (Beweissicherung)'], ['W', 'Während', 'Ausführung, Einbau, verdeckte Leistungen vor dem Verfüllen'], ['N', 'Nachher', 'Fertigstellung und wiederhergestellte Oberflächen']].forEach(([ph, n, t]) => {
+    chip(m, y, n.toUpperCase(), PC[ph], 20); pf(doc, 'r', 8.8); doc.setTextColor(...INK); doc.text(t, m + 24, y); y += 6.2;
+  });
+  chip(m, y, 'PFLICHTFOTO', NAVY, 20); pf(doc, 'r', 8.8); doc.setTextColor(...INK); doc.text('Von der Vorlage der Baustelle gefordertes Foto (Nachweis gegenüber Auftraggeber/Netzbetreiber)', m + 24, y); y += 12;
+  label(m, y, 'Freigabe'); y += 4;
+  const bw2 = (cw - 8) / 2;
+  [['Aufgestellt', coName(), users[0] || S.set.name || ''], ['Geprüft / anerkannt', 'Auftraggeber' + (single?.client ? ': ' + single.client : ''), '']].forEach(([t, who, nm], i) => {
+    const x = m + i * (bw2 + 8);
+    doc.setDrawColor(...LINE); doc.setLineWidth(0.3); doc.rect(x, y, bw2, 62, 'S'); doc.setFillColor(...NAVY); doc.rect(x, y, bw2, 8, 'F');
+    pf(doc, 'cs', 8.2); doc.setTextColor(255, 255, 255); doc.text(t.toUpperCase(), x + 4, y + 5.4, { charSpace: 0.35 });
+    pf(doc, 'sb', 9); doc.setTextColor(...INK); doc.text(one(who, bw2 - 8), x + 4, y + 15);
+    [['Name', nm], ['Ort, Datum', i ? '' : ''], ['Unterschrift', '']].forEach(([a, v], j) => {
+      const ly = y + 29 + j * 12.5; hair(ly, x + 4, x + bw2 - 4); label(x + 4, ly + 3.6, a);
+      if (v) { pf(doc, 'r', 9.2); doc.setTextColor(...INK); doc.text(pdfSafe(v), x + 4, ly - 1.5); }
+    });
+  });
+  y += 72;
+  pf(doc, 'r', 7.8); doc.setTextColor(...GREY);
+  doc.text(doc.splitTextToSize(`Bericht ${repNo}, erstellt am ${created} mit EnerWeser Baudoku. Alle Zeit- und Ortsangaben stammen aus dem Aufnahmegerät; die Genauigkeit ist je Foto angegeben.`, cw), m, y);
+
+  /* ---------- Zusammenfassung füllen ---------- */
+  doc.setPage(sumPage); y = 32;
+  eyebrow(m, y, 'Übersicht'); y += 10; y += h1(m, y, 'Zusammenfassung') + 4;
+  const kp = [['Fotos', String(l.length), `${groups.length} Baustelle${groups.length === 1 ? '' : 'n'}`, NAVY], ['Pflichtfotos', mustAll ? Math.round(doneAll / mustAll * 100) + ' %' : '–', mustAll ? `${doneAll} von ${mustAll} vorhanden` : 'keine Vorgabe', mustAll && doneAll < mustAll ? OINK : OK],
+    ['Mängel offen', String(defOpen.length), defOver.length ? `${defOver.length} überfällig` : defs.length ? 'keine überfällig' : 'keine erfasst', defOver.length ? BAD : NAVY], ['Zeitraum', String(new Set(l.map(p => dayKey(p.ts))).size), 'Aufnahmetage', NAVY]];
+  const kw = (cw - 9) / 4;
+  kp.forEach(([a, v, s2, col], i) => { const x = m + i * (kw + 3); doc.setFillColor(...PAPER); doc.rect(x, y, kw, 25, 'F'); doc.setFillColor(...ORANGE); doc.rect(x, y, kw, 0.9, 'F'); label(x + 4, y + 6.5, a); pf(doc, 'c', 22); doc.setTextColor(...col); doc.text(v, x + 4, y + 16.5); pf(doc, 'r', 7.6); doc.setTextColor(...GREY); doc.text(one(s2, kw - 7), x + 4, y + 21.5); });
+  y += 33;
+  // Phasenverteilung
+  const ct2 = { V: 0, W: 0, N: 0 }; l.forEach(p => ct2[p.phase]++);
+  if (l.length) {
+    label(m, y, 'Aufnahmen nach Phase'); y += 3;
+    let bx2 = m; ['V', 'W', 'N'].forEach(ph => { const w = cw * ct2[ph] / l.length; if (w > 0) { doc.setFillColor(...PC[ph]); doc.rect(bx2, y, w, 5.5, 'F'); if (w > 18) { pf(doc, 'cs', 7.4); doc.setTextColor(255, 255, 255); doc.text(`${PH[ph].n.toUpperCase()}  ${ct2[ph]}`, bx2 + 2.5, y + 3.9); } bx2 += w; } });
+    y += 13;
+  }
+  // Inhalt & Status
+  label(m, y, 'Inhalt & Status je Baustelle'); y += 2.5;
+  const SC = [['NR', m + 2], ['BAUSTELLE', m + 12], ['FOTOS', m + 92, 'right'], ['PFLICHTFOTOS', m + 98], ['MÄNGEL', m + 147, 'right'], ['SEITE', m + cw - 2, 'right']];
+  y = tableHead(y, SC);
+  toc.sites.forEach((T, i) => {
+    const rh = 11.5; if (y + rh > 250) return;
+    if (i % 2) { doc.setFillColor(...PAPER); doc.rect(m, y, cw, rh, 'F'); }
+    const pr = T.site ? prs.get(T.site.id) : null, dd = T.site ? S.defects.filter(d => d.siteId === T.site.id) : [], dop = dd.filter(d => d.status === 'open' || d.status === 'work').length;
+    pf(doc, 'c', 11); doc.setTextColor(...NAVY); doc.text(String(i + 1), m + 2, y + 5.4);
+    pf(doc, 'sb', 9.4); doc.setTextColor(...INK); doc.text(one(T.name, 70), m + 12, y + 5);
+    pf(doc, 'r', 7.4); doc.setTextColor(...GREY); doc.text(one([T.site && TPL[T.site.tpl]?.n, T.site?.order && 'Auftrag ' + T.site.order].filter(Boolean).join(' · ') || '–', 70), m + 12, y + 8.8);
+    pf(doc, 'sb', 9.4); doc.setTextColor(...INK); doc.text(String(T.ps.length), m + 92, y + 6.4, { align: 'right' });
+    if (pr) { const fr = pr.must ? pr.done / pr.must : 1; bar(m + 98, y + 4.4, 26, 2.2, fr, pr.missing.length ? ORANGE : OK); pf(doc, 'sb', 8.6); doc.setTextColor(...(pr.missing.length ? OINK : OK)); doc.text(`${pr.done}/${pr.must}`, m + 127, y + 6.4); } else { pf(doc, 'r', 8.6); doc.setTextColor(...GREY); doc.text('–', m + 98, y + 6.4); }
+    pf(doc, 'sb', 9.4); doc.setTextColor(...(dd.some(isOver) ? BAD : INK)); doc.text(dd.length ? `${dop}/${dd.length}` : '–', m + 147, y + 6.4, { align: 'right' });
+    const pages = [`Übersicht ${T.over}`, T.map && T.map !== T.over ? `Plan ${T.map}` : '', T.ph0 ? `Fotos ${T.ph0}${T.ph1 > T.ph0 ? '–' + T.ph1 : ''}` : '', T.defs ? `Mängel ${T.defs}` : '', T.am ? `Aufmaß ${T.am}` : '', T.ms ? `Messung ${T.ms}` : ''].filter(Boolean).join('  ·  ');
+    pf(doc, 'c', 11); doc.setTextColor(...NAVY); doc.text(String(T.over), m + cw - 2, y + 5.4, { align: 'right' });
+    pf(doc, 'r', 6.8); doc.setTextColor(...GREY); doc.text(pages, m + cw - 2, y + 9, { align: 'right' });
+    hair(y + rh); y += rh;
+  });
+  [[toc.daily, 'Tagesbericht · Bautagebuch'], [toc.end, 'Nachweis & Freigabe']].forEach(([pg, t]) => { if (!pg || y > 262) return; pf(doc, 'sb', 9.2); doc.setTextColor(...INK); doc.text(t, m + 12, y + 5.6); pf(doc, 'c', 11); doc.setTextColor(...NAVY); doc.text(String(pg), m + cw - 2, y + 5.8, { align: 'right' }); hair(y + 8.5); y += 8.5; });
+  y += 7;
+  // Hinweise
+  const miss = toc.sites.filter(T => T.site && prs.get(T.site.id).missing.length);
+  if (y < 262) {
+    const ok = !miss.length && !defOver.length;
+    const lines = ok ? ['Alle geforderten Pflichtfotos sind vorhanden. Es gibt keine überfälligen Mängel.'] : [...miss.map(T => `${T.name}: es fehlen ${prs.get(T.site.id).missing.map(x => x.label).join(', ')}`), ...(defOver.length ? [`${defOver.length} Mangel/Mängel mit überschrittener Frist: ${defOver.map(d => 'M' + d.no).join(', ')}`] : [])];
+    pf(doc, 'r', 8.8); const wl = lines.flatMap(t => doc.splitTextToSize(pdfSafe('• ' + t), cw - 10)).slice(0, Math.max(1, Math.floor((276 - y - 10) / 4.3)));
+    const hh = 10 + wl.length * 4.3;
+    doc.setFillColor(...(ok ? [234, 246, 239] : [255, 246, 235])); doc.rect(m, y, cw, hh, 'F'); doc.setFillColor(...(ok ? OK : ORANGE)); doc.rect(m, y, 1.2, hh, 'F');
+    pf(doc, 'cs', 7.6); doc.setTextColor(...(ok ? OK : OINK)); doc.text(ok ? 'STATUS: VOLLSTÄNDIG' : 'OFFENE PUNKTE', m + 5, y + 5.5, { charSpace: 0.35 });
+    pf(doc, 'r', 8.8); doc.setTextColor(...INK); doc.text(wl, m + 5, y + 10.4);
+    y += hh + 9;
+  }
+  // Aufnahmen je Tag
+  if (l.length && y < 222) {
+    const d0 = new Date(l[0].ts); d0.setHours(0, 0, 0, 0); const days = [];
+    for (let t = d0.getTime(); t <= l[l.length - 1].ts && days.length < 31; t += 864e5) { const n = new Date(t); days.push({ t, k: dayKey(t), c: { V: 0, W: 0, N: 0 } }); }
+    l.forEach(p => { const d = days.find(x => x.k === dayKey(p.ts)); if (d) d.c[p.phase]++; });
+    const mx = Math.max(1, ...days.map(d => d.c.V + d.c.W + d.c.N)), ch = Math.min(40, 270 - y - 16), bwid = cw / days.length;
+    label(m, y, 'Aufnahmen je Tag'); y += 4;
+    hair(y + ch);
+    days.forEach((d, i) => {
+      let yy = y + ch; const x = m + i * bwid + bwid * 0.2, w = bwid * 0.6;
+      ['V', 'W', 'N'].forEach(ph => { const hh = d.c[ph] / mx * (ch - 6); if (hh > 0) { doc.setFillColor(...PC[ph]); doc.rect(x, yy - hh, w, hh, 'F'); yy -= hh; } });
+      const tot = d.c.V + d.c.W + d.c.N; if (tot) { pf(doc, 'sb', 7); doc.setTextColor(...INK); doc.text(String(tot), x + w / 2, yy - 1.2, { align: 'center' }); }
+      if (days.length <= 16 || i % 2 === 0) { pf(doc, 'r', 6.4); doc.setTextColor(...GREY); doc.text(fmtDate(d.t).slice(0, 6), x + w / 2, y + ch + 3.6, { align: 'center' }); }
+    });
+  }
+
   pdfFooter(doc, i => pageTitle[i] || title);
   return doc;
 }
+
 async function exportPDF(btn, list, daily) {
   await savingQ;
   const l = (list || repList()).slice().sort((a, b) => a.ts - b.ts); if (!l.length && !daily) return;
@@ -3314,7 +4050,8 @@ async function backup(btn) {
     const zip = new window.JSZip();
     const { aiKey, elKey, ...setNoKey } = S.set; // der KI-Schlüssel kommt nie ins Backup
     zip.file('daten.json', JSON.stringify({ app: 'sefki-baudoku', v: 3, at: Date.now(), settings: setNoKey, sites: S.sites, photos: S.photos.map(({ blob, origBlob, posterBlob, ...r }) => ({ ...r, docs: r.docs?.map(({ blob, ...d }) => d) })), master: S.master, collections: S.collections, notes: S.notes.map(({ audio, ...r }) => r), trassen: S.trassen, ledger: S.ledger, daily: S.daily,
-      plans: S.plans.map(({ blob, ...r }) => r), defects: S.defects, protocols: S.protocols, customTpl: S.customTpl, layers: S.layers }));
+      plans: S.plans.map(({ blob, ...r }) => r), defects: S.defects, protocols: S.protocols, aufmass: S.aufmass, messungen: S.messungen.map(r => ({ ...r, files: (r.files || []).map(({ blob, ...x }) => x) })), lvOwn: S.set.lvOwn || [], customTpl: S.customTpl, layers: S.layers }));
+    const md = zip.folder('messdateien'); S.messungen.forEach(r => (r.files || []).forEach(x => md.file(r.id + '_' + x.id, x.blob)));
     const ph = zip.folder('fotos'); S.photos.forEach(p => { ph.file(p.id + '.jpg', p.blob); if (p.origBlob) ph.file(p.id + '_orig.jpg', p.origBlob); if (p.posterBlob) ph.file(p.id + '_poster.jpg', p.posterBlob); });
     const pf = zip.folder('plaene'); S.plans.forEach(p => pf.file(p.id + '.jpg', p.blob));
     const af = zip.folder('anhaenge'); S.photos.forEach(p => (p.docs || []).forEach(d => af.file(p.id + '_' + d.id, d.blob)));
@@ -3331,10 +4068,12 @@ async function restore(file) {
     if (j.app !== 'sefki-baudoku') throw new Error('Das ist kein SEF-KI-Backup');
     let ns = 0, np = 0;
     for (const s of j.sites) if (!S.sites.find(x => x.id === s.id)) { await DB.put('sites', s); S.sites.push(s); ns++; }
-    for (const [store, arr] of [['notes', j.notes], ['trassen', j.trassen], ['ledger', j.ledger], ['defects', j.defects], ['protocols', j.protocols]]) for (const r0 of arr || []) if (!S[store].find(x => x.id === r0.id)) {
+    for (const [store, arr] of [['notes', j.notes], ['trassen', j.trassen], ['ledger', j.ledger], ['defects', j.defects], ['protocols', j.protocols], ['aufmass', j.aufmass], ['messungen', j.messungen]]) for (const r0 of arr || []) if (!S[store].find(x => x.id === r0.id)) {
       const r = { ...r0 }; if (store === 'notes' && r.mime) { const f = zip.file('memos/' + r.id + '.bin'); if (f) r.audio = new Blob([await f.async('arraybuffer')], { type: r.mime }); }
+      if (store === 'messungen') r.files = await Promise.all((r.files || []).map(async x => { const f = zip.file('messdateien/' + r.id + '_' + x.id); return f ? { ...x, blob: new Blob([await f.async('arraybuffer')], { type: x.type }) } : null; })).then(a => a.filter(Boolean));
       await DB.put(store, r); S[store].push(r); }
     for (const r of j.plans || []) if (!S.plans.find(x => x.id === r.id)) { const f = zip.file('plaene/' + r.id + '.jpg'); if (!f) continue; const p = { ...r, blob: new Blob([await f.async('arraybuffer')], { type: 'image/jpeg' }) }; await DB.put('plans', p); S.plans.push(p); }
+    if (Array.isArray(j.lvOwn)) { S.set.lvOwn = [...(S.set.lvOwn || []), ...j.lvOwn.filter(o => !(S.set.lvOwn || []).some(x => x.pos === o.pos && x.text === o.text))]; saveSet(); }
     if (j.customTpl) { Object.assign(S.customTpl, j.customTpl); applyCustomTpl(); saveTpls(); }
     if (Array.isArray(j.layers)) { for (const L of j.layers) if (!S.layers.find(x => x.id === L.id)) S.layers.push(L); saveLayers(); }
     if (j.daily) { Object.assign(S.daily, j.daily); saveDaily(); }
@@ -3932,29 +4671,27 @@ async function logoFromFile(file) {
 }
 function pdfImgType(d) { return /^data:image\/png/.test(d) ? 'PNG' : 'JPEG'; }
 function pdfHeader(doc, right, sub = 'FOTOBERICHT') {
-  const W = 210, m = 14;
-  doc.setFillColor(47, 35, 130); doc.rect(0, 0, W, 19, 'F'); doc.setFillColor(241, 136, 11); doc.rect(0, 19, W, 1.4, 'F');
+  const W = 210, m = 14, F = (k, z) => (typeof pf === 'function' ? pf(doc, k, z) : (doc.setFont('helvetica', /b|c/.test(k) ? 'bold' : 'normal'), doc.setFontSize(z)));
+  doc.setFillColor(47, 35, 130); doc.rect(0, 0, W, 17, 'F'); doc.setFillColor(241, 136, 11); doc.rect(0, 17, W, 1.2, 'F');
   let x = m;
   if (S.set.coLogo) {
-    try { const L = S.set.coLogo, h = 11, w = Math.min(42, h * L.w / L.h); doc.setFillColor(255, 255, 255); doc.roundedRect(x - 1.5, 3.5, w + 3, h + 1, 1, 1, 'F'); doc.addImage(L.d, pdfImgType(L.d), x, 4, w, h, undefined, 'FAST'); x += w + 6; } catch (e) {}
-  }
-  if (S.set.coName) {
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(11.5); doc.setTextColor(255, 255, 255); doc.text(S.set.coName.slice(0, 48), x, 10.2);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(6.8); doc.setTextColor(201, 197, 234); doc.text(`${sub}  ·  BAUDOKU`, x, 15.2);
+    try { const L = S.set.coLogo, h = 10, w = Math.min(40, h * L.w / L.h); doc.setFillColor(255, 255, 255); doc.roundedRect(x - 1.5, 3, w + 3, h + 1, 1, 1, 'F'); doc.addImage(L.d, pdfImgType(L.d), x, 3.5, w, h, undefined, 'FAST'); x += w + 6; } catch (e) {}
   } else {
-    const lh = 8, lw = lh * 640 / 146;
-    try { doc.addImage(EW_LOGO_W, 'PNG', x, 5.5, lw, lh, 'ewlogo', 'FAST'); } catch (e) { doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(255, 255, 255); doc.text('ENERWESER', x, 12); }
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(201, 197, 234); doc.text(`BAUDOKU  ·  ${sub}`, x + lw + 5, 11.6);
+    const lh = 6.6, lw = lh * 640 / 146;
+    try { doc.addImage(EW_LOGO_W, 'PNG', x, 5.2, lw, lh, 'ewlogo', 'FAST'); x += lw + 5; } catch (e) { F('b', 12); doc.setTextColor(255, 255, 255); doc.text('ENERWESER', x, 11); x += 30; }
   }
-  doc.setFont('helvetica', 'normal'); doc.setTextColor(255, 255, 255); doc.setFontSize(8.5); doc.text(right, W - m, 11.6, { align: 'right' });
+  doc.setDrawColor(110, 98, 190); doc.setLineWidth(0.3); doc.line(x, 5, x, 13); x += 4;
+  F('cs', 7.8); doc.setTextColor(201, 197, 234); doc.text(`BAUDOKU  ·  ${sub}`, x, 10.4, { charSpace: 0.4 });
+  F('m', 8); doc.setTextColor(255, 255, 255); doc.text(right, W - m, 10.4, { align: 'right' });
 }
 function pdfFooter(doc, titleFor) {
-  const W = 210, m = 14, pages = doc.getNumberOfPages(), created = `${fmtDate(Date.now())}, ${fmtTime(Date.now())} Uhr`;
-  for (let i = 1; i <= pages; i++) {
-    doc.setPage(i); doc.setDrawColor(220, 217, 234); doc.setLineWidth(0.2); doc.line(m, 285, W - m, 285);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.4); doc.setTextColor(110, 106, 138);
-    doc.text(`${S.set.coName ? S.set.coName.slice(0, 40) + '  ·  ' : ''}EnerWeser Baudoku  ·  ${titleFor(i)}  ·  erstellt ${created}`, m, 290);
-    doc.text(`Seite ${i} von ${pages}`, W - m, 290, { align: 'right' });
+  const W = 210, m = 14, pages = doc.getNumberOfPages(), F = (k, z) => (typeof pf === 'function' ? pf(doc, k, z) : (doc.setFont('helvetica', 'normal'), doc.setFontSize(z)));
+  const co = S.set.coName || 'EnerWeser Bautechnik GmbH';
+  for (let i = 1 + (doc._skipFooter || 0); i <= pages; i++) {
+    doc.setPage(i); doc.setDrawColor(220, 217, 234); doc.setLineWidth(0.2); doc.line(m, 285, W - m, 285); doc.setFillColor(241, 136, 11); doc.rect(m, 284.7, 12, 0.6, 'F');
+    F('r', 7.4); doc.setTextColor(110, 106, 138);
+    doc.text(`${co.slice(0, 44)}  ·  ${titleFor(i)}`.slice(0, 110), m, 290);
+    F('sb', 7.4); doc.setTextColor(47, 35, 130); doc.text(`Seite ${i} von ${pages}`, W - m, 290, { align: 'right' });
   }
 }
 const pdfSafeG = s => String(s ?? '').replace(/[→←]/g, '-').replace(/[✓✔]/g, 'OK').replace(/[✗✘]/g, 'X').replace(/[^\x00-\xff€„“‚‘’–—…•]/g, '');
@@ -4846,7 +5583,7 @@ if ('speechSynthesis' in window) { try { speechSynthesis.getVoices(); speechSynt
 
 /* ---------- Sandkasten: Beispieldaten, nichts wird gespeichert ---------- */
 const Sandbox = {
-  on: false, orig: null, keys: ['sites', 'photos', 'notes', 'trassen', 'ledger', 'plans', 'defects', 'protocols'],
+  on: false, orig: null, keys: ['sites', 'photos', 'notes', 'trassen', 'ledger', 'plans', 'defects', 'protocols', 'aufmass', 'messungen'],
   async enter() {
     if (this.on) return;
     const cl = o => { try { return structuredClone(o); } catch (e) { return JSON.parse(JSON.stringify(o)); } };
@@ -4855,7 +5592,8 @@ const Sandbox = {
     this.keys.forEach(k => S[k] = (S[k] || []).map(cl));
     S.set = { ...cl({ ...S.set, coLogo: null }), coLogo: S.set.coLogo, aiCheck: false, privacy: false, ots: false, hookUrl: '', series: false, voice: false };
     S.daily = cl(S.daily || {}); S.customTpl = cl(S.customTpl || {});
-    if (!S.sites.length) { try { await seedExamples(); await seedExamples2(); } catch (e) { console.warn(e); } }
+    if (!S.sites.length) { try { await seedExamples(); await seedExamples2(); await seedExamples3(); } catch (e) { console.warn(e); } }
+    if (!S.aufmass.length && !S.messungen.length) { try { await seedExamples3(); } catch (e) { console.warn(e); } }
     if (!S.plans.length) { const s = tSite(); if (s) { try { const c = demoPlanCanvas(); S.plans.push({ id: 'tourpl', siteId: s.id, name: 'Beispielplan', w: c.width, h: c.height, created: Date.now(), blob: await toBlob(c, 0.85), thumb: fitCanvas(c, 500).toDataURL('image/jpeg', 0.7), example: true }); } catch (e) {} } }
   },
   leave() { if (!this.on) return; Object.assign(S, this.orig); this.orig = null; this.on = false; DB.sandbox = false; }
@@ -5353,7 +6091,7 @@ addEventListener('keydown', e => { if (!Tour.on) return; if (e.key === 'Escape')
    ===================================================================== */
 function applyMode() {
   const simple = S.set.mode === 'simple'; document.body.classList.toggle('simple', simple);
-  if (simple && ['plaene', 'maengel'].includes(S.view)) go('cockpit');
+  if (simple && ['plaene', 'maengel', 'aufmass', 'messung'].includes(S.view)) go('cockpit');
 }
 async function setMode(m) {
   if (m === 'full' && S.set.modePin) {
@@ -6156,6 +6894,9 @@ async function exportZIP(btn, list, o = {}) {
     if (!o.listOnly) for (const n of S.notes.filter(n => n.audio && days.has(dayKey(n.ts)))) { const fn = `sprachmemos/${stamp(n.ts)}_sprachmemo${/mp4/.test(n.mime || '') ? '.m4a' : '.webm'}`; f.file(fn, n.audio); if (n.hash) sums.push(`${n.hash}  ${fn}`); }
     const dl = site ? S.defects.filter(d => d.siteId === site.id) : S.defects.filter(d => l.some(p => p.siteId === d.siteId));
     if (dl.length && o.csv) f.file('maengelliste.csv', defCSV(dl));
+    const sids = new Set(site ? [site.id] : l.map(p => p.siteId)), al = S.aufmass.filter(e => sids.has(e.siteId)), ml = S.messungen.filter(r => sids.has(r.siteId));
+    if (al.length && o.csv) f.file('aufmass.csv', amCSV(al));
+    ml.forEach(r => (r.files || []).forEach(x => { f.file('messdateien/' + slug(r.name || MS_KIND[r.kind]) + '_' + x.name, x.blob); if (x.hash) sums.push(`${x.hash}  messdateien/${slug(r.name || MS_KIND[r.kind])}_${x.name}`); }));
     if (sums.length && o.sums) {
       f.file('pruefsummen.sha256', sums.join('\n') + '\n');
       f.file('nachweis-kette.json', JSON.stringify({ app: 'SEF-KI Baudoku', erstellt: new Date().toISOString(), regel: 'kette_n = SHA256(kette_n-1 | hash | foto-id | zeit_ms | breite | laenge | art), Start = 64 Nullen', eintraege: S.ledger }, null, 1));
@@ -6335,6 +7076,24 @@ function bind() {
   $('#galSelBtn').onclick = () => { S.gal.sel = S.gal.sel ? null : new Set(); renderGallery(); renderNext(); if (S.gal.sel) toast('Tippe Fotos an, um sie auszuwählen.', 2200); };
   $('#bulkBar').onclick = bulkAction;
   $('#hubGrid').onclick = hubAction;
+  $('#v-aufmass').addEventListener('click', e => {
+    const st = e.target.closest('[data-amsite]'); if (st) { S.am.site = st.dataset.amsite; renderAufmass(); return; }
+    const r = e.target.closest('[data-am]'); if (r) { openAm(r.dataset.am); return; }
+    if (e.target.closest('#btnAmNew')) openAm(null);
+    const l = amList();
+    if (e.target.closest('#btnAmCsv')) { if (!l.length) return toast('Noch kein Aufmaß.'); const s = S.sites.find(x => x.id === S.am.site); saveFile(`Aufmass_${slug(s ? s.name : 'Baustellen')}_${stamp(Date.now()).slice(0, 8)}.csv`, new Blob([amCSV(l)], { type: 'text/csv' })); }
+    const pb = e.target.closest('#btnAmPdf'); if (pb) { if (!l.length) return toast('Noch kein Aufmaß.'); (async () => { pb.disabled = true; try { await needLib('PDF-Baustein', () => window.jspdf?.jsPDF); const doc = await buildAmPDF(l); const s = S.sites.find(x => x.id === S.am.site); await saveFile(`Aufmass_${slug(s ? s.name : 'Baustellen')}_${stamp(Date.now()).slice(0, 8)}.pdf`, doc.output('blob')); } catch (er) { toast('PDF fehlgeschlagen: ' + (er.message || er), 5000); } pb.disabled = false; })(); }
+  });
+  $('#v-messung').addEventListener('click', e => {
+    const sg = e.target.closest('[data-mseg]'); if (sg) { S.ms.kind = sg.dataset.mseg; renderMessung(); return; }
+    const st = e.target.closest('[data-mssite]'); if (st) { S.ms.site = st.dataset.mssite; renderMessung(); return; }
+    const r = e.target.closest('[data-ms]'); if (r) { openMess(r.dataset.ms); return; }
+    if (e.target.closest('#btnMsSpl')) openMess(null, 'spleiss');
+    if (e.target.closest('#btnMsOtdr')) openMess(null, 'otdr');
+    if (e.target.closest('#btnMsEin')) openMess(null, 'einblas');
+    if (e.target.closest('#btnMsLim')) openMsLimits();
+    if (e.target.closest('#btnMsPdf')) { let l = S.messungen.slice(); if (S.ms.site !== 'all') l = l.filter(x => x.siteId === S.ms.site); if (S.ms.kind !== 'all') l = l.filter(x => x.kind === S.ms.kind); if (!l.length) return toast('Keine Protokolle in dieser Auswahl.'); const s = S.sites.find(x => x.id === S.ms.site); msPDF(l.sort((a, b) => a.ts - b.ts), s ? s.name : 'Baustellen'); }
+  });
   $('#statBody').onclick = statsAction;
   document.addEventListener('click', e => { if (e.target.closest('[data-back]')) go('mehr'); });
   $('#fileLayer').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) importLayerFile(f); };
@@ -6365,6 +7124,7 @@ function bind() {
     S.daily = kv.find(x => x.id === 'daily')?.map || {};
     S.rec = S.trassen.find(t => t.status === 'rec' || t.status === 'paused')?.id || null;
     S.plans = await DB.all('plans'); S.defects = await DB.all('defects'); S.protocols = await DB.all('protocols');
+    S.aufmass = await DB.all('aufmass'); S.messungen = await DB.all('messungen');
     S.customTpl = kv.find(x => x.id === 'tpls')?.map || {}; applyCustomTpl();
     S.layers = kv.find(x => x.id === 'layers')?.list || [];
     const ms = kv.find(x => x.id === 'master'); if (ms) { const { id, ...rest } = ms; S.master = rest; }
@@ -6383,10 +7143,11 @@ function bind() {
     try { await seedExamples(); } catch (e) { console.warn(e); }
   }
   if (!S.set.seeded2 && S.sites.some(s => s.example)) { try { await seedExamples2(); } catch (e) { console.warn(e); } }
+  if (!S.set.seeded3 && S.sites.some(s => s.example)) { try { await seedExamples3(); } catch (e) { console.warn(e); } }
   try { S.persisted = await navigator.storage?.persisted?.(); if (!S.persisted && navigator.storage?.persist) S.persisted = await navigator.storage.persist(); } catch (e) {}
   initHeading();
   S.gal.view = S.set.galView || 'list'; applyMode();
-  const h = location.hash.slice(1); go(['cockpit', 'karte', 'plaene', 'maengel', 'galerie', 'bericht', 'mehr', 'statistik'].includes(h) ? h : 'cockpit');
+  const h = location.hash.slice(1); go(['cockpit', 'karte', 'plaene', 'maengel', 'galerie', 'bericht', 'mehr', 'statistik', 'aufmass', 'messung'].includes(h) ? h : 'cockpit');
   startGPS();
   if (S.set.demo) toast('Demo-Position aktiv – in den Einstellungen abschaltbar.', 3000);
   if ('serviceWorker' in navigator && !inFrame && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
