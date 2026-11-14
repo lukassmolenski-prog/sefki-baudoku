@@ -5641,7 +5641,7 @@ async function tMapTap(pt) {
   ev('pointerdown'); await tWait(80); ev('pointerup'); await tWait(300);
 }
 /* Kontexte: was auf dem Bildschirm offen sein muss. Rückgabe false = Kapitel überspringen */
-const SHEET_CTX = ['site', 'abn', 'defect', 'photo', 'settings'];
+const SHEET_CTX = ['site', 'abn', 'defect', 'photo', 'settings', 'amsheet', 'spl'];
 const TOUR_CTX = {
   cockpit: () => go('cockpit'),
   karte: () => go('karte'),
@@ -5657,6 +5657,10 @@ const TOUR_CTX = {
   photo: () => { const p = tPhoto(); if (!p) return false; go('galerie'); openPhoto(p.id); },
   settings: async () => { go('cockpit'); await openSettings(); $$('#scrim details.sgrp').forEach(d => d.open = true); },
   mehr: () => go('mehr'),
+  aufmass: () => { S.am.site = 'all'; go('aufmass'); },
+  amsheet: () => { const s = S.sites.find(x => x.id === 'ex2') || tSite(); go('aufmass'); openAm(null, { siteId: s?.id || null }); },
+  messung: () => { S.ms.site = 'all'; S.ms.kind = 'all'; go('messung'); },
+  spl: () => { const r = S.messungen.find(x => x.kind === 'spleiss' && msEval(x).over) || S.messungen.find(x => x.kind === 'spleiss'); if (!r) return false; S.ms.site = 'all'; S.ms.kind = 'all'; go('messung'); openMess(r.id); },
   statistik: () => { S.statSel = null; go('statistik'); }
 };
 
@@ -5777,6 +5781,8 @@ function tourSteps() {
     ...C('Mehr', 'mehr', [
       ['.tab[data-v=mehr]', 'Unter Mehr liegt alles fürs Projekt: Bericht, Mängel, Pläne, Statistik, Trassen, Bautagebuch und Einstellungen. So bleibt die Leiste unten übersichtlich.', { title: 'Mehr' }],
       ['#hubGrid', 'Jede Kachel zeigt schon von außen, was offen ist: ungesicherte Fotos, offene Mängel, die Zahl der Pläne. Orange heißt: Da wartet etwas auf dich.', { title: 'Kacheln' }],
+      ['#hubGrid [data-hub=aufmass]', 'Aufmaß: Hier erfasst du die gebauten Mengen mit Rechenansatz – die Grundlage für die Abrechnung.', { pro: 1, title: 'Aufmaß' }],
+      ['#hubGrid [data-hub=messung]', 'Spleiß und Messung: Spleiß-, OTDR- und Einblasprotokolle, jeder Wert gegen den Grenzwert geprüft.', { pro: 1, title: 'Spleiß & Messung' }],
       ['#hubGrid [data-hub=sammlungen]', 'Sammlungen bündeln Fotos quer über Baustellen, zum Beispiel alles für eine Abnahme oder einen Nachtrag.', { pro: 1, title: 'Sammlungen' }],
       ['#hubGrid [data-hub=stamm]', 'Stammdaten: Hier legst du Labels mit Farbe, eigene Kategorien und Textbausteine fest. So schreibt das ganze Team gleich.', { pro: 1, title: 'Stammdaten' }]
     ]),
@@ -5819,6 +5825,43 @@ function tourSteps() {
       [tSh('[data-x=plan]'), 'Auf Plan verorten markiert die genaue Stelle im Grundriss.'],
       [tSh('[data-x=send]'), 'An Zuständigen senden schickt den Mangel mit Foto per Mail, WhatsApp oder Teams weiter.'],
       [tSh('[data-x=save]'), 'Speichern nicht vergessen.']
+    ]),
+    ...C('Aufmaß', 'aufmass', [
+      ['#v-aufmass .vhead', 'Jetzt das Aufmaß, ebenfalls unter Mehr. Hier hältst du fest, was gebaut wurde: Meter Graben, Quadratmeter Pflaster, Stück Hausanschlüsse. Daraus wird die Abrechnung.', { pro: 1, title: 'Aufmaß' }],
+      ['#amStats', 'Oben siehst du, wie viele Positionen und Einträge es gibt und was heute dazugekommen ist.', { pro: 1, title: 'Übersicht' }],
+      ['#amSites', 'Hier wählst du die Baustelle. Ich nehme mal die Bahnhofstraße.', { pro: 1, title: 'Baustelle', act: async () => { await tClick(() => $('#amSites [data-amsite=ex2]') || [...$$('#amSites [data-amsite]')].find(b => b.dataset.amsite !== 'all')); }, fx: '#amList' }],
+      ['#amList .am-pos', 'Jede Position ist ein Block: die Nummer aus dem Leistungsverzeichnis, die Leistung und rechts die Summe. Darunter die einzelnen Einträge mit Datum, Ort und Rechenweg, zum Beispiel Länge 86,4 mal Breite 0,6.', { pro: 1, title: 'Positionen' }],
+      ['#btnAmNew', 'Aufmaß erfassen. Ich zeige es dir: Oberfläche Pflaster, Länge 12,5 Meter, Breite 0,6 Meter. Die App rechnet 7,5 Quadratmeter und schreibt den Rechenweg dazu. Speichern, fertig.', { pro: 1,
+        act: async () => { await tClick('#btnAmNew'); await tWait(450); const sel = $('#scrim #amLv'); if (sel) { Tour.focus(sel); await tWait(400); sel.value = '02.01'; sel.dispatchEvent(new Event('change', { bubbles: true })); await tWait(500); } await tType('#scrim #amLoc', 'Hausnr. 20–24'); await tType('#scrim [data-c=a]', '12,5'); await tType('#scrim [data-c=b]', '0,6'); Tour.focus($('#scrim .am-res')); await tWait(1500); await tClick('#scrim [data-x=save]'); await tWait(500); },
+        fx: () => [...$$('#amList .am-row')].find(r => r.textContent.includes('20–24')) }],
+      ['#btnAmPdf', 'Aufmaßblatt als PDF: Einzelaufmaß mit Rechenansatz, Zusammenstellung je Position und Unterschriftsfelder für dich und den Auftraggeber.', { pro: 1 }],
+      ['#btnAmCsv', 'Excel oder CSV für die Abrechnung im Büro. Die Tabelle liegt außerdem automatisch im ZIP-Export.', { pro: 1 }]
+    ]),
+    ...C('Aufmaß erfassen', 'amsheet', [
+      [tRow('#amLv'), 'Die Leistung wählst du aus dem Leistungsverzeichnis: Graben, Oberflächen, Rohre, Hausanschlüsse, Einblasen, Spleißen, Verkehrssicherung. Eigene Positionen legst du einfach dazu, die merke ich mir.', { pro: 1, title: 'LV-Position' }],
+      [tRow('#amLoc'), 'Ort oder Abschnitt, damit später jeder weiß, wo das war.', { pro: 1, title: 'Ort' }],
+      [tSh('.am-calc'), 'Der Rechenansatz: Länge mal Breite mal Tiefe mal Anzahl. Du füllst nur aus, was du brauchst. Hier ein Graben: 8,4 Meter lang, 0,4 breit, 0,8 tief – macht knapp 2,7 Kubikmeter.', { pro: 1, title: 'Rechenansatz',
+        act: async () => { await tType('#scrim [data-c=a]', '8,4'); await tType('#scrim [data-c=b]', '0,4'); await tType('#scrim [data-c=c]', '0,8'); }, fx: '#scrim .am-res' }],
+      [tSh('[data-x=walk]'), 'Länge ablaufen: Am Anfang einmal tippen, zum Ende gehen, noch einmal tippen. Die Länge kommt per GPS, mit Genauigkeit. Liegt schon eine Trasse vor, übernimmst du die Länge von dort.', { pro: 1, title: 'Länge ablaufen' }],
+      [tSh('[data-x=minus]'), 'Abzug macht die Zeile negativ, zum Beispiel wenn eine Einfahrt nicht mitzählt.', { pro: 1, title: 'Abzug' }],
+      [tSh('[data-x=photo]'), 'Foto hängt einen Nachweis an. Am besten mit Maßband im Bild.', { pro: 1 }],
+      [tSh('[data-x=next]'), 'Speichern und nächstes: So erfasst du eine ganze Straße am Stück, ohne jedes Mal neu anzufangen.', { pro: 1 }]
+    ]),
+    ...C('Spleiß & Messung', 'messung', [
+      ['#v-messung .vhead', 'Spleiß und Messung, ebenfalls unter Mehr. Hier entstehen die Protokolle, die der Netzbetreiber für jede Faser sehen will.', { pro: 1, title: 'Spleiß & Messung' }],
+      ['#msStats', 'Oben siehst du, wie viele Protokolle es gibt, wie viele in Ordnung sind und wie viele über dem Grenzwert liegen.', { pro: 1, title: 'Übersicht' }],
+      [tOf('#btnMsSpl', '.row'), 'Drei Arten von Protokollen: Spleißprotokoll je Muffe, Verteiler oder HÜP. OTDR-Messung je Strecke. Und das Einblasprotokoll mit Länge, Dauer und Druck.', { pro: 1, title: 'Neues Protokoll' }],
+      ['#msSeg', 'Mit diesen Reitern filterst du nach Art.', { pro: 1, title: 'Filter', act: async () => { await tClick('#msSeg [data-mseg=spleiss]'); await tWait(900); await tClick('#msSeg [data-mseg=otdr]'); await tWait(900); await tClick('#msSeg [data-mseg=all]'); }, fx: '#msList' }],
+      ['#msList .ms-card', 'Jede Karte zeigt das Ergebnis: IO in Grün heißt in Ordnung, NIO in Rot heißt über dem Grenzwert, Orange heißt noch unvollständig.', { pro: 1, title: 'Ergebnis' }],
+      ['#btnMsPdf', 'Alle als PDF macht aus der Auswahl ein Protokollheft für den Netzbetreiber.', { pro: 1 }],
+      ['#btnMsLim', 'Die Grenzwerte stellst du einmal nach Vorgabe des Netzbetreibers ein, zum Beispiel 0,1 dB pro Spleiß. Daraus rechne ich auch den Sollwert für jede OTDR-Messung.', { pro: 1, title: 'Grenzwerte' }]
+    ]),
+    ...C('Spleißprotokoll', 'spl', [
+      [tSh('#msFb'), 'Für jede Faser tippst du die Spleißdämpfung vom Gerät ab. Die Farben sind nach Norm: rot, grün, blau, gelb und so weiter. Mit Enter springst du zur nächsten Faser, jeder Wert wird sofort geprüft.', { pro: 1, title: 'Fasern' }],
+      [() => $('#scrim .fb-ok.no')?.closest('.fb-row'), 'Hier liegt eine Faser über dem Grenzwert. Das rote Kreuz zeigt sofort: Diese Faser neu spleißen, bevor der Kolonnenwagen weiterfährt.', { pro: 1, title: 'Über Grenzwert' }],
+      [tSh('#msSt'), 'Oben steht das Ergebnis des ganzen Protokolls.', { pro: 1, title: 'Ergebnis' }],
+      [tSh('[data-x=pdf]'), 'Protokoll als PDF: alle Fasern, Ergebnis-Stempel und Unterschriftsfelder für den Netzbetreiber.', { pro: 1 }],
+      [tSh('[data-x=seal]'), 'Abschließen und versiegeln: Danach ist das Protokoll fälschungssicher und lässt sich nicht mehr ändern.', { pro: 1 }]
     ]),
     ...C('Fotos', 'galerie', [
       ['.tab[data-v=galerie]', 'Weiter zu den Fotos. Die Zahl am Symbol sagt dir, wie viele Fotos noch nicht gesichert sind.'],
